@@ -1,0 +1,173 @@
+{
+ "built_at": "2026-11-15T15:46:26Z",
+ "authorized": "2026-11-14T16:58:00Z",
+ "venue": "Polymarket US (open question: whether David's funded account is US or international settles at the first click)",
+ "run_status": "REAL-CALL WATCH ON (David, 2026-11-14 ~12:02 EST: account funded, 'go ahead'). Desk relays guarded calls to David; David taps buy in his own Poly app; fill reports come back to the desk to seal. Watch runs until David says stop or a day stop hits.",
+ "rules": {
+  "bank_floor": 1.0,
+  "day_stop_per_engine": -2.0,
+  "early_rule": "btc5-early-flip-v1 unchanged",
+  "plain_floor": 0.7,
+  "plain_one_position": true,
+  "reserve_law": "never spend an engine whole bank; savings plus two more rounds always remain; wins banked at settlement, enter B next day; tighten when losing, NEVER loosen mid-day because of winnings",
+  "stake": 0.5,
+  "stake_rule": "s = round down to 10c of 10% x day-start settled bank B, floored at $0.50; set once at day start, never changed mid-day",
+  "savings_lock": "L = $1.00 + 30% x max(0, all-time net profit above the starting $5.00); ratchets up only; bank <= L pauses the engine",
+  "fire_test": "a play fires only if uncommitted bank after committing s is >= L + 2s"
+ },
+ "plain": {
+  "fills": [],
+  "settles": [],
+  "graded": 0,
+  "wins": 0,
+  "win_rate": null,
+  "pnl": 0,
+  "brier": null,
+  "status": "EMPTY",
+  "bank": {
+   "cash": 5.0,
+   "day": "2026-11-15",
+   "day_pnl": 0.0,
+   "fills": 0,
+   "open_position": null,
+   "settled": 0,
+   "start": 5.0,
+   "day_start_bank": 5.0,
+   "peak_bank": 5.0
+  },
+  "sizing": {
+   "B": 5.0,
+   "s": 0.5,
+   "L": 1.0
+  },
+  "can_fire": true,
+  "bands": [
+   {
+    "band": "60-70",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   },
+   {
+    "band": "70-80",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   },
+   {
+    "band": "80-90",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   },
+   {
+    "band": "90-100",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   }
+  ]
+ },
+ "early": {
+  "fills": [],
+  "settles": [],
+  "graded": 0,
+  "wins": 0,
+  "win_rate": null,
+  "pnl": 0,
+  "brier": null,
+  "status": "EMPTY",
+  "bank": {
+   "cash": 5.0,
+   "day": "2026-11-15",
+   "day_pnl": 0.0,
+   "fills": 0,
+   "open_actions": [],
+   "settled": 0,
+   "start": 5.0,
+   "day_start_bank": 5.0,
+   "peak_bank": 5.0
+  },
+  "sizing": {
+   "B": 5.0,
+   "s": 0.5,
+   "L": 1.0
+  },
+  "can_fire": true,
+  "bands": [
+   {
+    "band": "60-70",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   },
+   {
+    "band": "70-80",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   },
+   {
+    "band": "80-90",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   },
+   {
+    "band": "90-100",
+    "n": 0,
+    "stated": null,
+    "actual": null
+   }
+  ],
+  "points": 0,
+  "double_wins": 0
+ },
+ "sim_reference": {
+  "plain": {
+   "graded": 311,
+   "win_rate": 81.7,
+   "bands": [
+    {
+     "band": "60\u201370%",
+     "n": 106,
+     "stated": 65.2,
+     "actual": 68.9
+    },
+    {
+     "band": "70\u201380%",
+     "n": 86,
+     "stated": 75.0,
+     "actual": 75.6
+    },
+    {
+     "band": "80\u201390%",
+     "n": 62,
+     "stated": 84.4,
+     "actual": 96.8
+    },
+    {
+     "band": "90\u201399%",
+     "n": 57,
+     "stated": 94.8,
+     "actual": 98.2
+    }
+   ]
+  },
+  "early": {
+   "graded": 228,
+   "win_rate": 82.5,
+   "score": 189
+  }
+ },
+ "david": {
+  "fills": [],
+  "n_fills": 0,
+  "n_settled": 0,
+  "wins": 0,
+  "losses": 0,
+  "pnl": 0,
+  "note": "David's own taps, sealed as he reports them and settled on the venue's word. Beside each tap: the engine's call for that same window. This record exists so a loss can be checked \u2014 call, price, result \u2014 never argued from memory."
+ },
+ "note": "REAL records only \u2014 graded on the venue settlement, never blended with SIM. The board starts EMPTY and earns its own verdict under the house bar: >=20 graded, >=62%, Brier <=0.21."
+}
