@@ -1,11 +1,11 @@
 {
- "built_at": "2026-11-16T05:28:34Z",
+ "built_at": "2026-11-16T05:36:44Z",
  "bands": [
   {
    "band": "60\u201370%",
-   "n": 146,
+   "n": 147,
    "stated": 65.0,
-   "actual": 71.2
+   "actual": 71.4
   },
   {
    "band": "70\u201380%",
@@ -30,17 +30,17 @@
   "id": "BTC5",
   "name": "BTC 5-min desk (our specialist, sim)",
   "kind": "BTC Up/Down 5m windows \u00b7 plain vol model btc5-plain-v1 \u00b7 stand-in index",
-  "calls": 425,
-  "graded": 424,
-  "correct": 350,
-  "accuracy": 82.5,
+  "calls": 426,
+  "graded": 425,
+  "correct": 351,
+  "accuracy": 82.6,
   "brier": 0.1358,
-  "streak_now": 0,
+  "streak_now": 1,
   "streak_best": 21,
   "status": "APPROVED",
   "note": "graded from BTC5_GRADE records in the sealed ledger"
  },
- "proof_built_at": "2026-11-16T05:27:18Z",
+ "proof_built_at": "2026-11-16T05:35:22Z",
  "borrows": {
   "lifetime": {
    "PEER": 0,
@@ -62,8 +62,35 @@
    "PEER": "A borrow from the other engines \u2014 counted on the record like every borrow."
   }
  },
- "last_graded_window": "2026-11-16T05:15:00Z",
+ "last_graded_window": "2026-11-16T05:25:00Z",
  "recent_calls": [
+  {
+   "window": "2026-11-16T05:30:00Z",
+   "side": "up",
+   "chance": 0.648,
+   "at_elapsed_s": 139,
+   "seconds_left": 160,
+   "index_px": 64794.215,
+   "open_px": 64772.21,
+   "move_usd": 22.0,
+   "band": "60\u201370%",
+   "why": "BTC rose $22 from the window open with 160s left \u2014 the model put UP at 65%.",
+   "result": null,
+   "correct": null,
+   "brier": null,
+   "seq": 9505,
+   "sealed_at": "2026-11-16T05:32:22+0000",
+   "grade_seq": null,
+   "plan": "HOLD \u2014 ride to settlement; PLAIN's only early exit is a sell at a bid of 95\u00a2 or better",
+   "final_answer": {
+    "side": "up",
+    "locked_seq": 9505,
+    "locked_at": "2026-11-16T05:32:22+0000",
+    "via": "the sealed call itself \u2014 PLAIN never flips, so the call IS the final answer, locked at seal time"
+   },
+   "money": null,
+   "money_note": "UNPRICED \u2014 the REAL watch sealed no ask for this window; no money line is invented"
+  },
   {
    "window": "2026-11-16T05:25:00Z",
    "side": "down",
@@ -75,12 +102,12 @@
    "move_usd": -14.8,
    "band": "60\u201370%",
    "why": "BTC fell $15 from the window open with 175s left \u2014 the model put DOWN at 60%.",
-   "result": null,
-   "correct": null,
-   "brier": null,
+   "result": "down",
+   "correct": true,
+   "brier": 0.1591,
    "seq": 9488,
    "sealed_at": "2026-11-16T05:27:06+0000",
-   "grade_seq": null,
+   "grade_seq": 9497,
    "plan": "HOLD \u2014 ride to settlement; PLAIN's only early exit is a sell at a bid of 95\u00a2 or better",
    "final_answer": {
     "side": "down",
@@ -756,36 +783,27 @@
    },
    "money": null,
    "money_note": "UNPRICED \u2014 the REAL watch sealed no ask for this window; no money line is invented"
-  },
-  {
-   "window": "2026-11-16T02:50:00Z",
-   "side": "down",
-   "chance": 0.6438,
-   "at_elapsed_s": 123,
-   "seconds_left": 176,
-   "index_px": 64966.854999999996,
-   "open_px": 65000.1,
-   "move_usd": -33.25,
-   "band": "60\u201370%",
-   "why": "BTC fell $33 from the window open with 176s left \u2014 the model put DOWN at 64%.",
-   "result": "up",
-   "correct": false,
-   "brier": 0.4145,
-   "seq": 9049,
-   "sealed_at": "2026-11-16T02:52:06+0000",
-   "grade_seq": 9055,
-   "plan": "HOLD \u2014 ride to settlement; PLAIN's only early exit is a sell at a bid of 95\u00a2 or better",
-   "final_answer": {
-    "side": "down",
-    "locked_seq": 9049,
-    "locked_at": "2026-11-16T02:52:06+0000",
-    "via": "the sealed call itself \u2014 PLAIN never flips, so the call IS the final answer, locked at seal time"
-   },
-   "money": null,
-   "money_note": "UNPRICED \u2014 the REAL watch sealed no ask for this window; no money line is invented"
   }
  ],
  "recent_windows": [
+  {
+   "window": "2026-11-16T05:35:00Z",
+   "open_px": 64728.115,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-16T05:30:00Z",
+   "open_px": 64772.21,
+   "call": {
+    "side": "up",
+    "chance": 0.648,
+    "at": 1794807139
+   },
+   "abstain": null,
+   "grade": null
+  },
   {
    "window": "2026-11-16T05:25:00Z",
    "open_px": 64794.95,
@@ -795,7 +813,11 @@
     "at": 1794806824
    },
    "abstain": null,
-   "grade": null
+   "grade": {
+    "result": "down",
+    "correct": true,
+    "brier": 0.1591
+   }
   },
   {
    "window": "2026-11-16T05:20:00Z",
@@ -949,56 +971,22 @@
     "correct": true,
     "brier": 0.1133
    }
-  },
-  {
-   "window": "2026-11-16T04:25:00Z",
-   "open_px": 65031.055,
-   "call": {
-    "side": "down",
-    "chance": 0.6359,
-    "at": 1794803214
-   },
-   "abstain": null,
-   "grade": {
-    "result": "down",
-    "correct": true,
-    "brier": 0.1326
-   }
-  },
-  {
-   "window": "2026-11-16T04:20:00Z",
-   "open_px": 64891.36,
-   "call": {
-    "side": "up",
-    "chance": 0.6451,
-    "at": 1794802924
-   },
-   "abstain": null,
-   "grade": {
-    "result": "up",
-    "correct": true,
-    "brier": 0.126
-   }
   }
  ],
- "abstains_total": 150,
+ "abstains_total": 149,
  "counters": {
-  "graded": 424,
-  "wins": 350,
-  "win_rate": 82.5,
-  "streak_type": "L",
+  "graded": 425,
+  "wins": 351,
+  "win_rate": 82.6,
+  "streak_type": "W",
   "streak_n": 1,
   "best_win_streak": 21,
-  "last12": "WLWWWLWWWWWL"
+  "last12": "LWWWLWWWWWLW"
  },
  "live_window": {
-  "window": "2026-11-16T05:25:00Z",
-  "open_px": 64794.95,
-  "call": {
-   "side": "down",
-   "chance": 0.6011,
-   "at": 1794806824
-  },
+  "window": "2026-11-16T05:35:00Z",
+  "open_px": 64728.115,
+  "call": null,
   "abstain": null,
   "grade": null
  },
