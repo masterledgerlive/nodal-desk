@@ -1,49 +1,25 @@
 {
- "built_at": 1794807697,
- "window": "2026-11-16T05:40:00Z",
- "window_ends_in_s": 203,
+ "built_at": 1794808064,
+ "window": "2026-11-16T05:45:00Z",
+ "window_ends_in_s": 136,
  "daemon": {
   "state": "LIVE",
-  "updated": "2026-11-16T05:41:32Z",
-  "chain": 9529,
+  "updated": "2026-11-16T05:47:01Z",
+  "chain": 9543,
   "stall_components": [],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FLAT",
-  "plain": "going up and down in place \u2014 resting",
-  "drift": -1.7,
-  "range": 9.1,
-  "flips": 1,
-  "open": 64651.585,
-  "last": 64649.845
+  "state": "FALLING",
+  "plain": "going down and staying down",
+  "drift": -104.0,
+  "range": 104.0,
+  "flips": 0,
+  "open": 64670.28,
+  "last": 64566.265
  },
  "chart": {
   "points": [
-   [
-    1794806126,
-    64637.435
-   ],
-   [
-    1794806156,
-    64621.0
-   ],
-   [
-    1794806186,
-    64608.5
-   ],
-   [
-    1794806216,
-    64622.42
-   ],
-   [
-    1794806246,
-    64636.875
-   ],
-   [
-    1794806399,
-    64828.6
-   ],
    [
     1794806429,
     64806.68
@@ -131,33 +107,61 @@
    [
     1794807697,
     64649.845
+   ],
+   [
+    1794807727,
+    64605.4
+   ],
+   [
+    1794807757,
+    64594.2
+   ],
+   [
+    1794807897,
+    64658.69
+   ],
+   [
+    1794807928,
+    64670.28
+   ],
+   [
+    1794807958,
+    64667.305
+   ],
+   [
+    1794808021,
+    64625.68
+   ],
+   [
+    1794808064,
+    64566.265
    ]
   ],
   "bounds": [
-   1794806100,
    1794806400,
    1794806700,
    1794807000,
    1794807300,
    1794807600,
-   1794807900
+   1794807900,
+   1794808200
   ],
-  "open": 64651.585,
-  "wstart": 1794806100,
-  "wend": 1794807900
+  "open": 64670.28,
+  "wstart": 1794806400,
+  "wend": 1794808200
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 1,
+   "streak": 0,
    "best": 21,
    "bank": 1140.41,
    "savings": 0.0,
-   "graded": 427,
+   "graded": 428,
    "wins": 352,
-   "call": null,
-   "chance": null,
+   "call": "down",
+   "chance": 0.7601,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -167,34 +171,44 @@
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 2,
+   "streak": 0,
    "best": 34,
-   "bank": 1875.67,
+   "bank": 1687.26,
    "savings": 935.91,
-   "graded": 349,
+   "graded": 350,
    "wins": 291,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "down",
+   "chance": 0.7059,
+   "ask": 0.55,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.39,
+    "lose": -0.52,
+    "shares": 0.909
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.28,
+    "lose": -0.52,
+    "shares": 0.909
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
    "mode": "TEST",
-   "streak": 2,
+   "streak": 3,
    "best": 5,
    "bank": 3.79,
-   "savings": 601.43,
-   "graded": 171,
-   "wins": 83,
-   "call": null,
+   "savings": 616.71,
+   "graded": 172,
+   "wins": 84,
+   "call": "down",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -202,27 +216,33 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": false
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.79 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
   },
   {
-   "text": "The price barely moved in the last two minutes \u2014 the wave is resting.",
+   "text": "All the models that have called are pointing the same way: DOWN.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price dropped $101 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "src": "EARLY's in-window samples"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (-2 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 3 minutes 23 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-104 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN; RIPTIDE says BUY DOWN. 2 minutes 16 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-16T05:20:00Z",
-   "result": "down",
-   "plain": null,
-   "early": true
-  },
   {
    "window": "2026-11-16T05:25:00Z",
    "result": "down",
@@ -240,6 +260,12 @@
    "result": "down",
    "plain": true,
    "early": null
+  },
+  {
+   "window": "2026-11-16T05:40:00Z",
+   "result": "up",
+   "plain": false,
+   "early": false
   }
  ],
  "ruler": "How the wave word is picked (the desk's ruler, from this window's own price trail): FLAT = moved less than $40 total and ended within $15 of where it started. ROLLERCOASTER = changed direction 3+ times without getting anywhere. CLIMBING / FALLING = ended $15+ above / below the start without whipping back. Book tells come from the order-book ladder RIPTIDE polls \u2014 the desk has no trade-size tape, so this board never claims 'whales'; it says what the book shows."
