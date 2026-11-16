@@ -1,22 +1,22 @@
 {
- "built_at": 1794809430,
+ "built_at": 1794809560,
  "window": "2026-11-16T06:10:00Z",
- "window_ends_in_s": 270,
+ "window_ends_in_s": 140,
  "daemon": {
   "state": "LIVE",
-  "updated": "2026-11-16T06:09:58Z",
-  "chain": 9609,
+  "updated": "2026-11-16T06:12:39Z",
+  "chain": 9624,
   "stall_components": [],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FLAT",
-  "plain": "going up and down in place \u2014 resting",
-  "drift": 0.0,
-  "range": 0.0,
-  "flips": 0,
+  "state": "ROLLERCOASTER",
+  "plain": "whipping up and down \u2014 nobody is winning the tug of war",
+  "drift": -14.6,
+  "range": 53.4,
+  "flips": 2,
   "open": 64327.295,
-  "last": 64327.295
+  "last": 64312.65
  },
  "chart": {
   "points": [
@@ -111,6 +111,22 @@
    [
     1794809430,
     64327.295
+   ],
+   [
+    1794809460,
+    64333.415
+   ],
+   [
+    1794809490,
+    64317.3
+   ],
+   [
+    1794809520,
+    64280.03
+   ],
+   [
+    1794809560,
+    64312.65
    ]
   ],
   "bounds": [
@@ -130,40 +146,55 @@
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 3,
+   "streak": 4,
    "best": 21,
    "bank": 1140.41,
    "savings": 0.0,
-   "graded": 431,
-   "wins": 355,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "graded": 432,
+   "wins": 356,
+   "call": "down",
+   "chance": 0.7449,
+   "ask": 0.41000000000000003,
+   "follow": "FIRE",
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": null
+   "payout": {
+    "stake": 0.5,
+    "win": 0.7,
+    "lose": -0.52,
+    "shares": 1.22
+   }
   },
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 2,
+   "streak": 3,
    "best": 34,
-   "bank": 1748.6,
+   "bank": 1730.7,
    "savings": 1057.47,
-   "graded": 354,
-   "wins": 294,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "graded": 355,
+   "wins": 295,
+   "call": "down",
+   "chance": 0.7326,
+   "ask": 0.41000000000000003,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.7,
+    "lose": -0.52,
+    "shares": 1.22
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.54,
+    "lose": -0.52,
+    "shares": 1.22
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -172,33 +203,35 @@
    "best": 5,
    "bank": 1.51,
    "savings": 923.55,
-   "graded": 175,
+   "graded": 176,
    "wins": 86,
-   "call": null,
+   "call": "down",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
    "sell_mark": null,
    "payout": null,
    "in_play": false,
-   "plays": 0,
-   "seeded": false
+   "plays": 1,
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 4.19 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
+  },
+  {
+   "text": "All the models that have called are pointing the same way: DOWN.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (+0 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 4 minutes 30 seconds left in the window.",
+ "happening": "Bitcoin is ROLLERCOASTER \u2014 whipping up and down \u2014 nobody is winning the tug of war (-15 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN; RIPTIDE says BUY DOWN. 2 minutes 20 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-16T05:45:00Z",
-   "result": "down",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-16T05:50:00Z",
    "result": "down",
@@ -214,6 +247,12 @@
   {
    "window": "2026-11-16T06:00:00Z",
    "result": "up",
+   "plain": true,
+   "early": true
+  },
+  {
+   "window": "2026-11-16T06:05:00Z",
+   "result": "down",
    "plain": true,
    "early": true
   }
