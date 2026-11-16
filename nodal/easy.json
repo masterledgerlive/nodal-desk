@@ -1,11 +1,11 @@
 {
- "built_at": 1794845621,
- "window": "2026-11-16T16:10:00Z",
- "window_ends_in_s": 79,
+ "built_at": 1794845904,
+ "window": "2026-11-16T16:15:00Z",
+ "window_ends_in_s": 96,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-16T16:13:30Z",
-  "chain": 11104,
+  "updated": "2026-11-16T16:18:41Z",
+  "chain": 11117,
   "stall_components": [
    "btc5_early",
    "fast_tick"
@@ -13,44 +13,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FALLING",
-  "plain": "going down and staying down",
-  "drift": -131.0,
-  "range": 144.2,
-  "flips": 4,
-  "open": 64344.21,
-  "last": 64213.25
+  "state": "CLIMBING",
+  "plain": "going up and staying up",
+  "drift": 144.0,
+  "range": 144.0,
+  "flips": 2,
+  "open": 64362.600000000006,
+  "last": 64506.56
  },
  "chart": {
   "points": [
-   [
-    1794843900,
-    64377.1
-   ],
-   [
-    1794843930,
-    64501.625
-   ],
-   [
-    1794843960,
-    64512.465
-   ],
-   [
-    1794843996,
-    64551.71
-   ],
-   [
-    1794844026,
-    64568.11
-   ],
-   [
-    1794844056,
-    64567.3
-   ],
-   [
-    1794844086,
-    64523.685
-   ],
    [
     1794844256,
     64582.615000000005
@@ -186,20 +158,40 @@
    [
     1794845621,
     64213.25
+   ],
+   [
+    1794845749,
+    64362.600000000006
+   ],
+   [
+    1794845779,
+    64386.04
+   ],
+   [
+    1794845839,
+    64478.8
+   ],
+   [
+    1794845874,
+    64461.56
+   ],
+   [
+    1794845904,
+    64506.56
    ]
   ],
   "bounds": [
-   1794843900,
    1794844200,
    1794844500,
    1794844800,
    1794845100,
    1794845400,
-   1794845700
+   1794845700,
+   1794846000
   ],
-  "open": 64344.21,
-  "wstart": 1794843900,
-  "wend": 1794845700
+  "open": 64362.600000000006,
+  "wstart": 1794844200,
+  "wend": 1794846000
  },
  "models": [
   {
@@ -207,21 +199,21 @@
    "mode": "REAL",
    "streak": 0,
    "best": 22,
-   "bank": 5053.02,
+   "bank": 4532.62,
    "savings": 0.0,
-   "graded": 519,
+   "graded": 520,
    "wins": 429,
-   "call": "down",
-   "chance": 0.8088,
-   "ask": 0.5700000000000001,
+   "call": "up",
+   "chance": 0.8425,
+   "ask": 0.65,
    "follow": "FIRE",
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
    "payout": {
     "stake": 0.5,
-    "win": 0.36,
+    "win": 0.26,
     "lose": -0.51,
-    "shares": 0.877
+    "shares": 0.769
    }
   },
   {
@@ -248,13 +240,13 @@
   {
    "name": "RIPTIDE",
    "mode": "TEST",
-   "streak": 1,
+   "streak": 0,
    "best": 10,
-   "bank": 3.84,
+   "bank": 2.79,
    "savings": 1547.61,
-   "graded": 239,
+   "graded": 240,
    "wins": 123,
-   "call": "down",
+   "call": null,
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -262,35 +254,21 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": true
+   "seeded": false
   }
  ],
  "tells": [
   {
-   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.98 out of 1.00. One side is pushing much harder than the other.",
-   "src": "order book (RIPTIDE poll, this window)"
+   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
+   "src": "order book (no poll yet)"
   },
   {
-   "text": "All the models that have called are pointing the same way: DOWN.",
-   "src": "the sealed calls"
-  },
-  {
-   "text": "The price dropped $60 in the last two minutes \u2014 a real push, not a drift.",
+   "text": "The price jumped $28 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
-  },
-  {
-   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
-   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-131 dollars this window). PLAIN says BUY DOWN; RIPTIDE says BUY DOWN. 1 minutes 19 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+144 dollars this window). PLAIN says BUY UP. 1 minutes 36 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-16T15:50:00Z",
-   "result": "down",
-   "plain": true,
-   "early": null
-  },
   {
    "window": "2026-11-16T15:55:00Z",
    "result": "down",
@@ -305,6 +283,12 @@
   },
   {
    "window": "2026-11-16T16:05:00Z",
+   "result": "up",
+   "plain": false,
+   "early": null
+  },
+  {
+   "window": "2026-11-16T16:10:00Z",
    "result": "up",
    "plain": false,
    "early": null
