@@ -64,7 +64,9 @@ async function sha256hex(text){
 const sleep = ms => new Promise(r=>setTimeout(r, ms));
 
 async function fetchBlockBytes(url){
-  // chunked range reader (64KB) — uniform path, safe for big blocks
+  // chunked range reader (64KB) — safe for big blocks on range-honoring
+  // aggregators; some aggregators answer 416 to Range (measured:
+  // nodes.guru) — for those, fall back to one plain GET.
   const CH = 65536;
   let buf = new Uint8Array(0), total = null, start = 0, guard = 0;
   while((total === null || start < total) && guard++ < 64){
@@ -73,6 +75,11 @@ async function fetchBlockBytes(url){
     for(let t = 0; t < 3 && !ok; t++){
       try{
         const r = await fetch(url, {headers:{'Range': `bytes=${start}-${end}`}, cache:'no-store'});
+        if(r.status === 416){
+          const rp = await fetch(url, {cache:'no-store'});
+          if(!rp.ok) throw new Error('HTTP ' + rp.status);
+          return await rp.text();
+        }
         if(!r.ok && r.status !== 206 && r.status !== 200) throw new Error('HTTP ' + r.status);
         const cr = r.headers.get('Content-Range');
         if(cr && cr.includes('/')) total = parseInt(cr.split('/').pop(), 10);
