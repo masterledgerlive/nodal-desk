@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE GAME OF GAMES — 20-Minute Live Stand</title>
+<style>
+  :root{--bg:#0b0e14;--panel:#131826;--panel2:#0f1320;--line:#232b42;--txt:#e8ecf5;--dim:#8b96b3;--acc:#ffd75e;--grn:#3ddc84;--red:#ff5d73;--blu:#57b6ff;--pur:#c792ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:18px 14px 60px}
+  .wrap{max-width:1060px;margin:0 auto}
+  h1{font-size:30px;letter-spacing:2px;margin:4px 0 2px;text-align:center;color:var(--acc)}
+  .sub{text-align:center;color:var(--dim);font-size:13px;margin-bottom:14px}
+  .clock{text-align:center;font-size:52px;font-weight:700;letter-spacing:3px;margin:8px 0}
+  .clock.hot{color:var(--red)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+  .panel h2{margin:0 0 10px;font-size:15px;letter-spacing:1.5px;color:var(--acc)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+  th{color:var(--dim);font-weight:600;font-size:12px;letter-spacing:1px}
+  td.num,th.num{text-align:right}
+  .big{font-size:17px;font-weight:700}
+  .pts{color:var(--acc);font-weight:700;font-size:16px}
+  .win{color:var(--grn)} .lose{color:var(--red)} .pass{color:var(--blu)} .dim{color:var(--dim)}
+  .tag{display:inline-block;padding:1px 7px;border-radius:8px;font-size:11px;border:1px solid var(--line);margin-left:6px;vertical-align:middle}
+  .tag.copy{color:var(--pur);border-color:var(--pur)}
+  .tag.live{color:var(--grn);border-color:var(--grn)}
+  .tag.nosig{color:var(--dim)}
+  .tag.bust{color:var(--red);border-color:var(--red)}
+  #goBtn{display:block;margin:18px auto;font-family:inherit;font-size:30px;font-weight:800;letter-spacing:3px;padding:18px 64px;border-radius:14px;border:2px solid var(--acc);background:#1d2742;color:var(--acc);cursor:pointer}
+  #goBtn:hover{background:var(--acc);color:#141414}
+  .rules{font-size:13px;line-height:1.65;color:var(--txt)}
+  .rules b{color:var(--acc)}
+  .feedages{font-size:11.5px;color:var(--dim);text-align:center;line-height:1.7}
+  .feedages .bad{color:var(--red)}
+  .podium{display:none;text-align:center;padding:10px 0 2px}
+  .podium .crown{font-size:21px;line-height:2.0}
+  .podium .c1{color:var(--acc);font-size:26px;font-weight:800}
+  .podium .c2{color:#cfd8ea;font-weight:700}
+  .podium .c3{color:#e0a370;font-weight:700}
+  .livestrip{font-size:13px;line-height:1.8}
+  .wintab{font-size:12.5px}
+  .wintab td{white-space:normal}
+  .resetRow{text-align:center;margin-top:16px}
+  .resetRow button{font-family:inherit;background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:12px}
+  .note{font-size:12px;color:var(--dim);line-height:1.6}
+  @media(max-width:720px){.clock{font-size:38px} h1{font-size:22px} th,td{padding:5px 4px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🏆 THE GAME OF GAMES</h1>
+  <div class="sub">20-MINUTE LIVE STAND · paper simulation only — no real orders, no real money · every call from the sealed record</div>
+
+  <div class="clock" id="clock">20:00</div>
+  <div class="sub" id="clockNote">the stand has not started — the first GO press starts the clock</div>
+
+  <button id="goBtn">▶ GO</button>
+
+  <div class="panel podium" id="podium"></div>
+
+  <div class="panel">
+    <h2>STANDINGS</h2>
+    <table>
+      <thead><tr>
+        <th>#</th><th>MODEL</th><th class="num">POINTS</th><th class="num">BANK</th>
+        <th class="num">W</th><th class="num">L</th><th class="num">PASS</th>
+        <th class="num">STREAK</th><th class="num">COPIES</th><th>STATUS</th>
+      </tr></thead>
+      <tbody id="standBody"></tbody>
+    </table>
+    <div class="note" style="margin-top:8px">Bank: every model starts at <b>$3.00</b> paper. PLAIN / EARLY stake = their own sizing law scaled to the stand bank
+    (10% of bank, rounded down to 10¢, floor 30¢), P&amp;L from their sealed priced calls, scaled linearly (the desk fee law is linear in shares).
+    RIPTIDE rides its own micro-plays — its sealed law P&amp;L scaled ×3/5 from its $5 walk. FINAL CALL plays its own flat $0.50, graded on money as always.
+    A played call with no sealed price moves points only — marked UNPRICED, never priced by invention.</div>
+  </div>
+
+  <div class="panel" id="livePanel">
+    <h2>IN PLAY — calls sealed in the current window (not yet scored)</h2>
+    <div class="livestrip" id="liveStrip"><span class="dim">waiting for the feeds…</span></div>
+  </div>
+
+  <div class="panel">
+    <h2>THE GAMES — window by window</h2>
+    <table class="wintab">
+      <thead><tr><th>WINDOW (UTC)</th><th>CALLS — side · sealed-in · result</th><th>OUTCOME</th></tr></thead>
+      <tbody id="winBody"><tr><td colspan="3" class="dim">no windows scored yet — windows that open at or after GO are the games</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>THE RULES (David's, as built)</h2>
+    <div class="rules">
+      · Each model starts the stand with a <b>$3.00 paper bank</b>.<br>
+      · Per 5-minute window (a game): <b>PLAYS and WINS = +1 pt</b> · <b>PLAYS and LOSES = −1 pt</b> · <b>PASSES = +0.5 pt</b>.<br>
+      · Models choose their games — no penalty beyond the scoring above.<br>
+      · Calls count only if <b>sealed before the window closes</b>; each call shows its <b>seconds-in</b> as a timing stat.<br>
+      · A call on the <b>same side as a rival's earlier-sealed call</b> in the same window wears a <span class="tag copy">COPY</span> flag — allowed, no score change in v1.<br>
+      · Only windows that <b>open at or after the GO press</b> are scored. At 20:00 the standings <b>freeze</b> and the <b>top 3 are crowned</b> — windows still ungraded at the freeze do not move the crown.<br>
+      · An entrant with <b>no live sealed feed</b> shows NO SIGNAL — it scores nothing, not even passes, until it actually seals. Nothing on this page is invented.
+    </div>
+  </div>
+
+  <div class="feedages" id="feedAges">feeds: —</div>
+  <div class="resetRow"><button id="resetBtn">reset stand (clears GO + the freeze)</button></div>
+</div>
+
+<script>
+"use strict";
+const ENTRANTS = [
+  {key:'PLAIN',   name:'PLAIN',      feed:'gamelog'},
+  {key:'EARLY',   name:'EARLY',      feed:'gamelog'},
+  {key:'RIPTIDE', name:'RIPTIDE',    feed:'gamelog'},
+  {key:'FINAL',   name:'FINAL CALL', feed:'finaldata'},
+  {key:'SCOUT',   name:'SCOUT',      feed:null},
+  {key:'LOCK',    name:'LOCK',       feed:null},
+  {key:'WAVE',    name:'WAVE',       feed:null},
+  {key:'STUDY',   name:'STUDY',      feed:null},
+  {key:'MICRO',   name:'MICRO',      feed:null},
+  {key:'COMP',    name:'COMP',       feed:null},
+];
+const STAND_MS = 20*60*1000;
+const LSKEY = 'gog_stand_v1';
+let stand = null;
+try { stand = JSON.parse(localStorage.getItem(LSKEY) || 'null'); } catch(e) { stand = null; }
+let feeds = {gamelog:null, finaldata:null, callsdata:null, earlydata:null};
+let feedBuilt = {};
+
+const $ = id => document.getElementById(id);
+const money = v => (v<0?'−$':'+$') + Math.abs(v).toFixed(2);
+const bankFmt = v => '$' + v.toFixed(2);
+function parseTs(s){ if(!s) return null; const t = Date.parse(s); return isNaN(t)?null:t; }
+function winEpoch(w){ return Date.parse(w); }
+
+async function fetchFeed(name){
+  try{
+    const r = await fetch(name + '.json?t=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    feeds[name] = d;
+    feedBuilt[name] = d.built_at || d.updated || null;
+  }catch(e){ /* keep last good copy; age badge shows staleness */ }
+}
+async function poll(){
+  await Promise.all(['gamelog','finaldata','callsdata','earlydata'].map(fetchFeed));
+  render();
+}
+
+/* ---------- build per-window records from the feeds ---------- */
+function secInFromSteps(entry, wStart){
+  const steps = entry.steps || [];
+  for(const s of steps){
+    if(s.kind==='CALL' || s.kind==='SEED'){
+      const m = /sealed (\d+)s in/.exec(s.text||'');
+      if(m) return parseInt(m[1],10);
+      const t = parseTs(s.ts);
+      if(t) return Math.max(0, Math.round((t - wStart)/1000));
+    }
+  }
+  return null;
+}
+function riptideLawPnl(entry){
+  let sum = 0, found = false;
+  for(const s of (entry.steps||[])){
+    const re = /play P&L\s*([+-])\$([\d.]+)/g; let m;
+    while((m = re.exec(s.text||''))){ sum += (m[1]==='-'?-1:1)*parseFloat(m[2]); found = true; }
+  }
+  return found ? sum : null;
+}
+function collectWindows(){
+  // returns Map windowISO -> {start, calls: {KEY: {played, side, secIn, graded, win, moneyPnlRaw, stakeRaw, unpriced}}, passes: Set(KEY)}
+  const W = new Map();
+  const get = w => { if(!W.has(w)) W.set(w, {start: winEpoch(w), calls:{}, passes:new Set(), live:{}}); return W.get(w); };
+  const gl = feeds.gamelog;
+  if(gl){
+    for(const e of (gl.log||[])){
+      if(!ENTRANTS.some(x=>x.key===e.engine)) continue;
+      const rec = get(e.window);
+      if(e.noplay){ if(e.status==='SETTLED') rec.passes.add(e.engine); continue; }
+      rec.calls[e.engine] = {played:true, side:e.side, secIn: secInFromSteps(e, rec.start),
+        graded: e.status==='SETTLED' && e.win!==null && e.win!==undefined, win: !!e.win,
+        riptideLaw: e.engine==='RIPTIDE' ? riptideLawPnl(e) : undefined};
+    }
+    for(const e of (gl.live||[])){
+      if(!ENTRANTS.some(x=>x.key===e.engine)) continue;
+      const rec = get(e.window);
+      rec.live[e.engine] = {side:e.side, secIn: secInFromSteps(e, rec.start), chance:e.chance};
+    }
+  }
+  const fd = feeds.finaldata;
+  if(fd){
+    for(const c of (fd.calls||[])){
+      const rec = get(c.window);
+      if((c.verdict||'').indexOf('FOR SURE')===0){
+        const g = c.grade || null;
+        rec.calls['FINAL'] = {played:true, side:c.side, secIn: c.decided_elapsed_s,
+          graded: !!(g && g.money_win!==null && g.money_win!==undefined),
+          win: !!(g && g.money_win),
+          finalPnl: g ? ((g.pnl_exit!==null && g.pnl_exit!==undefined) ? g.pnl_exit : g.pnl_settle) : null};
+      } else if(c.verdict==='NO CALL'){
+        rec.passes.add('FINAL');
+      }
+    }
+  }
+  // money for PLAIN / EARLY from their priced-call feeds
+  const cd = feeds.callsdata;
+  if(cd) for(const r of (cd.recent_calls||[])){
+    const rec = W.get(r.window); if(!rec || !rec.calls['PLAIN']) continue;
+    if(r.money) { rec.calls['PLAIN'].moneyPnlRaw = r.money.pnl; rec.calls['PLAIN'].stakeRaw = r.money.stake; }
+    if(r.at_elapsed_s!==null && r.at_elapsed_s!==undefined) rec.calls['PLAIN'].secIn = r.at_elapsed_s;
+  }
+  const ed = feeds.earlydata;
+  if(ed) for(const r of (ed.recent_plays||[])){
+    const rec = W.get(r.window); if(!rec || !rec.calls['EARLY']) continue;
+    if(r.money) { rec.calls['EARLY'].moneyPnlRaw = r.money.pnl; rec.calls['EARLY'].stakeRaw = r.money.stake; }
+    if(r.at_elapsed_s!==null && r.at_elapsed_s!==undefined) rec.calls['EARLY'].secIn = r.at_elapsed_s;
+  }
+  return W;
+}
+
+function stakeFor(key, bank){
+  if(key==='FINAL') return 0.50;
+  if(bank<=0) return 0;
+  return Math.min(bank, Math.max(0.30, Math.floor(bank*0.10*10)/10));
+}
+function computeStandings(){
+  const W = collectWindows();
+  const goMs = stand ? stand.go : null;
+  const rows = {};
+  for(const e of ENTRANTS) rows[e.key] = {key:e.key, name:e.name, pts:0, bank:3.00, w:0, l:0, p:0, copies:0, streak:0, streakKind:'', status: e.feed? '—' : 'NO SIGNAL', unpriced:0, playedAny:false};
+  const games = [];
+  if(goMs){
+    const wins = [...W.values()].filter(r => r.start >= goMs).sort((a,b)=>a.start-b.start);
+    for(const rec of wins){
+      const wEnd = rec.start + 300000;
+      const closed = (wEnd + 300000) <= Date.now();
+      // COPY flags: played calls ordered by seconds-in
+      const played = Object.entries(rec.calls).filter(([,c])=>c.played);
+      played.sort((a,b)=> (a[1].secIn??1e9) - (b[1].secIn??1e9));
+      const seenSides = new Set(); const copySet = new Set();
+      for(const [k,c] of played){ if(seenSides.has(c.side)) copySet.add(k); else seenSides.add(c.side); }
+      const gameRow = {start: rec.start, cells: []};
+      for(const e of ENTRANTS){
+        const R = rows[e.key]; if(!e.feed) continue;
+        const c = rec.calls[e.key];
+        if(c && c.played && c.graded){
+          const st = stakeFor(e.key, R.bank);
+          let pnl = 0, unpriced = false;
+          if(e.key==='RIPTIDE'){ if(c.riptideLaw===null || c.riptideLaw===undefined) unpriced = true; else pnl = c.riptideLaw * 0.6; }
+          else if(e.key==='FINAL'){ if(c.finalPnl===null || c.finalPnl===undefined) unpriced = true; else pnl = c.finalPnl; }
+          else { if(c.moneyPnlRaw===undefined || !c.stakeRaw) unpriced = true; else pnl = c.moneyPnlRaw * (st / c.stakeRaw); }
+          if(R.bank<=0 && e.key!=='FINAL'){ pnl = 0; }
+          R.bank += pnl; R.playedAny = true;
+          if(c.win){ R.pts += 1; R.w++; R.streak = (R.streakKind==='W') ? R.streak+1 : 1; R.streakKind='W'; }
+          else { R.pts -= 1; R.l++; R.streak = (R.streakKind==='L') ? R.streak+1 : 1; R.streakKind='L'; }
+          if(copySet.has(e.key)) R.copies++;
+          if(unpriced) R.unpriced++;
+          gameRow.cells.push({key:e.key, side:c.side, secIn:c.secIn, win:c.win, pts: c.win?'+1':'−1', pnl, unpriced, copy: copySet.has(e.key), stake: st});
+        } else if(c && c.played && !c.graded){
+          gameRow.cells.push({key:e.key, side:c.side, secIn:c.secIn, pending:true, copy: copySet.has(e.key)});
+        } else if(rec.passes.has(e.key) || (closed && !c)){
+          // an explicit sealed pass (RIPTIDE sat out / FINAL NO CALL), or the window
+          // is fully closed and this model sealed no call — the desk's own abstain
+          if(rec.passes.has(e.key) || closed){
+            R.pts += 0.5; R.p++;
+            gameRow.cells.push({key:e.key, pass:true});
+          }
+        }
+      }
+      games.push(gameRow);
+    }
+  }
+  return {rows, games, W};
+}
+
+function liveStrip(W){
+  if(!stand) return '<span class="dim">the stand has not started</span>';
+  const now = Date.now();
+  const cur = [...W.values()].filter(r => r.start >= stand.go && r.start <= now && now < r.start + 300000).sort((a,b)=>b.start-a.start)[0];
+  if(!cur) return '<span class="dim">between windows — the next game opens on the next 5-minute boundary</span>';
+  const parts = [];
+  for(const e of ENTRANTS){
+    const lv = cur.live[e.key]; const cl = cur.calls[e.key];
+    if(lv) parts.push(`<b>${e.name}</b> ${lv.side?lv.side.toUpperCase():''} sealed ${lv.secIn!==null&&lv.secIn!==undefined?lv.secIn+'s in':''} <span class="tag live">LIVE</span>`);
+    else if(cl && cl.played) parts.push(`<b>${e.name}</b> ${cl.side?cl.side.toUpperCase():''} sealed ${cl.secIn!==null&&cl.secIn!==undefined?cl.secIn+'s in':''}`);
+  }
+  const wtxt = new Date(cur.start).toISOString().substr(11,5) + 'Z window';
+  return parts.length ? (wtxt + ' — ' + parts.join(' · ')) : (wtxt + ' — no calls sealed yet');
+}
+
+function render(){
+  const frozen = stand && stand.frozen;
+  const data = frozen ? stand.snap : computeStandings();
+  const rows = data.rows, games = data.games;
+  // standings table
+  const order = ENTRANTS.map(e=>rows[e.key]).sort((a,b)=> (b.pts-a.pts) || (b.bank-a.bank) || (b.w-a.w));
+  $('standBody').innerHTML = order.map((R,i)=>{
+    const st = !ENTRANTS.find(e=>e.key===R.key).feed ? '<span class="tag nosig">NO SIGNAL</span>'
+      : (R.bank<=0 ? '<span class="tag bust">BUST</span>' : (R.playedAny ? 'in the stand' : 'entered'));
+    const streak = R.streakKind ? (R.streakKind + R.streak) : '—';
+    return `<tr><td>${i+1}</td><td class="big">${R.name}</td><td class="num pts">${R.pts.toFixed(1)}</td>`+
+      `<td class="num">${bankFmt(R.bank)}</td><td class="num win">${R.w}</td><td class="num lose">${R.l}</td>`+
+      `<td class="num pass">${R.p}</td><td class="num">${streak}</td><td class="num">${R.copies}</td><td>${st}</td></tr>`;
+  }).join('');
+  // games table
+  if(games.length){
+    $('winBody').innerHTML = games.slice().reverse().map(g=>{
+      const t = new Date(g.start).toISOString().substr(11,5)+'Z';
+      const cells = g.cells.map(c=>{
+        if(c.pass) return `<span class="dim">${c.key} pass +0.5</span>`;
+        if(c.pending) return `<span>${c.key} ${c.side?c.side.toUpperCase():''} · ${c.secIn!==null&&c.secIn!==undefined?c.secIn+'s in':'?'} · awaiting grade${c.copy?'<span class="tag copy">COPY</span>':''}</span>`;
+        return `<span class="${c.win?'win':'lose'}">${c.key} ${c.side?c.side.toUpperCase():''} · ${c.secIn!==null&&c.secIn!==undefined?c.secIn+'s in':'?'} · ${c.win?'WON':'LOST'} ${c.pts} · ${money(c.pnl)}${c.unpriced?' (UNPRICED — points only)':''}${c.copy?'<span class="tag copy">COPY</span>':''}</span>`;
+      }).join('<br>');
+      const anyPending = g.cells.some(c=>c.pending);
+      return `<tr><td>${t}</td><td>${cells||'<span class="dim">no calls</span>'}</td><td>${anyPending?'<span class="dim">in play</span>':'scored'}</td></tr>`;
+    }).join('');
+  }
+  $('liveStrip').innerHTML = frozen ? '<span class="dim">stand frozen — the live strip no longer scores</span>' : liveStrip(data.W || collectWindows());
+  // feed ages
+  const now = Date.now();
+  $('feedAges').innerHTML = 'feeds (sealed, live): ' + ['gamelog','finaldata','callsdata','earlydata'].map(n=>{
+    const b = feedBuilt[n]; if(!b) return n + ' <span class="bad">DOWN</span>';
+    const age = Math.max(0, Math.round((now - parseTs(b))/1000));
+    return `${n} ${age}s old` + (age>600?' <span class="bad">(stale)</span>':'');
+  }).join(' · ') + '<br>stand windows score from the sealed feeds as they land — the batched deploy cycle lands them about every 30 minutes, the game log also lands on calls.';
+  // podium on freeze
+  if(frozen){
+    const top = order.slice(0,3);
+    $('podium').style.display = 'block';
+    $('podium').innerHTML = '<h2>👑 THE CROWN — FINAL STANDINGS, FROZEN AT 20:00</h2>' +
+      `<div class="crown"><div class="c1">🥇 1st — ${top[0].name} · ${top[0].pts.toFixed(1)} pts · ${bankFmt(top[0].bank)}</div>` +
+      (top[1]?`<div class="c2">🥈 2nd — ${top[1].name} · ${top[1].pts.toFixed(1)} pts · ${bankFmt(top[1].bank)}</div>`:'') +
+      (top[2]?`<div class="c3">🥉 3rd — ${top[2].name} · ${top[2].pts.toFixed(1)} pts · ${bankFmt(top[2].bank)}</div>`:'') + '</div>' +
+      '<div class="note">windows that opened during the stand but graded after the freeze do not move the crown.</div>';
+  } else {
+    $('podium').style.display = 'none';
+  }
+  $('goBtn').style.display = stand ? 'none' : 'block';
+}
+
+function tick(){
+  if(!stand){ $('clock').textContent = '20:00'; $('clock').className='clock'; return; }
+  const left = stand.go + STAND_MS - Date.now();
+  if(left <= 0 && !stand.frozen){
+    stand.frozen = true;
+    stand.snap = computeStandings();
+    try{ localStorage.setItem(LSKEY, JSON.stringify(stand)); }catch(e){}
+    render();
+  }
+  const s = Math.max(0, Math.ceil(left/1000));
+  $('clock').textContent = String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+  $('clock').className = 'clock' + (s<=180 && !stand.frozen ? ' hot' : '');
+  $('clockNote').textContent = stand.frozen ? 'STAND FROZEN — final standings above' :
+    ('stand running — GO was pressed at ' + new Date(stand.go).toISOString().substr(11,8) + 'Z · only windows opening at or after GO score');
+}
+$('goBtn').addEventListener('click', ()=>{
+  stand = {go: Date.now(), frozen:false, snap:null};
+  try{ localStorage.setItem(LSKEY, JSON.stringify(stand)); }catch(e){}
+  tick(); render();
+});
+$('resetBtn').addEventListener('click', ()=>{
+  stand = null;
+  try{ localStorage.removeItem(LSKEY); }catch(e){}
+  $('podium').style.display='none'; tick(); render();
+});
+poll();
+setInterval(poll, 15000);
+setInterval(tick, 500);
+tick(); render();
+</script>
+</body>
+</html>
