@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INSTANT-BLOB PLANE — Reader Test</title>
+<style>
+  :root{--bg:#0b0e14;--panel:#131826;--line:#232b42;--txt:#e8ecf5;--dim:#8b96b3;--acc:#ffd75e;--grn:#3ddc84;--red:#ff5d73;--blu:#57b6ff;--pur:#c792ff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:18px 14px 60px}
+  .wrap{max-width:1060px;margin:0 auto}
+  h1{font-size:24px;letter-spacing:2px;margin:4px 0 2px;text-align:center;color:var(--acc)}
+  .sub{text-align:center;color:var(--dim);font-size:12.5px;margin-bottom:12px;line-height:1.6}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+  .panel h2{margin:0 0 8px;font-size:15px;letter-spacing:1.5px;color:var(--acc)}
+  .feed{border-bottom:1px solid var(--line);padding:10px 0}
+  .feed:last-child{border-bottom:none}
+  .fname{font-size:16px;font-weight:700}
+  .badge{display:inline-block;padding:1px 8px;border-radius:8px;font-size:11px;border:1px solid var(--line);margin-left:8px;vertical-align:middle}
+  .b-plane{color:var(--grn);border-color:var(--grn)} .b-plane2{color:var(--blu);border-color:var(--blu)}
+  .b-cache{color:var(--acc);border-color:var(--acc)} .b-floor{color:var(--pur);border-color:var(--pur)}
+  .b-down{color:var(--red);border-color:var(--red)}
+  .meta{font-size:12px;color:var(--dim);line-height:1.7;margin-top:3px}
+  .meta b{color:var(--txt)}
+  .sum{font-size:13px;line-height:1.65;margin-top:4px}
+  .ok{color:var(--grn)} .warn{color:var(--acc)} .bad{color:var(--red)}
+  .heads{font-size:13.5px;text-align:center;line-height:1.8}
+  pre{white-space:pre-wrap;word-break:break-all;font-size:11px;color:var(--dim);max-height:120px;overflow:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>⚡ INSTANT-BLOB PLANE — READER TEST</h1>
+  <div class="sub">TEST PAGE — the live stand page is untouched. This reader pulls each feed as a Walrus-testnet BLOCK,
+  verifies it by sha256 against the head manifest before rendering, and falls back down the ladder when a block hasn't landed:
+  primary aggregator → second aggregator → last verified block (local cache) → the GitHub-served JSON (today's floor).</div>
+
+  <div class="panel"><div class="heads" id="headsLine">head manifest: loading…</div></div>
+  <div class="panel"><h2>FEEDS OFF THE PLANE</h2><div id="feeds"><div class="meta">loading…</div></div></div>
+  <div class="panel"><h2>HOW THIS READER DECIDES</h2>
+    <div class="meta" style="font-size:12.5px">
+      · <b>Verify-then-trust:</b> a block renders only if sha256(payload) equals the block's own payload_sha256 AND the manifest's sha256 for that seq. Stale-but-verified beats fresh-but-unproven.<br>
+      · <b>Gap walk:</b> if the head seq jumps past the last seq this browser verified, the reader walks prev_blob_id links backward and reports the walk.<br>
+      · <b>Chunked reads:</b> blocks over 100KB are fetched in 64KB ranges (single-shot reads die on this network at ~157KB).<br>
+      · <b>Ages are always printed.</b> If the writer dies, this page keeps serving the last verified block with its age — designed degradation, not a silent freeze.
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const AGG1 = 'https://aggregator.walrus-testnet.walrus.space/v1/blobs/';
+const AGG2 = 'https://walrus-testnet-aggregator.nodes.guru/v1/blobs/';
+const FEEDS = ['finaldata','callsdata','earlydata','flowdata','gamelog'];
+const $ = id => document.getElementById(id);
+const enc = new TextEncoder();
+let heads = null, headsAt = 0;
+const view = {};   // feed -> rendered state
+
+async function sha256hex(text){
+  const buf = await crypto.subtle.digest('SHA-256', enc.encode(text));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+const sleep = ms => new Promise(r=>setTimeout(r, ms));
+
+async function fetchBlockBytes(url){
+  // chunked range reader (64KB) — uniform path, safe for big blocks
+  const CH = 65536;
+  let buf = new Uint8Array(0), total = null, start = 0, guard = 0;
+  while((total === null || start < total) && guard++ < 64){
+    const end = (total === null) ? start + CH - 1 : Math.min(start + CH - 1, total - 1);
+    let ok = false;
+    for(let t = 0; t < 3 && !ok; t++){
+      try{
+        const r = await fetch(url, {headers:{'Range': `bytes=${start}-${end}`}, cache:'no-store'});
+        if(!r.ok && r.status !== 206 && r.status !== 200) throw new Error('HTTP ' + r.status);
+        const cr = r.headers.get('Content-Range');
+        if(cr && cr.includes('/')) total = parseInt(cr.split('/').pop(), 10);
+        const part = new Uint8Array(await r.arrayBuffer());
+        if(r.status === 200 && start === 0){ buf = part; total = part.length; ok = true; break; }
+        const nb = new Uint8Array(buf.length + part.length);
+        nb.set(buf); nb.set(part, buf.length); buf = nb;
+        start += part.length; ok = part.length > 0;
+      }catch(e){ await sleep(600 * (t + 1)); }
+    }
+    if(!ok) throw new Error('chunk read failed at ' + start);
+  }
+  return new TextDecoder().decode(buf);
+}
+
+async function getVerifiedBlock(aggBase, head){
+  const text = await fetchBlockBytes(aggBase + head.blob_id);
+  const env = JSON.parse(text);
+  if(env.feed === undefined || env.payload_text === undefined) throw new Error('not a plane block');
+  const h = await sha256hex(env.payload_text);
+  if(h !== env.payload_sha256) throw new Error('payload hash != block payload_sha256');
+  if(h !== head.sha256) throw new Error('payload hash != manifest sha256');
+  if(env.seq !== head.seq) throw new Error('seq != manifest seq');
+  return env;
+}
+
+async function walkGap(feed, env, lastSeq){
+  // walk prev_blob_id links until we reach lastSeq+1 or run out of chain
+  let walked = 0, cur = env, intact = true;
+  while(cur.seq > lastSeq + 1 && walked < 12){
+    if(!cur.prev_blob_id){ intact = false; break; }
+    try{
+      const text = await fetchBlockBytes(AGG1 + cur.prev_blob_id);
+      const prev = JSON.parse(text);
+      const h = await sha256hex(prev.payload_text);
+      if(h !== prev.payload_sha256 || prev.seq !== cur.seq - 1){ intact = false; break; }
+      cur = prev; walked++;
+    }catch(e){ intact = false; break; }
+  }
+  return {walked, intact, reached: cur.seq === lastSeq + 1};
+}
+
+function summarize(feed, d){
+  try{
+    if(feed === 'finaldata'){
+      const r = d.record || {};
+      return `decided ${r.decided} · FOR SURE ${r.for_sure} · NO CALL ${r.no_call} · money ${r.money_wins}W/${r.money_losses}L · current window ${(d.current||{}).window || '—'}`;
+    }
+    if(feed === 'callsdata'){
+      const c = d.counters || {};
+      return `last graded window ${d.last_graded_window || '—'} · counters ${JSON.stringify(c).slice(0,120)}`;
+    }
+    if(feed === 'earlydata'){
+      const c = d.counters || {};
+      return `last graded window ${d.last_graded_window || '—'} · counters ${JSON.stringify(c).slice(0,120)}`;
+    }
+    if(feed === 'flowdata'){
+      const law = (d.ledgers||{}).law || {};
+      return `RIPTIDE law bank $${law.bank} · pnl $${law.pnl} · status ${d.status || '—'}`;
+    }
+    if(feed === 'gamelog'){
+      return `chain ${d.chain_records} records · live entries ${(d.live||[]).length} · daemon ${((d.daemon||{}).state) || '—'}`;
+    }
+  }catch(e){}
+  return 'keys: ' + Object.keys(d).slice(0, 8).join(', ');
+}
+
+function ageStr(ts){
+  const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+  return s < 90 ? s + 's' : Math.round(s / 60) + 'm' + (s % 60) + 's';
+}
+
+async function loadFeed(feed){
+  const head = heads && heads.feeds ? heads.feeds[feed] : null;
+  const V = view[feed] = view[feed] || {feed};
+  if(!head){ V.source = 'NO HEAD'; V.cls = 'b-down'; V.note = 'manifest carries no head for this feed yet'; render(); return; }
+  const lastSeq = parseInt(localStorage.getItem('plane_last_' + feed) || '0', 10);
+  let env = null, src = null, tries = 0;
+  for(const [base, label] of [[AGG1, 'PLANE ✓ primary'], [AGG2, 'PLANE ✓ second aggregator']]){
+    for(let t = 0; t < 2 && !env; t++){
+      tries++;
+      try{ env = await getVerifiedBlock(base, head); src = label; }
+      catch(e){ await sleep(700 * (t + 1)); }
+    }
+    if(env) break;
+  }
+  if(env){
+    let gapNote = '';
+    if(lastSeq && env.seq > lastSeq + 1){
+      const w = await walkGap(feed, env, lastSeq);
+      gapNote = `gap detected (seq ${lastSeq} → ${env.seq}) — walked back ${w.walked} block(s) via prev_blob_id, chain ${w.intact && w.reached ? 'INTACT, gap filled' : 'walk incomplete — showing head, gap noted'}`;
+    }
+    localStorage.setItem('plane_last_' + feed, String(env.seq));
+    localStorage.setItem('plane_cache_' + feed, JSON.stringify({payload_text: env.payload_text, seq: env.seq, built_at: env.built_at, blob_id: head.blob_id, fetched_at: Date.now()}));
+    V.source = src; V.cls = src.includes('primary') ? 'b-plane' : 'b-plane2';
+    V.seq = env.seq; V.builtAt = Date.parse(env.built_at); V.verified = true;
+    V.summary = summarize(feed, JSON.parse(env.payload_text));
+    V.note = gapNote; V.tries = tries;
+  } else {
+    const cacheRaw = localStorage.getItem('plane_cache_' + feed);
+    if(cacheRaw){
+      const c = JSON.parse(cacheRaw);
+      V.source = 'LAST VERIFIED (local cache)'; V.cls = 'b-cache';
+      V.seq = c.seq; V.builtAt = Date.parse(c.built_at); V.verified = true;
+      V.summary = summarize(feed, JSON.parse(c.payload_text));
+      V.note = 'plane unreachable this poll — serving the last block this browser verified, age labeled';
+    } else {
+      try{
+        const r = await fetch(feed + '.json?t=' + Date.now(), {cache:'no-store'});
+        const d = await r.json();
+        V.source = 'JSON FLOOR (status quo)'; V.cls = 'b-floor';
+        V.seq = null; V.builtAt = Date.parse(d.built_at || d.updated || Date.now()); V.verified = false;
+        V.summary = summarize(feed, d);
+        V.note = 'plane unreachable and no verified cache — the GitHub-served JSON, never worse than today';
+      }catch(e){
+        V.source = 'DOWN'; V.cls = 'b-down'; V.note = 'no plane block, no cache, no floor JSON';
+      }
+    }
+  }
+  render();
+}
+
+function render(){
+  if(heads){
+    const age = headsAt ? ageStr(headsAt) : '—';
+    const upd = heads.updated_at ? Date.parse(heads.updated_at) : null;
+    const updAge = upd ? ageStr(upd) : '—';
+    const stale = upd && (Date.now() - upd > 180000);
+    $('headsLine').innerHTML = `head manifest: updated <b>${updAge} ago</b> (fetched ${age} ago) · writer <b class="${stale ? 'bad' : 'ok'}">${stale ? 'STALE — heads not advancing' : 'LIVE'}</b> · degraded grain: <b>${heads.degraded ? 'YES (per-window)' : 'no'}</b>`;
+  }
+  $('feeds').innerHTML = FEEDS.map(f=>{
+    const V = view[f];
+    if(!V) return `<div class="feed"><span class="fname">${f}</span><div class="meta">loading…</div></div>`;
+    const age = V.builtAt ? ageStr(V.builtAt) : '—';
+    return `<div class="feed"><span class="fname">${f}</span><span class="badge ${V.cls}">${V.source || ''}</span>` +
+      `<div class="meta">seq <b>${V.seq === null || V.seq === undefined ? '—' : V.seq}</b> · built <b>${age} ago</b> · verify <b>${V.verified ? '<span class="ok">sha256 ✓</span>' : '<span class="warn">unverified floor</span>'}</b>${V.tries ? ` · aggregator attempts ${V.tries}` : ''}</div>` +
+      (V.summary ? `<div class="sum">${V.summary}</div>` : '') +
+      (V.note ? `<div class="meta"><span class="warn">${V.note}</span></div>` : '') + `</div>`;
+  }).join('');
+}
+
+async function cycle(){
+  try{
+    const r = await fetch('heads.json?t=' + Date.now(), {cache:'no-store'});
+    heads = await r.json(); headsAt = Date.now();
+  }catch(e){ /* keep last heads; ages will show it */ }
+  for(const f of FEEDS){ await loadFeed(f); }
+}
+cycle();
+setInterval(cycle, 20000);
+setInterval(render, 1000);
+</script>
+</body>
+</html>
