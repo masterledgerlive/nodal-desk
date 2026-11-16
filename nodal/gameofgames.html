@@ -69,10 +69,13 @@
       </tr></thead>
       <tbody id="standBody"></tbody>
     </table>
-    <div class="note" style="margin-top:8px">Bank: every model starts at <b>$3.00</b> paper. PLAIN / EARLY stake = their own sizing law scaled to the stand bank
-    (10% of bank, rounded down to 10¢, floor 30¢), P&amp;L from their sealed priced calls, scaled linearly (the desk fee law is linear in shares).
-    RIPTIDE rides its own micro-plays — its sealed law P&amp;L scaled ×3/5 from its $5 walk. FINAL CALL plays its own flat $0.50, graded on money as always.
-    A played call with no sealed price moves points only — marked UNPRICED, never priced by invention.</div>
+    <div class="note" style="margin-top:8px">Bank: every model starts at <b>$3.00</b> paper. Stake per play follows the desk's sizing law against the model's
+    <b>current</b> bank — 10% of bank, rounded down to 10¢, floor 30¢ — so a limit grows only as the bank grows from banked profit. Never granted, never topped up, <b>no borrows</b> in the stand.
+    PLAIN / EARLY P&amp;L comes from their sealed priced calls, scaled linearly to the stand stake (the desk fee law is linear in shares).
+    FINAL CALL's feed grades at its flat $0.50; in the stand it plays the same 10% law, its P&amp;L scaled linearly from that basis, graded on money as always.
+    RIPTIDE rides its own micro-plays — its sealed law P&amp;L scaled ×3/5 from its $5 walk.
+    A played call with no sealed price moves points only — marked UNPRICED, never priced by invention.
+    A bank that reaches <b>$0.00</b> is <b>ELIMINATED</b> — out of the race from the next window, no further points.</div>
   </div>
 
   <div class="panel" id="livePanel">
@@ -92,11 +95,14 @@
     <h2>THE RULES (David's, as built)</h2>
     <div class="rules">
       · Each model starts the stand with a <b>$3.00 paper bank</b>.<br>
+      · <b>ELIMINATION:</b> a bank that reaches <b>$0.00</b> is OUT of the race — marked ELIMINATED with the window it busted in; it scores no further points.<br>
+      · <b>STAKES START SMALL AND GROW ONLY FROM WINNINGS:</b> stake per play = the desk's sizing law on the model's <b>current</b> bank (10% of bank, floored/rounded as the desk does). Never granted, never topped up mid-stand. <b>No borrows.</b><br>
       · Per 5-minute window (a game): <b>PLAYS and WINS = +1 pt</b> · <b>PLAYS and LOSES = −1 pt</b> · <b>PASSES = +0.5 pt</b>.<br>
       · Models choose their games — no penalty beyond the scoring above.<br>
       · Calls count only if <b>sealed before the window closes</b>; each call shows its <b>seconds-in</b> as a timing stat.<br>
       · A call on the <b>same side as a rival's earlier-sealed call</b> in the same window wears a <span class="tag copy">COPY</span> flag — allowed, no score change in v1.<br>
       · Only windows that <b>open at or after the GO press</b> are scored. At 20:00 the standings <b>freeze</b> and the <b>top 3 are crowned</b> — windows still ungraded at the freeze do not move the crown.<br>
+      · <b>THE PRIZE:</b> the top 3 each carry a <b>$1.50 starting bank into the later REAL race</b>, under the same law — small start, growth from winnings only, bust = out. (The real race is a later step.)<br>
       · An entrant with <b>no live sealed feed</b> shows NO SIGNAL — it scores nothing, not even passes, until it actually seals. Nothing on this page is invented.
     </div>
   </div>
@@ -219,7 +225,9 @@ function collectWindows(){
 }
 
 function stakeFor(key, bank){
-  if(key==='FINAL') return 0.50;
+  // the desk's sizing law against the CURRENT bank — 10% of bank, rounded
+  // down to 10c, floor 30c — for every entrant in the stand (FINAL's feed
+  // grades at its flat $0.50; its stand P&L is scaled linearly from there).
   if(bank<=0) return 0;
   return Math.min(bank, Math.max(0.30, Math.floor(bank*0.10*10)/10));
 }
@@ -227,35 +235,38 @@ function computeStandings(){
   const W = collectWindows();
   const goMs = stand ? stand.go : null;
   const rows = {};
-  for(const e of ENTRANTS) rows[e.key] = {key:e.key, name:e.name, pts:0, bank:3.00, w:0, l:0, p:0, copies:0, streak:0, streakKind:'', status: e.feed? '—' : 'NO SIGNAL', unpriced:0, playedAny:false};
+  for(const e of ENTRANTS) rows[e.key] = {key:e.key, name:e.name, pts:0, bank:3.00, w:0, l:0, p:0, copies:0, streak:0, streakKind:'', status: e.feed? '—' : 'NO SIGNAL', unpriced:0, playedAny:false, out:null};
   const games = [];
   if(goMs){
     const wins = [...W.values()].filter(r => r.start >= goMs).sort((a,b)=>a.start-b.start);
     for(const rec of wins){
       const wEnd = rec.start + 300000;
       const closed = (wEnd + 300000) <= Date.now();
-      // COPY flags: played calls ordered by seconds-in
-      const played = Object.entries(rec.calls).filter(([,c])=>c.played);
+      // COPY flags: played calls ordered by seconds-in — only entrants still
+      // in the race at this window take part (an eliminated model is out).
+      const played = Object.entries(rec.calls).filter(([k,c])=>c.played && !rows[k].out);
       played.sort((a,b)=> (a[1].secIn??1e9) - (b[1].secIn??1e9));
       const seenSides = new Set(); const copySet = new Set();
       for(const [k,c] of played){ if(seenSides.has(c.side)) copySet.add(k); else seenSides.add(c.side); }
       const gameRow = {start: rec.start, cells: []};
       for(const e of ENTRANTS){
         const R = rows[e.key]; if(!e.feed) continue;
+        if(R.out){ continue; } // ELIMINATED in an earlier window — no further points
         const c = rec.calls[e.key];
         if(c && c.played && c.graded){
           const st = stakeFor(e.key, R.bank);
           let pnl = 0, unpriced = false;
           if(e.key==='RIPTIDE'){ if(c.riptideLaw===null || c.riptideLaw===undefined) unpriced = true; else pnl = c.riptideLaw * 0.6; }
-          else if(e.key==='FINAL'){ if(c.finalPnl===null || c.finalPnl===undefined) unpriced = true; else pnl = c.finalPnl; }
+          else if(e.key==='FINAL'){ if(c.finalPnl===null || c.finalPnl===undefined) unpriced = true; else pnl = c.finalPnl * (st / 0.50); }
           else { if(c.moneyPnlRaw===undefined || !c.stakeRaw) unpriced = true; else pnl = c.moneyPnlRaw * (st / c.stakeRaw); }
-          if(R.bank<=0 && e.key!=='FINAL'){ pnl = 0; }
           R.bank += pnl; R.playedAny = true;
           if(c.win){ R.pts += 1; R.w++; R.streak = (R.streakKind==='W') ? R.streak+1 : 1; R.streakKind='W'; }
           else { R.pts -= 1; R.l++; R.streak = (R.streakKind==='L') ? R.streak+1 : 1; R.streakKind='L'; }
           if(copySet.has(e.key)) R.copies++;
           if(unpriced) R.unpriced++;
-          gameRow.cells.push({key:e.key, side:c.side, secIn:c.secIn, win:c.win, pts: c.win?'+1':'−1', pnl, unpriced, copy: copySet.has(e.key), stake: st});
+          let bust = false;
+          if(R.bank <= 0){ R.out = rec.start; bust = true; } // ELIMINATED — this window scored, no further points
+          gameRow.cells.push({key:e.key, side:c.side, secIn:c.secIn, win:c.win, pts: c.win?'+1':'−1', pnl, unpriced, copy: copySet.has(e.key), stake: st, bust});
         } else if(c && c.played && !c.graded){
           gameRow.cells.push({key:e.key, side:c.side, secIn:c.secIn, pending:true, copy: copySet.has(e.key)});
         } else if(rec.passes.has(e.key) || (closed && !c)){
@@ -296,7 +307,7 @@ function render(){
   const order = ENTRANTS.map(e=>rows[e.key]).sort((a,b)=> (b.pts-a.pts) || (b.bank-a.bank) || (b.w-a.w));
   $('standBody').innerHTML = order.map((R,i)=>{
     const st = !ENTRANTS.find(e=>e.key===R.key).feed ? '<span class="tag nosig">NO SIGNAL</span>'
-      : (R.bank<=0 ? '<span class="tag bust">BUST</span>' : (R.playedAny ? 'in the stand' : 'entered'));
+      : (R.out ? '<span class="tag bust">ELIMINATED</span> <span class="dim">busted ' + new Date(R.out).toISOString().substr(11,5) + 'Z</span>' : (R.playedAny ? 'in the stand' : 'entered'));
     const streak = R.streakKind ? (R.streakKind + R.streak) : '—';
     return `<tr><td>${i+1}</td><td class="big">${R.name}</td><td class="num pts">${R.pts.toFixed(1)}</td>`+
       `<td class="num">${bankFmt(R.bank)}</td><td class="num win">${R.w}</td><td class="num lose">${R.l}</td>`+
@@ -309,7 +320,7 @@ function render(){
       const cells = g.cells.map(c=>{
         if(c.pass) return `<span class="dim">${c.key} pass +0.5</span>`;
         if(c.pending) return `<span>${c.key} ${c.side?c.side.toUpperCase():''} · ${c.secIn!==null&&c.secIn!==undefined?c.secIn+'s in':'?'} · awaiting grade${c.copy?'<span class="tag copy">COPY</span>':''}</span>`;
-        return `<span class="${c.win?'win':'lose'}">${c.key} ${c.side?c.side.toUpperCase():''} · ${c.secIn!==null&&c.secIn!==undefined?c.secIn+'s in':'?'} · ${c.win?'WON':'LOST'} ${c.pts} · ${money(c.pnl)}${c.unpriced?' (UNPRICED — points only)':''}${c.copy?'<span class="tag copy">COPY</span>':''}</span>`;
+        return `<span class="${c.win?'win':'lose'}">${c.key} ${c.side?c.side.toUpperCase():''} · ${c.secIn!==null&&c.secIn!==undefined?c.secIn+'s in':'?'} · ${c.win?'WON':'LOST'} ${c.pts} · ${money(c.pnl)}${c.unpriced?' (UNPRICED — points only)':''}${c.copy?'<span class="tag copy">COPY</span>':''}${c.bust?' · 💥 <b>BUST — ELIMINATED</b>':''}</span>`;
       }).join('<br>');
       const anyPending = g.cells.some(c=>c.pending);
       return `<tr><td>${t}</td><td>${cells||'<span class="dim">no calls</span>'}</td><td>${anyPending?'<span class="dim">in play</span>':'scored'}</td></tr>`;
@@ -328,10 +339,10 @@ function render(){
     const top = order.slice(0,3);
     $('podium').style.display = 'block';
     $('podium').innerHTML = '<h2>👑 THE CROWN — FINAL STANDINGS, FROZEN AT 20:00</h2>' +
-      `<div class="crown"><div class="c1">🥇 1st — ${top[0].name} · ${top[0].pts.toFixed(1)} pts · ${bankFmt(top[0].bank)}</div>` +
-      (top[1]?`<div class="c2">🥈 2nd — ${top[1].name} · ${top[1].pts.toFixed(1)} pts · ${bankFmt(top[1].bank)}</div>`:'') +
-      (top[2]?`<div class="c3">🥉 3rd — ${top[2].name} · ${top[2].pts.toFixed(1)} pts · ${bankFmt(top[2].bank)}</div>`:'') + '</div>' +
-      '<div class="note">windows that opened during the stand but graded after the freeze do not move the crown.</div>';
+      `<div class="crown"><div class="c1">🥇 1st — ${top[0].name} · ${top[0].pts.toFixed(1)} pts · ${bankFmt(top[0].bank)} · 🏅 prize: $1.50</div>` +
+      (top[1]?`<div class="c2">🥈 2nd — ${top[1].name} · ${top[1].pts.toFixed(1)} pts · ${bankFmt(top[1].bank)} · 🏅 prize: $1.50</div>`:'') +
+      (top[2]?`<div class="c3">🥉 3rd — ${top[2].name} · ${top[2].pts.toFixed(1)} pts · ${bankFmt(top[2].bank)} · 🏅 prize: $1.50</div>`:'') + '</div>' +
+      '<div class="note">THE PRIZE: each of the top 3 takes a <b>$1.50 starting bank into the later REAL race</b>, run under the same law — stakes start small, grow only from winnings, and a bust is out of the race. The real race itself is a later step; this stand only crowns who carries a bank into it.<br>windows that opened during the stand but graded after the freeze do not move the crown.</div>';
   } else {
     $('podium').style.display = 'none';
   }
