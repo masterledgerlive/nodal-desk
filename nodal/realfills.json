@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T19:53:07Z",
+ "built_at": "2026-11-17T19:57:16Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -395,6 +395,29 @@
     "venue_line": "2026-11-17T14:50:29.489313+00:00 FILLLOG REAL TENNIS FILL \u00b7 TAPE \u00b7 ATP World Tour Finals, John McEnroe Group: Arthur Fils vs Rafael Jodar \u00b7 BUY Arthur Fils \u00b7 filled 92.00c \u00b7 stake $0.40 \u00b7 venue order DSB9J3JG53ZK \u00b7 2026-11-17T14:50:29.486306+00:00",
     "seq": 14104,
     "sealed_at": "2026-11-17T14:58:02+0000"
+   },
+   {
+    "arena_seq": 14752,
+    "cost": 0.3984,
+    "engine": "TAPE",
+    "filled_c": 83,
+    "golden_rule": "Golden Rule watches this open position from the fill: a 95c own-side bid exits it. Golden math at entry: +$0.0476 at the 95c target net of cut (proceeds $0.4560, cost $0.3984, cut $0.01).",
+    "key": "REAL_TENNIS_FILL|TAPE|DSFJR4ZG13ZK",
+    "lane": "tennis",
+    "match": "ATP World Tour Finals, John McEnroe Group: Alexander Zverev vs Ben Shelton",
+    "match_name": "Alexander Zverev vs Ben Shelton",
+    "note": "Verified three-way (tennis_fills.log line 15 / executor log GOLDEN MATH + FILLLOG 19:49:50Z / state position TAPE|14752|TAPE|zverev-shelton|shelton open, 0.48 sh, cost $0.3984, entry 0.83). TAPE bank $4.792 settled with $0.40 committed in this open position; PLAIN $4.1243. Same match as the PLAIN Zverev NOFILL (seq 14735) \u2014 opposite sides, different lanes; the one-open-position guard is per lane, so both records stand.",
+    "order": "DSFJR4ZG13ZK",
+    "pick": "Ben Shelton",
+    "player": "Ben Shelton",
+    "position_open": true,
+    "reconciliation": "Arena fill seq 14752 (SCOUT, Kalshi rail, SIM price 18c, note: undervalued by 31 pts, our number 49 vs 18c) is the signal; the real fill priced 83c on the Polymarket SHORT leg (intent ORDER_INTENT_BUY_SHORT), economically Shelton-wins. The 18c vs 83c gap is the rail/leg difference, not a 65c overpay \u2014 named here so nobody misreads it.",
+    "shares": 0.48,
+    "stake": 0.4,
+    "tournament": "ATP World Tour Finals, John McEnroe Group",
+    "ts": "2026-11-17T19:49:50.101616+00:00",
+    "seq": 14766,
+    "sealed_at": "2026-11-17T19:53:46+0000"
    }
   ],
   "exits": [
