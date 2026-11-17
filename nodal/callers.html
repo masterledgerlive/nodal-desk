@@ -142,7 +142,8 @@ function render(){
   tb.innerHTML = rows.map(r =>
     '<tr class="' + (r.rank===1?'r1':'') + (r.house?' house':'') + '"><td>' + r.rank + '</td>'
     + '<td><span class="name">' + esc(r.name) + '</span> ' + (r.provisional ? '<span class="prov">PROVISIONAL</span>' : '')
-    + '<br><span class="' + (r.house?'house-tag':'tag') + '">' + esc(r.tag||'') + '</span></td>'
+    + '<br><span class="' + (r.house?'house-tag':'tag') + '">' + esc(r.tag||'') + '</span>'
+    + (r.pnl!==null && r.pnl!==undefined ? '<br><span class="tag">🧑 HUMAN · P&amp;L <b class="' + (r.pnl>=0?'pos':'neg') + '">' + (r.pnl>=0?'+':'−') + '$' + Math.abs(r.pnl).toFixed(2) + '</b></span>' : '') + '</td>'
     + '<td><b style="font-size:17px;color:var(--gold)">' + (r.streak_best_n||0) + '</b></td>'
     + '<td>' + esc(r.streak) + '</td>'
     + '<td><b>' + Number(r.race).toFixed(2) + '</b></td>'
