@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE WHOLE GAME — the BTC 5-minute desk on one screen</title>
+<style>
+  :root{ --bg:#0b0e14; --panel:#131826; --line:#26304a; --txt:#e8ecf5; --dim:#8b96b0;
+         --gold:#ffd75e; --green:#3ddc84; --red:#ff6b6b; --blue:#57b6ff; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--txt);
+        font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  .wrap{ max-width:1240px; margin:0 auto; padding:18px 14px 40px; }
+  h1{ font-size:26px; letter-spacing:2px; margin:6px 0 2px; color:var(--gold); }
+  h2.sec{ font-size:16px; letter-spacing:2px; color:var(--gold); margin:22px 0 8px;
+          border-bottom:1px solid var(--line); padding-bottom:6px; }
+  .sub{ color:var(--dim); font-size:13px; line-height:1.6; }
+  .realstrip{ margin:12px 0; border:1px solid var(--green); border-radius:10px;
+    padding:10px 14px; background:#0a1a10; font-size:13.5px; line-height:1.7; }
+  .feedages{ color:var(--dim); font-size:11.5px; line-height:1.7; }
+  .stale{ color:#0b0e14; background:var(--red); border-radius:6px; padding:0 6px;
+          font-weight:800; font-size:10.5px; }
+  .winbar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0 4px; }
+  .winbar .w{ font-size:20px; font-weight:800; letter-spacing:1px; }
+  .cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:10px; }
+  @media (max-width:1000px){ .cards{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .cards{ grid-template-columns:1fr; } }
+  .card{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+  .card h3{ margin:0 0 4px; font-size:15px; letter-spacing:1.5px; }
+  .bigside{ font-size:40px; font-weight:900; line-height:1.1; }
+  .up{ color:var(--green); } .down{ color:var(--red); }
+  .meta{ font-size:12.5px; line-height:1.65; }
+  .nocall{ font-size:19px; font-weight:800; color:var(--dim); margin:8px 0 4px; }
+  .passed{ color:var(--gold); }
+  .steps{ border-top:1px dashed #1d2539; margin-top:8px; padding-top:6px;
+          font-size:11.5px; line-height:1.6; color:var(--dim); }
+  .steps .k{ color:var(--blue); font-weight:700; }
+  .steps .dev{ color:var(--gold); font-weight:700; }
+  .wrow{ display:grid; grid-template-columns:64px 1fr 1fr 1fr 1fr; gap:10px;
+         padding:8px 0; border-bottom:1px dashed #1d2539; font-size:12.5px; }
+  @media (max-width:820px){ .wrow{ grid-template-columns:52px 1fr 1fr; } }
+  .wrow .wt{ color:var(--dim); font-weight:700; }
+  .wlw{ color:var(--green); font-weight:800; } .wll{ color:var(--red); font-weight:800; }
+  .pos{ color:var(--green); } .neg{ color:var(--red); } .unpriced{ color:var(--dim); }
+  .devchip{ display:inline-block; border:1px solid var(--gold); color:var(--gold);
+            border-radius:6px; padding:0 5px; font-size:10.5px; margin-left:4px; }
+  .proof{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
+          padding:12px 16px; font-size:12.5px; line-height:1.9; }
+  .proof b{ color:var(--gold); }
+  .blob{ color:var(--blue); }
+  .foot{ margin-top:16px; color:var(--dim); font-size:12px; line-height:1.7; }
+  a{ color:var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎮 THE WHOLE GAME</h1>
+  <div class="sub">The whole BTC 5-minute story on one screen: the live window, every engine's
+  sealed call <i>before</i> the window runs, what happens <i>during</i> it (flips, value exits,
+  RIPTIDE's own presses), the settled result with the money, and the proof underneath.
+  Everything here renders from the sealed feeds — nothing is typed in by hand, nothing is edited after the fact.</div>
+
+  <div class="realstrip" id="realStrip">🏁 REAL race: —</div>
+  <div class="feedages" id="feedAges">feeds: —</div>
+
+  <h2 class="sec">⏱ THE LIVE WINDOW</h2>
+  <div class="winbar"><span class="w" id="winLabel">window —</span><span class="sub" id="winClock"></span></div>
+  <div class="cards">
+    <div class="card" id="livePLAIN"></div>
+    <div class="card" id="liveEARLY"></div>
+    <div class="card" id="liveRIPTIDE"></div>
+    <div class="card" id="liveFINAL"></div>
+  </div>
+
+  <h2 class="sec">🧾 SETTLED — THE LAST WINDOWS, WITH THE MONEY</h2>
+  <div id="settled"></div>
+
+  <h2 class="sec">🔗 THE PROOF UNDERNEATH</h2>
+  <div class="proof" id="proof"></div>
+
+  <div class="foot">Paper calls from the sealed record — you place your own orders on your own
+  account; nothing here places a trade. Money lines exist only where a real ask was sealed;
+  otherwise a play is UNPRICED and no number is invented. Deeper rooms:
+  <a href="copyengines.html">Copy the Engines</a> · <a href="gamelog.html">the Game Log</a> ·
+  <a href="fullcalls.html">the Full Record</a> · <a href="trail.html">One Trail</a> ·
+  <a href="champion.html">the Champion</a>. Page refreshes itself every 15 seconds.</div>
+</div>
+
+<script>
+"use strict";
+const FEEDS = ['gamelog','callsdata','earlydata','flowdata','finaldata',
+               'proofrecord','heads','trail','realrace'];
+let feeds = {}, built = {};
+const $ = id => document.getElementById(id);
+const money = v => (v<0?'−$':'+$') + Math.abs(v).toFixed(2);
+const parseTs = s => { if(!s) return null; const t = Date.parse(s); return isNaN(t)?null:t; };
+const winISO = ms => new Date(Math.floor(ms/300000)*300000).toISOString().replace('.000Z','Z');
+const hhmm = s => s ? s.substr(11,5)+'Z' : '—';
+const short = (s,n) => s ? s.slice(0,n) + '…' : '—';
+
+async function fetchFeed(n){
+  try{
+    const r = await fetch(n + '.json?t=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    feeds[n] = d; built[n] = d.built_at || d.updated_at || d.updated || null;
+  }catch(e){}
+}
+async function poll(){ await Promise.all(FEEDS.map(fetchFeed)); render(); }
+
+function secIn(e){
+  for(const s of (e.steps||[])){
+    if(s.kind==='CALL' || s.kind==='SEED'){
+      const m = /sealed (\d+)s in/.exec(s.text||'');
+      if(m) return parseInt(m[1],10);
+    }
+  }
+  return null;
+}
+function findEntry(engine, wIso){
+  const gl = feeds.gamelog; if(!gl) return null;
+  for(const e of (gl.live||[])) if(e.engine===engine && e.window===wIso) return e;
+  for(const e of (gl.log||[])) if(e.engine===engine && e.window===wIso) return e;
+  return null;
+}
+const DEV_KINDS = ['SELL','FLIP','EXIT','VALUE','BUY'];
+function stepsHtml(e, onlyDev){
+  const steps = (e.steps||[]).filter(s => !onlyDev || DEV_KINDS.includes(s.kind));
+  if(!steps.length) return '';
+  return '<div class="steps">' + steps.map(s=>{
+    const dev = DEV_KINDS.includes(s.kind) && s.kind!=='CALL';
+    const txt = (s.text||'').replace(/^STEP \d+ · /,'').slice(0,150);
+    return '<div><span class="' + (dev?'dev':'k') + '">' + s.kind + '</span> · ' + txt + '</div>';
+  }).join('') + '</div>';
+}
+function liveCard(engine){
+  const wIso = winISO(Date.now());
+  const e = findEntry(engine, wIso);
+  let h = '<h3>' + engine + '</h3>';
+  if(engine==='FINAL'){
+    const fd = feeds.finaldata;
+    const call = fd ? (fd.calls||[]).find(c => c.window===wIso) : null;
+    const cur = fd && fd.current && fd.current.window===wIso ? fd.current : null;
+    if(call && call.verdict==='FOR SURE')
+      h += '<div class="bigside ' + (call.side==='up'?'up':'down') + '">'
+         + (call.side==='up'?'▲ UP':'▼ DOWN') + '</div>'
+         + '<div class="meta">FOR SURE · ask ' + Math.round(call.ask*100) + '¢ · decided '
+         + call.decided_elapsed_s + 's in</div>';
+    else if(call)
+      h += '<div class="nocall passed">NO CALL</div><div class="meta">the strict bar was not met — a sealed pass.</div>';
+    else if(cur)
+      h += '<div class="nocall">WATCHING</div><div class="meta">no verdict sealed yet this window.</div>';
+    else
+      h += '<div class="nocall">WATCHING</div><div class="meta">no verdict sealed yet this window.</div>';
+    return h;
+  }
+  if(!e) return h + '<div class="nocall">NO CALL YET</div><div class="meta">the window is open — a call appears the moment it seals.</div>';
+  if(e.noplay) return h + '<div class="nocall passed">PASSED</div><div class="meta">sat this window out — a sealed decision.</div>' + stepsHtml(e, false);
+  const side = (e.side||'').toUpperCase();
+  h += '<div class="bigside ' + (side==='UP'?'up':'down') + '">' + (side==='UP'?'▲ UP':'▼ DOWN') + '</div>';
+  let meta = '';
+  if(e.chance!==null && e.chance!==undefined) meta += 'model ' + Math.round(e.chance*100) + '%';
+  const si = secIn(e); if(si!==null) meta += (meta?' · ':'') + 'sealed ' + si + 's in';
+  if(e.status==='SETTLED' && e.win!==null && e.win!==undefined)
+    meta += (meta?' · ':'') + 'settled ' + (e.win?'WIN':'LOSS');
+  h += '<div class="meta">' + meta + '</div>' + stepsHtml(e, false);
+  return h;
+}
+function moneyMaps(){
+  const m = {PLAIN:{}, EARLY:{}, RIPTIDE:{}, FINAL:{}};
+  const cd = feeds.callsdata;
+  if(cd) for(const r of (cd.recent_calls||[])) m.PLAIN[r.window] = r.money ? r.money.pnl : null;
+  const ed = feeds.earlydata;
+  if(ed) for(const r of (ed.recent_plays||[])) m.EARLY[r.window] = r.money ? r.money.pnl : null;
+  const fd = feeds.flowdata;
+  if(fd) for(const r of (fd.recent_windows||[])) m.RIPTIDE[r.window] = (r.haul_law===null||r.haul_law===undefined) ? null : r.haul_law;
+  const fn = feeds.finaldata;
+  if(fn) for(const c of (fn.calls||[]))
+    m.FINAL[c.window] = c.grade ? (c.grade.pnl_exit!==null && c.grade.pnl_exit!==undefined ? c.grade.pnl_exit : c.grade.pnl_settle) : undefined;
+  return m;
+}
+function settledHtml(){
+  const gl = feeds.gamelog;
+  if(!gl) return '<div class="sub">feed not loaded yet</div>';
+  const mm = moneyMaps();
+  const wins = [];
+  for(const e of (gl.log||[])){
+    if(e.status==='SETTLED' && !wins.includes(e.window)) wins.push(e.window);
+  }
+  const rows = wins.slice(0,6).map(w=>{
+    let cells = '';
+    for(const eng of ['PLAIN','EARLY','RIPTIDE']){
+      const e = (gl.log||[]).find(x => x.engine===eng && x.window===w);
+      if(!e){ cells += '<div class="unpriced">—</div>'; continue; }
+      if(e.noplay){ cells += '<div>' + eng + ' · <span class="passed">PASS</span></div>'; continue; }
+      const wl = e.win ? '<span class="wlw">W</span>' : '<span class="wll">L</span>';
+      const mv = mm[eng][w];
+      const mtxt = mv===undefined ? '' : (mv===null ? ' · <span class="unpriced">UNPRICED</span>'
+                     : ' · <span class="' + (mv>=0?'pos':'neg') + '">' + money(mv) + '</span>');
+      const devs = (e.steps||[]).filter(s => ['SELL','FLIP','EXIT','VALUE'].includes(s.kind))
+        .map(s => '<span class="devchip">' + s.kind + '</span>').join('');
+      cells += '<div>' + eng + ' ' + (e.side||'').toUpperCase() + ' ' + wl + mtxt + devs + '</div>';
+    }
+    const fc = (feeds.finaldata && feeds.finaldata.calls || []).find(c => c.window===w);
+    if(fc && fc.verdict==='FOR SURE' && fc.grade)
+      cells += '<div>FINAL ' + (fc.side||'').toUpperCase() + ' '
+        + (fc.grade.money_win ? '<span class="wlw">W</span>' : '<span class="wll">L</span>')
+        + (mm.FINAL[w]!==null && mm.FINAL[w]!==undefined ? ' · <span class="' + (mm.FINAL[w]>=0?'pos':'neg') + '">' + money(mm.FINAL[w]) + '</span>' : '') + '</div>';
+    else cells += '<div>FINAL · <span class="passed">' + (fc ? 'NO CALL' : '—') + '</span></div>';
+    return '<div class="wrow"><div class="wt">' + hhmm(w) + '</div>' + cells + '</div>';
+  });
+  return rows.join('') || '<div class="sub">no settled windows in the feed yet</div>';
+}
+function proofHtml(){
+  const out = [];
+  const pr = feeds.proofrecord;
+  if(pr){
+    const parts = Object.keys(pr.engines||{}).map(k=>{
+      const b = pr.engines[k].board || {};
+      return k + ' bank $' + Number(b.bank||0).toFixed(2) + ' · streak ' + (b.streak_now||0)
+           + ' · best ' + (b.streak_best||0);
+    });
+    out.push('📜 <b>Proof record</b> built ' + hhmm(pr.built_at) + ' — per-call proof for every sealed call ('
+      + parts.join(' · ') + '). <a href="fullcalls.html">Read the full record →</a>');
+  }
+  const hd = feeds.heads;
+  if(hd){
+    const f = Object.keys(hd.feeds||{}).map(k=>{
+      const x = hd.feeds[k];
+      return k + ' <span class="blob">' + short(x.blob_id, 12) + '</span> seq ' + x.seq
+           + ' · sha ' + short(x.sha256, 10);
+    });
+    out.push('🧊 <b>Instant-blob plane heads</b> (' + hhmm(hd.updated_at) + ') — ' + f.join(' · ')
+      + (hd.degraded ? ' · <span class="stale">WRITER DEGRADED</span> heads are the last recall-verified snapshots; the JSON feeds below them never stop' : ' · every head recall-verified byte-for-byte at seal'));
+  }
+  const tr = feeds.trail;
+  if(tr && tr.summaries){
+    const s = Object.keys(tr.summaries).map(k=>{
+      const x = tr.summaries[k];
+      return k + ' ' + x.graded + ' graded · ' + x.win_rate + '% wins';
+    });
+    out.push('🛤 <b>One Trail</b> built ' + hhmm(tr.built_at) + ' — ' + s.join(' · ')
+      + '. <a href="trail.html">Walk the trail →</a>');
+  }
+  return out.join('<br>') || 'proof feeds not loaded yet';
+}
+function render(){
+  const now = Date.now();
+  const wIso = winISO(now), wEnd = Math.floor(now/300000)*300000 + 300000;
+  $('winLabel').textContent = '⏱ ' + hhmm(wIso) + ' window';
+  $('winClock').textContent = 'closes in ' + Math.max(0, Math.round((wEnd-now)/1000)) + 's · all times UTC';
+  const rr = feeds.realrace;
+  if(rr && rr.banks){
+    $('realStrip').innerHTML = '🏁 <b>REAL race is LIVE by David\'s mandate</b> (sealed seq 12277, 2026-11-16) — PLAIN $'
+      + rr.banks.PLAIN.bank.toFixed(2) + ' · RIPTIDE $' + rr.banks.RIPTIDE.bank.toFixed(2)
+      + ' on Polymarket US, BTC 5-minute. The desk signals, the calls execute under the mandate\'s caps, David can stop it with one word. Everything below is the SIM game the calls come from.';
+  }
+  $('feedAges').innerHTML = 'feeds built: ' + FEEDS.map(n=>{
+    const b = built[n];
+    if(!b) return n + ': —';
+    const age = Math.max(0, Math.round((now - parseTs(b))/1000));
+    return n + ' ' + hhmm(b) + ' (' + age + 's)' + (age > 180 ? ' <span class="stale">STALE</span>' : '');
+  }).join(' · ');
+  for(const eng of ['PLAIN','EARLY','RIPTIDE','FINAL']) $('live'+eng).innerHTML = liveCard(eng);
+  $('settled').innerHTML = settledHtml();
+  $('proof').innerHTML = proofHtml();
+}
+poll();
+setInterval(poll, 15000);
+setInterval(render, 1000);
+</script>
+</body>
+</html>
