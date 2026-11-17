@@ -47,6 +47,8 @@
 
   <div class="card" style="border-color:var(--gold)">👑 <b>THE GOLDEN RULE</b> (David's law, 2026-11-16, sealed seq 12850): a position whose <b>own side bid reaches 95¢ is a WIN — exit there, automatically</b>, in BOTH lanes. It overrides PLAIN's ride-to-settlement and TAPE's arena-mirror whenever the 95¢ bid touches first. <b>Never ride it back down.</b></div>
 
+  <div class="card" id="davidCard"><b>🧑 DAVID · HUMAN</b> — the human player (DAVID_PLAYER, sealed seq 14199). His own tennis plays, sealed from the venue record — beside the lanes, never inside them. <span id="davidLine">…</span></div>
+
   <div class="vs">
     <div class="eng plain">
       <h3 style="color:var(--teal)">PLAIN — the plain call</h3>
@@ -135,6 +137,16 @@ fetch('tennisrealdata.json?_='+Date.now()).then(r=>r.json()).then(d=>{
   if(S.tape) sr.push('TAPE sim ('+S.tape.label+'): '+S.tape.trades+' trades · realized '+money(S.tape.realized));
   document.getElementById('simRef').textContent=sr.join(' · ')||'—';
 }).catch(()=>{document.getElementById('runStatus').textContent='tennisrealdata.json not on the wire yet';});
+</script>
+<script>
+fetch('realfills.json?_='+Date.now()).then(r=>r.json()).then(d=>{
+  const T=(d.david||{}).tennis||{record:{w:0,l:0,pnl:0,streak:'—'},fills:[],settles:[]};
+  const rec=T.record||{w:0,l:0,pnl:0,streak:'—'};
+  const n=(T.fills||[]).length;
+  document.getElementById('davidLine').innerHTML =
+    'Record: <b>'+rec.w+'W – '+rec.l+'</b> · streak <b>'+rec.streak+'</b> · P&amp;L <b>'+money(rec.pnl)+'</b>'
+    + (n ? ' · '+n+' fill(s) sealed' : ' · no plays sealed yet — his line starts empty, on purpose');
+}).catch(()=>{document.getElementById('davidLine').textContent='real record not on the wire yet';});
 </script>
 </body>
 </html>

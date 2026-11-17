@@ -1,8 +1,8 @@
 {
- "built_at": "2026-11-17T04:43:36Z",
+ "built_at": "2026-11-17T15:37:01Z",
  "authorized": "2026-11-14T19:21:00-05:00",
  "venue": "Kalshi production (signed mandate 2026-10-31) first where it lists the match; Polymarket as David's second overlay venue where listed and his account can open. Deposits and funding are David's hands only.",
- "run_status": "LIVE (executor mode, TENNIS_LIVE_MANDATE seq 12463) \u2014 4 real tennis fills sealed, $1.90 deployed across open positions; banks PLAIN $5.00 / TAPE $5.00",
+ "run_status": "LIVE (executor mode, TENNIS_LIVE_MANDATE seq 12463) \u2014 6 real tennis fills sealed, $3.17 deployed across open positions; banks PLAIN $5.00 / TAPE $5.00",
  "rules": {
   "bank_floor": 1.0,
   "day_stop_per_engine": -2.0,
@@ -143,6 +143,55 @@
     "tournament": "Sydney",
     "seq": 12728,
     "kind": "TNTR_FILL"
+   },
+   {
+    "cost": 0.8757,
+    "filled_c": 63.0,
+    "flags": [
+     "FLAG \u2014 STAKE ABOVE THE SPEC HARD CAP: filled stake $0.88 (1.39 sh x 63c) exceeds TENNIS-PACKET-SPEC's $0.75 hard cap by $0.13; planned stake in the state fired entry was $0.50. Desk seals the fill as the venue executed it; whether the cap was breached or the executor sizes by shares is for main/executor to rule.",
+     "Banks in state still read PLAIN $5.00 / TAPE $4.7791 \u2014 banks derive from sealed settles; the open position is recorded here, not yet settled."
+    ],
+    "golden_rule": "Golden Rule watches this open position from the fill: a 95c own-side bid exits it.",
+    "intent": "ORDER_INTENT_BUY_SHORT",
+    "lane": "PLAIN",
+    "mandate_seq": 12463,
+    "match": "Colina: Nadia Podoroska vs Varvara Lepchenko",
+    "order": "DS9VDMTG14F0",
+    "pick": "Varvara Lepchenko",
+    "pick_idx": 1,
+    "position_open": true,
+    "prob": 0.623,
+    "reconciliation": "Sealed pick Lepchenko (prob 0.623, seq 5395). Gamesdata POLY book: Lepchenko YES ask 0.36 / Podoroska YES 0.65 \u2014 the fill at 63c is the SHORT leg of Podoroska (1 - 0.36 = 0.64 market), i.e. economically Lepchenko-wins, filled 1c under that leg's ask. The state's sealed_ask 0.36 is the YES-leg ask, NOT the ask of the leg bought \u2014 named here so nobody misreads this as 27c over the sealed ask.",
+    "sealed_pick_seq": 5395,
+    "shares": 1.39,
+    "slug": "wta-podoros-lepchen-2026-11-16",
+    "stake": 0.88,
+    "start_ts": 1794924000,
+    "ts": "2026-11-17T13:09:20.830896+00:00",
+    "venue_line": "2026-11-17T13:09:20.833807+00:00 FILLLOG REAL TENNIS FILL \u00b7 PLAIN \u00b7 Colina: Nadia Podoroska vs Varvara Lepchenko \u00b7 BUY Varvara Lepchenko \u00b7 filled 63.00c \u00b7 stake $0.88 \u00b7 venue order DS9VDMTG14F0 \u00b7 2026-11-17T13:09:20.830896+00:00",
+    "seq": 13839,
+    "kind": "TNTR_FILL"
+   },
+   {
+    "arena_seq": 14079,
+    "cost": 0.3956,
+    "filled_c": 92.0,
+    "intent": "ORDER_INTENT_BUY_LONG",
+    "lane": "TAPE",
+    "mandate_seq": 12463,
+    "match": "ATP World Tour Finals, John McEnroe Group: Arthur Fils vs Rafael Jodar",
+    "note": "Verified three-way: tennis_fills.log line 10, tennis_executor.log lines 153/154, state position TAPE|14079|TAPE|fils-jodar|fils open (0.43 sh, cost $0.3956, entry 0.92). No resting exit sell in the log yet; Golden Rule armed at 95c. RISK NOTE: 92c entry vs 95c golden exit = ~3c/share max upside (~$0.013 on 0.43 sh) against $0.40 downside; a win at settlement pays $0.43 (+$0.034). No STOP; executor armed.",
+    "order": "DSB9J3JG53ZK",
+    "pick": "Arthur Fils",
+    "position_open": true,
+    "shares": 0.43,
+    "slug": "aec-atp-artfil-rafjod-2026-11-15",
+    "stake": 0.4,
+    "start_ts": 1794921000,
+    "ts": "2026-11-17T14:50:29.486306+00:00",
+    "venue_line": "2026-11-17T14:50:29.489313+00:00 FILLLOG REAL TENNIS FILL \u00b7 TAPE \u00b7 ATP World Tour Finals, John McEnroe Group: Arthur Fils vs Rafael Jodar \u00b7 BUY Arthur Fils \u00b7 filled 92.00c \u00b7 stake $0.40 \u00b7 venue order DSB9J3JG53ZK \u00b7 2026-11-17T14:50:29.486306+00:00",
+    "seq": 14104,
+    "kind": "TNTR_FILL"
    }
   ],
   "settles": [
@@ -194,12 +243,32 @@
     "tournament": "Kobe",
     "seq": 12784,
     "kind": "TNTR_SETTLE"
+   },
+   {
+    "bank_after": 4.7791,
+    "bank_before": 5.1811,
+    "cost": 0.402,
+    "engine": "TAPE",
+    "entry_c": 60,
+    "fill_seq": 12728,
+    "golden_rule": "The Golden Rule (seq 12864) watched this position from 04:33Z and NEVER fired \u2014 no 95c own-side bid on the executor's venue feed. Consistent with the autopsy PATH NOT RECONSTRUCTIBLE note; David's ~96c screen read remains unproven from our side, not contradicted.",
+    "key": "REAL_TENNIS_SETTLE|TAPE|Sydney: Derek Pham vs Hiroki Moriya|Derek Pham",
+    "lane_record": "2W/2L, net -$0.22",
+    "match": "Sydney: Derek Pham vs Hiroki Moriya",
+    "order": "DS1VHHX014ET",
+    "payout": 0.0,
+    "player": "Derek Pham",
+    "pnl": -0.4,
+    "qty_sh": 0.67,
+    "ts": "2026-11-17T05:23:34.722355+00:00",
+    "seq": 12991,
+    "kind": "TNTR_SETTLE"
    }
   ],
-  "graded": 3,
+  "graded": 4,
   "wins": 0,
   "win_rate": 0.0,
-  "pnl": 0.18,
+  "pnl": -0.22,
   "brier": 0.0,
   "status": "BUILDING RECORD",
   "bank": {
@@ -255,8 +324,8 @@
   },
   "tape": {
    "label": "the arena followed record \u2014 every specialist trade a sealed sim fill at live prices (SIM)",
-   "trades": 212,
-   "realized": -13.84
+   "trades": 217,
+   "realized": -14.01
   }
  },
  "note": "TENNIS REAL records only \u2014 graded on the venue settlement, never blended with SIM. The board starts EMPTY and earns its own verdict under the house bar: >=20 graded, >=62%, Brier <=0.21. LOCK is paper only under this authorization."
