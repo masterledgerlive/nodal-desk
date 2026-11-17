@@ -125,6 +125,34 @@ function pizzaSection(){
   else h+='<div class="card">'+rows.map(x=>'<div style="padding:4px 0;border-bottom:1px solid var(--line)">'+x.txt+'<br><span class="tag">'+esc(x.ts)+'</span></div>').join('')+'</div>';
   return h;
 }
+function riskySection(){
+  const R=(PD&&PD.risky&&PD.risky[CUR])||null;
+  if(!R) return '';
+  const NAMES={'call':'Unlocked CALLs — called, never locked','sit-out lean':'Sit-out leans — sat out, leaning','uncounted':'Uncounted calls'};
+  let h='<h2>⚠️ RISKY LINES — SKIPPED FOR QUALITY, STILL SCORED</h2>';
+  for(const cat of Object.keys(R)){
+    const g=R[cat];
+    h+='<div class="card"'+(g.flagged?' style="border-color:var(--gold)"':'')+'><b>'+esc(NAMES[cat]||cat)+'</b> · graded <b>'+g.graded+'</b> · record <b>'+g.w+'W – '+g.l+'L</b> · hit rate <b class="'+(g.hit_rate>=50?'pos':'neg')+'">'+g.hit_rate+'%</b>'+(g.flagged?'<br><b style="color:var(--gold)">⚑ FLAGGED OVERWHELMING (≥30 graded, ≥70% hits) — reported to David for a go / no-go on promoting this category. A flag is a report, never an auto-fire.</b>':'')+'<br><span class="tag">No money rides these and no race points — the record stands on its own so a skipped category can prove itself.</span></div>';
+    const rows=(g.calls||[]).slice(0,8);
+    if(rows.length) h+='<div class="card">'+rows.map(c=>'<div style="padding:4px 0;border-bottom:1px solid var(--line)">'+esc(c.window||'')+' · '+esc((c.side||'').toUpperCase())+' · <b class="'+(c.win?'pos':'neg')+'">'+(c.win?'WIN':'LOSS')+'</b><br><span class="tag">settled '+esc(c.settlement||'')+'</span></div>').join('')+'</div>';
+  }
+  return h;
+}
+function terrySection(){
+  const A=(RF&&RF.terry)||null;
+  if(!A) return '';
+  const r=A.record||{w:0,l:0,pnl:0,streak:'—'};
+  let h='<h2>🔒 TERRY FOLLOW — REAL MONEY LANE</h2><div class="card">Bank <b>'+money(A.bank)+'</b> (started $1.00, mandate seq 16410) · record <b>'+r.w+'W – '+r.l+'L</b> · streak <b>'+esc(r.streak)+'</b> · P&L <b class="'+(r.pnl>=0?'pos':'neg')+'">'+money(r.pnl)+'</b><br><span class="tag">Follows his sealed LOCKs only — best calls only; unlocked CALLs never fire (they are scored on his risky line below). No exit target in his data: his desk doctrine is hold-to-the-close, so positions ride to settlement. This REAL record is separate from his SIMULATION contest record above; the two are never blended.</span></div>';
+  const rows=[];
+  for(const f of A.fills||[]) rows.push({ts:f.ts||f.sealed_at||'', txt:'FILL · '+esc(f.window||'')+' · '+esc((f.side||'').toUpperCase())+' @ '+(f.filled_c!==undefined?f.filled_c:f.price)+'c · stake '+money(f.stake||f.cost||0)+' · seal '+f.seq});
+  for(const e of A.exits||[]) rows.push({ts:e.ts||e.sealed_at||'', txt:'EXIT · '+esc(e.window||'')+' · sold '+(e.sold_c!==undefined?e.sold_c:'')+'c · P&L <b class="'+((e.pnl||0)>=0?'pos':'neg')+'">'+money(e.pnl||0)+'</b> · seal '+e.seq});
+  for(const s of A.settles||[]) rows.push({ts:s.ts||s.sealed_at||'', txt:'SETTLE · '+esc(s.window||'')+' · payout '+money(s.payout||0)+' · P&L <b class="'+((s.pnl||0)>=0?'pos':'neg')+'">'+money(s.pnl||0)+'</b> · seal '+s.seq});
+  for(const n of A.nofills||[]) rows.push({ts:n.ts||n.sealed_at||'', txt:'NOFILL · '+esc(n.window||'')+' · rested '+(n.rested_c!==undefined?n.rested_c:'')+'c, never filled — no money moved · seal '+n.seq});
+  rows.sort((a,b)=>String(b.ts).localeCompare(String(a.ts)));
+  if(!rows.length) h+='<div class="card empty">No real fills yet — the lane starts with his next sealed lock.</div>';
+  else h+='<div class="card">'+rows.map(x=>'<div style="padding:4px 0;border-bottom:1px solid var(--line)">'+x.txt+'<br><span class="tag">'+esc(x.ts)+'</span></div>').join('')+'</div>';
+  return h;
+}
 function tennisSection(lane, david){
   const T=(RF&&RF.tennis)||{fills:[],exits:[],settles:[],banks:{}};
   let fills, exits, settles, bankLine, title;
@@ -163,6 +191,8 @@ function render(){
   if(CUR==='PLAIN') h+=tennisSection('PLAIN',false);
   if(CUR==='Ashen Bot#6973') h+=ashenSection();
   if(CUR==='PizzaCalls + DallenTrades') h+=pizzaSection();
+  if(CUR==='TerryCalls') h+=terrySection();
+  if(PD&&PD.risky&&PD.risky[CUR]) h+=riskySection();
   el.innerHTML=h||'<div class="empty">No profile data.</div>';
 }
 Promise.all([
