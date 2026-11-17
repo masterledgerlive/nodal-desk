@@ -1,22 +1,22 @@
 {
- "built_at": 1794898935,
+ "built_at": 1794898987,
  "window": "2026-11-17T07:00:00Z",
- "window_ends_in_s": 165,
+ "window_ends_in_s": 113,
  "daemon": {
   "state": "LIVE",
-  "updated": "2026-11-17T07:02:15Z",
-  "chain": 13200,
+  "updated": "2026-11-17T07:03:06Z",
+  "chain": 13203,
   "stall_components": [],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
   "state": "CLIMBING",
   "plain": "going up and staying up",
-  "drift": 93.2,
-  "range": 93.2,
+  "drift": 116.7,
+  "range": 116.7,
   "flips": 0,
   "open": 64510.535,
-  "last": 64603.77
+  "last": 64627.215
  },
  "chart": {
   "points": [
@@ -167,6 +167,10 @@
    [
     1794898935,
     64603.77
+   ],
+   [
+    1794898987,
+    64627.215
    ]
   ],
   "bounds": [
@@ -194,11 +198,16 @@
    "wins": 497,
    "call": "up",
    "chance": 0.9621,
-   "ask": null,
-   "follow": null,
+   "ask": 0.5,
+   "follow": "FIRE",
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": null
+   "payout": {
+    "stake": 0.5,
+    "win": 0.48,
+    "lose": -0.52,
+    "shares": 1.0
+   }
   },
   {
    "name": "EARLY",
@@ -240,7 +249,7 @@
    "savings": 1924.15,
    "graded": 284,
    "wins": 147,
-   "call": null,
+   "call": "up",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -248,28 +257,32 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": false
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.98 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
   },
   {
    "text": "All the models that have called are pointing the same way: UP.",
    "src": "the sealed calls"
   },
   {
-   "text": "The price jumped $93 in the last two minutes \u2014 a real push, not a drift.",
+   "text": "The price jumped $44 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
   },
   {
    "text": "EARLY's read is getting stronger as the window goes on.",
    "src": "EARLY's in-window samples"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+93 dollars this window). PLAIN says BUY UP; EARLY says BUY UP. 2 minutes 45 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+117 dollars this window). PLAIN says BUY UP; EARLY says BUY UP; RIPTIDE says BUY UP. 1 minutes 53 seconds left in the window.",
  "history": [
   {
    "window": "2026-11-17T06:30:00Z",
