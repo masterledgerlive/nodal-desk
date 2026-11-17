@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T14:43:12Z",
+ "built_at": "2026-11-17T14:52:23Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -69,6 +69,23 @@
    "window": "2026-11-17T05:15:00Z",
    "seq": 12967,
    "sealed_at": "2026-11-17T05:24:05+0000"
+  },
+  {
+   "cost": 0.05,
+   "engine": "PLAIN",
+   "exit_armed": "RESTING SELL 5.00 sh @ 95.00c order DSB6FD3G14ET, placed 14:43:29Z",
+   "filled_c": 1.0,
+   "mandate_seq": 12277,
+   "note": "Instant fill far below the resting price \u2014 same pattern as the 02:15Z fill (filled 17c vs a 32c seal). State fired entry records planned stake 0.1 vs actual fill cost $0.05.",
+   "order": "DSB6FASG14EX",
+   "shares": 5.0,
+   "side": "UP",
+   "stake": 0.05,
+   "ts": "2026-11-17T14:43:23.702895+00:00",
+   "venue_line": "2026-11-17T14:43:23.702955+00:00 FILLLOG REAL FILL \u00b7 PLAIN \u00b7 2026-11-17T14:40:00Z \u00b7 UP \u00b7 filled 1.00c \u00b7 stake $0.05 \u00b7 venue order DSB6FASG14EX \u00b7 2026-11-17T14:43:23.702895+00:00",
+   "window": "2026-11-17T14:40:00Z",
+   "seq": 14077,
+   "sealed_at": "2026-11-17T14:47:42+0000"
   }
  ],
  "exits": [
@@ -157,6 +174,21 @@
    "window": "2026-11-17T05:15:00Z",
    "seq": 12984,
    "sealed_at": "2026-11-17T05:29:28+0000"
+  },
+  {
+   "bank_after": 1.6918,
+   "engine": "PLAIN",
+   "mandate_seq": 12277,
+   "note": "Sealed on the verified FILLLOG line in real_fills.log (last line) + state settled entry (payout 0.0, pnl -0.05, ts 1794926745). Resting sell DSB6FD3G14ET expired unfilled 14:45:15Z; position rode to venue settlement and the UP side settled at zero. Race bank PLAIN $1.7418 -> $1.6918 (state) / $1.69 (log line) \u2014 the handoff's \"$1.7418 unchanged\" was true only at fill time; settlement has since taken the $0.05.",
+   "order": "DSB6FASG14EX",
+   "payout": 0.0,
+   "pnl": -0.05,
+   "side": "UP",
+   "ts": "2026-11-17T14:45:47.301620+00:00",
+   "venue_line": "2026-11-17T14:45:47.301879+00:00 FILLLOG REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-17T14:40:00Z \u00b7 UP \u00b7 payout $0.00 \u00b7 pnl $-0.05 \u00b7 race bank $1.69 \u00b7 2026-11-17T14:45:47.301620+00:00",
+   "window": "2026-11-17T14:40:00Z",
+   "seq": 14078,
+   "sealed_at": "2026-11-17T14:47:42+0000"
   }
  ],
  "executor_log": [
@@ -192,7 +224,9 @@
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T08:55:00Z \u00b7 DOWN \u00b7 order DS687MN013Z6 rested at 37.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T08:59:36.415518+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T13:25:00Z \u00b7 UP \u00b7 order DSA3Y34G14F1 rested at 54.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T13:29:37.046414+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T13:55:00Z \u00b7 UP \u00b7 order DSAHS2SG13YB rested at 53.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T13:59:38.374693+00:00",
-  "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T14:10:00Z \u00b7 UP \u00b7 order DSARPD1G13Z6 rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T14:14:32.881196+00:00"
+  "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T14:10:00Z \u00b7 UP \u00b7 order DSARPD1G13Z6 rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T14:14:32.881196+00:00",
+  "REAL FILL \u00b7 PLAIN \u00b7 2026-11-17T14:40:00Z \u00b7 UP \u00b7 filled 1.00c \u00b7 stake $0.05 \u00b7 venue order DSB6FASG14EX \u00b7 2026-11-17T14:43:23.702895+00:00",
+  "REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-17T14:40:00Z \u00b7 UP \u00b7 payout $0.00 \u00b7 pnl $-0.05 \u00b7 race bank $1.69 \u00b7 2026-11-17T14:45:47.301620+00:00"
  ],
  "banks": {
   "PLAIN": 1.7418,
