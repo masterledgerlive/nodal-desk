@@ -1,37 +1,25 @@
 {
- "built_at": 1794948449,
- "window": "2026-11-17T20:45:00Z",
- "window_ends_in_s": 151,
+ "built_at": 1794948790,
+ "window": "2026-11-17T20:50:00Z",
+ "window_ends_in_s": 110,
  "daemon": {
   "state": "LIVE",
-  "updated": "2026-11-17T20:46:19Z",
-  "chain": 14893,
+  "updated": "2026-11-17T20:53:10Z",
+  "chain": 14910,
   "stall_components": [],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
   "state": "FALLING",
   "plain": "going down and staying down",
-  "drift": -89.0,
-  "range": 89.0,
-  "flips": 0,
-  "open": 63908.005000000005,
-  "last": 63818.994999999995
+  "drift": -47.5,
+  "range": 51.7,
+  "flips": 1,
+  "open": 63868.270000000004,
+  "last": 63820.8
  },
  "chart": {
   "points": [
-   [
-    1794946846,
-    63865.985
-   ],
-   [
-    1794946920,
-    63893.130000000005
-   ],
-   [
-    1794946994,
-    63926.295
-   ],
    [
     1794947146,
     63935.75
@@ -67,33 +55,45 @@
    [
     1794948449,
     63818.994999999995
+   ],
+   [
+    1794948654,
+    63868.270000000004
+   ],
+   [
+    1794948729,
+    63816.55
+   ],
+   [
+    1794948790,
+    63820.8
    ]
   ],
   "bounds": [
-   1794946800,
    1794947100,
    1794947400,
    1794947700,
    1794948000,
    1794948300,
-   1794948600
+   1794948600,
+   1794948900
   ],
-  "open": 63908.005000000005,
-  "wstart": 1794946800,
-  "wend": 1794948600
+  "open": 63868.270000000004,
+  "wstart": 1794947100,
+  "wend": 1794948900
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 3,
+   "streak": 4,
    "best": 22,
    "bank": 150846.76,
    "savings": 0.0,
-   "graded": 693,
-   "wins": 570,
+   "graded": 694,
+   "wins": 571,
    "call": "down",
-   "chance": 0.9463,
+   "chance": 0.8016,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -109,17 +109,27 @@
    "savings": 29643.12,
    "graded": 572,
    "wins": 467,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "down",
+   "chance": 0.7772,
+   "ask": 0.47,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.55,
+    "lose": -0.52,
+    "shares": 1.064
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.41,
+    "lose": -0.52,
+    "shares": 1.064
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -151,22 +161,20 @@
    "src": "the sealed calls"
   },
   {
-   "text": "The price dropped $89 in the last two minutes \u2014 a real push, not a drift.",
+   "text": "The price barely moved in the last two minutes \u2014 the wave is resting.",
    "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "src": "EARLY's in-window samples"
   },
   {
    "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
    "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-89 dollars this window). PLAIN says BUY DOWN; RIPTIDE says BUY DOWN. 2 minutes 31 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-47 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN; RIPTIDE says BUY DOWN. 1 minutes 50 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-17T20:15:00Z",
-   "result": "up",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-17T20:20:00Z",
    "result": "up",
@@ -182,6 +190,12 @@
   {
    "window": "2026-11-17T20:30:00Z",
    "result": "up",
+   "plain": true,
+   "early": null
+  },
+  {
+   "window": "2026-11-17T20:45:00Z",
+   "result": "down",
    "plain": true,
    "early": null
   }
