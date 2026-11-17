@@ -1,13 +1,13 @@
 {
- "built_at": "2026-11-17T15:27:39Z",
+ "built_at": "2026-11-17T15:35:34Z",
  "daemon": {
   "state": "LIVE",
-  "updated": "2026-11-17T15:27:38Z",
-  "chain": 14185,
+  "updated": "2026-11-17T15:35:01Z",
+  "chain": 14200,
   "stall_components": [],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
- "chain_records": 14185,
+ "chain_records": 14203,
  "step_mirror": {
   "about": "Every play as a step show: STEP 1 the call seals \u00b7 STEP 2 the BUY press at the card price \u00b7 STEP 3 the SELL at the recommended position, or the SWITCH when the engine flips \u00b7 STEP 4 the settle and the at-price score with its check mark. Watch a play unfold step by step, exactly as the person pressing would live it.",
   "cadence": "A step appears when its sealed record lands. The AI-free pipeline daemon refreshes this page the moment a call seals \u2014 the page is the screen now; chat relays are off.",
@@ -84,9 +84,9 @@
    ],
    "promotions": 4,
    "demotions": 3,
-   "streak_now": 4,
+   "streak_now": 0,
    "streak_best": 22,
-   "graded": 657,
+   "graded": 658,
    "wins": 543,
    "bank": 95647.22,
    "savings": 0.0,
@@ -186,13 +186,13 @@
    ],
    "promotions": 5,
    "demotions": 4,
-   "streak_now": 5,
+   "streak_now": 0,
    "streak_best": 34,
-   "graded": 541,
+   "graded": 542,
    "wins": 445,
-   "bank": 20729.26,
+   "bank": 18575.68,
    "savings": 19136.67,
-   "counterfactual": 2166668.43,
+   "counterfactual": 1941568.96,
    "digits": [
     10,
     25,
@@ -211,10 +211,10 @@
     "tell": "clean \u2014 never reached in, never borrowed from The Man"
    },
    "press": {
-    "priced": 345,
+    "priced": 346,
     "press_wins": 252,
-    "press_losses": 93,
-    "press_pnl": 81.6733,
+    "press_losses": 94,
+    "press_pnl": 81.1538,
     "false_checks": 40
    },
    "real": {
@@ -262,61 +262,65 @@
  "live": [
   {
    "engine": "EARLY",
-   "window": "2026-11-17T15:25:00Z",
-   "side": "up",
-   "chance": 0.7025,
+   "window": "2026-11-17T15:30:00Z",
+   "side": "down",
+   "chance": 0.8418,
    "result": null,
    "win": null,
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
-   "window_ends": "2026-11-17T15:30:00Z",
-   "sealed_ts": "2026-11-17T15:27:36+0000",
+   "window_ends": "2026-11-17T15:35:00Z",
+   "sealed_ts": "2026-11-17T15:32:37+0000",
    "fire_ice": {
-    "read": "FIRE",
-    "ask": 0.44,
-    "why": "Press it \u2014 ask 44c is inside the guard (EARLY's 88c value line)."
+    "read": "ICE",
+    "ask": 0.96,
+    "why": "Ask-hole \u2014 ask 96c sits over the line (EARLY's 88c value line). Don't press."
    },
    "press": {
     "action": "BUY",
-    "side": "up",
-    "buy": 0.44,
+    "side": "down",
+    "buy": 0.96,
     "stake": 0.5,
     "sell": 0.88,
-    "sell_text": "SELL at the 88c TAKE VALUE line when the engine calls TAKE VALUE \u2014 the early read is banked there. No value call and no flip = hold to settlement.",
+    "sell_text": "TAKE VALUE CALLED at +163s \u2014 SELL at the 88c line now; the early read is banked whatever happens next.",
     "switch": null,
-    "note": null
+    "note": null,
+    "value": {
+     "at_elapsed_s": 163,
+     "why": "Early DOWN ran to 92% ($-162 from the open) at 163s \u2014 value taken, the early read is banked whatever happens next."
+    }
    },
    "steps": [
     {
      "kind": "CALL",
      "state": "done",
-     "ts": "2026-11-17T15:27:36+0000",
-     "seq": 14183,
+     "ts": "2026-11-17T15:32:37+0000",
+     "seq": 14195,
      "source": "SEALED RECORD",
-     "text": "STEP 1 \u00b7 CALL sealed \u2014 BUY UP \u00b7 model 70% \u00b7 window 15:25Z. The REAL signal carries the press price.",
+     "text": "STEP 1 \u00b7 CALL sealed \u2014 BUY DOWN \u00b7 model 84% \u00b7 window 15:30Z. The REAL signal carries the press price.",
      "n": 1
     },
     {
      "kind": "BUY",
      "state": "due",
-     "ts": "2026-11-17T15:27:36+0000",
-     "seq": 14183,
+     "ts": "2026-11-17T15:32:37+0000",
+     "seq": 14195,
      "source": "SEALED RECORD",
-     "text": "STEP 2 \u00b7 BUY press at the card price \u2014 44c \u00b7 stake $0.50. That is the tap the person pressing makes here.",
+     "text": "STEP 2 \u00b7 BUY press at the card price \u2014 96c \u00b7 stake $0.50. That is the tap the person pressing makes here.",
      "n": 2
     },
     {
      "kind": "SELL",
-     "state": "pending",
-     "ts": null,
-     "seq": null,
+     "state": "done",
+     "ts": "2026-11-17T15:32:45+0000",
+     "seq": 14197,
      "source": "SEALED RECORD",
-     "text": "STEP 3 \u00b7 Watching \u2014 TAKE VALUE at the 88c line or one flip, if the engine calls it; otherwise the position rides to settlement. The step lands here the moment the engine calls it.",
+     "text": "STEP 3 \u00b7 SELL \u2014 TAKE VALUE called at +163s: out at the 88c line, the early read banked. Early DOWN ran to 92% ($-162 from the open) at 163s \u2014 value taken, the early read is banked whatever happens next.",
      "n": 3
     },
     {
@@ -325,7 +329,71 @@
      "ts": null,
      "seq": null,
      "source": "SEALED RECORD",
-     "text": "STEP 4 \u00b7 Settles at window end 2026-11-17T15:30:00Z \u2014 the score at the card prices lands here.",
+     "text": "STEP 4 \u00b7 Settles at window end 2026-11-17T15:35:00Z \u2014 the score at the card prices lands here.",
+     "n": 4
+    }
+   ]
+  },
+  {
+   "engine": "RIPTIDE",
+   "window": "2026-11-17T15:30:00Z",
+   "side": "down",
+   "chance": null,
+   "result": null,
+   "win": null,
+   "points": null,
+   "double": false,
+   "mode": "TEST",
+   "streak_after": 0,
+   "check": false,
+   "status": "LIVE",
+   "seq": 14198,
+   "window_ends": "2026-11-17T15:35:00Z",
+   "press": {
+    "action": "WATCH",
+    "side": "down",
+    "buy": null,
+    "stake": null,
+    "sell": null,
+    "sell_text": "Seeded \u2014 no entry trigger yet. RIPTIDE enters on its own dip rule and exits itself (+5c, model under 50%, or window end); its sealed exit prints here when it plays.",
+    "switch": null,
+    "note": "RIPTIDE's card prices are its own sealed book \u2014 entry and exit avgs from its PLAY records, fees already in its law P&L."
+   },
+   "steps": [
+    {
+     "kind": "CALL",
+     "state": "done",
+     "ts": "2026-11-17T15:32:47+0000",
+     "seq": 14198,
+     "source": "SEALED RECORD",
+     "text": "STEP 1 \u00b7 SEED sealed \u2014 DOWN for the 15:30Z window (followed: BOTH). The seed watches for its dip entry.",
+     "n": 1
+    },
+    {
+     "kind": "BUY",
+     "state": "due",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 2 \u00b7 Waiting on its dip rule \u2014 RIPTIDE presses itself when the mid falls 4c+ with the model holding.",
+     "n": 2
+    },
+    {
+     "kind": "SELL",
+     "state": "pending",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 3 \u00b7 Its exits print here the moment it plays \u2014 RIPTIDE sells itself (+5c, model under 50%, or window end).",
+     "n": 3
+    },
+    {
+     "kind": "SETTLE",
+     "state": "pending",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 4 \u00b7 Settles at window end 2026-11-17T15:35:00Z \u2014 the score at the card prices lands here.",
      "n": 4
     }
    ]
@@ -340,7 +408,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -429,7 +497,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -495,7 +563,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -629,7 +697,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -699,7 +767,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -773,7 +841,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -907,7 +975,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -981,7 +1049,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -1182,20 +1250,213 @@
  "log": [
   {
    "engine": "EARLY",
-   "window": "2026-11-17T15:25:00Z",
-   "side": "up",
-   "chance": 0.7025,
+   "window": "2026-11-17T15:30:00Z",
+   "side": "down",
+   "chance": 0.8418,
    "result": null,
    "win": null,
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
+   "window_ends": "2026-11-17T15:35:00Z",
+   "sealed_ts": "2026-11-17T15:32:37+0000",
+   "fire_ice": {
+    "read": "ICE",
+    "ask": 0.96,
+    "why": "Ask-hole \u2014 ask 96c sits over the line (EARLY's 88c value line). Don't press."
+   },
+   "press": {
+    "action": "BUY",
+    "side": "down",
+    "buy": 0.96,
+    "stake": 0.5,
+    "sell": 0.88,
+    "sell_text": "TAKE VALUE CALLED at +163s \u2014 SELL at the 88c line now; the early read is banked whatever happens next.",
+    "switch": null,
+    "note": null,
+    "value": {
+     "at_elapsed_s": 163,
+     "why": "Early DOWN ran to 92% ($-162 from the open) at 163s \u2014 value taken, the early read is banked whatever happens next."
+    }
+   },
+   "steps": [
+    {
+     "kind": "CALL",
+     "state": "done",
+     "ts": "2026-11-17T15:32:37+0000",
+     "seq": 14195,
+     "source": "SEALED RECORD",
+     "text": "STEP 1 \u00b7 CALL sealed \u2014 BUY DOWN \u00b7 model 84% \u00b7 window 15:30Z. The REAL signal carries the press price.",
+     "n": 1
+    },
+    {
+     "kind": "BUY",
+     "state": "due",
+     "ts": "2026-11-17T15:32:37+0000",
+     "seq": 14195,
+     "source": "SEALED RECORD",
+     "text": "STEP 2 \u00b7 BUY press at the card price \u2014 96c \u00b7 stake $0.50. That is the tap the person pressing makes here.",
+     "n": 2
+    },
+    {
+     "kind": "SELL",
+     "state": "done",
+     "ts": "2026-11-17T15:32:45+0000",
+     "seq": 14197,
+     "source": "SEALED RECORD",
+     "text": "STEP 3 \u00b7 SELL \u2014 TAKE VALUE called at +163s: out at the 88c line, the early read banked. Early DOWN ran to 92% ($-162 from the open) at 163s \u2014 value taken, the early read is banked whatever happens next.",
+     "n": 3
+    },
+    {
+     "kind": "SETTLE",
+     "state": "pending",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 4 \u00b7 Settles at window end 2026-11-17T15:35:00Z \u2014 the score at the card prices lands here.",
+     "n": 4
+    }
+   ]
+  },
+  {
+   "engine": "RIPTIDE",
+   "window": "2026-11-17T15:30:00Z",
+   "side": "down",
+   "chance": null,
+   "result": null,
+   "win": null,
+   "points": null,
+   "double": false,
+   "mode": "TEST",
+   "streak_after": 0,
+   "check": false,
+   "status": "LIVE",
+   "seq": 14198,
+   "window_ends": "2026-11-17T15:35:00Z",
+   "press": {
+    "action": "WATCH",
+    "side": "down",
+    "buy": null,
+    "stake": null,
+    "sell": null,
+    "sell_text": "Seeded \u2014 no entry trigger yet. RIPTIDE enters on its own dip rule and exits itself (+5c, model under 50%, or window end); its sealed exit prints here when it plays.",
+    "switch": null,
+    "note": "RIPTIDE's card prices are its own sealed book \u2014 entry and exit avgs from its PLAY records, fees already in its law P&L."
+   },
+   "steps": [
+    {
+     "kind": "CALL",
+     "state": "done",
+     "ts": "2026-11-17T15:32:47+0000",
+     "seq": 14198,
+     "source": "SEALED RECORD",
+     "text": "STEP 1 \u00b7 SEED sealed \u2014 DOWN for the 15:30Z window (followed: BOTH). The seed watches for its dip entry.",
+     "n": 1
+    },
+    {
+     "kind": "BUY",
+     "state": "due",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 2 \u00b7 Waiting on its dip rule \u2014 RIPTIDE presses itself when the mid falls 4c+ with the model holding.",
+     "n": 2
+    },
+    {
+     "kind": "SELL",
+     "state": "pending",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 3 \u00b7 Its exits print here the moment it plays \u2014 RIPTIDE sells itself (+5c, model under 50%, or window end).",
+     "n": 3
+    },
+    {
+     "kind": "SETTLE",
+     "state": "pending",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 4 \u00b7 Settles at window end 2026-11-17T15:35:00Z \u2014 the score at the card prices lands here.",
+     "n": 4
+    }
+   ]
+  },
+  {
+   "engine": "PLAIN",
+   "window": "2026-11-17T15:25:00Z",
+   "side": "up",
+   "chance": 0.6968,
+   "result": "down",
+   "win": false,
+   "points": 0,
+   "double": false,
+   "mode": "REAL",
+   "noplay": false,
+   "streak_after": 0,
+   "check": false,
+   "status": "SETTLED",
+   "seq": 14191,
    "window_ends": "2026-11-17T15:30:00Z",
-   "sealed_ts": "2026-11-17T15:27:36+0000",
+   "steps": [
+    {
+     "kind": "CALL",
+     "state": "done",
+     "ts": "2026-11-17T15:26:57+0000",
+     "seq": 14179,
+     "source": "SEALED RECORD",
+     "text": "STEP 1 \u00b7 CALL sealed \u2014 BUY UP \u00b7 model 70% \u00b7 window 15:25Z (sealed 115s in).",
+     "n": 1
+    },
+    {
+     "kind": "BUY",
+     "state": "na",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 2 \u00b7 No sealed ask for this call \u2014 never priced by invention. The press would check the price in the app.",
+     "n": 2
+    },
+    {
+     "kind": "SELL",
+     "state": "plan",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 3 \u00b7 The SELL plan stood \u2014 a bid at 95c or better, else hold to settlement. No exit record seals for PLAIN in the sim book, so the card scores it to settlement.",
+     "n": 3
+    },
+    {
+     "kind": "SETTLE",
+     "state": "done",
+     "ts": "2026-11-17T15:31:49+0000",
+     "seq": 14191,
+     "source": "SEALED RECORD",
+     "text": "STEP 4 \u00b7 SETTLED \u2014 result DOWN. Direction wrong \u2014 the call missed. No \u2714 \u2014 the call lost.",
+     "n": 4
+    }
+   ]
+  },
+  {
+   "engine": "EARLY",
+   "window": "2026-11-17T15:25:00Z",
+   "side": "up",
+   "chance": 0.7025,
+   "result": "down",
+   "win": false,
+   "points": 0,
+   "double": false,
+   "mode": "REAL",
+   "noplay": false,
+   "streak_after": 0,
+   "check": false,
+   "status": "SETTLED",
+   "seq": 14188,
+   "window_ends": "2026-11-17T15:30:00Z",
    "fire_ice": {
     "read": "FIRE",
     "ask": 0.44,
@@ -1211,6 +1472,14 @@
     "switch": null,
     "note": null
    },
+   "press_result": {
+    "pnl": -0.5195,
+    "win": false,
+    "exit_kind": "settle",
+    "exit_price": 0.0,
+    "text": "In at 44c, out at settlement \u2014 the card prices PAID -$0.52 on the $0.50 stake, fees in."
+   },
+   "press_check": false,
    "steps": [
     {
      "kind": "CALL",
@@ -1223,7 +1492,7 @@
     },
     {
      "kind": "BUY",
-     "state": "due",
+     "state": "done",
      "ts": "2026-11-17T15:27:36+0000",
      "seq": 14183,
      "source": "SEALED RECORD",
@@ -1232,20 +1501,85 @@
     },
     {
      "kind": "SELL",
-     "state": "pending",
+     "state": "plan",
      "ts": null,
      "seq": null,
      "source": "SEALED RECORD",
-     "text": "STEP 3 \u00b7 Watching \u2014 TAKE VALUE at the 88c line or one flip, if the engine calls it; otherwise the position rides to settlement. The step lands here the moment the engine calls it.",
+     "text": "STEP 3 \u00b7 The SELL plan stood \u2014 the 88c TAKE VALUE line \u2014 but the engine never called value or a flip, so the position rode to settlement.",
      "n": 3
     },
     {
      "kind": "SETTLE",
-     "state": "pending",
+     "state": "done",
+     "ts": "2026-11-17T15:31:02+0000",
+     "seq": 14188,
+     "source": "SEALED RECORD",
+     "text": "STEP 4 \u00b7 SETTLED \u2014 result DOWN. In at 44c, out at settlement \u2014 the card prices PAID -$0.52 on the $0.50 stake, fees in. No \u2714 \u2014 the call lost.",
+     "n": 4
+    }
+   ]
+  },
+  {
+   "engine": "RIPTIDE",
+   "window": "2026-11-17T15:25:00Z",
+   "side": "up",
+   "chance": null,
+   "result": "down",
+   "win": null,
+   "points": 0,
+   "double": false,
+   "mode": "TEST",
+   "noplay": true,
+   "streak_after": 0,
+   "check": false,
+   "status": "SETTLED",
+   "seq": 14189,
+   "window_ends": "2026-11-17T15:30:00Z",
+   "press": {
+    "action": "WATCH",
+    "side": "up",
+    "buy": null,
+    "stake": null,
+    "sell": null,
+    "sell_text": "Seeded \u2014 no entry trigger yet. RIPTIDE enters on its own dip rule and exits itself (+5c, model under 50%, or window end); its sealed exit prints here when it plays.",
+    "switch": null,
+    "note": "RIPTIDE's card prices are its own sealed book \u2014 entry and exit avgs from its PLAY records, fees already in its law P&L."
+   },
+   "steps": [
+    {
+     "kind": "CALL",
+     "state": "done",
+     "ts": "2026-11-17T15:27:43+0000",
+     "seq": 14185,
+     "source": "SEALED RECORD",
+     "text": "STEP 1 \u00b7 SEED sealed \u2014 UP for the 15:25Z window (followed: BOTH). The seed watches for its dip entry.",
+     "n": 1
+    },
+    {
+     "kind": "BUY",
+     "state": "na",
      "ts": null,
      "seq": null,
      "source": "SEALED RECORD",
-     "text": "STEP 4 \u00b7 Settles at window end 2026-11-17T15:30:00Z \u2014 the score at the card prices lands here.",
+     "text": "STEP 2 \u00b7 No entry trigger fired \u2014 no buy. The seed watched and passed.",
+     "n": 2
+    },
+    {
+     "kind": "SELL",
+     "state": "na",
+     "ts": null,
+     "seq": null,
+     "source": "SEALED RECORD",
+     "text": "STEP 3 \u00b7 Nothing held \u2014 nothing to sell.",
+     "n": 3
+    },
+    {
+     "kind": "SETTLE",
+     "state": "done",
+     "ts": "2026-11-17T15:31:05+0000",
+     "seq": 14189,
+     "source": "SEALED RECORD",
+     "text": "STEP 4 \u00b7 SETTLED \u2014 result DOWN. Seed only, no play: no money moved, streaks untouched.",
      "n": 4
     }
    ]
@@ -4288,7 +4622,7 @@
    "points": null,
    "double": false,
    "mode": "REAL",
-   "streak_after": 5,
+   "streak_after": 0,
    "check": false,
    "status": "LIVE",
    "seq": null,
@@ -6861,269 +7195,6 @@
      "seq": 13707,
      "source": "SEALED RECORD",
      "text": "STEP 4 \u00b7 SETTLED \u2014 result UP. In at 49c, out at settlement \u2014 the card prices PAID +$0.50 on the $0.50 stake, fees in. \u2714 EARNED \u2014 on a roll AND paid at the card prices.",
-     "n": 4
-    }
-   ]
-  },
-  {
-   "engine": "RIPTIDE",
-   "window": "2026-11-17T11:50:00Z",
-   "side": "up",
-   "chance": null,
-   "result": "up",
-   "win": null,
-   "points": 0,
-   "double": false,
-   "mode": "TEST",
-   "noplay": true,
-   "streak_after": 0,
-   "check": false,
-   "status": "SETTLED",
-   "seq": 13708,
-   "window_ends": "2026-11-17T11:55:00Z",
-   "press": {
-    "action": "WATCH",
-    "side": "up",
-    "buy": null,
-    "stake": null,
-    "sell": null,
-    "sell_text": "Seeded \u2014 no entry trigger yet. RIPTIDE enters on its own dip rule and exits itself (+5c, model under 50%, or window end); its sealed exit prints here when it plays.",
-    "switch": null,
-    "note": "RIPTIDE's card prices are its own sealed book \u2014 entry and exit avgs from its PLAY records, fees already in its law P&L."
-   },
-   "steps": [
-    {
-     "kind": "CALL",
-     "state": "done",
-     "ts": "2026-11-17T11:52:39+0000",
-     "seq": 13701,
-     "source": "SEALED RECORD",
-     "text": "STEP 1 \u00b7 SEED sealed \u2014 UP for the 11:50Z window (followed: EARLY). The seed watches for its dip entry.",
-     "n": 1
-    },
-    {
-     "kind": "BUY",
-     "state": "na",
-     "ts": null,
-     "seq": null,
-     "source": "SEALED RECORD",
-     "text": "STEP 2 \u00b7 No entry trigger fired \u2014 no buy. The seed watched and passed.",
-     "n": 2
-    },
-    {
-     "kind": "SELL",
-     "state": "na",
-     "ts": null,
-     "seq": null,
-     "source": "SEALED RECORD",
-     "text": "STEP 3 \u00b7 Nothing held \u2014 nothing to sell.",
-     "n": 3
-    },
-    {
-     "kind": "SETTLE",
-     "state": "done",
-     "ts": "2026-11-17T11:56:07+0000",
-     "seq": 13708,
-     "source": "SEALED RECORD",
-     "text": "STEP 4 \u00b7 SETTLED \u2014 result UP. Seed only, no play: no money moved, streaks untouched.",
-     "n": 4
-    }
-   ]
-  },
-  {
-   "engine": "PLAIN",
-   "window": "2026-11-17T11:45:00Z",
-   "side": "down",
-   "chance": 0.64,
-   "result": "up",
-   "win": false,
-   "points": 0,
-   "double": false,
-   "mode": "REAL",
-   "noplay": false,
-   "streak_after": 0,
-   "check": false,
-   "status": "SETTLED",
-   "seq": 13704,
-   "window_ends": "2026-11-17T11:50:00Z",
-   "steps": [
-    {
-     "kind": "CALL",
-     "state": "done",
-     "ts": "2026-11-17T11:46:59+0000",
-     "seq": 13688,
-     "source": "SEALED RECORD",
-     "text": "STEP 1 \u00b7 CALL sealed \u2014 BUY DOWN \u00b7 model 64% \u00b7 window 11:45Z (sealed 117s in).",
-     "n": 1
-    },
-    {
-     "kind": "BUY",
-     "state": "na",
-     "ts": null,
-     "seq": null,
-     "source": "SEALED RECORD",
-     "text": "STEP 2 \u00b7 No sealed ask for this call \u2014 never priced by invention. The press would check the price in the app.",
-     "n": 2
-    },
-    {
-     "kind": "SELL",
-     "state": "plan",
-     "ts": null,
-     "seq": null,
-     "source": "SEALED RECORD",
-     "text": "STEP 3 \u00b7 The SELL plan stood \u2014 a bid at 95c or better, else hold to settlement. No exit record seals for PLAIN in the sim book, so the card scores it to settlement.",
-     "n": 3
-    },
-    {
-     "kind": "SETTLE",
-     "state": "done",
-     "ts": "2026-11-17T11:55:21+0000",
-     "seq": 13704,
-     "source": "SEALED RECORD",
-     "text": "STEP 4 \u00b7 SETTLED \u2014 result UP. Direction wrong \u2014 the call missed. No \u2714 \u2014 the call lost.",
-     "n": 4
-    }
-   ]
-  },
-  {
-   "engine": "EARLY",
-   "window": "2026-11-17T11:45:00Z",
-   "side": "down",
-   "chance": 0.6202,
-   "result": "down",
-   "win": true,
-   "points": 1,
-   "double": false,
-   "mode": "REAL",
-   "noplay": false,
-   "streak_after": 16,
-   "check": true,
-   "status": "SETTLED",
-   "seq": 13697,
-   "window_ends": "2026-11-17T11:50:00Z",
-   "fire_ice": {
-    "read": "FIRE",
-    "ask": 0.57,
-    "why": "Press it \u2014 ask 57c is inside the guard (EARLY's 88c value line)."
-   },
-   "press": {
-    "action": "BUY",
-    "side": "down",
-    "buy": 0.57,
-    "stake": 0.5,
-    "sell": 0.88,
-    "sell_text": "SELL at the 88c TAKE VALUE line when the engine calls TAKE VALUE \u2014 the early read is banked there. No value call and no flip = hold to settlement.",
-    "switch": null,
-    "note": null
-   },
-   "press_result": {
-    "pnl": 0.3623,
-    "win": true,
-    "exit_kind": "settle",
-    "exit_price": 1.0,
-    "text": "In at 57c, out at settlement \u2014 the card prices PAID +$0.36 on the $0.50 stake, fees in."
-   },
-   "press_check": true,
-   "steps": [
-    {
-     "kind": "CALL",
-     "state": "done",
-     "ts": "2026-11-17T11:47:52+0000",
-     "seq": 13693,
-     "source": "SEALED RECORD",
-     "text": "STEP 1 \u00b7 CALL sealed \u2014 BUY DOWN \u00b7 model 62% \u00b7 window 11:45Z. The REAL signal carries the press price.",
-     "n": 1
-    },
-    {
-     "kind": "BUY",
-     "state": "done",
-     "ts": "2026-11-17T11:47:52+0000",
-     "seq": 13693,
-     "source": "SEALED RECORD",
-     "text": "STEP 2 \u00b7 BUY press at the card price \u2014 57c \u00b7 stake $0.50. That is the tap the person pressing makes here.",
-     "n": 2
-    },
-    {
-     "kind": "SELL",
-     "state": "plan",
-     "ts": null,
-     "seq": null,
-     "source": "SEALED RECORD",
-     "text": "STEP 3 \u00b7 The SELL plan stood \u2014 the 88c TAKE VALUE line \u2014 but the engine never called value or a flip, so the position rode to settlement.",
-     "n": 3
-    },
-    {
-     "kind": "SETTLE",
-     "state": "done",
-     "ts": "2026-11-17T11:50:57+0000",
-     "seq": 13697,
-     "source": "SEALED RECORD",
-     "text": "STEP 4 \u00b7 SETTLED \u2014 result DOWN. In at 57c, out at settlement \u2014 the card prices PAID +$0.36 on the $0.50 stake, fees in. \u2714 EARNED \u2014 on a roll AND paid at the card prices.",
-     "n": 4
-    }
-   ]
-  },
-  {
-   "engine": "RIPTIDE",
-   "window": "2026-11-17T11:45:00Z",
-   "side": "down",
-   "chance": null,
-   "result": "down",
-   "win": null,
-   "points": 0,
-   "double": false,
-   "mode": "TEST",
-   "noplay": true,
-   "streak_after": 0,
-   "check": false,
-   "status": "SETTLED",
-   "seq": 13698,
-   "window_ends": "2026-11-17T11:50:00Z",
-   "press": {
-    "action": "WATCH",
-    "side": "down",
-    "buy": null,
-    "stake": null,
-    "sell": null,
-    "sell_text": "Seeded \u2014 no entry trigger yet. RIPTIDE enters on its own dip rule and exits itself (+5c, model under 50%, or window end); its sealed exit prints here when it plays.",
-    "switch": null,
-    "note": "RIPTIDE's card prices are its own sealed book \u2014 entry and exit avgs from its PLAY records, fees already in its law P&L."
-   },
-   "steps": [
-    {
-     "kind": "CALL",
-     "state": "done",
-     "ts": "2026-11-17T11:48:11+0000",
-     "seq": 13695,
-     "source": "SEALED RECORD",
-     "text": "STEP 1 \u00b7 SEED sealed \u2014 DOWN for the 11:45Z window (followed: BOTH). The seed watches for its dip entry.",
-     "n": 1
-    },
-    {
-     "kind": "BUY",
-     "state": "na",
-     "ts": null,
-     "seq": null,
-     "source": "SEALED RECORD",
-     "text": "STEP 2 \u00b7 No entry trigger fired \u2014 no buy. The seed watched and passed.",
-     "n": 2
-    },
-    {
-     "kind": "SELL",
-     "state": "na",
-     "ts": null,
-     "seq": null,
-     "source": "SEALED RECORD",
-     "text": "STEP 3 \u00b7 Nothing held \u2014 nothing to sell.",
-     "n": 3
-    },
-    {
-     "kind": "SETTLE",
-     "state": "done",
-     "ts": "2026-11-17T11:51:03+0000",
-     "seq": 13698,
-     "source": "SEALED RECORD",
-     "text": "STEP 4 \u00b7 SETTLED \u2014 result DOWN. Seed only, no play: no money moved, streaks untouched.",
      "n": 4
     }
    ]
