@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COPY THE ENGINES — PLAIN &amp; RIPTIDE, live from the sealed record</title>
+<style>
+  :root{ --bg:#0b0e14; --panel:#131826; --panel2:#0e1220; --line:#26304a; --txt:#e8ecf5;
+         --dim:#8b96b0; --gold:#ffd75e; --green:#3ddc84; --red:#ff6b6b; --blue:#57b6ff; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--txt);
+        font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:18px 14px 40px; }
+  h1{ font-size:26px; letter-spacing:2px; margin:6px 0 2px; color:var(--gold); }
+  .sub{ color:var(--dim); font-size:13.5px; line-height:1.6; }
+  .law{ margin:12px 0; border:1px solid var(--gold); border-radius:10px; padding:10px 14px;
+        background:#1a1607; color:#f2e7c8; font-size:14px; line-height:1.6; }
+  .winbar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:14px 0 6px;
+           font-size:15px; }
+  .winbar .w{ font-size:19px; font-weight:800; letter-spacing:1px; }
+  .feedages{ color:var(--dim); font-size:12px; line-height:1.7; }
+  .stale{ color:#0b0e14; background:var(--red); border-radius:6px; padding:0 6px;
+          font-weight:800; font-size:11px; }
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:12px; }
+  @media (max-width:820px){ .cols{ grid-template-columns:1fr; } }
+  .card{ background:var(--panel); border:1px solid var(--line); border-radius:14px;
+         padding:16px 18px; }
+  .card h2{ margin:0 0 2px; font-size:20px; letter-spacing:2px; }
+  .chip{ display:inline-block; padding:1px 8px; border-radius:8px; font-size:11px;
+         border:1px solid var(--blue); color:var(--blue); vertical-align:middle; }
+  .chip.test{ border-color:var(--dim); color:var(--dim); }
+  .bigside{ font-size:84px; font-weight:900; letter-spacing:2px; line-height:1.05;
+            margin:10px 0 2px; }
+  .up{ color:var(--green); } .down{ color:var(--red); }
+  .bigmeta{ font-size:16px; line-height:1.7; }
+  .nocall{ font-size:30px; font-weight:800; color:var(--dim); letter-spacing:1px;
+           margin:18px 0 8px; line-height:1.3; }
+  .passed{ color:var(--gold); }
+  .strip{ border-top:1px solid var(--line); margin-top:14px; padding-top:10px;
+          font-size:13.5px; line-height:1.85; }
+  .strip b{ color:var(--gold); }
+  .recent{ border-top:1px solid var(--line); margin-top:12px; padding-top:10px; }
+  .recent h3{ margin:0 0 8px; font-size:13px; letter-spacing:2px; color:var(--dim); }
+  .prow{ display:flex; justify-content:space-between; gap:8px; padding:5px 0;
+         border-bottom:1px dashed #1d2539; font-size:13px; }
+  .prow:last-child{ border-bottom:none; }
+  .wl{ font-weight:800; } .wlw{ color:var(--green); } .wll{ color:var(--red); }
+  .pos{ color:var(--green); } .neg{ color:var(--red); }
+  .unpriced{ color:var(--dim); }
+  .foot{ margin-top:18px; color:var(--dim); font-size:12px; line-height:1.7; }
+  a{ color:var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📋 COPY THE ENGINES</h1>
+  <div class="sub">PLAIN and RIPTIDE, side by side — each engine's sealed call the moment it seals,
+  and its settled record underneath, so you can copy the plays by hand on your own venue,
+  the way David does with Blob Buttons.</div>
+  <div class="law">Paper calls from the sealed record — <b>you place your own orders on your own
+  account; nothing here places a trade.</b> The desk only watches, seals, and grades.</div>
+
+  <div class="winbar">
+    <span class="w" id="winLabel">window —</span>
+    <span id="winClock" class="sub"></span>
+  </div>
+  <div class="feedages" id="feedAges">feeds: —</div>
+
+  <div class="cols">
+    <div class="card" id="cardPLAIN"></div>
+    <div class="card" id="cardRIPTIDE"></div>
+  </div>
+
+  <div class="foot">
+    Sources, all sealed: the game log (gamelog), PLAIN's priced calls (callsdata), RIPTIDE's flow
+    book (flowdata), the REAL-race prize banks (realrace), PLAIN's tennis bank (tennisrealdata).
+    A call appears here only after it is sealed into the ledger — never before, never edited after.
+    Money lines exist only where a real ask was sealed; otherwise a play is marked UNPRICED and no
+    number is invented. Page refreshes itself every 15 seconds.
+  </div>
+</div>
+
+<script>
+"use strict";
+const FEEDNAMES = ['gamelog','callsdata','flowdata','realrace','tennisrealdata'];
+let feeds = {}, feedBuilt = {};
+const $ = id => document.getElementById(id);
+const money = v => (v<0?'−$':'+$') + Math.abs(v).toFixed(2);
+const bankFmt = v => '$' + Number(v).toFixed(2);
+function parseTs(s){ if(!s) return null; const t = Date.parse(s); return isNaN(t)?null:t; }
+function winISO(ms){ return new Date(Math.floor(ms/300000)*300000).toISOString().replace('.000Z','Z'); }
+function hhmm(isoStr){ return isoStr ? isoStr.substr(11,5)+'Z' : '—'; }
+
+async function fetchFeed(name){
+  try{
+    const r = await fetch(name + '.json?t=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    feeds[name] = d;
+    feedBuilt[name] = d.built_at || d.updated || null;
+  }catch(e){ /* keep last good copy; the age line shows staleness */ }
+}
+async function poll(){
+  await Promise.all(FEEDNAMES.map(fetchFeed));
+  render();
+}
+
+function secInFromSteps(entry){
+  const wStart = parseTs(entry.window);
+  for(const s of (entry.steps||[])){
+    if(s.kind==='CALL' || s.kind==='SEED'){
+      const m = /sealed (\d+)s in/.exec(s.text||'');
+      if(m) return parseInt(m[1],10);
+      const t = parseTs(s.ts);
+      if(t && wStart) return Math.max(0, Math.round((t-wStart)/1000));
+    }
+  }
+  return null;
+}
+function findWindowEntry(engine, wIso){
+  const gl = feeds.gamelog; if(!gl) return null;
+  for(const e of (gl.live||[])) if(e.engine===engine && e.window===wIso) return e;
+  for(const e of (gl.log||[])) if(e.engine===engine && e.window===wIso) return e;
+  return null;
+}
+function pressAsk(entry){
+  const p = entry && entry.press;
+  if(!p) return null;
+  const b = p.buy;
+  if(b && typeof b === 'object'){
+    for(const k of ['ask','price','px','limit']){ if(b[k]!==null && b[k]!==undefined) return b[k]; }
+  }
+  if(typeof b === 'number') return b;
+  if(p.ask!==null && p.ask!==undefined) return p.ask;
+  return null;
+}
+function entryPriceFromSteps(entry){
+  for(const s of (entry.steps||[])){
+    const m = /in at (\d+)c/.exec(s.text||'');
+    if(m) return parseInt(m[1],10);
+  }
+  return null;
+}
+
+function feedAgesLine(){
+  const now = Date.now();
+  const parts = FEEDNAMES.map(n=>{
+    const b = feedBuilt[n];
+    if(!b) return n + ': —';
+    const ageS = Math.max(0, Math.round((now - parseTs(b))/1000));
+    const stale = ageS > 180 ? ' <span class="stale">STALE</span>' : '';
+    return n + ' ' + hhmm(b) + ' (' + ageS + 's ago)' + stale;
+  });
+  $('feedAges').innerHTML = 'feeds built: ' + parts.join(' · ');
+}
+
+function currentBlock(engine, wIso, wEndMs){
+  const e = findWindowEntry(engine, wIso);
+  const now = Date.now();
+  if(!e){
+    if(now < wEndMs) return '<div class="nocall">NO CALL YET</div>'
+      + '<div class="bigmeta">the window is still open — a call appears the moment it seals.</div>';
+    return '<div class="nocall">NO CALL</div><div class="bigmeta">this engine sealed no call in this window.</div>';
+  }
+  if(e.noplay){
+    return '<div class="nocall passed">PASSED</div>'
+      + '<div class="bigmeta">the engine sat this window out — that is a sealed decision, printed as plainly as a call.</div>';
+  }
+  const side = (e.side||'').toUpperCase();
+  const cls = side==='UP' ? 'up' : 'down';
+  const arrow = side==='UP' ? '▲ UP' : '▼ DOWN';
+  const secIn = secInFromSteps(e);
+  let meta = '';
+  if(e.chance!==null && e.chance!==undefined)
+    meta += 'model ' + Math.round(e.chance*100) + '%';
+  if(secIn!==null && secIn!==undefined) meta += (meta?' · ':'') + 'sealed ' + secIn + 's in';
+  if(engine==='PLAIN'){
+    const ask = pressAsk(e);
+    meta += (meta?' · ':'') + (ask!==null ? ('ask ' + Math.round(ask*100) + '¢ (sealed card)') : 'ask — (no sealed card yet)');
+  } else {
+    const ep = entryPriceFromSteps(e);
+    if(ep!==null) meta += (meta?' · ':'') + 'in at ' + ep + '¢ (its own dip entry)';
+    else if(e.press && e.press.sell_text) meta += (meta?' · ':'') + 'seeded — watching for its dip entry';
+  }
+  let settled = '';
+  if(e.status==='SETTLED' && e.win!==null && e.win!==undefined)
+    settled = '<div class="bigmeta">settled: <span class="wl ' + (e.win?'wlw':'wll') + '">'
+      + (e.win?'WIN':'LOSS') + '</span> (result ' + (e.result||'').toUpperCase() + ')</div>';
+  return '<div class="bigside ' + cls + '">' + arrow + '</div>'
+    + '<div class="bigmeta">' + meta + '</div>' + settled;
+}
+
+function plainRecent(){
+  const cd = feeds.callsdata;
+  if(!cd) return '<div class="prow"><span class="unpriced">feed not loaded yet</span></div>';
+  const rows = (cd.recent_calls||[]).slice(0,8).map(r=>{
+    const wl = r.correct ? '<span class="wl wlw">W</span>' : '<span class="wl wll">L</span>';
+    const m = r.money ? '<span class="' + (r.money.pnl>=0?'pos':'neg') + '">' + money(r.money.pnl) + '</span>'
+                      : '<span class="unpriced">UNPRICED</span>';
+    return '<div class="prow"><span>' + hhmm(r.window) + ' · ' + (r.side||'').toUpperCase()
+      + ' ' + Math.round((r.chance||0)*100) + '%</span><span>' + wl + ' · ' + m + '</span></div>';
+  });
+  return rows.join('') || '<div class="prow"><span class="unpriced">no settled calls in the feed yet</span></div>';
+}
+function riptideRecent(){
+  const fd = feeds.flowdata;
+  if(!fd) return '<div class="prow"><span class="unpriced">feed not loaded yet</span></div>';
+  const rows = (fd.recent_windows||[]).slice(0,8).map(r=>{
+    const haul = r.haul_law;
+    const wl = r.call_hit ? '<span class="wl wlw">W</span>' : '<span class="wl wll">L</span>';
+    const m = (haul===null||haul===undefined) ? '<span class="unpriced">—</span>'
+      : '<span class="' + (haul>=0?'pos':'neg') + '">' + money(haul) + '</span>';
+    return '<div class="prow"><span>' + hhmm(r.window) + ' · ' + (r.seed_side||'').toUpperCase()
+      + ' · ' + (r.plays||0) + ' play' + ((r.plays===1)?'':'s') + '</span><span>' + wl + ' · ' + m + '</span></div>';
+  });
+  return rows.join('') || '<div class="prow"><span class="unpriced">no settled windows in the feed yet</span></div>';
+}
+
+function engineCard(engine){
+  const gl = feeds.gamelog;
+  const eng = gl && gl.engines ? gl.engines[engine] : null;
+  const rr = feeds.realrace && feeds.realrace.banks ? feeds.realrace.banks[engine] : null;
+  const now = Date.now();
+  const wIso = winISO(now);
+  const wEnd = Math.floor(now/300000)*300000 + 300000;
+  let h = '';
+  if(engine==='PLAIN'){
+    h += '<h2>PLAIN <span class="chip">' + (eng ? (eng.mode + ' lane') : '—') + '</span></h2>';
+    h += '<div class="sub">the plain vol model — one call per window, ~2 minutes in. The stand winner.</div>';
+  } else {
+    h += '<h2>🌊 RIPTIDE <span class="chip test">' + (eng ? (eng.mode + ' lane') : '—') + '</span></h2>';
+    h += '<div class="sub">the flow engine — seeds a side, enters on its own dip rule, exits itself. It plays its own book; copy the seed side and its entry when it presses.</div>';
+  }
+  h += currentBlock(engine, wIso, wEnd);
+  h += '<div class="strip">';
+  if(engine==='PLAIN')
+    h += '🏆 <b>Stand (2026-11-17): WINNER</b> — 3 pts · bank $3.31<br>';
+  else
+    h += '🏆 <b>Stand (2026-11-17): 3rd</b> — 2.5 pts · bank $12.91<br>';
+  if(rr) h += '🏁 <b>REAL-race bank: ' + bankFmt(rr.bank) + '</b> — the prize bank for the later REAL race (David places every order himself)<br>';
+  if(eng) h += '🎮 game-log bank (sim, card prices): <b>' + bankFmt(eng.bank) + '</b> · record '
+    + eng.wins + 'W / ' + (eng.graded - eng.wins) + 'L of ' + eng.graded
+    + ' · streak ' + (eng.streak_now||0) + ' · best ' + (eng.streak_best||0) + '<br>';
+  if(engine==='PLAIN'){
+    const tr = feeds.tennisrealdata;
+    if(tr && tr.plain && tr.plain.bank)
+      h += '🎾 tennis real bank: <b>' + bankFmt(tr.plain.bank.cash) + '</b> · ' + (tr.run_status||'').split('—')[0].trim() + '<br>';
+  } else {
+    const fd = feeds.flowdata;
+    if(fd && fd.ledgers && fd.ledgers.law)
+      h += '📒 flow law book (sim): <b>' + bankFmt(fd.ledgers.law.bank) + '</b> · P&amp;L ' + money(fd.ledgers.law.pnl) + '<br>';
+  }
+  h += '</div>';
+  h += '<div class="recent"><h3>RECENT SETTLED ' + (engine==='PLAIN' ? 'CALLS' : 'WINDOWS') + '</h3>'
+     + (engine==='PLAIN' ? plainRecent() : riptideRecent()) + '</div>';
+  return h;
+}
+
+function render(){
+  const now = Date.now();
+  const wIso = winISO(now);
+  const wEnd = Math.floor(now/300000)*300000 + 300000;
+  $('winLabel').textContent = '⏱ ' + hhmm(wIso) + ' window';
+  $('winClock').textContent = 'closes in ' + Math.max(0, Math.round((wEnd-now)/1000)) + 's · all times UTC';
+  feedAgesLine();
+  $('cardPLAIN').innerHTML = engineCard('PLAIN');
+  $('cardRIPTIDE').innerHTML = engineCard('RIPTIDE');
+}
+poll();
+setInterval(poll, 15000);
+setInterval(render, 1000);
+</script>
+</body>
+</html>
