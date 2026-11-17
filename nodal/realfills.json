@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T16:12:32Z",
+ "built_at": "2026-11-17T16:22:47Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -491,10 +491,36 @@
     "ts": "2026-11-17T05:23:34.722355+00:00",
     "seq": 12991,
     "sealed_at": "2026-11-17T05:31:29+0000"
+   },
+   {
+    "bank_after": 4.1243,
+    "bank_before": 5.0,
+    "cost": 0.8757,
+    "engine": "PLAIN",
+    "entry_c": 63,
+    "fill_seq": 13839,
+    "golden_rule": "The Golden Rule (seq 12864) watched this position from the fill and NEVER fired \u2014 no 95c own-side bid; closed by venue settlement, not by the golden exit.",
+    "key": "REAL_TENNIS_SETTLE|PLAIN|Colina: Nadia Podoroska vs Varvara Lepchenko|Varvara Lepchenko",
+    "lane": "tennis",
+    "lane_record": "PLAIN tennis 0W/1L, net -$0.88 \u2014 first PLAIN tennis settle, a loss.",
+    "match": "Colina: Nadia Podoroska vs Varvara Lepchenko",
+    "match_name": "Nadia Podoroska vs Varvara Lepchenko",
+    "note": "Venue settlement; verified three-way (tennis_fills.log settle line / executor log FILLLOG 16:11:20.764721Z / executor state position PLAIN|wta-podoros-lepchen-2026-11-16 closed, closed_reason venue settlement). Payout 0.00; P&L -$0.88 on $0.8757 cost; PLAIN tennis bank $5.00 -> $4.1243. The fill carried the stake-cap flag (seq 13839: $0.88 filled vs $0.75 hard cap); the settle closes that position at the full $0.88 loss. Podoroska won the match; the frozen pick (Lepchenko, prob 0.623, seq 5395) was wrong.",
+    "order": "DS9VDMTG14F0",
+    "payout": 0.0,
+    "pick": "Varvara Lepchenko",
+    "player": "Varvara Lepchenko",
+    "pnl": -0.88,
+    "shares": 1.39,
+    "tournament": "Colina",
+    "ts": "2026-11-17T16:11:20.763309+00:00",
+    "seq": 14310,
+    "sealed_at": "2026-11-17T16:15:48+0000"
    }
   ],
   "banks": {
-   "TAPE": 4.7791
+   "TAPE": 4.7791,
+   "PLAIN": 4.1243
   }
  }
 }
