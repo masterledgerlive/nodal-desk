@@ -110,6 +110,21 @@ function ashenSection(){
   else h+='<div class="card">'+rows.map(x=>'<div style="padding:4px 0;border-bottom:1px solid var(--line)">'+x.txt+'<br><span class="tag">'+esc(x.ts)+'</span></div>').join('')+'</div>';
   return h;
 }
+function pizzaSection(){
+  const A=(RF&&RF.pizza)||null;
+  if(!A) return '';
+  const r=A.record||{w:0,l:0,pnl:0,streak:'—'};
+  let h='<h2>🍕 PIZZACALLS FOLLOW — REAL MONEY LANE</h2><div class="card">Bank <b>'+money(A.bank)+'</b> (started $1.00, mandate seq 15083) · record <b>'+r.w+'W – '+r.l+'L</b> · streak <b>'+esc(r.streak)+'</b> · P&L <b class="'+(r.pnl>=0?'pos':'neg')+'">'+money(r.pnl)+'</b><br><span class="tag">Follows his sealed STRONG calls only — passes, leans and at-your-own-risk posts never fire. No target on his cards: positions ride to settlement. This REAL record is separate from his SIMULATION contest record above; the two are never blended.</span></div>';
+  const rows=[];
+  for(const f of A.fills||[]) rows.push({ts:f.ts||f.sealed_at||'', txt:'FILL · '+esc(f.window||'')+' · '+esc((f.side||'').toUpperCase())+' @ '+(f.filled_c!==undefined?f.filled_c:f.price)+'c · stake '+money(f.stake||f.cost||0)+' · seal '+f.seq});
+  for(const e of A.exits||[]) rows.push({ts:e.ts||e.sealed_at||'', txt:'EXIT · '+esc(e.window||'')+' · sold '+(e.sold_c!==undefined?e.sold_c:'')+'c · P&L <b class="'+((e.pnl||0)>=0?'pos':'neg')+'">'+money(e.pnl||0)+'</b> · seal '+e.seq});
+  for(const s of A.settles||[]) rows.push({ts:s.ts||s.sealed_at||'', txt:'SETTLE · '+esc(s.window||'')+' · payout '+money(s.payout||0)+' · P&L <b class="'+((s.pnl||0)>=0?'pos':'neg')+'">'+money(s.pnl||0)+'</b> · seal '+s.seq});
+  for(const n of A.nofills||[]) rows.push({ts:n.ts||n.sealed_at||'', txt:'NOFILL · '+esc(n.window||'')+' · rested '+(n.rested_c!==undefined?n.rested_c:'')+'c, never filled — no money moved · seal '+n.seq});
+  rows.sort((a,b)=>String(b.ts).localeCompare(String(a.ts)));
+  if(!rows.length) h+='<div class="card empty">No real fills yet — the lane starts with his next sealed strong call.</div>';
+  else h+='<div class="card">'+rows.map(x=>'<div style="padding:4px 0;border-bottom:1px solid var(--line)">'+x.txt+'<br><span class="tag">'+esc(x.ts)+'</span></div>').join('')+'</div>';
+  return h;
+}
 function tennisSection(lane, david){
   const T=(RF&&RF.tennis)||{fills:[],exits:[],settles:[],banks:{}};
   let fills, exits, settles, bankLine, title;
@@ -147,6 +162,7 @@ function render(){
   if(CUR==='The Nintendo Kid') h=formBanner()+h+tennisSection(null,true);
   if(CUR==='PLAIN') h+=tennisSection('PLAIN',false);
   if(CUR==='Ashen Bot#6973') h+=ashenSection();
+  if(CUR==='PizzaCalls + DallenTrades') h+=pizzaSection();
   el.innerHTML=h||'<div class="empty">No profile data.</div>';
 }
 Promise.all([
