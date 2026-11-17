@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T03:42:30Z",
+ "built_at": "2026-11-17T03:47:40Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -17,6 +17,32 @@
    "window": "2026-11-17T02:15:00Z",
    "seq": 12438,
    "sealed_at": "2026-11-17T02:22:03+0000"
+  },
+  {
+   "engine": "RIPTIDE",
+   "executor_log_ts": "2026-11-17T03:43:11.552529+00:00",
+   "match": "RIPTIDE|2026-11-17T03:40:00Z|DS1R872013Z6",
+   "note": "RIPTIDE's first real fill \u2014 first of two DOWN fills on the 03:40Z window",
+   "order_id": "DS1R872013Z6",
+   "price_c": 54.0,
+   "side": "down",
+   "stake": 0.1,
+   "window": "2026-11-17T03:40:00Z",
+   "seq": 12706,
+   "sealed_at": "2026-11-17T03:47:37+0000"
+  },
+  {
+   "engine": "RIPTIDE",
+   "executor_log_ts": "2026-11-17T03:43:24.078529+00:00",
+   "match": "RIPTIDE|2026-11-17T03:40:00Z|DS1RBFB013YB",
+   "note": "RIPTIDE's second fill on the 03:40Z window",
+   "order_id": "DS1RBFB013YB",
+   "price_c": 62.0,
+   "side": "down",
+   "stake": 0.14,
+   "window": "2026-11-17T03:40:00Z",
+   "seq": 12708,
+   "sealed_at": "2026-11-17T03:47:39+0000"
   }
  ],
  "exits": [
@@ -38,6 +64,39 @@
    "window": "2026-11-17T02:15:00Z",
    "seq": 12439,
    "sealed_at": "2026-11-17T02:22:03+0000"
+  },
+  {
+   "engine": "RIPTIDE",
+   "executor_log_ts": "2026-11-17T03:43:11.782137+00:00",
+   "match": "RIPTIDE|2026-11-17T03:40:00Z|DS1R8F8034EX",
+   "note": "venue truth: the exit sell was submitted at the lawful limit 0.59 (entry 54c + 5c) and the venue filled it at 54c anyway \u2014 on the SHORT side a resting limit sell executes at market on placement instead of resting. (PLAIN's long-side 95c sell rested and filled correctly at 02:15Z \u2014 long side only.)",
+   "order_id": "DS1R8F8034EX",
+   "price_c": 54.0,
+   "proceeds": 0.1,
+   "reason": "resting exit sell filled at placement",
+   "side": "down",
+   "window": "2026-11-17T03:40:00Z",
+   "seq": 12707,
+   "sealed_at": "2026-11-17T03:47:38+0000"
+  },
+  {
+   "engine": "RIPTIDE",
+   "executor_log_ts": "2026-11-17T03:43:24.386343+00:00",
+   "match": "RIPTIDE|2026-11-17T03:40:00Z|DS1RBH2013Z6",
+   "note": "exit sell submitted at the lawful limit 0.67 (entry 62c + 5c); venue filled at 57c anyway \u2014 same SHORT-side placement-fill behavior. Window net: -$0.011. RIPTIDE race bank $1.489 (PLAIN $1.7418). Fix (main, executor-side, tonight): short positions get a WATCHED exit \u2014 executor polls the side price and sells when the target is reached \u2014 instead of a resting sell, for both engines' DOWN positions. This seal records what the venue did; it stands as the record.",
+   "order_id": "DS1RBH2013Z6",
+   "pnl": -0.011,
+   "price_c": 57.0,
+   "proceeds": 0.13,
+   "race_bank_after": {
+    "PLAIN": 1.7418,
+    "RIPTIDE": 1.489
+   },
+   "reason": "resting exit sell filled at placement",
+   "side": "down",
+   "window": "2026-11-17T03:40:00Z",
+   "seq": 12709,
+   "sealed_at": "2026-11-17T03:47:39+0000"
   }
  ],
  "settles": [],
@@ -54,11 +113,15 @@
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T02:35:00Z \u00b7 UP \u00b7 order DS0TA35G14ET rested at 47.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T02:39:38.221265+00:00",
   "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T02:35:00Z \u00b7 UP \u00b7 order DS0TJZB013Z6 rested at 47.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T02:39:40.983004+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T03:05:00Z \u00b7 UP \u00b7 order DS17XD5G13ZD rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:09:32.066973+00:00",
-  "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:15:00Z \u00b7 UP \u00b7 order DS1D2FRG13YB rested at 50.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:19:36.229716+00:00"
+  "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:15:00Z \u00b7 UP \u00b7 order DS1D2FRG13YB rested at 50.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:19:36.229716+00:00",
+  "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 DOWN \u00b7 filled 54.00c \u00b7 stake $0.10 \u00b7 venue order DS1R872013Z6 \u00b7 2026-11-17T03:43:11.552529+00:00",
+  "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 sold 54.00c \u00b7 proceeds $0.10 \u00b7 reason resting exit sell filled at placement \u00b7 venue order DS1R8F8034EX \u00b7 2026-11-17T03:43:11.782137+00:00",
+  "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 DOWN \u00b7 filled 62.00c \u00b7 stake $0.14 \u00b7 venue order DS1RBFB013YB \u00b7 2026-11-17T03:43:24.078529+00:00",
+  "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 sold 57.00c \u00b7 proceeds $0.13 \u00b7 reason resting exit sell filled at placement \u00b7 venue order DS1RBH2013Z6 \u00b7 2026-11-17T03:43:24.386343+00:00"
  ],
  "banks": {
   "PLAIN": 1.7418,
-  "RIPTIDE": 1.5
+  "RIPTIDE": 1.489
  },
  "tennis": {
   "mandate_seq": 12463,
