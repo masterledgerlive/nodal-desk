@@ -1,22 +1,22 @@
 {
- "built_at": 1794903376,
+ "built_at": 1794903450,
  "window": "2026-11-17T08:15:00Z",
- "window_ends_in_s": 224,
+ "window_ends_in_s": 150,
  "daemon": {
   "state": "LIVE",
-  "updated": "2026-11-17T08:15:38Z",
-  "chain": 13394,
+  "updated": "2026-11-17T08:17:30Z",
+  "chain": 13408,
   "stall_components": [],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
   "state": "FALLING",
   "plain": "going down and staying down",
-  "drift": -26.2,
-  "range": 26.2,
+  "drift": -45.3,
+  "range": 45.3,
   "flips": 0,
   "open": 64566.009999999995,
-  "last": 64539.825
+  "last": 64520.68
  },
  "chart": {
   "points": [
@@ -123,6 +123,14 @@
    [
     1794903376,
     64539.825
+   ],
+   [
+    1794903406,
+    64540.8
+   ],
+   [
+    1794903450,
+    64520.68
    ]
   ],
   "bounds": [
@@ -142,14 +150,14 @@
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 0,
+   "streak": 1,
    "best": 22,
    "bank": 65504.94,
    "savings": 0.0,
-   "graded": 614,
-   "wins": 508,
-   "call": null,
-   "chance": null,
+   "graded": 615,
+   "wins": 509,
+   "call": "down",
+   "chance": 0.8649,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -159,23 +167,33 @@
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 3,
+   "streak": 4,
    "best": 34,
-   "bank": 10328.23,
-   "savings": 12295.34,
-   "graded": 506,
-   "wins": 414,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "bank": 10292.34,
+   "savings": 13065.11,
+   "graded": 507,
+   "wins": 415,
+   "call": "down",
+   "chance": 0.7535,
+   "ask": 0.58,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
-   "value_hit": false,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.35,
+    "lose": -0.51,
+    "shares": 0.862
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.24,
+    "lose": -0.51,
+    "shares": 0.862
+   },
+   "value_hit": true,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "VALUE TAKEN \u2014 banked at the 88% line; a flip can still come"
   },
   {
    "name": "RIPTIDE",
@@ -186,7 +204,7 @@
    "savings": 1924.15,
    "graded": 284,
    "wins": 147,
-   "call": null,
+   "call": "down",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -194,24 +212,28 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": false
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.98 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
   },
   {
-   "text": "The price dropped $26 in the last two minutes \u2014 a real push, not a drift.",
-   "src": "price trail (last 2 minutes)"
+   "text": "All the models that have called are pointing the same way: DOWN.",
+   "src": "the sealed calls"
   },
   {
    "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
    "src": "EARLY's in-window samples"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-26 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 3 minutes 44 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-45 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN; RIPTIDE says BUY DOWN. 2 minutes 30 seconds left in the window.",
  "history": [
   {
    "window": "2026-11-17T07:55:00Z",
