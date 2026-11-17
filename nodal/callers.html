@@ -57,11 +57,16 @@
   one timing law for everyone.</div>
 
   <div class="law">
-    <b>THE LAW (David's ruling, 2026-11-16).</b> A call counts iff it is posted before its
+    <b>THE LAW (David's rulings, 2026-11-16).</b> A call counts iff it is posted before its
     window settles and names one direction unambiguously; a call posted after the price has
     crossed 95¢ to one side is void — the window was already decided. Edits grade on the
     first capture; a captured call that gets deleted still counts; both sides on one window
-    voids both. <b>Scoring:</b> the raw record (W/L, plain +1/−1) is never touched by speed.
+    voids both. <b>😴 ASLEEP RULE:</b> a window with no call from a contestant counts as
+    ASLEEP — never graded, never counted against them. Only actual calls enter the record.
+    <b>♾️ ALL-TIME OPEN RACE:</b> this contest never closes. Entry is open to anyone,
+    forever — a new, faster contender arriving and destroying the older models is the goal.
+    <b>👑 STREAK IS THE CROWN STAT:</b> highest-in-a-row leads the board; the points table
+    supports. <b>Scoring:</b> the raw record (W/L, plain +1/−1) is never touched by speed.
     The race score pays wins for speed — pre-window 2.00 · 0–59s in 1.75 · 60–119s 1.50 ·
     120–179s 1.25 · 180–239s 1.10 · later 1.00 — plus ⚡ +0.25 when the window's first call
     wins. Losses are −1.00 flat, always. Under 10 graded calls = PROVISIONAL.
@@ -70,14 +75,15 @@
   </div>
 
   <div class="feedages" id="feedAges">feed: —</div>
+  <div class="livestrip" id="crownStrip" style="border-color:var(--gold)">👑 —</div>
 
   <h2 class="sec">📍 THIS WINDOW</h2>
   <div class="livestrip" id="liveStrip">—</div>
 
   <h2 class="sec">🏆 THE BOARD</h2>
   <div style="overflow-x:auto"><table id="board">
-    <thead><tr><th>#</th><th>CONTESTANT</th><th>RACE</th><th>RAW</th><th>W–L</th>
-    <th>WIN%</th><th>STREAK</th><th>FORM</th><th>AVG IN</th><th>⚡</th><th>GRADED</th></tr></thead>
+    <thead><tr><th>#</th><th>CONTESTANT</th><th>👑 BEST STREAK</th><th>NOW</th><th>RACE</th><th>RAW</th><th>W–L</th>
+    <th>WIN%</th><th>FORM</th><th>AVG IN</th><th>⚡</th><th>GRADED</th></tr></thead>
     <tbody></tbody>
   </table></div>
 
@@ -124,16 +130,25 @@ function render(){
   } else {
     $('liveStrip').innerHTML = '⏱ window ' + hhmm(lv.window) + ' — no counted calls captured yet this window.';
   }
+  const rows = cd.rows||[];
+  if(rows.length){
+    const best = Math.max.apply(null, rows.map(r => r.streak_best_n||0));
+    const holders = rows.filter(r => (r.streak_best_n||0)===best);
+    $('crownStrip').innerHTML = '👑 STREAK CROWN — best run: <b>' + best + ' in a row</b> · '
+      + holders.map(r => esc(r.name) + ' (now ' + esc(r.streak) + ')').join(' · ')
+      + '<br><span class="tag">the race never closes — the crown is held, never owned</span>';
+  }
   const tb = document.querySelector('#board tbody');
-  tb.innerHTML = (cd.rows||[]).map(r =>
+  tb.innerHTML = rows.map(r =>
     '<tr class="' + (r.rank===1?'r1':'') + (r.house?' house':'') + '"><td>' + r.rank + '</td>'
     + '<td><span class="name">' + esc(r.name) + '</span> ' + (r.provisional ? '<span class="prov">PROVISIONAL</span>' : '')
     + '<br><span class="' + (r.house?'house-tag':'tag') + '">' + esc(r.tag||'') + '</span></td>'
+    + '<td><b style="font-size:17px;color:var(--gold)">' + (r.streak_best_n||0) + '</b></td>'
+    + '<td>' + esc(r.streak) + '</td>'
     + '<td><b>' + Number(r.race).toFixed(2) + '</b></td>'
     + '<td class="' + (r.raw>=0?'pos':'neg') + '">' + (r.raw>=0?'+':'') + r.raw + '</td>'
     + '<td>' + r.w + '–' + r.l + '</td>'
     + '<td>' + (r.winrate===null?'—':r.winrate + '%') + '</td>'
-    + '<td>' + esc(r.streak) + '</td>'
     + '<td>' + (r.form||[]).map(f => f==='W'?'<span class="wlw">W</span>':'<span class="wll">L</span>').join(' ') + '</td>'
     + '<td>' + (r.avg_in===null||r.avg_in===undefined?'—':r.avg_in + 's') + '</td>'
     + '<td>' + (r.firsts||0) + '</td><td>' + r.graded + '</td></tr>').join('');
