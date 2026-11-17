@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T20:45:17Z",
+ "built_at": "2026-11-17T21:14:14Z",
  "conventions": [
   "Every step under a call comes from the sealed ledger \u2014 nothing here is reconstructed from memory.",
   "EARLY and RIPTIDE WHY / EXIT lines are the engines' own sealed words, quoted.",
@@ -21,7 +21,7 @@
   "PLAIN": {
    "board": {
     "start": 5.0,
-    "bank": 150846.76,
+    "bank": 164826.1,
     "digits": [
      {
       "level": 10
@@ -68,17 +68,17 @@
       "level": 1000
      }
     ],
-    "priced": 156,
-    "unpriced": 537,
-    "streak_now": 3,
+    "priced": 157,
+    "unpriced": 539,
+    "streak_now": 6,
     "streak_best": 22,
     "savings": 0.0,
-    "counterfactual": 150846.62,
+    "counterfactual": 164825.96,
     "run_no": 1,
     "runs": [],
     "current_run": {
-     "plays": 156,
-     "peak": 150846.76,
+     "plays": 157,
+     "peak": 164826.1,
      "digits": [
       10,
       25,
@@ -155,10 +155,191 @@
     "lent_out": 0,
     "defaults_suffered": 0,
     "defaults_caused": 0,
-    "calls_total": 693,
+    "calls_total": 697,
     "calls_listed": 150
    },
    "calls": [
+    {
+     "engine": "PLAIN",
+     "window": "2026-11-17T21:05:00Z",
+     "side": "down",
+     "chance": 0.7243,
+     "result": null,
+     "correct": null,
+     "brier": null,
+     "seq": [
+      14946,
+      null
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T21:05:00Z",
+       "text": "Window opened \u2014 index open 64,007.90."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+123s",
+       "text": "Index verified from kraken (stand-in median); live index 63,964.70 at the call; remaining sigma 0.0011."
+      },
+      {
+       "kind": "WHY",
+       "at": "+123s",
+       "text": "BTC fell $43 from the open with 176s left \u2014 the model put DOWN at 72% (call floor 60%). Called 123s in. [read off the sealed call fields]"
+      },
+      {
+       "kind": "CHECK",
+       "at": "real watch",
+       "text": "REAL overlay sealed an ask of 51\u00a2 vs model 72% \u2014 21\u00a2 under model (guard \u2713); play-along enters at that ask."
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
+      }
+     ],
+     "priced": null
+    },
+    {
+     "engine": "PLAIN",
+     "window": "2026-11-17T21:00:00Z",
+     "side": "up",
+     "chance": 0.8324,
+     "result": "up",
+     "correct": true,
+     "brier": 0.0281,
+     "seq": [
+      14924,
+      14934
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T21:00:00Z",
+       "text": "Window opened \u2014 index open 63,901.71."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+136s",
+       "text": "Index verified from coinbase + kraken (stand-in median); live index 63,965.79 at the call; remaining sigma 0.0010."
+      },
+      {
+       "kind": "WHY",
+       "at": "+136s",
+       "text": "BTC rose $64 from the open with 163s left \u2014 the model put UP at 83% (call floor 60%). Called 136s in. [read off the sealed call fields]"
+      },
+      {
+       "kind": "CHECK",
+       "at": "real watch",
+       "text": "REAL overlay sealed an ask of 51\u00a2 vs model 83% \u2014 32\u00a2 under model (guard \u2713); play-along enters at that ask."
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T21:00:00Z",
+       "text": "Settled UP at 64,007.90 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0281."
+      }
+     ],
+     "priced": {
+      "ask": 0.51,
+      "stake": 15084.6,
+      "pnl": 13979.34,
+      "bank_after": 164826.1,
+      "run": 1,
+      "borrowed": false,
+      "self_borrowed": false,
+      "borrow_source": null,
+      "borrow_count": null,
+      "borrow_from": null,
+      "how": "settlement"
+     }
+    },
+    {
+     "engine": "PLAIN",
+     "window": "2026-11-17T20:50:00Z",
+     "side": "down",
+     "chance": 0.8016,
+     "result": "down",
+     "correct": true,
+     "brier": 0.0394,
+     "seq": [
+      14903,
+      14915
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T20:50:00Z",
+       "text": "Window opened \u2014 index open 63,868.27."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+129s",
+       "text": "Index verified from coinbase + kraken (stand-in median); live index 63,816.55 at the call; remaining sigma 0.0010."
+      },
+      {
+       "kind": "WHY",
+       "at": "+129s",
+       "text": "BTC fell $52 from the open with 170s left \u2014 the model put DOWN at 80% (call floor 60%). Called 129s in. [read off the sealed call fields]"
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T20:50:00Z",
+       "text": "Settled DOWN at 63,806.83 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0394."
+      }
+     ],
+     "priced": null
+    },
+    {
+     "engine": "PLAIN",
+     "window": "2026-11-17T20:45:00Z",
+     "side": "down",
+     "chance": 0.9463,
+     "result": "down",
+     "correct": true,
+     "brier": 0.0029,
+     "seq": [
+      14895,
+      14901
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T20:45:00Z",
+       "text": "Window opened \u2014 index open 63,908.01."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+149s",
+       "text": "Index verified from coinbase + kraken (stand-in median); live index 63,818.99 at the call; remaining sigma 0.0009."
+      },
+      {
+       "kind": "WHY",
+       "at": "+149s",
+       "text": "BTC fell $89 from the open with 150s left \u2014 the model put DOWN at 95% (call floor 60%). Called 149s in. [read off the sealed call fields]"
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T20:45:00Z",
+       "text": "Settled DOWN at 63,868.27 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0029."
+      }
+     ],
+     "priced": null
+    },
     {
      "engine": "PLAIN",
      "window": "2026-11-17T20:30:00Z",
@@ -6654,228 +6835,13 @@
       }
      ],
      "priced": null
-    },
-    {
-     "engine": "PLAIN",
-     "window": "2026-11-17T00:40:00Z",
-     "side": "up",
-     "chance": 0.9192,
-     "result": "up",
-     "correct": true,
-     "brier": 0.0065,
-     "seq": [
-      12078,
-      12087
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T00:40:00Z",
-       "text": "Window opened \u2014 index open 64,461.60."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+127s",
-       "text": "Index verified from coinbase + kraken (stand-in median); live index 64,557.21 at the call; remaining sigma 0.0011."
-      },
-      {
-       "kind": "WHY",
-       "at": "+127s",
-       "text": "BTC rose $96 from the open with 172s left \u2014 the model put UP at 92% (call floor 60%). Called 127s in. [read off the sealed call fields]"
-      },
-      {
-       "kind": "CHECK",
-       "at": "real watch",
-       "text": "REAL overlay sealed an ask of 51\u00a2 vs model 92% \u2014 41\u00a2 under model (guard \u2713); play-along enters at that ask."
-      },
-      {
-       "kind": "EXIT",
-       "at": "\u2014",
-       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T00:40:00Z",
-       "text": "Settled UP at 64,553.58 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0065."
-      }
-     ],
-     "priced": {
-      "ask": 0.51,
-      "stake": 1003.5,
-      "pnl": 929.98,
-      "bank_after": 10965.34,
-      "run": 1,
-      "borrowed": false,
-      "self_borrowed": false,
-      "borrow_source": null,
-      "borrow_count": null,
-      "borrow_from": null,
-      "how": "settlement"
-     }
-    },
-    {
-     "engine": "PLAIN",
-     "window": "2026-11-17T00:30:00Z",
-     "side": "down",
-     "chance": 0.7591,
-     "result": "down",
-     "correct": true,
-     "brier": 0.058,
-     "seq": [
-      12049,
-      12061
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T00:30:00Z",
-       "text": "Window opened \u2014 index open 64,535.11."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+122s",
-       "text": "Index verified from kraken (stand-in median); live index 64,485.60 at the call; remaining sigma 0.0011."
-      },
-      {
-       "kind": "WHY",
-       "at": "+122s",
-       "text": "BTC fell $50 from the open with 177s left \u2014 the model put DOWN at 76% (call floor 60%). Called 122s in. [read off the sealed call fields]"
-      },
-      {
-       "kind": "CHECK",
-       "at": "real watch",
-       "text": "REAL overlay sealed an ask of 49\u00a2 vs model 76% \u2014 27\u00a2 under model (guard \u2713); play-along enters at that ask."
-      },
-      {
-       "kind": "EXIT",
-       "at": "\u2014",
-       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T00:30:00Z",
-       "text": "Settled DOWN at 64,460.83 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0580."
-      }
-     ],
-     "priced": {
-      "ask": 0.49,
-      "stake": 911.8,
-      "pnl": 916.7,
-      "bank_after": 10035.36,
-      "run": 1,
-      "borrowed": false,
-      "self_borrowed": false,
-      "borrow_source": null,
-      "borrow_count": null,
-      "borrow_from": null,
-      "how": "settlement"
-     }
-    },
-    {
-     "engine": "PLAIN",
-     "window": "2026-11-17T00:25:00Z",
-     "side": "up",
-     "chance": 0.9302,
-     "result": "up",
-     "correct": true,
-     "brier": 0.0049,
-     "seq": [
-      12030,
-      12040
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T00:25:00Z",
-       "text": "Window opened \u2014 index open 64,466.38."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+114s",
-       "text": "Index verified from kraken (stand-in median); live index 64,575.00 at the call; remaining sigma 0.0011."
-      },
-      {
-       "kind": "WHY",
-       "at": "+114s",
-       "text": "BTC rose $109 from the open with 185s left \u2014 the model put UP at 93% (call floor 60%). Called 114s in. [read off the sealed call fields]"
-      },
-      {
-       "kind": "EXIT",
-       "at": "\u2014",
-       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T00:25:00Z",
-       "text": "Settled UP at 64,535.11 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0049."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "PLAIN",
-     "window": "2026-11-17T00:20:00Z",
-     "side": "down",
-     "chance": 0.8304,
-     "result": "down",
-     "correct": true,
-     "brier": 0.0288,
-     "seq": [
-      12010,
-      12025
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T00:20:00Z",
-       "text": "Window opened \u2014 index open 64,540.52."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+124s",
-       "text": "Index verified from kraken (stand-in median); live index 64,478.60 at the call; remaining sigma 0.0010."
-      },
-      {
-       "kind": "WHY",
-       "at": "+124s",
-       "text": "BTC fell $62 from the open with 175s left \u2014 the model put DOWN at 83% (call floor 60%). Called 124s in. [read off the sealed call fields]"
-      },
-      {
-       "kind": "CHECK",
-       "at": "real watch",
-       "text": "REAL overlay sealed an ask of 48\u00a2 vs model 83% \u2014 35\u00a2 under model (guard \u2713); play-along enters at that ask."
-      },
-      {
-       "kind": "EXIT",
-       "at": "\u2014",
-       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T00:20:00Z",
-       "text": "Settled DOWN at 64,523.81 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0288."
-      }
-     ],
-     "priced": {
-      "ask": 0.48,
-      "stake": 825.4,
-      "pnl": 864.35,
-      "bank_after": 9118.66,
-      "run": 1,
-      "borrowed": false,
-      "self_borrowed": false,
-      "borrow_source": null,
-      "borrow_count": null,
-      "borrow_from": null,
-      "how": "settlement"
-     }
     }
    ]
   },
   "EARLY": {
    "board": {
     "start": 5.0,
-    "bank": 24769.29,
+    "bank": 27606.18,
     "digits": [
      {
       "level": 10
@@ -6922,17 +6888,17 @@
       "level": 1000
      }
     ],
-    "priced": 375,
+    "priced": 377,
     "unpriced": 128,
-    "streak_now": 0,
+    "streak_now": 2,
     "streak_best": 34,
     "savings": 29643.12,
-    "counterfactual": 4450591.25,
+    "counterfactual": 4960336.69,
     "run_no": 1,
     "runs": [],
     "current_run": {
-     "plays": 375,
-     "peak": 24817.58,
+     "plays": 377,
+     "peak": 27606.18,
      "digits": [
       10,
       25,
@@ -7074,10 +7040,205 @@
     "lent_out": 0,
     "defaults_suffered": 0,
     "defaults_caused": 0,
-    "calls_total": 583,
+    "calls_total": 586,
     "calls_listed": 150
    },
    "calls": [
+    {
+     "engine": "EARLY",
+     "window": "2026-11-17T21:05:00Z",
+     "side": "down",
+     "chance": 0.7182,
+     "result": null,
+     "correct": null,
+     "points": null,
+     "brier": null,
+     "seq": [
+      14947,
+      null
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T21:05:00Z",
+       "text": "Window opened \u2014 index open 64,009.50."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+49s",
+       "text": "Telegraph read: model put UP at 50% 49s in \u2014 before the plain desk's span opens."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+125s",
+       "text": "Telegraph read: model put DOWN at 72% 125s in \u2014 before the plain desk's span opens."
+      },
+      {
+       "kind": "WHY",
+       "at": "+125s",
+       "text": "BTC fell $43 from the window open with 174s left \u2014 the model put DOWN at 72%. Early read at 125s in, 30s before the plain desk's span opens."
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 no value line was hit and no flip triggered; the call rode to settlement."
+      }
+     ],
+     "priced": null
+    },
+    {
+     "engine": "EARLY",
+     "window": "2026-11-17T21:00:00Z",
+     "side": "up",
+     "chance": 0.8009,
+     "result": "up",
+     "correct": true,
+     "points": 1,
+     "brier": 0.0396,
+     "seq": [
+      14925,
+      14935
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T21:00:00Z",
+       "text": "Window opened \u2014 index open 63,906.00."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+72s",
+       "text": "Telegraph read: model put UP at 91% 72s in \u2014 before the plain desk's span opens."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+139s",
+       "text": "Telegraph read: model put UP at 80% 139s in \u2014 before the plain desk's span opens."
+      },
+      {
+       "kind": "WHY",
+       "at": "+139s",
+       "text": "BTC rose $58 from the window open with 160s left \u2014 the model put UP at 80%. Early read at 139s in, 30s before the plain desk's span opens."
+      },
+      {
+       "kind": "STATE",
+       "at": "+17s",
+       "text": "Index 63,906.00 (drift +0 from open) \u2014 model UP 50%."
+      },
+      {
+       "kind": "STATE",
+       "at": "+72s",
+       "text": "Index 64,012.20 (drift +106 from open) \u2014 model UP 91%."
+      },
+      {
+       "kind": "STATE",
+       "at": "+139s",
+       "text": "Index 63,964.30 (drift +58 from open) \u2014 model UP 80%."
+      },
+      {
+       "kind": "STATE",
+       "at": "+201s",
+       "text": "Index 63,932.14 (drift +26 from open) \u2014 model UP 68%."
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 no value line was hit and no flip triggered; the call rode to settlement."
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T21:00:00Z",
+       "text": "Settled UP at 64,009.50 \u2014 WIN \u00b7 1 pt \u00b7 Brier 0.0396."
+      }
+     ],
+     "priced": {
+      "ask": 0.95,
+      "stake": 2747.1,
+      "pnl": 135.03,
+      "bank_after": 27606.18,
+      "run": 1,
+      "borrowed": false,
+      "self_borrowed": false,
+      "borrow_source": null,
+      "borrow_count": null,
+      "borrow_from": null,
+      "how": "settlement"
+     }
+    },
+    {
+     "engine": "EARLY",
+     "window": "2026-11-17T20:50:00Z",
+     "side": "down",
+     "chance": 0.7772,
+     "result": "down",
+     "correct": true,
+     "points": 1,
+     "brier": 0.0496,
+     "seq": [
+      14904,
+      14913
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T20:50:00Z",
+       "text": "Window opened \u2014 index open 63,865.67."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+59s",
+       "text": "Telegraph read: model put UP at 50% 59s in \u2014 before the plain desk's span opens."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+133s",
+       "text": "Telegraph read: model put DOWN at 78% 133s in \u2014 before the plain desk's span opens."
+      },
+      {
+       "kind": "WHY",
+       "at": "+133s",
+       "text": "BTC fell $49 from the window open with 166s left \u2014 the model put DOWN at 78%. Early read at 133s in, 30s before the plain desk's span opens."
+      },
+      {
+       "kind": "STATE",
+       "at": "+59s",
+       "text": "Index 63,865.67 (drift +0 from open) \u2014 model UP 50%."
+      },
+      {
+       "kind": "STATE",
+       "at": "+133s",
+       "text": "Index 63,817.00 (drift -49 from open) \u2014 model UP 22%."
+      },
+      {
+       "kind": "STATE",
+       "at": "+192s",
+       "text": "Index 63,814.30 (drift -51 from open) \u2014 model UP 16%."
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 no value line was hit and no flip triggered; the call rode to settlement."
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T20:50:00Z",
+       "text": "Settled DOWN at 63,809.70 \u2014 WIN \u00b7 1 pt \u00b7 Brier 0.0496."
+      }
+     ],
+     "priced": {
+      "ask": 0.47,
+      "stake": 2476.9,
+      "pnl": 2701.86,
+      "bank_after": 27471.15,
+      "run": 1,
+      "borrowed": false,
+      "self_borrowed": false,
+      "borrow_source": null,
+      "borrow_count": null,
+      "borrow_from": null,
+      "how": "settlement"
+     }
+    },
     {
      "engine": "EARLY",
      "window": "2026-11-17T20:25:00Z",
@@ -18518,194 +18679,6 @@
       "borrow_from": null,
       "how": "settlement"
      }
-    },
-    {
-     "engine": "EARLY",
-     "window": "2026-11-17T00:00:00Z",
-     "side": "down",
-     "chance": 0.6054,
-     "result": "down",
-     "correct": true,
-     "points": 1,
-     "brier": 0.1557,
-     "seq": [
-      11950,
-      11961
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T00:00:00Z",
-       "text": "Window opened \u2014 index open 64,816.32."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+103s",
-       "text": "Telegraph read: model put DOWN at 61% 103s in \u2014 before the plain desk's span opens."
-      },
-      {
-       "kind": "WHY",
-       "at": "+103s",
-       "text": "BTC fell $18 from the window open with 196s left \u2014 the model put DOWN at 61%. Early read at 103s in, 30s before the plain desk's span opens."
-      },
-      {
-       "kind": "STATE",
-       "at": "+103s",
-       "text": "Index 64,798.69 (drift -18 from open) \u2014 model UP 39%."
-      },
-      {
-       "kind": "STATE",
-       "at": "+121s",
-       "text": "Index 64,771.29 (drift -45 from open) \u2014 model UP 24%."
-      },
-      {
-       "kind": "STATE",
-       "at": "+145s",
-       "text": "Index 64,765.35 (drift -51 from open) \u2014 model UP 19%."
-      },
-      {
-       "kind": "EXIT",
-       "at": "\u2014",
-       "text": "No exit decision \u2014 no value line was hit and no flip triggered; the call rode to settlement."
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T00:00:00Z",
-       "text": "Settled DOWN at 64,678.63 \u2014 WIN \u00b7 1 pt \u00b7 Brier 0.1557."
-      }
-     ],
-     "priced": {
-      "ask": 0.5,
-      "stake": 446.2,
-      "pnl": 430.69,
-      "bank_after": 4892.72,
-      "run": 1,
-      "borrowed": false,
-      "self_borrowed": false,
-      "borrow_source": null,
-      "borrow_count": null,
-      "borrow_from": null,
-      "how": "settlement"
-     }
-    },
-    {
-     "engine": "EARLY",
-     "window": "2026-11-16T15:00:00Z",
-     "side": "down",
-     "chance": 0.6252,
-     "result": "down",
-     "correct": true,
-     "points": 1,
-     "brier": 0.1405,
-     "seq": [
-      10979,
-      10986
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-16T15:00:00Z",
-       "text": "Window opened \u2014 index open 64,973.34."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+45s",
-       "text": "Telegraph read: model put UP at 50% 45s in \u2014 before the plain desk's span opens."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+127s",
-       "text": "Telegraph read: model put DOWN at 63% 127s in \u2014 before the plain desk's span opens."
-      },
-      {
-       "kind": "WHY",
-       "at": "+127s",
-       "text": "BTC fell $57 from the window open with 172s left \u2014 the model put DOWN at 63%. Early read at 127s in, 30s before the plain desk's span opens."
-      },
-      {
-       "kind": "STATE",
-       "at": "+45s",
-       "text": "Index 64,973.34 (drift +0 from open) \u2014 model UP 50%."
-      },
-      {
-       "kind": "STATE",
-       "at": "+127s",
-       "text": "Index 64,916.23 (drift -57 from open) \u2014 model UP 37%."
-      },
-      {
-       "kind": "STATE",
-       "at": "+226s",
-       "text": "Index 64,831.54 (drift -142 from open) \u2014 model UP 12%."
-      },
-      {
-       "kind": "EXIT",
-       "at": "+226s",
-       "text": "TAKE VALUE \u2014 Early DOWN ran to 88% ($-142 from the open) at 226s \u2014 value taken, the early read is banked whatever happens next."
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-16T15:00:00Z",
-       "text": "Settled DOWN at 64,831.54 \u2014 WIN \u00b7 1 pt \u00b7 value banked \u00b7 Brier 0.1405."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "EARLY",
-     "window": "2026-11-16T14:30:00Z",
-     "side": "up",
-     "chance": 0.94,
-     "result": "up",
-     "correct": true,
-     "points": 1,
-     "brier": 0.0036,
-     "seq": [
-      10953,
-      10957
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-16T14:30:00Z",
-       "text": "Window opened \u2014 index open 64,357.76."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+58s",
-       "text": "Telegraph read: model put UP at 50% 58s in \u2014 before the plain desk's span opens."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+130s",
-       "text": "Telegraph read: model put UP at 94% 130s in \u2014 before the plain desk's span opens."
-      },
-      {
-       "kind": "WHY",
-       "at": "+130s",
-       "text": "BTC rose $205 from the window open with 169s left \u2014 the model put UP at 94%. Early read at 130s in, 30s before the plain desk's span opens."
-      },
-      {
-       "kind": "STATE",
-       "at": "+58s",
-       "text": "Index 64,357.76 (drift +0 from open) \u2014 model UP 50%."
-      },
-      {
-       "kind": "STATE",
-       "at": "+130s",
-       "text": "Index 64,562.86 (drift +205 from open) \u2014 model UP 94%."
-      },
-      {
-       "kind": "EXIT",
-       "at": "+130s",
-       "text": "TAKE VALUE \u2014 Early UP ran to 94% ($+205 from the open) at 130s \u2014 value taken, the early read is banked whatever happens next."
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-16T14:30:00Z",
-       "text": "Settled UP at 65,247.79 \u2014 WIN \u00b7 1 pt \u00b7 value banked \u00b7 Brier 0.0036."
-      }
-     ],
-     "priced": null
     }
    ]
   },
@@ -19426,10 +19399,129 @@
      "MAN": 1
     },
     "banking_note": "RIPTIDE stakes are sized by its own engine, so its line takes the savings skim + run segmentation only (no replay staking, no loans). The counterfactual is its actual sealed book.",
-    "calls_total": 611,
+    "calls_total": 615,
     "calls_listed": 150
    },
    "calls": [
+    {
+     "engine": "RIPTIDE",
+     "window": "2026-11-17T21:05:00Z",
+     "side": "down",
+     "chance": null,
+     "result": null,
+     "correct": null,
+     "haul_law": null,
+     "seq": [
+      14952,
+      null
+     ],
+     "steps": [
+      {
+       "kind": "WHY",
+       "at": "2026-11-17T21:05:00Z",
+       "text": "Seeded DOWN \u2014 basis: parents agree; followed BOTH."
+      },
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T21:05:00Z",
+       "text": "Seeded but no entry trigger fired \u2014 no play this window."
+      }
+     ],
+     "priced": null
+    },
+    {
+     "engine": "RIPTIDE",
+     "window": "2026-11-17T21:00:00Z",
+     "side": "up",
+     "chance": null,
+     "result": "up",
+     "correct": false,
+     "haul_law": 0,
+     "seq": [
+      14931,
+      14936
+     ],
+     "steps": [
+      {
+       "kind": "WHY",
+       "at": "2026-11-17T21:00:00Z",
+       "text": "Seeded UP \u2014 basis: parents agree; followed BOTH."
+      },
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T21:00:00Z",
+       "text": "Seeded but no entry trigger fired \u2014 no play this window."
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T21:00:00Z",
+       "text": "Window settled UP \u2014 seed HIT \u2713 \u00b7 window haul law +0.00 (grade) / +0.00 (plays) \u00b7 hypo +0.00 \u00b7 0 play(s)."
+      }
+     ],
+     "priced": null
+    },
+    {
+     "engine": "RIPTIDE",
+     "window": "2026-11-17T20:50:00Z",
+     "side": "down",
+     "chance": null,
+     "result": "down",
+     "correct": false,
+     "haul_law": 0,
+     "seq": [
+      14910,
+      14919
+     ],
+     "steps": [
+      {
+       "kind": "WHY",
+       "at": "2026-11-17T20:50:00Z",
+       "text": "Seeded DOWN \u2014 basis: parents agree; followed BOTH."
+      },
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T20:50:00Z",
+       "text": "Seeded but no entry trigger fired \u2014 no play this window."
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T20:50:00Z",
+       "text": "Window settled DOWN \u2014 seed HIT \u2713 \u00b7 window haul law +0.00 (grade) / +0.00 (plays) \u00b7 hypo +0.00 \u00b7 0 play(s)."
+      }
+     ],
+     "priced": null
+    },
+    {
+     "engine": "RIPTIDE",
+     "window": "2026-11-17T20:45:00Z",
+     "side": "down",
+     "chance": null,
+     "result": "down",
+     "correct": false,
+     "haul_law": 0,
+     "seq": [
+      14896,
+      14902
+     ],
+     "steps": [
+      {
+       "kind": "WHY",
+       "at": "2026-11-17T20:45:00Z",
+       "text": "Seeded DOWN \u2014 basis: only PLAIN called by seed time; followed PLAIN."
+      },
+      {
+       "kind": "STATE",
+       "at": "2026-11-17T20:45:00Z",
+       "text": "Seeded but no entry trigger fired \u2014 no play this window."
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-17T20:45:00Z",
+       "text": "Window settled DOWN \u2014 seed HIT \u2713 \u00b7 window haul law +0.00 (grade) / +0.00 (plays) \u00b7 hypo +0.00 \u00b7 0 play(s)."
+      }
+     ],
+     "priced": null
+    },
     {
      "engine": "RIPTIDE",
      "window": "2026-11-17T20:30:00Z",
@@ -24077,155 +24169,6 @@
        "kind": "SETTLE",
        "at": "2026-11-17T02:45:00Z",
        "text": "Window settled DOWN \u2014 seed HIT \u2713 \u00b7 window haul law +14.82 (grade) / +14.82 (plays) \u00b7 hypo +205.95 \u00b7 2 play(s)."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "RIPTIDE",
-     "window": "2026-11-17T02:35:00Z",
-     "side": "up",
-     "chance": null,
-     "result": "up",
-     "correct": false,
-     "haul_law": -1.28,
-     "seq": [
-      12494,
-      12503
-     ],
-     "steps": [
-      {
-       "kind": "WHY",
-       "at": "2026-11-17T02:35:00Z",
-       "text": "Seeded UP \u2014 basis: parents agree; followed BOTH."
-      },
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T02:35:00Z",
-       "text": "ENTRY UP at avg 47\u00a2 \u2014 wrong-way dip 26.0c in <=32s (mid 0.725 -> 0.465) while model held up at 0.93; ladder imbalance 0.979"
-      },
-      {
-       "kind": "EXIT",
-       "at": "2026-11-17T02:35:00Z",
-       "text": "EXIT at avg 46\u00a2 \u2014 flat-by \u2014 20s before the close, nothing rides settlement \u00b7 law P&L -1.28 (fees 0.99) \u00b7 hypo -91.05."
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T02:35:00Z",
-       "text": "Window settled UP \u2014 seed HIT \u2713 \u00b7 window haul law -1.28 (grade) / -1.28 (plays) \u00b7 hypo -91.05 \u00b7 1 play(s)."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "RIPTIDE",
-     "window": "2026-11-17T02:30:00Z",
-     "side": "down",
-     "chance": null,
-     "result": "down",
-     "correct": true,
-     "haul_law": 62.03,
-     "seq": [
-      12475,
-      12481
-     ],
-     "steps": [
-      {
-       "kind": "WHY",
-       "at": "2026-11-17T02:30:00Z",
-       "text": "Seeded DOWN \u2014 basis: parents agree; followed BOTH."
-      },
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T02:30:00Z",
-       "text": "ENTRY DOWN at avg 8\u00a2 \u2014 wrong-way dip 40.5c in <=32s (mid 0.475 -> 0.070) while model held down at 0.68; ladder imbalance 0.582"
-      },
-      {
-       "kind": "EXIT",
-       "at": "2026-11-17T02:30:00Z",
-       "text": "EXIT at avg 47\u00a2 \u2014 take profit \u2014 mid 0.475 >= entry 0.080 + 5c \u00b7 law P&L +62.03 (fees 3.78) \u00b7 hypo +1327.17."
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T02:30:00Z",
-       "text": "Window settled DOWN \u2014 seed HIT \u2713 \u00b7 window haul law +62.03 (grade) / +62.03 (plays) \u00b7 hypo +1327.17 \u00b7 1 play(s)."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "RIPTIDE",
-     "window": "2026-11-17T02:25:00Z",
-     "side": "down",
-     "chance": null,
-     "result": "down",
-     "correct": false,
-     "haul_law": 0,
-     "seq": [
-      12461,
-      12466
-     ],
-     "steps": [
-      {
-       "kind": "WHY",
-       "at": "2026-11-17T02:25:00Z",
-       "text": "Seeded DOWN \u2014 basis: parents agree; followed BOTH."
-      },
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T02:25:00Z",
-       "text": "Seeded but no entry trigger fired \u2014 no play this window."
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T02:25:00Z",
-       "text": "Window settled DOWN \u2014 seed HIT \u2713 \u00b7 window haul law +0.00 (grade) / +0.00 (plays) \u00b7 hypo +0.00 \u00b7 0 play(s)."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "RIPTIDE",
-     "window": "2026-11-17T02:20:00Z",
-     "side": "down",
-     "chance": null,
-     "result": "down",
-     "correct": true,
-     "haul_law": 11.25,
-     "seq": [
-      12444,
-      12453
-     ],
-     "steps": [
-      {
-       "kind": "WHY",
-       "at": "2026-11-17T02:20:00Z",
-       "text": "Seeded DOWN \u2014 basis: parents agree; followed BOTH."
-      },
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T02:20:00Z",
-       "text": "ENTRY DOWN at avg 50\u00a2 \u2014 wrong-way dip 48.0c in <=32s (mid 0.975 -> 0.495) while model held down at 0.88; ladder imbalance 0.98"
-      },
-      {
-       "kind": "EXIT",
-       "at": "2026-11-17T02:20:00Z",
-       "text": "EXIT at avg 98\u00a2 \u2014 take profit \u2014 mid 0.985 >= entry 0.500 + 5c \u00b7 law P&L +12.45 (fees 0.51) \u00b7 hypo +876.18."
-      },
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T02:20:00Z",
-       "text": "ENTRY DOWN at avg 50\u00a2 \u2014 wrong-way dip 49.0c in <=32s (mid 0.985 -> 0.495) while model held down at 0.86; ladder imbalance 0.98"
-      },
-      {
-       "kind": "EXIT",
-       "at": "2026-11-17T02:20:00Z",
-       "text": "EXIT at avg 49\u00a2 \u2014 flat-by \u2014 20s before the close, nothing rides settlement \u00b7 law P&L -1.21 (fees 0.94) \u00b7 hypo -85.91."
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T02:20:00Z",
-       "text": "Window settled DOWN \u2014 seed HIT \u2713 \u00b7 window haul law +11.25 (grade) / +11.25 (plays) \u00b7 hypo +790.27 \u00b7 2 play(s)."
       }
      ],
      "priced": null
