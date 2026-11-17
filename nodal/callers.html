@@ -55,6 +55,7 @@
   <div class="sub">Outside callers vs our own engines — PLAIN · EARLY · RIPTIDE · FINAL —
   graded head-to-head on the same 5-minute BTC windows, the same settlement truth,
   one timing law for everyone.</div>
+  <div class="law" style="border-color:var(--blue)">🖥️ <b>THIS BOARD IS SIMULATION</b> — contest calls only, no real money on this table. The real-money lanes live in the 💰 REAL MONEY strip below the board, and the two records are never blended.</div>
 
   <div class="law">
     <b>THE LAW (David's rulings, 2026-11-16).</b> A call counts iff it is posted before its
@@ -87,6 +88,10 @@
     <tbody></tbody>
   </table></div>
 
+  <h2 class="sec">💰 REAL MONEY — THE LIVE LANES</h2>
+  <div class="livestrip" id="realStrip">—</div>
+  <div class="foot" style="margin-top:6px">Real records only, from the sealed REAL fills — full numbers on <a href="wholegame.html">the whole game</a>, <a href="tennis-real.html">the tennis real board</a>, and each player's <a href="players.html">profile</a>. A contest record above never adds a cent here, and a real record here never adds a point above.</div>
+
   <h2 class="sec">🔍 THE AUDIT — EVERY CALL, CHECKABLE</h2>
   <div id="audit"></div>
 
@@ -98,7 +103,7 @@
 
 <script>
 "use strict";
-let cd = null, cdBuilt = null;
+let cd = null, cdBuilt = null, rf = null;
 const $ = id => document.getElementById(id);
 const hhmm = s => s ? s.substr(11,5)+'Z' : '—';
 const esc = s => String(s===null||s===undefined?'':s).replace(/</g,'&lt;');
@@ -107,6 +112,10 @@ async function poll(){
   try{
     const r = await fetch('callersdata.json?t=' + Date.now(), {cache:'no-store'});
     if(r.ok){ cd = await r.json(); cdBuilt = cd.built_at; }
+  }catch(e){}
+  try{
+    const r2 = await fetch('realfills.json?t=' + Date.now(), {cache:'no-store'});
+    if(r2.ok){ rf = await r2.json(); }
   }catch(e){}
   render();
 }
@@ -164,6 +173,18 @@ function render(){
       + (c.seq ? ' · seal ' + c.seq : '') + (c.msg ? ' · msg ' + esc(c.msg) : '')
       + (c.settlement ? ' · settled ' + c.settlement.toUpperCase() : '') + '</div>').join('')
     + '</div>').join('');
+  if(rf){
+    const M = x => (x<0?'−$':'$') + Math.abs(Number(x||0)).toFixed(2);
+    const A = rf.ashen || {bank:1.00, record:{w:0,l:0,pnl:0}};
+    const D = (rf.david||{}).btc ? rf.david.btc.record : {w:0,l:0,pnl:0};
+    const DT = (rf.david||{}).tennis ? rf.david.tennis.record : {w:0,l:0,pnl:0};
+    const rb = rf.banks||{}, tb = (rf.tennis||{}).banks||{};
+    $('realStrip').innerHTML =
+      '₿ <b>BTC RACE</b> — PLAIN bank <b>' + M(rb.PLAIN) + '</b> · RIPTIDE bank <b>' + M(rb.RIPTIDE) + '</b>'
+      + '<br>🎾 <b>TENNIS</b> — PLAIN bank <b>' + M(tb.PLAIN) + '</b> · TAPE bank <b>' + M(tb.TAPE) + '</b>'
+      + '<br>🔥 <b>ASHEN FOLLOW</b> — bank <b>' + M(A.bank) + '</b> · ' + A.record.w + 'W–' + A.record.l + 'L · P&L <b>' + M(A.record.pnl) + '</b> · follows his sealed calls only (mandate 14224)'
+      + '<br>🧑 <b>THE NINTENDO KID · HUMAN</b> — BTC ' + D.w + 'W–' + D.l + 'L · P&L <b>' + M(D.pnl) + '</b> · tennis ' + DT.w + 'W–' + DT.l + 'L · P&L <b>' + M(DT.pnl) + '</b>';
+  }
 }
 poll();
 setInterval(poll, 15000);
