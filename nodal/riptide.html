@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIPTIDE — the play-by-play</title>
+<style>
+  :root{ --bg:#0b0e14; --panel:#131826; --line:#26304a; --txt:#e8ecf5; --dim:#8b96b0;
+         --gold:#ffd75e; --green:#3ddc84; --red:#ff6b6b; --blue:#57b6ff; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--txt);
+        font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  .wrap{ max-width:980px; margin:0 auto; padding:18px 14px 40px; }
+  h1{ font-size:26px; letter-spacing:2px; margin:6px 0 2px; color:var(--blue); }
+  h2.sec{ font-size:16px; letter-spacing:2px; color:var(--gold); margin:22px 0 8px;
+          border-bottom:1px solid var(--line); padding-bottom:6px; }
+  .sub{ color:var(--dim); font-size:13px; line-height:1.65; }
+  .think{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
+          padding:12px 16px; font-size:14px; line-height:1.75; margin-top:12px; }
+  .think b{ color:var(--blue); }
+  .stats{ margin-top:10px; font-size:13px; line-height:1.8; }
+  .feedages{ color:var(--dim); font-size:11.5px; line-height:1.7; margin-top:6px; }
+  .stale{ color:#0b0e14; background:var(--red); border-radius:6px; padding:0 6px;
+          font-weight:800; font-size:10.5px; }
+  .story{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
+          padding:14px 16px; margin-top:12px; }
+  .story .wt{ font-size:16px; font-weight:800; letter-spacing:1px; }
+  .stage{ border-left:3px solid var(--line); padding:6px 0 6px 14px; margin:10px 0 0 4px; }
+  .stage .k{ font-size:11px; letter-spacing:2px; color:var(--dim); font-weight:800; }
+  .stage .main{ font-size:15px; line-height:1.6; margin-top:2px; }
+  .stage .why{ color:var(--dim); font-size:12.5px; line-height:1.6; font-style:italic; }
+  .seedb{ border-left-color:var(--blue); } .pressb{ border-left-color:var(--gold); }
+  .exitb{ border-left-color:var(--green); } .resb{ border-left-color:var(--gold); }
+  .bigside{ font-size:30px; font-weight:900; }
+  .up{ color:var(--green); } .down{ color:var(--red); }
+  .pos{ color:var(--green); } .neg{ color:var(--red); }
+  .wlw{ color:var(--green); font-weight:800; } .wll{ color:var(--red); font-weight:800; }
+  .realstrip{ border:1px solid var(--gold); border-radius:12px; padding:12px 16px;
+              margin-top:12px; background:#171307; font-size:13px; line-height:1.8; }
+  .realstrip .tag{ color:var(--gold); font-weight:800; letter-spacing:1px; }
+  .logline{ color:var(--dim); font-size:12px; line-height:1.7; word-break:break-word; }
+  .foot{ margin-top:16px; color:var(--dim); font-size:12px; line-height:1.7; }
+  a{ color:var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🌊 RIPTIDE — THE PLAY-BY-PLAY</h1>
+  <div class="sub">One engine, followed play by play: the idea, the press, the ride, the exit,
+  the result — all the thinking and then the execution, in his own sealed words.</div>
+
+  <div class="think">
+    <b>How RIPTIDE thinks.</b> He doesn't call the window first and trade second — he waits.
+    His parents (PLAIN and EARLY) agree on a direction: that's the <b>seed</b>, the side he is
+    watching. Then he watches the crowd's price. Sometimes the price lurches the <i>wrong</i> way —
+    hard and fast, in seconds — while the model still holds the seed side. That wrong-way dip is
+    his moment: he <b>buys the dip</b>, because the crowd just put his side on sale. From there his
+    exits are rules, not feelings: take profit at +5¢, get out if the model flips under 50%, and
+    be flat before the window closes. If the dip never comes, he never plays — a quiet window is
+    a decision too.
+  </div>
+
+  <div class="stats" id="stats">—</div>
+  <div class="feedages" id="feedAges">feeds: —</div>
+
+  <div class="realstrip" id="realStrip"><span class="tag">🏁 REAL — RIPTIDE</span> · loading…</div>
+
+  <h2 class="sec">📍 RIGHT NOW</h2>
+  <div id="liveStory"></div>
+
+  <h2 class="sec">🧾 THE RECENT STORIES</h2>
+  <div id="stories"></div>
+
+  <div class="foot">SIM story from the sealed record (flowdata, built from the flow engine's own
+  state; the same seals print in the <a href="gamelog.html">Game Log</a>). The REAL strip above is
+  a separate record — real money under David's mandate, never blended with the sim story.
+  Prices marked "the crowd's price" are the market mid for the seed side at the last sealed poll.
+  Page refreshes itself every 15 seconds.</div>
+</div>
+
+<script>
+"use strict";
+let fd = null, rf = null, fdBuilt = null, rfBuilt = null;
+const $ = id => document.getElementById(id);
+const money = v => (v<0?'−$':'+$') + Math.abs(v).toFixed(2);
+const hhmm = s => s ? s.substr(11,5)+'Z' : '—';
+const pct = v => (v===null||v===undefined) ? '—' : Math.round(v*100) + '%';
+const cents = v => (v===null||v===undefined) ? '—' : Math.round(v*100) + '¢';
+
+async function poll(){
+  try{
+    const r = await fetch('flowdata.json?t=' + Date.now(), {cache:'no-store'});
+    if(r.ok){ fd = await r.json(); fdBuilt = fd.built_at; }
+  }catch(e){}
+  try{
+    const r = await fetch('realfills.json?t=' + Date.now(), {cache:'no-store'});
+    if(r.ok){ rf = await r.json(); rfBuilt = rf.built_at; }
+  }catch(e){}
+  render();
+}
+function ageBadge(builtAt){
+  if(!builtAt) return ' —';
+  const age = Math.max(0, Math.round((Date.now() - Date.parse(builtAt))/1000));
+  return ' ' + hhmm(builtAt) + ' (' + age + 's ago)' + (age > 180 ? ' <span class="stale">STALE</span>' : '');
+}
+function playStages(p, live){
+  let h = '<div class="stage pressb"><div class="k">🎯 THE PRESS — ' + (p.opened_elapsed!==null && p.opened_elapsed!==undefined ? p.opened_elapsed + 's in' : '') + '</div>'
+    + '<div class="main">BUY ' + (p.side||'').toUpperCase() + ' at <b>' + cents(p.entry_avg) + '</b></div>'
+    + (p.reason_in ? '<div class="why">his reason, in his own sealed words: “' + p.reason_in + '”</div>' : '') + '</div>';
+  if(p.closed_at){
+    h += '<div class="stage exitb"><div class="k">🚪 THE EXIT</div>'
+      + '<div class="main">out at <b>' + cents(p.exit_avg) + '</b> · <span class="'
+      + (p.pnl_law>=0?'pos':'neg') + '">' + money(p.pnl_law||0) + '</span> on the play</div>'
+      + (p.reason_out ? '<div class="why">“' + p.reason_out + '”</div>' : '') + '</div>';
+  } else if(live){
+    h += '<div class="stage"><div class="k">🌊 DURING</div>'
+      + '<div class="main">position open — riding it by his exit rules (+5¢ / model under 50% / flat before the close).</div></div>';
+  }
+  return h;
+}
+function storyHtml(s, live){
+  if(!s) return '<div class="story"><span class="sub">no window story in the feed yet</span></div>';
+  const seed = s.seed || {};
+  let h = '<div class="story"><span class="wt">⏱ ' + hhmm(s.window) + ' window</span>';
+  if(seed.side){
+    h += '<div class="stage seedb"><div class="k">💡 THE SEED — THE IDEA</div>'
+      + '<div class="main">watching <span class="bigside ' + (seed.side==='up'?'up':'down') + '">'
+      + (seed.side==='up'?'▲ UP':'▼ DOWN') + '</span></div>'
+      + '<div class="why">the parents ' + (seed.followed==='BOTH' ? 'agree' : 'he follows ' + (seed.followed||''))
+      + ' (' + (seed.basis||'') + ') — PLAIN ' + pct(seed.plain_chance) + ' · EARLY ' + pct(seed.early_chance)
+      + '. He is waiting for the crowd to put this side on sale.</div></div>';
+  } else {
+    h += '<div class="stage seedb"><div class="k">💡 THE SEED</div><div class="main">no seed yet — the parents have not agreed.</div></div>';
+  }
+  const lp = s.last_poll || {};
+  if(live && lp.elapsed!==null && lp.elapsed!==undefined){
+    h += '<div class="stage"><div class="k">👀 WATCHING — LAST SEALED POLL, ' + lp.elapsed + 's IN</div>'
+      + '<div class="main">the crowd\'s price for his side: <b>' + cents(lp.mid_side) + '</b> · the model holds at <b>' + pct(lp.chance_side) + '</b></div></div>';
+  }
+  const plays = s.plays || [];
+  if(!plays.length && !live)
+    h += '<div class="stage"><div class="k">🎯 THE PRESS</div><div class="main">never pressed — the dip never came, so he sat it out.</div></div>';
+  for(const p of plays) h += playStages(p, live);
+  if(s.grade){
+    const g = s.grade;
+    h += '<div class="stage resb"><div class="k">🏁 THE RESULT</div>'
+      + '<div class="main">window settled ' + (g.result||'').toUpperCase() + ' — his seed was '
+      + (g.call_hit ? '<span class="wlw">RIGHT</span>' : '<span class="wll">WRONG</span>')
+      + ' · the window\'s haul: <span class="' + (g.haul_law>=0?'pos':'neg') + '">' + money(g.haul_law||0) + '</span></div></div>';
+  } else if(live){
+    h += '<div class="stage resb"><div class="k">🏁 THE RESULT</div><div class="main">not settled yet — the window is still running.</div></div>';
+  }
+  return h + '</div>';
+}
+function render(){
+  if(fd){
+    const sb = fd.scoreboard || {}, law = (fd.ledgers||{}).law || {};
+    $('stats').innerHTML = '📒 the book so far: ' + sb.windows_seeded + ' windows seeded · '
+      + sb.call_hits + ' seed calls right of ' + sb.windows + ' graded · ' + sb.plays + ' plays · '
+      + sb.correct + ' money plays · current streak ' + (sb.streak_type||'—') + (sb.streak_n||'')
+      + ' · best win streak ' + sb.best_win_streak + ' · law bank <b>$' + Number(law.bank||0).toFixed(2)
+      + '</b> (sim, from $' + Number(law.start||5).toFixed(2) + ')';
+    $('liveStory').innerHTML = storyHtml(fd.live, true);
+    $('stories').innerHTML = (fd.stories||[]).map(s => storyHtml(s, false)).join('')
+      || '<div class="sub">no stories in the feed yet</div>';
+  }
+  $('feedAges').innerHTML = 'feeds built: flowdata' + ageBadge(fdBuilt) + ' · realfills' + ageBadge(rfBuilt);
+  if(rf){
+    let h = '<span class="tag">🏁 REAL — RIPTIDE</span> · live by David\'s mandate (sealed seq '
+      + rf.mandate_seq + ') — $1.50 race bank on Polymarket US. This strip is the REAL record only.';
+    const fills = (rf.fills||[]).filter(f => f.engine==='RIPTIDE');
+    const exLog = (rf.executor_log||[]);
+    if(fills.length){
+      h += '<br>' + fills.map(f => 'REAL FILL (sealed seq ' + f.seq + ') · ' + (f.window||'')
+        + ' · ' + (f.side||'').toUpperCase() + ' · ' + (f.price!==undefined ? cents(f.price) : '')
+        + ' · $' + Number(f.stake||0).toFixed(2)).join('<br>');
+    }
+    if(rf.banks && rf.banks.RIPTIDE!==undefined)
+      h += '<br>REAL bank after settlements: <b>$' + Number(rf.banks.RIPTIDE).toFixed(2) + '</b>';
+    if(exLog.length)
+      h += '<br><span class="sub">executor log (unsealed until the desk seals the fills):</span><br>'
+        + exLog.map(l => '<span class="logline">' + l.replace(/</g,'&lt;') + '</span>').join('<br>');
+    if(!fills.length && !exLog.length)
+      h += '<br>No REAL fills yet — the executor is armed; the first press prints here.';
+    $('realStrip').innerHTML = h;
+  }
+}
+poll();
+setInterval(poll, 15000);
+</script>
+</body>
+</html>
