@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T21:22:37Z",
+ "built_at": "2026-11-17T21:27:01Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -238,7 +238,7 @@
   "RIPTIDE": 1.42
  },
  "david": {
-  "note": "DAVID \u00b7 HUMAN \u2014 David's own plays (DAVID_PLAYER seq 14199), sealed from venue reconciliation + his reported taps. Never blended with the engines. Add-on profit rides the Bank side, not this line.",
+  "note": "DAVID \u00b7 HUMAN \u2014 David's own plays (DAVID_PLAYER seq 14199), sealed from venue reconciliation + his reported taps. Never blended with the engines. Add-on plays print here labeled BANK SIDE \u2014 their P&L is the Bank's, never an engine's.",
   "btc": {
    "fills": [],
    "settles": [],
@@ -250,14 +250,54 @@
    }
   },
   "tennis": {
-   "fills": [],
+   "fills": [
+    {
+     "avg_reported_c": "~14",
+     "bank_side": true,
+     "cost": 1.19,
+     "engine": "TAPE",
+     "engine_fill_seq": 14766,
+     "match": "DAVID_ADDON|aec-atp-alezve-benshe-2026-11-15|Ben Shelton",
+     "match_name": "ATP World Tour Finals, John McEnroe Group: Alexander Zverev vs Ben Shelton",
+     "note": "Add-on on top of TAPE's Shelton fill (seq 14766) per the DAVID_PLAYER doctrine (seq 14199): David plays for the Bank side; TAPE's numbers stay pure. At the screenshot Shelton was at 1%, position showing \"Finding buyers\" for cash out; the Golden Rule never fired on this match, so the add-on rode to settlement with the engine's play.",
+     "pick": "Ben Shelton",
+     "shares": null,
+     "side": "Ben Shelton",
+     "slug": "aec-atp-alezve-benshe-2026-11-15",
+     "source": "David's own report + Polymarket screenshot (4:22 PM EST) via main \u2014 not an executor pull; shares/avg are his reported figures, sealed as reported, never invented.",
+     "to_win_reported": 7.64,
+     "ts": "2026-11-17T21:22:00+00:00",
+     "seq": 14991,
+     "sealed_at": "2026-11-17T21:24:17+0000"
+    }
+   ],
    "exits": [],
-   "settles": [],
+   "settles": [
+    {
+     "bank_side": true,
+     "correct": false,
+     "cost": 1.19,
+     "engine": "TAPE",
+     "engine_fill_seq": 14766,
+     "match": "DAVID_ADDON_SETTLE|aec-atp-alezve-benshe-2026-11-15|Ben Shelton",
+     "match_name": "ATP World Tour Finals, John McEnroe Group: Alexander Zverev vs Ben Shelton",
+     "note": "Add-on LOSS -$1.19, Bank side per doctrine (seq 14199) \u2014 never the engine's. Total venue payout on the combined position is $0, so the pro-rata split is trivial: engine leg $0, add-on leg $0. TAPE's own REAL_TENNIS_SETTLE for its 0.48 sh @ 83c (expected -$0.40, bank $4.792 -> $4.392) had NOT landed at seal time and seals separately when the settlement watch brings it.",
+     "payout": 0.0,
+     "pick": "Ben Shelton",
+     "pnl": -1.19,
+     "result": "Alexander Zverev won 6-2, 7-6(4) \u2014 Shelton lost",
+     "side": "Ben Shelton",
+     "slug": "aec-atp-alezve-benshe-2026-11-15",
+     "source": "David's report + main's relay; match result as reported by main.",
+     "seq": 14992,
+     "sealed_at": "2026-11-17T21:24:18+0000"
+    }
+   ],
    "record": {
     "w": 0,
-    "l": 0,
-    "pnl": 0,
-    "streak": "\u2014"
+    "l": 1,
+    "pnl": -1.19,
+    "streak": "L1"
    }
   }
  },
@@ -274,6 +314,94 @@
    "l": 0,
    "pnl": 0,
    "streak": "\u2014"
+  }
+ },
+ "standings": {
+  "note": "REAL MONEY ONLY \u2014 ranked by earned (P&L). Banks from executor state (venue-derived), records from sealed exits/settles. The SIM contest lives on callers.html \u2014 never blended.",
+  "rows": [
+   {
+    "player": "PLAIN",
+    "key": "PLAIN_BTC",
+    "lane": "BTC 5-min race",
+    "tag": null,
+    "put_in": 1.5,
+    "has_now": 1.6918,
+    "earned": 0.1918,
+    "w": 1,
+    "l": 1,
+    "streak": "L1",
+    "rank": 1
+   },
+   {
+    "player": "ASHEN FOLLOW",
+    "key": "ASHEN",
+    "lane": "BTC 5-min \u00b7 caller follow",
+    "tag": null,
+    "put_in": 1.0,
+    "has_now": 1.0,
+    "earned": 0.0,
+    "w": 0,
+    "l": 0,
+    "streak": "\u2014",
+    "rank": 2
+   },
+   {
+    "player": "RIPTIDE",
+    "key": "RIPTIDE_BTC",
+    "lane": "BTC 5-min race",
+    "tag": null,
+    "put_in": 1.5,
+    "has_now": 1.318,
+    "earned": -0.182,
+    "w": 0,
+    "l": 3,
+    "streak": "L3",
+    "rank": 3
+   },
+   {
+    "player": "TAPE",
+    "key": "TAPE_TENNIS",
+    "lane": "Tennis",
+    "tag": null,
+    "put_in": 5.0,
+    "has_now": 4.792,
+    "earned": -0.208,
+    "w": 3,
+    "l": 2,
+    "streak": "W1",
+    "rank": 4
+   },
+   {
+    "player": "PLAIN",
+    "key": "PLAIN_TENNIS",
+    "lane": "Tennis",
+    "tag": null,
+    "put_in": 5.0,
+    "has_now": 4.1243,
+    "earned": -0.8757,
+    "w": 0,
+    "l": 1,
+    "streak": "L1",
+    "rank": 5
+   },
+   {
+    "player": "THE NINTENDO KID",
+    "key": "DAVID",
+    "lane": "Tennis \u00b7 add-on (Bank side)",
+    "tag": "HUMAN",
+    "put_in": 1.19,
+    "has_now": 0.0,
+    "earned": -1.19,
+    "w": 0,
+    "l": 1,
+    "streak": "L1",
+    "rank": 6
+   }
+  ],
+  "totals": {
+   "put_in": 15.19,
+   "has_now": 12.9261,
+   "earned": -2.2639
   }
  },
  "tennis": {
