@@ -1,96 +1,583 @@
 {
- "built_at": "2026-11-17T04:18:01Z",
+ "built_at": "2026-11-17T05:17:30Z",
  "bar": "FOR SURE fires only when ALL hold: PLAIN and EARLY agree on the final side \u00b7 BOTH reads >= 85% (the desk calibration: the 80-90% band actually hits 95.9%, the 90-99% band 98.1%) \u00b7 the ask is really read, never null \u00b7 the ask is >= 3c under the consensus (weaker) model \u00b7 the ask is under the 88c value line, so a win cannot lose money at the exit. Anything else is NO CALL, printed as plainly.",
  "grading": "Graded on MONEY, not direction: $0.50 at the sealed ask, fees in, on the venue's settlement (stand-in index shown beside it, labeled). A directional win that loses money is a money LOSS, in red, no exceptions.",
  "current": {
-  "window": "2026-11-17T04:15:00Z",
-  "ends_in_s": 119,
-  "plain": {
-   "side": "down",
-   "chance": 0.638,
-   "at": 1794889028
-  },
+  "window": "2026-11-17T05:15:00Z",
+  "ends_in_s": 150,
+  "plain": null,
   "early": {
    "side": "down",
-   "chance": 0.6673,
-   "at": 1794889032,
-   "at_elapsed_s": 132,
-   "why": "BTC fell $30 from the window open with 167s left \u2014 the model put DOWN at 67%. Early read at 132s in, 30s before the plain desk's span opens."
+   "chance": 0.6197,
+   "at": 1794892600,
+   "at_elapsed_s": 100,
+   "why": "BTC fell $16 from the window open with 199s left \u2014 the model put DOWN at 62%. Early read at 100s in, 30s before the plain desk's span opens."
   },
   "telegraph": [
    {
-    "t": 1794888968,
-    "elapsed": 68,
+    "t": 1794892570,
+    "elapsed": 70,
     "side": "down",
-    "chance": 0.6429
+    "chance": 0.6411
    },
    {
-    "t": 1794889032,
-    "elapsed": 132,
+    "t": 1794892600,
+    "elapsed": 100,
     "side": "down",
-    "chance": 0.6673
-   },
-   {
-    "t": 1794889065,
-    "elapsed": 165,
-    "side": "up",
-    "chance": 0.5195
+    "chance": 0.6197
    }
   ],
-  "decided": {
+  "decided": null
+ },
+ "record": {
+  "decided": 350,
+  "no_call": 332,
+  "for_sure": 18,
+  "graded": 18,
+  "money_wins": 18,
+  "money_losses": 0,
+  "pnl_settle": 7.82,
+  "pnl_exit": 5.71
+ },
+ "calls": [
+  {
+   "window": "2026-11-17T05:10:00Z",
+   "verdict": "NO CALL",
+   "side": null,
    "ask": null,
    "ask_source": null,
-   "bar": "agreement + both engines >= 85% + real ask >= 3c under the consensus (weaker) model + ask < 88c",
-   "decided_elapsed_s": 160,
+   "model": null,
+   "plain": null,
+   "early": null,
+   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window",
+   "value_state": "no value take sealed",
+   "telegraph": [
+    {
+     "chance": 0.5321,
+     "elapsed": 67,
+     "side": "up",
+     "t": 1794892267
+    },
+    {
+     "chance": 0.5506,
+     "elapsed": 98,
+     "side": "down",
+     "t": 1794892298
+    },
+    {
+     "chance": 0.5341,
+     "elapsed": 127,
+     "side": "down",
+     "t": 1794892327
+    },
+    {
+     "chance": 0.595,
+     "elapsed": 158,
+     "side": "down",
+     "t": 1794892358
+    },
+    {
+     "chance": 0.6844,
+     "elapsed": 187,
+     "side": "down",
+     "t": 1794892387
+    },
+    {
+     "chance": 0.519,
+     "elapsed": 218,
+     "side": "down",
+     "t": 1794892418
+    },
+    {
+     "chance": 0.6018,
+     "elapsed": 250,
+     "side": "up",
+     "t": 1794892450
+    }
+   ],
+   "reasons": [
+    "PLAIN and EARLY have not both called \u2014 no agreement to stand on"
+   ],
+   "decided_elapsed_s": 270,
+   "seq": 12936,
+   "grade": null,
+   "lessons": []
+  },
+  {
+   "window": "2026-11-17T05:00:00Z",
+   "verdict": "FOR SURE DOWN",
+   "side": "down",
+   "ask": 0.52,
+   "ask_source": "PLAIN CALL",
+   "model": 0.99,
+   "plain": {
+    "chance": 0.99,
+    "side": "down"
+   },
    "early": {
-    "chance": 0.6673,
+    "chance": 0.99,
+    "side": "down",
+    "via": "call"
+   },
+   "flip_state": "VALUE TAKEN \u2014 banked at the 88% line; a flip can still come",
+   "value_state": "VALUE TAKEN",
+   "telegraph": [
+    {
+     "chance": 0.9732,
+     "elapsed": 69,
+     "side": "down",
+     "t": 1794891669
+    },
+    {
+     "chance": 0.99,
+     "elapsed": 103,
+     "side": "down",
+     "t": 1794891703
+    }
+   ],
+   "reasons": [
+    "all conditions met \u2014 agreement at PLAIN 99% / EARLY 99%, ask 52c is 47c under the consensus model and under the 88c line"
+   ],
+   "decided_elapsed_s": 157,
+   "seq": 12906,
+   "grade": {
+    "venue_result": "down",
+    "index_result": "down",
+    "sources_agree": true,
+    "pnl_settle": 0.44,
+    "pnl_settle_index": 0.44,
+    "pnl_exit": 0.32,
+    "exit_basis": "EARLY's 88c value take sealed this window \u2014 out at the value line",
+    "money_win": true,
+    "dir_win": true
+   },
+   "lessons": [
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right.",
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
+   ]
+  },
+  {
+   "window": "2026-11-17T04:55:00Z",
+   "verdict": "NO CALL",
+   "side": "up",
+   "ask": null,
+   "ask_source": null,
+   "model": 0.6459,
+   "plain": {
+    "chance": 0.8499,
+    "side": "up"
+   },
+   "early": {
+    "chance": 0.6459,
+    "side": "up",
+    "via": "call"
+   },
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
+   "value_state": "no value take sealed",
+   "telegraph": [
+    {
+     "chance": 0.608,
+     "elapsed": 73,
+     "side": "up",
+     "t": 1794891373
+    },
+    {
+     "chance": 0.6459,
+     "elapsed": 102,
+     "side": "up",
+     "t": 1794891402
+    },
+    {
+     "chance": 0.814,
+     "elapsed": 133,
+     "side": "up",
+     "t": 1794891433
+    }
+   ],
+   "reasons": [
+    "below the FOR SURE bar \u2014 PLAIN 85% / EARLY 65% (both must be >= 85%)"
+   ],
+   "decided_elapsed_s": 153,
+   "seq": 12885,
+   "grade": {
+    "venue_result": "up",
+    "index_result": "up",
+    "sources_agree": true,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": true
+   },
+   "lessons": [
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right.",
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
+   ]
+  },
+  {
+   "window": "2026-11-17T04:50:00Z",
+   "verdict": "NO CALL",
+   "side": "down",
+   "ask": null,
+   "ask_source": null,
+   "model": 0.8297,
+   "plain": {
+    "chance": 0.866,
+    "side": "down"
+   },
+   "early": {
+    "chance": 0.8297,
     "side": "down",
     "via": "call"
    },
    "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
-   "match": "FINAL|2026-11-17T04:15:00Z",
-   "model_consensus": 0.638,
-   "plain": {
-    "chance": 0.638,
-    "side": "down"
-   },
-   "reasons": [
-    "below the FOR SURE bar \u2014 PLAIN 64% / EARLY 67% (both must be >= 85%)"
-   ],
-   "side": "down",
-   "stake": 0.5,
+   "value_state": "no value take sealed",
    "telegraph": [
     {
-     "chance": 0.6429,
-     "elapsed": 68,
+     "chance": 0.7478,
+     "elapsed": 73,
      "side": "down",
-     "t": 1794888968
+     "t": 1794891073
     },
     {
-     "chance": 0.6673,
-     "elapsed": 132,
+     "chance": 0.8297,
+     "elapsed": 137,
      "side": "down",
-     "t": 1794889032
+     "t": 1794891137
     }
    ],
-   "value_state": "no value take sealed",
-   "venue_class": "REAL-POLYMARKET-US",
+   "reasons": [
+    "below the FOR SURE bar \u2014 PLAIN 87% / EARLY 83% (both must be >= 85%)"
+   ],
+   "decided_elapsed_s": 161,
+   "seq": 12872,
+   "grade": {
+    "venue_result": "down",
+    "index_result": "up",
+    "sources_agree": false,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": true
+   },
+   "lessons": [
+    "Called DOWN at 87% on a $-47 move from the open. BTC settled $+7 on the other side of the open. After the call the price reversed back through the open and never came back.",
+    "A clean miss on the early read, no flip offered. Logged with its playback so the miss can be re-watched tick by tick \u2014 the desk does not edit its losses out.",
+    "A clean miss on the early read, no flip offered. Logged with its playback so the miss can be re-watched tick by tick \u2014 the desk does not edit its losses out."
+   ]
+  },
+  {
+   "window": "2026-11-17T04:45:00Z",
    "verdict": "NO CALL",
-   "window": "2026-11-17T04:15:00Z",
-   "seq": 12771
-  }
- },
- "record": {
-  "decided": 341,
-  "no_call": 324,
-  "for_sure": 17,
-  "graded": 17,
-  "money_wins": 17,
-  "money_losses": 0,
-  "pnl_settle": 7.38,
-  "pnl_exit": 5.39
- },
- "calls": [
+   "side": null,
+   "ask": null,
+   "ask_source": null,
+   "model": null,
+   "plain": null,
+   "early": null,
+   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window",
+   "value_state": "no value take sealed",
+   "telegraph": [
+    {
+     "chance": 0.5888,
+     "elapsed": 68,
+     "side": "down",
+     "t": 1794890768
+    },
+    {
+     "chance": 0.5725,
+     "elapsed": 97,
+     "side": "up",
+     "t": 1794890797
+    },
+    {
+     "chance": 0.5007,
+     "elapsed": 158,
+     "side": "down",
+     "t": 1794890858
+    },
+    {
+     "chance": 0.7393,
+     "elapsed": 188,
+     "side": "up",
+     "t": 1794890888
+    },
+    {
+     "chance": 0.5359,
+     "elapsed": 221,
+     "side": "up",
+     "t": 1794890921
+    },
+    {
+     "chance": 0.8655,
+     "elapsed": 251,
+     "side": "up",
+     "t": 1794890951
+    }
+   ],
+   "reasons": [
+    "PLAIN and EARLY have not both called \u2014 no agreement to stand on"
+   ],
+   "decided_elapsed_s": 274,
+   "seq": 12868,
+   "grade": {
+    "venue_result": "down",
+    "index_result": null,
+    "sources_agree": null,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": null
+   },
+   "lessons": []
+  },
+  {
+   "window": "2026-11-17T04:40:00Z",
+   "verdict": "NO CALL",
+   "side": "up",
+   "ask": null,
+   "ask_source": null,
+   "model": 0.6635,
+   "plain": {
+    "chance": 0.866,
+    "side": "up"
+   },
+   "early": {
+    "chance": 0.6635,
+    "side": "up",
+    "via": "call"
+   },
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
+   "value_state": "no value take sealed",
+   "telegraph": [
+    {
+     "chance": 0.5528,
+     "elapsed": 69,
+     "side": "up",
+     "t": 1794890469
+    },
+    {
+     "chance": 0.6635,
+     "elapsed": 98,
+     "side": "up",
+     "t": 1794890498
+    },
+    {
+     "chance": 0.8471,
+     "elapsed": 131,
+     "side": "up",
+     "t": 1794890531
+    }
+   ],
+   "reasons": [
+    "below the FOR SURE bar \u2014 PLAIN 87% / EARLY 66% (both must be >= 85%)"
+   ],
+   "decided_elapsed_s": 166,
+   "seq": 12852,
+   "grade": {
+    "venue_result": "up",
+    "index_result": "up",
+    "sources_agree": true,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": true
+   },
+   "lessons": [
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right.",
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
+   ]
+  },
+  {
+   "window": "2026-11-17T04:35:00Z",
+   "verdict": "NO CALL",
+   "side": "down",
+   "ask": null,
+   "ask_source": null,
+   "model": 0.8032,
+   "plain": {
+    "chance": 0.8032,
+    "side": "down"
+   },
+   "early": {
+    "chance": 0.8214,
+    "side": "down",
+    "via": "call"
+   },
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
+   "value_state": "no value take sealed",
+   "telegraph": [
+    {
+     "chance": 0.8002,
+     "elapsed": 57,
+     "side": "down",
+     "t": 1794890157
+    },
+    {
+     "chance": 0.8214,
+     "elapsed": 90,
+     "side": "down",
+     "t": 1794890190
+    },
+    {
+     "chance": 0.7793,
+     "elapsed": 124,
+     "side": "down",
+     "t": 1794890224
+    }
+   ],
+   "reasons": [
+    "below the FOR SURE bar \u2014 PLAIN 80% / EARLY 82% (both must be >= 85%)"
+   ],
+   "decided_elapsed_s": 145,
+   "seq": 12831,
+   "grade": {
+    "venue_result": "up",
+    "index_result": "down",
+    "sources_agree": false,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": false
+   },
+   "lessons": [
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right.",
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
+   ]
+  },
+  {
+   "window": "2026-11-17T04:25:00Z",
+   "verdict": "NO CALL",
+   "side": "up",
+   "ask": null,
+   "ask_source": null,
+   "model": 0.7743,
+   "plain": {
+    "chance": 0.7743,
+    "side": "up"
+   },
+   "early": {
+    "chance": 0.8213,
+    "side": "up",
+    "via": "call"
+   },
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
+   "value_state": "no value take sealed",
+   "telegraph": [
+    {
+     "chance": 0.5168,
+     "elapsed": 71,
+     "side": "up",
+     "t": 1794889571
+    },
+    {
+     "chance": 0.5446,
+     "elapsed": 99,
+     "side": "up",
+     "t": 1794889599
+    },
+    {
+     "chance": 0.8213,
+     "elapsed": 130,
+     "side": "up",
+     "t": 1794889630
+    }
+   ],
+   "reasons": [
+    "below the FOR SURE bar \u2014 PLAIN 77% / EARLY 82% (both must be >= 85%)"
+   ],
+   "decided_elapsed_s": 153,
+   "seq": 12794,
+   "grade": {
+    "venue_result": "up",
+    "index_result": "down",
+    "sources_agree": false,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": true
+   },
+   "lessons": [
+    "Called UP at 77% on a $+52 move from the open. BTC settled $-8 on the other side of the open. After the call the price reversed back through the open and never came back.",
+    "A clean miss on the early read, no flip offered. Logged with its playback so the miss can be re-watched tick by tick \u2014 the desk does not edit its losses out.",
+    "A clean miss on the early read, no flip offered. Logged with its playback so the miss can be re-watched tick by tick \u2014 the desk does not edit its losses out."
+   ]
+  },
+  {
+   "window": "2026-11-17T04:20:00Z",
+   "verdict": "NO CALL",
+   "side": "down",
+   "ask": null,
+   "ask_source": null,
+   "model": 0.6019,
+   "plain": {
+    "chance": 0.6019,
+    "side": "down"
+   },
+   "early": {
+    "chance": 0.6226,
+    "side": "down",
+    "via": "call"
+   },
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
+   "value_state": "no value take sealed",
+   "telegraph": [
+    {
+     "chance": 0.5353,
+     "elapsed": 45,
+     "side": "down",
+     "t": 1794889245
+    },
+    {
+     "chance": 0.5948,
+     "elapsed": 77,
+     "side": "down",
+     "t": 1794889277
+    },
+    {
+     "chance": 0.6226,
+     "elapsed": 107,
+     "side": "down",
+     "t": 1794889307
+    },
+    {
+     "chance": 0.5793,
+     "elapsed": 138,
+     "side": "down",
+     "t": 1794889338
+    }
+   ],
+   "reasons": [
+    "below the FOR SURE bar \u2014 PLAIN 60% / EARLY 62% (both must be >= 85%)"
+   ],
+   "decided_elapsed_s": 157,
+   "seq": 12782,
+   "grade": {
+    "venue_result": "up",
+    "index_result": "down",
+    "sources_agree": false,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": false
+   },
+   "lessons": [
+    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
+   ]
+  },
   {
    "window": "2026-11-17T04:15:00Z",
    "verdict": "NO CALL",
@@ -128,8 +615,21 @@
    ],
    "decided_elapsed_s": 160,
    "seq": 12771,
-   "grade": null,
-   "lessons": []
+   "grade": {
+    "venue_result": "down",
+    "index_result": "up",
+    "sources_agree": false,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": true
+   },
+   "lessons": [
+    "Called DOWN at 64% on a $-26 move from the open. BTC settled $+28 on the other side of the open. After the call the price reversed back through the open and never came back.",
+    "A clean miss on the early read, no flip offered. Logged with its playback so the miss can be re-watched tick by tick \u2014 the desk does not edit its losses out."
+   ]
   },
   {
    "window": "2026-11-17T04:10:00Z",
@@ -161,7 +661,17 @@
    ],
    "decided_elapsed_s": 266,
    "seq": 12761,
-   "grade": null,
+   "grade": {
+    "venue_result": "down",
+    "index_result": null,
+    "sources_agree": null,
+    "pnl_settle": 0.0,
+    "pnl_settle_index": 0.0,
+    "pnl_exit": 0.0,
+    "exit_basis": "NO CALL \u2014 no press, no money moved",
+    "money_win": null,
+    "dir_win": null
+   },
    "lessons": []
   },
   {
@@ -214,7 +724,6 @@
    },
    "lessons": [
     "Called DOWN at 62% on a $-23 move from the open. BTC settled $+3 on the other side of the open. After the call the price reversed back through the open and never came back.",
-    "A clean miss on the early read, no flip offered. Logged with its playback so the miss can be re-watched tick by tick \u2014 the desk does not edit its losses out.",
     "A clean miss on the early read, no flip offered. Logged with its playback so the miss can be re-watched tick by tick \u2014 the desk does not edit its losses out."
    ]
   },
@@ -261,7 +770,6 @@
     "dir_win": true
    },
    "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right.",
     "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
    ]
   },
@@ -314,7 +822,6 @@
     "dir_win": true
    },
    "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right.",
     "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
    ]
   },
@@ -373,7 +880,6 @@
     "dir_win": true
    },
    "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right.",
     "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
    ]
   },
@@ -623,9 +1129,7 @@
     "money_win": null,
     "dir_win": false
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:40:00Z",
@@ -748,9 +1252,7 @@
     "money_win": null,
     "dir_win": true
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:30:00Z",
@@ -800,9 +1302,7 @@
     "money_win": null,
     "dir_win": false
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:25:00Z",
@@ -858,9 +1358,7 @@
     "money_win": null,
     "dir_win": true
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:20:00Z",
@@ -916,9 +1414,7 @@
     "money_win": true,
     "dir_win": true
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:15:00Z",
@@ -974,9 +1470,7 @@
     "money_win": null,
     "dir_win": true
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:10:00Z",
@@ -1032,9 +1526,7 @@
     "money_win": null,
     "dir_win": true
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:05:00Z",
@@ -1090,9 +1582,7 @@
     "money_win": null,
     "dir_win": null
    },
-   "lessons": [
-    "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-   ]
+   "lessons": []
   },
   {
    "window": "2026-11-17T02:00:00Z",
@@ -1811,486 +2301,6 @@
     "exit_basis": "NO CALL \u2014 no press, no money moved",
     "money_win": null,
     "dir_win": true
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:40:00Z",
-   "verdict": "FOR SURE UP",
-   "side": "up",
-   "ask": 0.51,
-   "ask_source": "PLAIN CALL",
-   "model": 0.8759,
-   "plain": {
-    "chance": 0.9192,
-    "side": "up"
-   },
-   "early": {
-    "chance": 0.8759,
-    "side": "up",
-    "via": "call"
-   },
-   "flip_state": "VALUE TAKEN \u2014 banked at the 88% line; a flip can still come",
-   "value_state": "VALUE TAKEN",
-   "telegraph": [
-    {
-     "chance": 0.63,
-     "elapsed": 64,
-     "side": "up",
-     "t": 1794876064
-    },
-    {
-     "chance": 0.8759,
-     "elapsed": 99,
-     "side": "up",
-     "t": 1794876099
-    },
-    {
-     "chance": 0.922,
-     "elapsed": 129,
-     "side": "up",
-     "t": 1794876129
-    }
-   ],
-   "reasons": [
-    "all conditions met \u2014 agreement at PLAIN 92% / EARLY 88%, ask 51c is 37c under the consensus model and under the 88c line"
-   ],
-   "decided_elapsed_s": 179,
-   "seq": 12082,
-   "grade": {
-    "venue_result": "up",
-    "index_result": "up",
-    "sources_agree": true,
-    "pnl_settle": 0.46,
-    "pnl_settle_index": 0.46,
-    "pnl_exit": 0.34,
-    "exit_basis": "EARLY's 88c value take sealed this window \u2014 out at the value line",
-    "money_win": true,
-    "dir_win": true
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:30:00Z",
-   "verdict": "NO CALL",
-   "side": "down",
-   "ask": null,
-   "ask_source": null,
-   "model": 0.7591,
-   "plain": {
-    "chance": 0.7591,
-    "side": "down"
-   },
-   "early": {
-    "chance": 0.8178,
-    "side": "down",
-    "via": "call"
-   },
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
-   "value_state": "no value take sealed",
-   "telegraph": [
-    {
-     "chance": 0.7535,
-     "elapsed": 65,
-     "side": "down",
-     "t": 1794875465
-    },
-    {
-     "chance": 0.8178,
-     "elapsed": 95,
-     "side": "down",
-     "t": 1794875495
-    },
-    {
-     "chance": 0.7268,
-     "elapsed": 125,
-     "side": "down",
-     "t": 1794875525
-    }
-   ],
-   "reasons": [
-    "below the FOR SURE bar \u2014 PLAIN 76% / EARLY 82% (both must be >= 85%)"
-   ],
-   "decided_elapsed_s": 140,
-   "seq": 12053,
-   "grade": {
-    "venue_result": "down",
-    "index_result": "down",
-    "sources_agree": true,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": true
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:25:00Z",
-   "verdict": "NO CALL",
-   "side": "up",
-   "ask": 0.94,
-   "ask_source": "EARLY CALL",
-   "model": 0.8559,
-   "plain": {
-    "chance": 0.9302,
-    "side": "up"
-   },
-   "early": {
-    "chance": 0.8559,
-    "side": "up",
-    "via": "call"
-   },
-   "flip_state": "VALUE TAKEN \u2014 banked at the 88% line; a flip can still come",
-   "value_state": "VALUE TAKEN",
-   "telegraph": [
-    {
-     "chance": 0.6321,
-     "elapsed": 56,
-     "side": "up",
-     "t": 1794875156
-    },
-    {
-     "chance": 0.8559,
-     "elapsed": 86,
-     "side": "up",
-     "t": 1794875186
-    },
-    {
-     "chance": 0.9351,
-     "elapsed": 116,
-     "side": "up",
-     "t": 1794875216
-    }
-   ],
-   "reasons": [
-    "price too rich \u2014 ask 94c vs consensus model 86% (needs >= 3c under)"
-   ],
-   "decided_elapsed_s": 130,
-   "seq": 12034,
-   "grade": {
-    "venue_result": "up",
-    "index_result": "up",
-    "sources_agree": true,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": true
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:20:00Z",
-   "verdict": "NO CALL",
-   "side": "down",
-   "ask": null,
-   "ask_source": null,
-   "model": 0.7214,
-   "plain": {
-    "chance": 0.8304,
-    "side": "down"
-   },
-   "early": {
-    "chance": 0.7214,
-    "side": "down",
-    "via": "call"
-   },
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
-   "value_state": "no value take sealed",
-   "telegraph": [
-    {
-     "chance": 0.5248,
-     "elapsed": 66,
-     "side": "up",
-     "t": 1794874866
-    },
-    {
-     "chance": 0.7214,
-     "elapsed": 95,
-     "side": "down",
-     "t": 1794874895
-    }
-   ],
-   "reasons": [
-    "below the FOR SURE bar \u2014 PLAIN 83% / EARLY 72% (both must be >= 85%)"
-   ],
-   "decided_elapsed_s": 139,
-   "seq": 12016,
-   "grade": {
-    "venue_result": "down",
-    "index_result": "down",
-    "sources_agree": true,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": true
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:15:00Z",
-   "verdict": "NO CALL",
-   "side": "down",
-   "ask": null,
-   "ask_source": null,
-   "model": 0.67,
-   "plain": {
-    "chance": 0.6862,
-    "side": "down"
-   },
-   "early": {
-    "chance": 0.67,
-    "side": "down",
-    "via": "call"
-   },
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
-   "value_state": "no value take sealed",
-   "telegraph": [
-    {
-     "chance": 0.5817,
-     "elapsed": 63,
-     "side": "up",
-     "t": 1794874563
-    },
-    {
-     "chance": 0.67,
-     "elapsed": 92,
-     "side": "down",
-     "t": 1794874592
-    },
-    {
-     "chance": 0.6952,
-     "elapsed": 123,
-     "side": "down",
-     "t": 1794874623
-    }
-   ],
-   "reasons": [
-    "below the FOR SURE bar \u2014 PLAIN 69% / EARLY 67% (both must be >= 85%)"
-   ],
-   "decided_elapsed_s": 140,
-   "seq": 11995,
-   "grade": {
-    "venue_result": "down",
-    "index_result": "down",
-    "sources_agree": true,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": true
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:10:00Z",
-   "verdict": "NO CALL",
-   "side": "down",
-   "ask": null,
-   "ask_source": null,
-   "model": 0.6905,
-   "plain": {
-    "chance": 0.8135,
-    "side": "down"
-   },
-   "early": {
-    "chance": 0.6905,
-    "side": "down",
-    "via": "call"
-   },
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
-   "value_state": "no value take sealed",
-   "telegraph": [
-    {
-     "chance": 0.6955,
-     "elapsed": 66,
-     "side": "down",
-     "t": 1794874266
-    },
-    {
-     "chance": 0.5778,
-     "elapsed": 96,
-     "side": "down",
-     "t": 1794874296
-    },
-    {
-     "chance": 0.6905,
-     "elapsed": 125,
-     "side": "down",
-     "t": 1794874325
-    },
-    {
-     "chance": 0.7523,
-     "elapsed": 156,
-     "side": "down",
-     "t": 1794874356
-    }
-   ],
-   "reasons": [
-    "below the FOR SURE bar \u2014 PLAIN 81% / EARLY 69% (both must be >= 85%)"
-   ],
-   "decided_elapsed_s": 299,
-   "seq": 11981,
-   "grade": {
-    "venue_result": "down",
-    "index_result": "down",
-    "sources_agree": true,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": true
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:05:00Z",
-   "verdict": "NO CALL",
-   "side": null,
-   "ask": null,
-   "ask_source": null,
-   "model": null,
-   "plain": null,
-   "early": null,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window",
-   "value_state": "no value take sealed",
-   "telegraph": [
-    {
-     "chance": 0.5329,
-     "elapsed": 62,
-     "side": "up",
-     "t": 1794873962
-    },
-    {
-     "chance": 0.507,
-     "elapsed": 125,
-     "side": "up",
-     "t": 1794874025
-    },
-    {
-     "chance": 0.5591,
-     "elapsed": 156,
-     "side": "up",
-     "t": 1794874056
-    },
-    {
-     "chance": 0.6755,
-     "elapsed": 187,
-     "side": "down",
-     "t": 1794874087
-    },
-    {
-     "chance": 0.627,
-     "elapsed": 247,
-     "side": "up",
-     "t": 1794874147
-    }
-   ],
-   "reasons": [
-    "PLAIN and EARLY have not both called \u2014 no agreement to stand on"
-   ],
-   "decided_elapsed_s": 264,
-   "seq": 11968,
-   "grade": {
-    "venue_result": "up",
-    "index_result": null,
-    "sources_agree": null,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": null
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-17T00:00:00Z",
-   "verdict": "NO CALL",
-   "side": null,
-   "ask": null,
-   "ask_source": null,
-   "model": null,
-   "plain": null,
-   "early": {
-    "chance": 0.6054,
-    "side": "down",
-    "via": "call"
-   },
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends",
-   "value_state": "no value take sealed",
-   "telegraph": [
-    {
-     "chance": 0.6054,
-     "elapsed": 103,
-     "side": "down",
-     "t": 1794873703
-    },
-    {
-     "chance": 0.7628,
-     "elapsed": 121,
-     "side": "down",
-     "t": 1794873721
-    },
-    {
-     "chance": 0.8103,
-     "elapsed": 145,
-     "side": "down",
-     "t": 1794873745
-    }
-   ],
-   "reasons": [
-    "PLAIN and EARLY have not both called \u2014 no agreement to stand on"
-   ],
-   "decided_elapsed_s": 296,
-   "seq": 11959,
-   "grade": {
-    "venue_result": "down",
-    "index_result": null,
-    "sources_agree": null,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": null
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-16T23:55:00Z",
-   "verdict": "NO CALL",
-   "side": null,
-   "ask": null,
-   "ask_source": null,
-   "model": null,
-   "plain": null,
-   "early": null,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window",
-   "value_state": "no value take sealed",
-   "telegraph": null,
-   "reasons": [
-    "PLAIN and EARLY have not both called \u2014 no agreement to stand on"
-   ],
-   "decided_elapsed_s": 254,
-   "seq": 11946,
-   "grade": {
-    "venue_result": "down",
-    "index_result": null,
-    "sources_agree": null,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": null
    },
    "lessons": []
   }
