@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-17T04:16:52Z",
+ "built_at": "2026-11-17T04:32:21Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -43,6 +43,19 @@
    "window": "2026-11-17T03:40:00Z",
    "seq": 12708,
    "sealed_at": "2026-11-17T03:47:39+0000"
+  },
+  {
+   "engine": "RIPTIDE",
+   "executor_log_ts": "2026-11-17T04:19:26.725865+00:00",
+   "match": "RIPTIDE|2026-11-17T04:15:00Z|DS28J7P013YB",
+   "note": "resting buy @ 66c filled 04:19:26 \u2014 19s AFTER the SELL for this same play was sealed (BTC5F_PLAY seq 12774, 04:19:07). The real position came into existence after its own exit was already sealed.",
+   "order_id": "DS28J7P013YB",
+   "price_c": 66.0,
+   "side": "down",
+   "stake": 0.1,
+   "window": "2026-11-17T04:15:00Z",
+   "seq": 12809,
+   "sealed_at": "2026-11-17T04:32:14+0000"
   }
  ],
  "exits": [
@@ -97,6 +110,24 @@
    "window": "2026-11-17T03:40:00Z",
    "seq": 12709,
    "sealed_at": "2026-11-17T03:47:39+0000"
+  },
+  {
+   "engine": "RIPTIDE",
+   "executor_log_ts": "2026-11-17T04:19:33.822312+00:00",
+   "match": "RIPTIDE|2026-11-17T04:15:00Z|DS28X40G14EX",
+   "note": "FLAG EXAMINED (desk, 2026-11-17 ~04:30Z): engine compared the RIGHT side \u2014 btc5_flow.py takes book[side], the DOWN token's own book, for the take-profit check. The failure is STALENESS + UNCONDITIONAL MARKET-CLOSE: the SELL sealed 04:19:07 on a 0.945 DOWN-mid print; the resting buy only filled 04:19:26, after DOWN had reversed through 66c; the executor then market-closed the stale SELL at the live 20c (close_position), bypassing the watched exit (target 71c) it had armed 7s earlier \u2014 no \"target reached\" line in the executor log. Window settled DOWN ($1.00): held to settlement this 0.15 sh position would have paid +$0.05. Sim booked +$5.33 (exit_avg 0.94, seal 12774); real is -$0.069. Both records stand as sealed.",
+   "order_id": "DS28X40G14EX",
+   "pnl": -0.069,
+   "price_c": 20.0,
+   "proceeds": 0.03,
+   "race_bank_after": {
+    "RIPTIDE": 1.42
+   },
+   "reason": "RIPTIDE sealed SELL (take profit \u2014 mid 0.945 >= entry 0.660 + 5c)",
+   "side": "down",
+   "window": "2026-11-17T04:15:00Z",
+   "seq": 12810,
+   "sealed_at": "2026-11-17T04:32:14+0000"
   }
  ],
  "settles": [],
@@ -118,11 +149,13 @@
   "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 sold 54.00c \u00b7 proceeds $0.10 \u00b7 reason resting exit sell filled at placement \u00b7 venue order DS1R8F8034EX \u00b7 2026-11-17T03:43:11.782137+00:00",
   "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 DOWN \u00b7 filled 62.00c \u00b7 stake $0.14 \u00b7 venue order DS1RBFB013YB \u00b7 2026-11-17T03:43:24.078529+00:00",
   "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 sold 57.00c \u00b7 proceeds $0.13 \u00b7 reason resting exit sell filled at placement \u00b7 venue order DS1RBH2013Z6 \u00b7 2026-11-17T03:43:24.386343+00:00",
-  "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:45:00Z \u00b7 DOWN \u00b7 order DS1TGN2014F0 rested at 56.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:49:37.600952+00:00"
+  "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:45:00Z \u00b7 DOWN \u00b7 order DS1TGN2014F0 rested at 56.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:49:37.600952+00:00",
+  "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T04:15:00Z \u00b7 DOWN \u00b7 filled 66.00c \u00b7 stake $0.10 \u00b7 venue order DS28J7P013YB \u00b7 2026-11-17T04:19:26.725865+00:00",
+  "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T04:15:00Z \u00b7 sold 20.00c \u00b7 proceeds $0.03 \u00b7 reason RIPTIDE sealed SELL (take profit \u2014 mid 0.945 >= entry 0.660 + 5c) \u00b7 venue order DS28X40G14EX \u00b7 2026-11-17T04:19:33.822312+00:00"
  ],
  "banks": {
   "PLAIN": 1.7418,
-  "RIPTIDE": 1.489
+  "RIPTIDE": 1.42
  },
  "tennis": {
   "mandate_seq": 12463,
@@ -230,10 +263,29 @@
     "tournament": "Sydney",
     "seq": 12689,
     "sealed_at": "2026-11-17T03:41:52+0000"
+   },
+   {
+    "bank_after": 5.18,
+    "engine": "TAPE",
+    "executor_log_ts": "2026-11-17T04:18:12.630428+00:00",
+    "fill_seq": 12523,
+    "lane": "tennis",
+    "match": "TAPE|KOBE-ZHANG-STAEHELI|SETTLE-STAEHELI",
+    "match_name": "Zhizhen Zhang vs Luca Staeheli",
+    "note": "venue settlement; verified three-way (fill seal 12523 venue-verified 1.00 sh @ 50c $0.50 / executor state position closed, closed_reason venue settlement / executor log FILLLOG line). Payout 1.00 sh x $1.00 = $1.00; P&L +$0.50; TAPE tennis bank 4.6811 + 0.50 = 5.1811 -> $5.18.",
+    "order_id": "DS0XAXKG144P",
+    "payout": 1.0,
+    "pnl": 0.5,
+    "price_c": 50.0,
+    "shares": 1.0,
+    "side": "Luca Staeheli",
+    "tournament": "Kobe",
+    "seq": 12784,
+    "sealed_at": "2026-11-17T04:25:57+0000"
    }
   ],
   "banks": {
-   "TAPE": 4.68
+   "TAPE": 5.18
   }
  }
 }
