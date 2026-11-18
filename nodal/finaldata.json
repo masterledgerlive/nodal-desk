@@ -1,32 +1,71 @@
 {
- "built_at": "2026-11-18T14:18:51Z",
+ "built_at": "2026-11-18T14:29:05Z",
  "bar": "FOR SURE fires only when ALL hold: PLAIN and EARLY agree on the final side \u00b7 BOTH reads >= 85% (the desk calibration: the 80-90% band actually hits 95.9%, the 90-99% band 98.1%) \u00b7 the ask is really read, never null \u00b7 the ask is >= 3c under the consensus (weaker) model \u00b7 the ask is under the 88c value line, so a win cannot lose money at the exit. Anything else is NO CALL, printed as plainly.",
  "grading": "Graded on MONEY, not direction: $0.50 at the sealed ask, fees in, on the venue's settlement (stand-in index shown beside it, labeled). A directional win that loses money is a money LOSS, in red, no exceptions.",
  "current": {
-  "window": "2026-11-18T14:15:00Z",
-  "ends_in_s": 69,
-  "plain": null,
+  "window": "2026-11-18T14:25:00Z",
+  "ends_in_s": 55,
+  "plain": {
+   "side": "down",
+   "chance": 0.896,
+   "at": 1795012014
+  },
   "early": {
-   "side": "up",
-   "chance": 0.7286,
-   "at": 1795011423,
-   "at_elapsed_s": 123,
-   "why": "BTC rose $28 from the window open with 176s left \u2014 the model put UP at 73%. Early read at 123s in, 30s before the plain desk's span opens."
+   "side": "down",
+   "chance": 0.9355,
+   "at": 1795012016,
+   "at_elapsed_s": 116,
+   "why": "BTC fell $52 from the window open with 183s left \u2014 the model put DOWN at 94%. Early read at 116s in, 30s before the plain desk's span opens."
   },
   "telegraph": [
    {
-    "t": 1795011423,
-    "elapsed": 123,
-    "side": "up",
-    "chance": 0.7286
+    "t": 1795012016,
+    "elapsed": 116,
+    "side": "down",
+    "chance": 0.9355
    }
   ],
-  "decided": null
+  "decided": {
+   "ask": 0.1,
+   "ask_source": "EARLY CALL",
+   "bar": "agreement + both engines >= 85% + real ask >= 3c under the consensus (weaker) model + ask < 88c",
+   "decided_elapsed_s": 243,
+   "early": {
+    "chance": 0.9355,
+    "side": "down",
+    "via": "call"
+   },
+   "flip_state": "VALUE TAKEN \u2014 banked at the 88% line; a flip can still come",
+   "match": "FINAL|2026-11-18T14:25:00Z",
+   "model_consensus": 0.896,
+   "plain": {
+    "chance": 0.896,
+    "side": "down"
+   },
+   "reasons": [
+    "all conditions met \u2014 agreement at PLAIN 90% / EARLY 94%, ask 10c is 80c under the consensus model and under the 88c line"
+   ],
+   "side": "down",
+   "stake": 0.5,
+   "telegraph": [
+    {
+     "chance": 0.9355,
+     "elapsed": 116,
+     "side": "down",
+     "t": 1795012016
+    }
+   ],
+   "value_state": "VALUE TAKEN",
+   "venue_class": "REAL-POLYMARKET-US",
+   "verdict": "FOR SURE DOWN",
+   "window": "2026-11-18T14:25:00Z",
+   "seq": 19577
+  }
  },
  "record": {
-  "decided": 503,
+  "decided": 504,
   "no_call": 477,
-  "for_sure": 26,
+  "for_sure": 27,
   "graded": 26,
   "money_wins": 25,
   "money_losses": 1,
@@ -34,6 +73,40 @@
   "pnl_exit": 7.79
  },
  "calls": [
+  {
+   "window": "2026-11-18T14:25:00Z",
+   "verdict": "FOR SURE DOWN",
+   "side": "down",
+   "ask": 0.1,
+   "ask_source": "EARLY CALL",
+   "model": 0.896,
+   "plain": {
+    "chance": 0.896,
+    "side": "down"
+   },
+   "early": {
+    "chance": 0.9355,
+    "side": "down",
+    "via": "call"
+   },
+   "flip_state": "VALUE TAKEN \u2014 banked at the 88% line; a flip can still come",
+   "value_state": "VALUE TAKEN",
+   "telegraph": [
+    {
+     "chance": 0.9355,
+     "elapsed": 116,
+     "side": "down",
+     "t": 1795012016
+    }
+   ],
+   "reasons": [
+    "all conditions met \u2014 agreement at PLAIN 90% / EARLY 94%, ask 10c is 80c under the consensus model and under the 88c line"
+   ],
+   "decided_elapsed_s": 243,
+   "seq": 19577,
+   "grade": null,
+   "lessons": []
+  },
   {
    "window": "2026-11-18T13:55:00Z",
    "verdict": "NO CALL",
@@ -1542,43 +1615,6 @@
    "seq": 18166,
    "grade": {
     "venue_result": "down",
-    "index_result": null,
-    "sources_agree": null,
-    "pnl_settle": 0.0,
-    "pnl_settle_index": 0.0,
-    "pnl_exit": 0.0,
-    "exit_basis": "NO CALL \u2014 no press, no money moved",
-    "money_win": null,
-    "dir_win": null
-   },
-   "lessons": []
-  },
-  {
-   "window": "2026-11-18T03:50:00Z",
-   "verdict": "NO CALL",
-   "side": null,
-   "ask": null,
-   "ask_source": null,
-   "model": null,
-   "plain": null,
-   "early": null,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window",
-   "value_state": "no value take sealed",
-   "telegraph": [
-    {
-     "chance": 0.8179,
-     "elapsed": 159,
-     "side": "up",
-     "t": 1794973959
-    }
-   ],
-   "reasons": [
-    "PLAIN and EARLY have not both called \u2014 no agreement to stand on"
-   ],
-   "decided_elapsed_s": 274,
-   "seq": 18159,
-   "grade": {
-    "venue_result": "up",
     "index_result": null,
     "sources_agree": null,
     "pnl_settle": 0.0,
