@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T14:28:52Z",
+ "built_at": "2026-11-18T14:41:17Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -341,8 +341,6 @@
   }
  ],
  "executor_log": [
-  "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:45:00Z \u00b7 DOWN \u00b7 order DS1TGN2014F0 rested at 56.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:49:37.600952+00:00",
-  "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T04:15:00Z \u00b7 DOWN \u00b7 filled 66.00c \u00b7 stake $0.10 \u00b7 venue order DS28J7P013YB \u00b7 2026-11-17T04:19:26.725865+00:00",
   "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T04:15:00Z \u00b7 sold 20.00c \u00b7 proceeds $0.03 \u00b7 reason RIPTIDE sealed SELL (take profit \u2014 mid 0.945 >= entry 0.660 + 5c) \u00b7 venue order DS28X40G14EX \u00b7 2026-11-17T04:19:33.822312+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T05:00:00Z \u00b7 DOWN \u00b7 order DS2WM72013YY rested at 52.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T05:04:31.253706+00:00",
   "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T05:15:00Z \u00b7 DOWN \u00b7 filled 68.00c \u00b7 stake $0.10 \u00b7 venue order DS33YZ4G13Z6 \u00b7 2026-11-17T05:18:42.413746+00:00",
@@ -380,7 +378,9 @@
   "REAL SETTLE \u00b7 TERRY \u00b7 2026-11-18T09:15:00Z \u00b7 UP \u00b7 payout $0.00 \u00b7 pnl $-0.10 \u00b7 race bank $0.93 \u00b7 2026-11-18T09:20:51.151820+00:00",
   "REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-18T09:15:00Z \u00b7 UP \u00b7 payout $0.00 \u00b7 pnl $-0.00 \u00b7 race bank $1.59 \u00b7 2026-11-18T09:20:51.255054+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-18T13:25:00Z \u00b7 UP \u00b7 order DSYQEWWG14F1 rested at 52.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T13:29:37.264950+00:00",
-  "REAL NOFILL \u00b7 ASHEN \u00b7 2026-11-18T14:10:00Z \u00b7 DOWN \u00b7 order DSZBZ8W0144P rested at 83.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T14:14:33.561068+00:00"
+  "REAL NOFILL \u00b7 ASHEN \u00b7 2026-11-18T14:10:00Z \u00b7 DOWN \u00b7 order DSZBZ8W0144P rested at 83.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T14:14:33.561068+00:00",
+  "REAL FILL \u00b7 PLAIN \u00b7 2026-11-18T14:25:00Z \u00b7 DOWN \u00b7 filled 92.00c \u00b7 stake $0.17 \u00b7 venue order DSZK354013ZD \u00b7 2026-11-18T14:29:03.795000+00:00",
+  "REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-18T14:25:00Z \u00b7 DOWN \u00b7 payout $0.00 \u00b7 pnl $-0.17 \u00b7 race bank $1.42 \u00b7 2026-11-18T14:30:48.288613+00:00"
  ],
  "banks": {
   "PLAIN": 1.7418,
@@ -1026,19 +1026,6 @@
   "note": "REAL MONEY ONLY \u2014 ranked by earned (P&L). Banks from executor state (venue-derived), records from sealed exits/settles. The SIM contest lives on callers.html \u2014 never blended.",
   "rows": [
    {
-    "player": "PLAIN",
-    "key": "PLAIN_BTC",
-    "lane": "BTC 5-min race",
-    "tag": null,
-    "put_in": 1.5,
-    "has_now": 1.5909,
-    "earned": 0.0909,
-    "w": 1,
-    "l": 2,
-    "streak": "L3",
-    "rank": 1
-   },
-   {
     "player": "ASHEN FOLLOW",
     "key": "ASHEN",
     "lane": "BTC 5-min \u00b7 caller follow",
@@ -1049,7 +1036,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 2
+    "rank": 1
    },
    {
     "player": "PIZZACALLS FOLLOW",
@@ -1062,7 +1049,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 3
+    "rank": 2
    },
    {
     "player": "TERRY FOLLOW",
@@ -1075,6 +1062,19 @@
     "w": 1,
     "l": 1,
     "streak": "L1",
+    "rank": 3
+   },
+   {
+    "player": "PLAIN",
+    "key": "PLAIN_BTC",
+    "lane": "BTC 5-min race",
+    "tag": null,
+    "put_in": 1.5,
+    "has_now": 1.4161,
+    "earned": -0.0839,
+    "w": 1,
+    "l": 2,
+    "streak": "L3",
     "rank": 4
    },
    {
@@ -1091,19 +1091,6 @@
     "rank": 5
    },
    {
-    "player": "PLAIN",
-    "key": "PLAIN_TENNIS",
-    "lane": "Tennis",
-    "tag": null,
-    "put_in": 5.0,
-    "has_now": 4.1243,
-    "earned": -0.8757,
-    "w": 0,
-    "l": 1,
-    "streak": "L1",
-    "rank": 6
-   },
-   {
     "player": "TAPE",
     "key": "TAPE_TENNIS",
     "lane": "Tennis",
@@ -1114,7 +1101,7 @@
     "w": 3,
     "l": 3,
     "streak": "L1",
-    "rank": 7
+    "rank": 6
    },
    {
     "player": "THE NINTENDO KID",
@@ -1127,13 +1114,26 @@
     "w": 1,
     "l": 2,
     "streak": "L1",
+    "rank": 7
+   },
+   {
+    "player": "PLAIN",
+    "key": "PLAIN_TENNIS",
+    "lane": "Tennis",
+    "tag": null,
+    "put_in": 5.0,
+    "has_now": 3.7265,
+    "earned": -1.2735,
+    "w": 0,
+    "l": 3,
+    "streak": "L3",
     "rank": 8
    }
   ],
   "totals": {
    "put_in": 19.0803,
-   "has_now": 16.0208,
-   "earned": -3.0595
+   "has_now": 15.4482,
+   "earned": -3.6321
   }
  },
  "tennis": {
@@ -1491,6 +1491,74 @@
     "venue_line": "2026-11-17T14:58:12.226115+00:00 FILLLOG REAL TENNIS EXIT \u00b7 TAPE \u00b7 ATP World Tour Finals, John McEnroe Group: Arthur Fils vs Rafael Jodar \u00b7 sold 95.00c \u00b7 proceeds $0.41 \u00b7 reason GOLDEN RULE 95c \u00b7 venue order DSBD88CG14EX \u00b7 2026-11-17T14:58:12.225863+00:00",
     "seq": 14117,
     "sealed_at": "2026-11-17T15:04:05+0000"
+   },
+   {
+    "action": "SELL (Golden Rule exit, market close)",
+    "bank_after": 4.0785,
+    "bank_before": 4.3936,
+    "cost": 0.4015,
+    "entry_fill_order": "DSQVVPB014EX",
+    "entry_price": 0.55,
+    "entry_seq": 18430,
+    "exit_order": "DSZH3AS0144P",
+    "exit_ts": "2026-11-18T14:24:42.488892+00:00",
+    "flags": {
+     "merged_sale": "Proceeds $0.0864 (bank-proven: 4.3936 - 0.3151 = 4.0785 exactly) = 1.44 sh x 6c, NOT 0.73 sh x 6c ($0.0438). The venue merged TAPE (0.73 sh) + PLAIN (0.71 sh) complement-leg shares on this market into ONE position and TAPE close_position sold ALL of it. TAPE was credited the FULL merged proceeds; PLAIN share $0.0426 uncredited.",
+     "plain_stranded": "PLAIN same-match position (0.71 sh @ 56c, cost $0.3976, order DSX61A6G14EX, seq 19163) still open=true in state; its close attempts fail NotFoundError: Position not found (6x by 14:27:57Z, retrying every ~15s) because its shares were already sold inside TAPE merged close. PLAIN bank untouched $4.1243. NO PLAIN exit sealed - no exit happened. Needs main adjudication: pro-rata accounting + stop/repair the retry loop + side_bid leg fix before the next BUY_SHORT Golden trigger (PLAIN Medvedev live NOW).",
+     "trigger_vs_fill": "Golden trigger read own-side bid 95c (side_bid) but the close executed at 6c avg - an 89c gap. gamesdata 14:26:28Z: Kjaer mid 92.5c, Rodionov 7.5c. The held leg is the complement (Rodionov, ~6-7c); side_bid returned the PICK price as the sale price - INVERTED for BUY_SHORT on this market structure. The executor booked this as a 95c Golden win; the exit executed at fair value for a LOSING short (Kjaer winning). Golden Math at entry (+0.2669 for PLAIN) used the same inverted reading."
+    },
+    "golden_trigger_bid": 0.95,
+    "lane": "TAPE",
+    "mandate": "TENNIS_LIVE_MANDATE seq 12463; GOLDEN_RULE seq 12864",
+    "market": "aec-atp-jurrod-nickja-2026-11-18",
+    "match": "Helsinki: Jurij Rodionov vs Nicolai Budkov Kjaer",
+    "outcome": "EXITED - Golden Rule 95c, sold at 6c avg",
+    "pick": "Nicolai Budkov Kjaer",
+    "pnl_booked": -0.3151,
+    "price": 0.06,
+    "proceeds": 0.0864,
+    "proceeds_printed": 0.09,
+    "reason": "GOLDEN RULE 95c - own-side bid 95.00c at 14:24:40Z",
+    "shares_held": 0.73,
+    "shares_sold": 1.44,
+    "signal_seq": 18410,
+    "verified_against": "tennis_fills.log line 24 verbatim + tennis_executor.log lines 479/480 (GOLDEN RULE trigger 95.00c; FILLLOG sold 6.00c proceeds $0.09 order DSZH3AS0144P). Dupe-guard: order DSZH3AS0144P has no prior ledger mention. State: TAPE position closed_reason GOLDEN RULE 95c; bank TAPE 4.0785.",
+    "seq": 19582,
+    "sealed_at": "2026-11-18T14:32:22+0000"
+   },
+   {
+    "action": "SELL (Golden Rule exit, merged venue close - pro-rata share)",
+    "bank_after_kjaer": 3.7693,
+    "bank_before": 4.1243,
+    "cost": 0.3976,
+    "entry_fill_order": "DSX61A6G14EX",
+    "entry_price": 0.56,
+    "entry_seq": 19163,
+    "exit_order": "DSZH3AS0144P",
+    "exit_ts": "2026-11-18T14:24:42.488892+00:00",
+    "lane": "PLAIN",
+    "mandate": "TENNIS_LIVE_MANDATE seq 12463; GOLDEN_RULE seq 12864; pro-rata per main adjudication on seq 19582",
+    "market": "aec-atp-jurrod-nickja-2026-11-18",
+    "match": "Helsinki: Jurij Rodionov vs Nicolai Budkov Kjaer",
+    "merged_close": {
+     "plain_shares": 0.71,
+     "sale_price": 0.06,
+     "tape_shares": 0.73,
+     "total_proceeds": 0.0864,
+     "total_shares": 1.44
+    },
+    "note": "Bank after this exit alone $3.7693; the later Medvedev settle (-$0.3978, 14:31:06Z) takes PLAIN to $3.3715 final - sealed separately.",
+    "outcome": "EXITED on merged close - Golden Rule 95c, pro-rata share sold at 6c avg",
+    "pick": "Nicolai Budkov Kjaer",
+    "pnl": -0.355,
+    "price": 0.06,
+    "proceeds": 0.0426,
+    "reason": "GOLDEN RULE 95c - merged venue close with TAPE (order DSZH3AS0144P sold 1.44 sh; PLAIN share 0.71/1.44 x $0.0864 = $0.0426)",
+    "shares": 0.71,
+    "signal_seq": 13897,
+    "verified_against": "Main adjudication (verified arithmetic: 0.71/1.44 x 0.0864 = 0.0426; 0.0426 - 0.3976 = -0.3550; 4.1243 - 0.3550 = 3.7693). Venue evidence: tennis_fills.log line 24 (TAPE merged close, order DSZH3AS0144P) + tennis_executor.log lines 479-480 + state bank proof (TAPE 4.0785 = 4.3936 - 0.3151 on full $0.0864 proceeds). PLAIN close attempts failed NotFoundError 36x by 14:38:09Z because the shares were already sold in the merged close - no separate PLAIN exit order exists. Note: same venue order DSZH3AS0144P as seq 19582 (TAPE) - one close, two lane records, pro-rata split.",
+    "seq": 19602,
+    "sealed_at": "2026-11-18T14:39:57+0000"
    }
   ],
   "settles": [
@@ -1608,6 +1676,29 @@
     "ts": "2026-11-17T21:29:38.789168+00:00",
     "seq": 15001,
     "sealed_at": "2026-11-17T21:33:20+0000"
+   },
+   {
+    "action": "SETTLE (venue settlement)",
+    "bank_after": 3.3715,
+    "bank_at_settle": 3.7265,
+    "cost": 0.3978,
+    "entry_fill_order": "DSXF22B014EX",
+    "entry_price": 0.78,
+    "entry_seq": 19185,
+    "lane": "PLAIN",
+    "mandate": "TENNIS_LIVE_MANDATE seq 12463",
+    "market": "aec-atp-caralc-danmed-2026-11-15",
+    "match": "ATP World Tour Finals, Ivan Lendl Group: Carlos Alcaraz vs Daniil Medvedev",
+    "note": "David own Medvedev play (seq 18646, $1 @ 22c + resting 2.27 sh @ 67c rung) settles on the SAME match result - his settle report needs main reconciliation packet (account read-back), NOT sealed from executor data.",
+    "outcome": "SETTLED LOSS - Medvedev lost to Alcaraz, payout $0.00",
+    "payout": 0.0,
+    "pick": "Daniil Medvedev",
+    "pnl": -0.3978,
+    "settle_ts": "2026-11-18T14:31:06.945742+00:00",
+    "signal_seq": 3263,
+    "verified_against": "tennis_fills.log line 25 verbatim + tennis_executor.log line 520 (FILLLOG REAL TENNIS SETTLE, payout $0.00 pnl $-0.40 tennis bank $3.73) + state (position closed_reason venue settlement; settled entry payout 0.0 pnl -0.3978 ts 1795012266; bank PLAIN 3.7265 = 4.1243 - 0.3978). Dupe-guard: order DSXF22B014EX has one prior ledger mention (fill seq 19185); no prior settle. Note: bank_at_settle $3.7265 is the pre-Kjaer-correction figure; after the Kjaer pro-rata correction (-$0.3550, seq 19602) final PLAIN bank is $3.3715. Combo Leg 1 (Medvedev 77.6%) grades LOSS.",
+    "seq": 19603,
+    "sealed_at": "2026-11-18T14:40:10+0000"
    }
   ],
   "banks": {
