@@ -234,6 +234,20 @@ function render(d){
       + ' · wave bank <b>$' + Number(wv.bank != null ? wv.bank : 1.50).toFixed(2) + '</b>'
       + (wv.open_stake ? ' · open stake $' + Number(wv.open_stake).toFixed(2) : '')
       + '<br><span style="color:var(--dim)">' + esc(wv.proof_status || '') + '</span>'
+      + (function(){
+          var bd = wv.bands || {};
+          var labels = { 'le10': '≤10¢', '10-25': '10–25¢', '25-50': '25–50¢' };
+          var parts = Object.keys(labels).map(function(k){
+            var B = bd[k];
+            if (!B || !B.entries) return labels[k] + ': no entries yet';
+            var graded = B.flips + B.deaths;
+            return labels[k] + ': ' + B.entries + ' entries · flip ' + (graded ? Math.round(100 * B.flips / graded) : 0) + '% · death ' + (graded ? Math.round(100 * B.deaths / graded) : 0) + '%'
+              + ' · realized ' + (B.realized >= 0 ? '+' : '−') + '$' + Math.abs(B.realized).toFixed(2)
+              + (B.sell_pct != null ? ' · avg sell ' + Math.round(B.sell_pct * 100) + '¢' : '')
+              + (B.open ? ' · ' + B.open + ' open' : '');
+          });
+          return '<br>🎯 EXTREME BANDS (§W7) · ' + parts.join(' · ');
+        })()
       + (wtr ? '<br>' + wtr : '');
   }
   var ttb = document.getElementById('tennisRows');
