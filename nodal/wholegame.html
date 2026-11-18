@@ -62,6 +62,7 @@
 
   <div class="realstrip" id="realStrip">🏁 REAL race: —</div>
   <div class="feedages" id="feedAges">feeds: —</div>
+  <div id="nodalRoundBoard" style="margin-top:12px"></div>
 
   <h2 class="sec">⏱ THE LIVE WINDOW</h2>
   <div class="winbar"><span class="w" id="winLabel">window —</span><span class="sub" id="winClock"></span></div>
@@ -87,6 +88,50 @@
 </div>
 
 <script>
+/* === NODAL ROUND BOARD + TIMEZONE — David's fix list, 2026-11-18 ===
+   Times render in the viewer's local zone by default; the Local/UTC
+   toggle is remembered (localStorage 'nodal-tz'). The board derives
+   the live window from YOUR clock, so it always shows the round
+   that is actually live; rounds the feed has not covered yet read
+   NO DATA — never a blank, never a stale round dressed as live. */
+var NODAL_RD=null;
+function nodalTZ(){try{return localStorage.getItem('nodal-tz')||'local'}catch(e){return 'local'}}
+function nodalZone(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'local'}catch(e){return 'local'}}
+function fmtT(iso){if(!iso)return '—';var d=new Date(iso);if(isNaN(d))return String(iso);
+  if(nodalTZ()==='utc'){return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2)+'Z'}
+  var s=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),zn='';
+  try{var p=d.toLocaleTimeString('en-US',{timeZoneName:'short'}).split(' ');zn=' '+p[p.length-1]}catch(e){}
+  return s+zn}
+function nodalWinISO(ms){return new Date(Math.floor(ms/300000)*300000).toISOString().replace('.000Z','Z')}
+function nodalEsc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function nodalChip(eng,st){
+  if(!st)return '<span style="color:#8b96ad">'+eng+' · NO DATA</span>';
+  var link='<a href="players.html?p='+encodeURIComponent(eng)+'" style="font-weight:800">'+eng+'</a>';
+  if(st.state==='CALL'){var c=(st.side||'').toLowerCase()==='down'?'#ff6b6b':'#3ddc84';
+    return link+' <b style="color:'+c+'">CALL '+(st.side||'').toUpperCase()+(st.in!=null?' · '+st.in+'s in':'')+'</b>'+(st.win===true?' <b style="color:#3ddc84">WON</b>':st.win===false?' <b style="color:#ff6b6b">LOST</b>':'')}
+  if(st.state==='PASS')return '<span style="color:#ffd75e">'+eng+' · PASS</span>'+(st.why?' <span style="color:#8b96ad;font-size:11px">'+nodalEsc(String(st.why).slice(0,60))+'</span>':'');
+  if(st.state==='WAITING')return '<span style="color:#c9d4f5">'+eng+' · WAITING</span>';
+  return '<span style="color:#8b96ad">'+eng+' · NO DATA</span>'}
+function nodalWireBtn(){var b=document.getElementById('nodalTzBtn');if(b)b.onclick=function(){try{localStorage.setItem('nodal-tz',nodalTZ()==='utc'?'local':'utc')}catch(e){}nodalRenderBoard();if(window.nodalTZHook)window.nodalTZHook()}}
+function nodalRenderBoard(){
+  var el=document.getElementById('nodalRoundBoard');if(!el)return;
+  var now=Date.now(),cur=nodalWinISO(now),end=Math.floor(now/300000)*300000+300000;
+  var left=Math.max(0,Math.round((end-now)/1000)),cd=Math.floor(left/60)+':'+('0'+(left%60)).slice(-2);
+  var h='<div style="border:2px solid #2b3a5f;border-radius:12px;padding:10px 14px;margin:0 0 14px;background:#0d1420;font-size:13px">';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between"><b style="letter-spacing:1px">⏱ LIVE ROUND — '+fmtT(cur)+' window</b><span>closes in <b data-nodal-cd>'+cd+'</b></span><button id="nodalTzBtn" style="cursor:pointer;background:#131826;color:#dbe2f0;border:1px solid #2b3a5f;border-radius:999px;padding:3px 12px;font:inherit;font-size:12px">🕐 times: '+(nodalTZ()==='utc'?'UTC':'Local · '+nodalEsc(nodalZone()))+' — tap to switch</button></div>';
+  if(!NODAL_RD){h+='<div style="color:#8b96ad;margin-top:6px">round feed loading…</div></div>';el.innerHTML=h;nodalWireBtn();return}
+  var rows=(NODAL_RD.windows||[]).slice(0,8);
+  if(!rows.length||rows[0].window!==cur){var syn={window:cur,states:{}};(NODAL_RD.engines||[]).forEach(function(e){syn.states[e]={state:'NO DATA'}});rows=[syn].concat(rows).slice(0,8)}
+  h+='<div style="color:#8b96ad;font-size:12px;margin:6px 0 4px">round data as of '+fmtT(NODAL_RD.built_at)+' · every engine speaks every round — CALL / PASS / WAITING / NO DATA, from the sealed record only</div>';
+  h+=rows.map(function(w,i){
+    var cells=(NODAL_RD.engines||[]).map(function(e){return '<span style="flex:1 1 210px">'+nodalChip(e,(w.states||{})[e])+'</span>'}).join('');
+    return '<div style="display:flex;flex-wrap:wrap;gap:5px 14px;padding:5px 4px;border-top:1px dashed #232a3d'+(i===0?';background:rgba(255,217,94,.07)':'')+'"><span style="min-width:128px;font-weight:700">'+fmtT(w.window)+(i===0?' · LIVE':'')+'</span>'+cells+'</div>'}).join('');
+  h+='</div>';el.innerHTML=h;nodalWireBtn()}
+function nodalFetchRounds(){fetch('rounddata.json?ts='+Date.now()).then(function(r){return r.json()}).then(function(d){NODAL_RD=d;nodalRenderBoard();if(window.nodalOnRounds)window.nodalOnRounds()}).catch(function(){nodalRenderBoard()})}
+nodalFetchRounds();setInterval(nodalFetchRounds,30000);
+setInterval(function(){var now=Date.now(),left=Math.max(0,Math.round((Math.floor(now/300000)*300000+300000-now)/1000)),t=Math.floor(left/60)+':'+('0'+(left%60)).slice(-2);var xs=document.querySelectorAll('[data-nodal-cd]');for(var i=0;i<xs.length;i++)xs[i].textContent=t;if(nodalWinISO(now)!==nodalWinISO(now-1000))nodalFetchRounds()},1000);
+</script>
+<script>
 "use strict";
 const FEEDS = ['gamelog','callsdata','earlydata','flowdata','finaldata',
                'proofrecord','heads','trail','realrace'];
@@ -95,7 +140,7 @@ const $ = id => document.getElementById(id);
 const money = v => (v<0?'−$':'+$') + Math.abs(v).toFixed(2);
 const parseTs = s => { if(!s) return null; const t = Date.parse(s); return isNaN(t)?null:t; };
 const winISO = ms => new Date(Math.floor(ms/300000)*300000).toISOString().replace('.000Z','Z');
-const hhmm = s => s ? s.substr(11,5)+'Z' : '—';
+const hhmm = s => s ? fmtT(s) : '—';
 const short = (s,n) => s ? s.slice(0,n) + '…' : '—';
 
 async function fetchFeed(n){
@@ -136,7 +181,7 @@ function stepsHtml(e, onlyDev){
 function liveCard(engine){
   const wIso = winISO(Date.now());
   const e = findEntry(engine, wIso);
-  let h = '<h3>' + engine + '</h3>';
+  let h = '<h3>' + (engine==='FINAL' ? engine : '<a href="players.html?p=' + engine + '">' + engine + '</a>') + '</h3>';
   if(engine==='FINAL'){
     const fd = feeds.finaldata;
     const call = fd ? (fd.calls||[]).find(c => c.window===wIso) : null;
@@ -191,7 +236,7 @@ function settledHtml(){
     let cells = '';
     for(const eng of ['PLAIN','EARLY','RIPTIDE']){
       const e = (gl.log||[]).find(x => x.engine===eng && x.window===w);
-      if(!e){ cells += '<div class="unpriced">—</div>'; continue; }
+      if(!e){ cells += '<div class="unpriced">' + eng + ' · NO DATA</div>'; continue; }
       if(e.noplay){ cells += '<div>' + eng + ' · <span class="passed">PASS</span></div>'; continue; }
       const wl = e.win ? '<span class="wlw">W</span>' : '<span class="wll">L</span>';
       const mv = mm[eng][w];
@@ -206,7 +251,7 @@ function settledHtml(){
       cells += '<div>FINAL ' + (fc.side||'').toUpperCase() + ' '
         + (fc.grade.money_win ? '<span class="wlw">W</span>' : '<span class="wll">L</span>')
         + (mm.FINAL[w]!==null && mm.FINAL[w]!==undefined ? ' · <span class="' + (mm.FINAL[w]>=0?'pos':'neg') + '">' + money(mm.FINAL[w]) + '</span>' : '') + '</div>';
-    else cells += '<div>FINAL · <span class="passed">' + (fc ? 'NO CALL' : '—') + '</span></div>';
+    else cells += '<div>FINAL · <span class="passed">' + (fc ? 'NO CALL' : 'NO DATA') + '</span></div>';
     return '<div class="wrow"><div class="wt">' + hhmm(w) + '</div>' + cells + '</div>';
   });
   return rows.join('') || '<div class="sub">no settled windows in the feed yet</div>';
@@ -248,7 +293,7 @@ function render(){
   const now = Date.now();
   const wIso = winISO(now), wEnd = Math.floor(now/300000)*300000 + 300000;
   $('winLabel').textContent = '⏱ ' + hhmm(wIso) + ' window';
-  $('winClock').textContent = 'closes in ' + Math.max(0, Math.round((wEnd-now)/1000)) + 's · all times UTC';
+  $('winClock').textContent = 'closes in ' + Math.max(0, Math.round((wEnd-now)/1000)) + 's · times: ' + (nodalTZ()==='utc' ? 'UTC' : 'your local time') + ' — toggle on the round board below';
   const rr = feeds.realrace;
   if(rr && rr.banks){
     $('realStrip').innerHTML = '🏁 <b>REAL race is LIVE by David\'s mandate</b> (sealed seq 12277, 2026-11-16) — PLAIN $'
@@ -268,6 +313,7 @@ function render(){
 poll();
 setInterval(poll, 15000);
 setInterval(render, 1000);
+window.nodalTZHook = function(){ render(); };
 </script>
 </body>
 </html>

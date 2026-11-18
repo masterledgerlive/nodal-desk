@@ -77,6 +77,7 @@
 
 <div class="ticker" id="ticker"></div>
 <div class="ticker" id="blobstrip" style="border-color:#3a5f8a;background:#0a1420"><div style="color:#a9c8e8">⛓ blob status loading…</div></div>
+<div id="nodalRoundBoard"></div>
 <div class="livepanel" id="live"></div>
 <div class="livepanel" id="mirror" style="border-color:#a78bfa;background:#120e24;box-shadow:0 0 16px rgba(167,139,250,.15)"></div>
 <div class="cards" id="cards"></div>
@@ -88,7 +89,51 @@
 <p class="foot" id="foot"></p>
 </div>
 <script>
-function et(iso){ if(!iso) return ''; try{ return new Date(iso).toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit'}) + ' ET'; }catch(e){ return iso; } }
+/* === NODAL ROUND BOARD + TIMEZONE — David's fix list, 2026-11-18 ===
+   Times render in the viewer's local zone by default; the Local/UTC
+   toggle is remembered (localStorage 'nodal-tz'). The board derives
+   the live window from YOUR clock, so it always shows the round
+   that is actually live; rounds the feed has not covered yet read
+   NO DATA — never a blank, never a stale round dressed as live. */
+var NODAL_RD=null;
+function nodalTZ(){try{return localStorage.getItem('nodal-tz')||'local'}catch(e){return 'local'}}
+function nodalZone(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'local'}catch(e){return 'local'}}
+function fmtT(iso){if(!iso)return '—';var d=new Date(iso);if(isNaN(d))return String(iso);
+  if(nodalTZ()==='utc'){return ('0'+d.getUTCHours()).slice(-2)+':'+('0'+d.getUTCMinutes()).slice(-2)+'Z'}
+  var s=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),zn='';
+  try{var p=d.toLocaleTimeString('en-US',{timeZoneName:'short'}).split(' ');zn=' '+p[p.length-1]}catch(e){}
+  return s+zn}
+function nodalWinISO(ms){return new Date(Math.floor(ms/300000)*300000).toISOString().replace('.000Z','Z')}
+function nodalEsc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function nodalChip(eng,st){
+  if(!st)return '<span style="color:#8b96ad">'+eng+' · NO DATA</span>';
+  var link='<a href="players.html?p='+encodeURIComponent(eng)+'" style="font-weight:800">'+eng+'</a>';
+  if(st.state==='CALL'){var c=(st.side||'').toLowerCase()==='down'?'#ff6b6b':'#3ddc84';
+    return link+' <b style="color:'+c+'">CALL '+(st.side||'').toUpperCase()+(st.in!=null?' · '+st.in+'s in':'')+'</b>'+(st.win===true?' <b style="color:#3ddc84">WON</b>':st.win===false?' <b style="color:#ff6b6b">LOST</b>':'')}
+  if(st.state==='PASS')return '<span style="color:#ffd75e">'+eng+' · PASS</span>'+(st.why?' <span style="color:#8b96ad;font-size:11px">'+nodalEsc(String(st.why).slice(0,60))+'</span>':'');
+  if(st.state==='WAITING')return '<span style="color:#c9d4f5">'+eng+' · WAITING</span>';
+  return '<span style="color:#8b96ad">'+eng+' · NO DATA</span>'}
+function nodalWireBtn(){var b=document.getElementById('nodalTzBtn');if(b)b.onclick=function(){try{localStorage.setItem('nodal-tz',nodalTZ()==='utc'?'local':'utc')}catch(e){}nodalRenderBoard();if(window.nodalTZHook)window.nodalTZHook()}}
+function nodalRenderBoard(){
+  var el=document.getElementById('nodalRoundBoard');if(!el)return;
+  var now=Date.now(),cur=nodalWinISO(now),end=Math.floor(now/300000)*300000+300000;
+  var left=Math.max(0,Math.round((end-now)/1000)),cd=Math.floor(left/60)+':'+('0'+(left%60)).slice(-2);
+  var h='<div style="border:2px solid #2b3a5f;border-radius:12px;padding:10px 14px;margin:0 0 14px;background:#0d1420;font-size:13px">';
+  h+='<div style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between"><b style="letter-spacing:1px">⏱ LIVE ROUND — '+fmtT(cur)+' window</b><span>closes in <b data-nodal-cd>'+cd+'</b></span><button id="nodalTzBtn" style="cursor:pointer;background:#131826;color:#dbe2f0;border:1px solid #2b3a5f;border-radius:999px;padding:3px 12px;font:inherit;font-size:12px">🕐 times: '+(nodalTZ()==='utc'?'UTC':'Local · '+nodalEsc(nodalZone()))+' — tap to switch</button></div>';
+  if(!NODAL_RD){h+='<div style="color:#8b96ad;margin-top:6px">round feed loading…</div></div>';el.innerHTML=h;nodalWireBtn();return}
+  var rows=(NODAL_RD.windows||[]).slice(0,8);
+  if(!rows.length||rows[0].window!==cur){var syn={window:cur,states:{}};(NODAL_RD.engines||[]).forEach(function(e){syn.states[e]={state:'NO DATA'}});rows=[syn].concat(rows).slice(0,8)}
+  h+='<div style="color:#8b96ad;font-size:12px;margin:6px 0 4px">round data as of '+fmtT(NODAL_RD.built_at)+' · every engine speaks every round — CALL / PASS / WAITING / NO DATA, from the sealed record only</div>';
+  h+=rows.map(function(w,i){
+    var cells=(NODAL_RD.engines||[]).map(function(e){return '<span style="flex:1 1 210px">'+nodalChip(e,(w.states||{})[e])+'</span>'}).join('');
+    return '<div style="display:flex;flex-wrap:wrap;gap:5px 14px;padding:5px 4px;border-top:1px dashed #232a3d'+(i===0?';background:rgba(255,217,94,.07)':'')+'"><span style="min-width:128px;font-weight:700">'+fmtT(w.window)+(i===0?' · LIVE':'')+'</span>'+cells+'</div>'}).join('');
+  h+='</div>';el.innerHTML=h;nodalWireBtn()}
+function nodalFetchRounds(){fetch('rounddata.json?ts='+Date.now()).then(function(r){return r.json()}).then(function(d){NODAL_RD=d;nodalRenderBoard();if(window.nodalOnRounds)window.nodalOnRounds()}).catch(function(){nodalRenderBoard()})}
+nodalFetchRounds();setInterval(nodalFetchRounds,30000);
+setInterval(function(){var now=Date.now(),left=Math.max(0,Math.round((Math.floor(now/300000)*300000+300000-now)/1000)),t=Math.floor(left/60)+':'+('0'+(left%60)).slice(-2);var xs=document.querySelectorAll('[data-nodal-cd]');for(var i=0;i<xs.length;i++)xs[i].textContent=t;if(nodalWinISO(now)!==nodalWinISO(now-1000))nodalFetchRounds()},1000);
+</script>
+<script>
+function et(iso){ if(!iso) return ''; return fmtT(iso); }
 function money(x){ return (x==null)? '—' : '$' + Number(x).toFixed(2); }
 function pm(x){ return (x==null)? '—' : ((x>=0? '+$':'-$') + Math.abs(Number(x)).toFixed(2)); }
 function pressHTML(e){
@@ -123,8 +168,12 @@ function render(d){
     return '<div>' + icon + ' ' + c.text + (c.window? ' <span style="color:#8fa0cc">· ' + et(c.window) + '</span>' : '') + '</div>';
   }).join('') || '<div>The arena is quiet… for now.</div>';
   var lv = document.getElementById('live');
-  if(d.live && d.live.length){
-    lv.innerHTML = '<h2>🔴 LIVE NOW — THE INSTRUCTION CARDS</h2>' + daemonChip(d) + d.live.map(function(e){
+  // LIVE INTEGRITY (David's fix list, 2026-11-18): the feed's live
+  // array can carry an hours-old window stamped LIVE — only cards
+  // for the round that is actually live (your clock) may show here.
+  var liveNow = (d.live||[]).filter(function(e){ return e.window===nodalWinISO(Date.now()); });
+  if(liveNow.length){
+    lv.innerHTML = '<h2>🔴 LIVE NOW — THE INSTRUCTION CARDS</h2>' + daemonChip(d) + liveNow.map(function(e){
       var h = '<div class="livecard"><span class="ltime">' + et(e.window) + '</span> ' +
         '<span class="leng">' + e.engine + '</span> ' +
         '<span class="lmode ' + (e.mode=='REAL'?'real':'test') + '">' + (e.mode=='REAL'?'REAL':'TEST') + '</span> ' +
@@ -220,7 +269,8 @@ function render(d){
 function blobtick(){ fetch('gamelogblob.json?ts=' + Date.now()).then(function(r){ return r.json(); }).then(function(b){
     document.getElementById('blobstrip').innerHTML = '<div>⛓ THIS LOG IS SEALED OFF-SITE — Walrus testnet blob <b>' + b.blob_id + '</b> · recall <b>' + b.recall + '</b> · ' + b.bytes + ' bytes · the feed on this page is byte-for-byte the blobbed record · ' + b.at + '</div>';
   }).catch(function(){}); }
-function tick(){ fetch('gamelog.json?ts=' + Date.now()).then(function(r){ return r.json(); }).then(render).catch(function(){}); blobtick(); }
+function tick(){ fetch('gamelog.json?ts=' + Date.now()).then(function(r){ return r.json(); }).then(function(d){ window.GLAST=d; render(d); }).catch(function(){}); blobtick(); }
+window.nodalTZHook = function(){ if(window.GLAST) render(window.GLAST); };
 tick(); setInterval(tick, 20000);
 </script>
 </body>
