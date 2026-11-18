@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T06:08:33Z",
+ "built_at": "2026-11-18T06:22:18Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -1130,6 +1130,38 @@
     "stake": 0.4,
     "seq": 18514,
     "sealed_at": "2026-11-18T06:07:37+0000"
+   },
+   {
+    "action": "BUY",
+    "bank_at_fill": 4.3936,
+    "cost": 0.3956,
+    "fill_timing": "Resting buy placed 24s after the signal seal - inside TAPE 120s window; filled at the sealed price exactly (0c drift).",
+    "filled_at": "2026-11-18T06:10:34.206204+00:00",
+    "flags": [
+     "GOLDEN MATH - executor log 05:34:25Z: profit at 95c net of cut = $0.0029 (proceeds $0.4085, cost $0.3956, cut $0.01) - break-even-class fire under seq 14160 honest-logging, same class as the Harris fill (seq 18514). Minimum-margin question stays Davids open line.",
+     "MIRROR SPENT - arena sim leg closed BEFORE the real fill (LOCK SELL seq 18451, 05:38:46Z, invalidated bid 8c, sim P&L -$1.14), so this real position exits on Golden Rule 95c or settlement only."
+    ],
+    "lane": "TAPE",
+    "match": "Kobe: Yu-Hsiou Hsu vs Yi Zhou",
+    "match_start": "2026-11-19T02:00:00Z",
+    "order": "DSQYC6H014F1",
+    "position": "OPEN",
+    "pre_match": true,
+    "price": 0.92,
+    "resting_buy_placed": "2026-11-18T05:34:33.424329+00:00",
+    "shares": 0.43,
+    "side": "Yu-Hsiou Hsu",
+    "signal": {
+     "kind": "ARENA_FILL",
+     "sealed_at": "2026-11-18T05:34:09+0000",
+     "sealed_price": 0.92,
+     "seq": 18442,
+     "specialist": "LOCK"
+    },
+    "stake": 0.4,
+    "verified_against": "tennis_fills.log line 20 + tennis_executor.log lines 357/358/368; dupe-guard clean (order DSQYC6H014F1 has no prior ledger mention)",
+    "seq": 18550,
+    "sealed_at": "2026-11-18T06:21:52+0000"
    }
   ],
   "exits": [
