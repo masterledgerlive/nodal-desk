@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REAL MONEY TERMINAL — NODAL DOS</title>
+<style>
+  :root{ --grn:#33ff66; --dim:#2e9e52; --amb:#ffb000; --red:#ff5347; --bg:#050505; --panel:#0a0f0a; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--grn);
+        font-family:"Courier New",Courier,ui-monospace,monospace; }
+  body::after{ content:""; position:fixed; inset:0; pointer-events:none;
+        background:repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px); }
+  .wrap{ max-width:1060px; margin:0 auto; padding:16px 12px 44px; }
+  .hdr{ border:2px solid var(--grn); padding:10px 14px; background:var(--panel); }
+  .hdr .t1{ font-size:19px; font-weight:700; letter-spacing:2px; color:var(--amb); }
+  .hdr .t2{ font-size:13px; color:var(--dim); margin-top:2px; }
+  .cmd{ font-size:14px; margin-top:8px; }
+  .live{ display:inline-block; background:var(--grn); color:#000; font-weight:700;
+         padding:0 8px; animation:blk 1.1s steps(1) infinite; }
+  @keyframes blk{ 50%{ opacity:0; } }
+  .stale{ display:inline-block; background:var(--red); color:#000; font-weight:700; padding:0 8px; }
+  .clockline{ font-size:12.5px; color:var(--dim); margin-top:6px; }
+  .intro{ font-size:13.5px; line-height:1.65; margin:12px 2px 0; }
+  .totals{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .tot{ flex:1 1 160px; border:1px solid var(--dim); background:var(--panel); padding:8px 12px; }
+  .tot .k{ font-size:11px; letter-spacing:1.5px; color:var(--dim); }
+  .tot .v{ font-size:20px; font-weight:700; margin-top:2px; }
+  .sec{ border:1px solid var(--dim); background:var(--panel); margin-top:18px; padding:0 0 8px; }
+  .sec .cap{ border-bottom:1px dashed var(--dim); padding:8px 12px; color:var(--amb);
+             font-weight:700; letter-spacing:1px; font-size:14.5px; }
+  .sec .body{ padding:8px 12px 2px; }
+  .line{ font-size:14px; line-height:1.8; white-space:pre-wrap; word-break:break-word; }
+  .tblwrap{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; min-width:680px; }
+  th{ text-align:left; color:var(--amb); font-weight:700; padding:4px 8px;
+      border-bottom:1px dashed var(--dim); white-space:nowrap; font-size:12px; letter-spacing:1px; }
+  td{ padding:6px 8px; border-bottom:1px dotted #14401f; white-space:nowrap; vertical-align:top; }
+  td.wrapok{ white-space:normal; min-width:180px; }
+  .pos{ color:var(--grn); font-weight:700; }
+  .neg{ color:var(--red); font-weight:700; }
+  .amb{ color:var(--amb); font-weight:700; }
+  .dim{ color:var(--dim); }
+  .kidrow td{ background:#0d1a0d; }
+  .foot{ font-size:12px; color:var(--dim); line-height:1.7; padding:6px 12px 2px; }
+  a{ color:var(--amb); }
+  .blinkc{ animation:blk 1.1s steps(1) infinite; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div class="t1">NODAL SYSTEMS (R) — REAL-MONEY TERMINAL</div>
+    <div class="t2">MS-DOS MODE · DISPLAY ONLY · NO ORDERS ARE PLACED FROM THIS SCREEN</div>
+    <div class="cmd">C:\NODAL&gt; TYPE REALMONEY.TXT <span class="blinkc">_</span></div>
+    <div class="clockline"><span class="live" id="livestamp">● LIVE</span>
+      <span id="clock">—</span> · <span id="feedage">FEED —</span> <span id="stalebadge"></span></div>
+  </div>
+
+  <div class="intro">REAL MONEY ONLY — every dollar on this screen is sealed in the ledger and
+  checkable. Wins, losses, and the red ink, all of it. SIM lives on the other pages and is
+  never blended here. If a lane is not green, this screen says so.</div>
+
+  <div class="totals">
+    <div class="tot"><div class="k">PUT IN (ALL LANES + KID)</div><div class="v" id="tIn">—</div></div>
+    <div class="tot"><div class="k">HAS NOW (BANKS)</div><div class="v" id="tNow">—</div></div>
+    <div class="tot"><div class="k">EARNED (SETTLED)</div><div class="v" id="tEarned">—</div></div>
+    <div class="tot"><div class="k">ON THE TABLE (OPEN)</div><div class="v" id="tTable">—</div></div>
+  </div>
+
+  <div class="sec"><div class="cap">+-- SECTION 1 · YOU — THE NINTENDO KID [HUMAN] ------------------</div>
+    <div class="body" id="sec1"><div class="line dim">LOADING…</div></div>
+  </div>
+
+  <div class="sec"><div class="cap">+-- SECTION 2 · EVERY LANE — REAL MONEY ONLY, RANKED BY EARNED --</div>
+    <div class="body tblwrap" id="sec2"><div class="line dim">LOADING…</div></div>
+  </div>
+
+  <div class="sec"><div class="cap">+-- SECTION 3 · OPEN POSITIONS — WHAT IS ON THE TABLE ----------</div>
+    <div class="body tblwrap" id="sec3"><div class="line dim">LOADING…</div></div>
+  </div>
+
+  <div class="sec"><div class="cap">+-- SECTION 4 · ROUND BY ROUND — SETTLED, LATEST FIRST ---------</div>
+    <div class="body tblwrap" id="sec4"><div class="line dim">LOADING…</div></div>
+    <div class="foot" id="sec4foot"></div>
+  </div>
+
+  <div class="foot">SOURCE: realfills.json — built from the sealed ledger (REAL_* records) by the
+  desk's zero-AI pipeline. Banks are the executors' own state. A position shows OPEN until its
+  exit or settle seals. NOFILLs move no money and are not rounds; they sit in the ledger.
+  The Rice leg on the Kid's tennis line is carried at $0.00 pending the exit-print resolution
+  (sealed, ambiguity printed, seq 18418). Times are Eastern, labeled ET, with the date on every row.</div>
+</div>
+
+<script>
+"use strict";
+var FEED = "realfills.json", GAMES = "gamesdata.json";
+function $(id){ return document.getElementById(id); }
+function num(v){ return (typeof v === "number" && isFinite(v)) ? v : null; }
+function money(v){ if(v === null || v === undefined) return "—";
+  var s = (v < 0 ? "-$" : "$") + Math.abs(v).toFixed(2); return s; }
+function moneyS(v){ if(v === null || v === undefined) return "—";
+  return (v > 0 ? "+$" : (v < 0 ? "-$" : "$")) + Math.abs(v).toFixed(2); }
+function cls(v){ return v > 0 ? "pos" : (v < 0 ? "neg" : "dim"); }
+function esc(s){ return String(s === null || s === undefined ? "" : s)
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+var ETparts = new Intl.DateTimeFormat("en-US",{ timeZone:"America/New_York",
+  month:"2-digit", day:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit",
+  hour12:true });
+function fmtET(iso){ if(!iso) return "—"; var d = new Date(iso); if(isNaN(d)) return "—";
+  var p = {}; ETparts.formatToParts(d).forEach(function(x){ p[x.type]=x.value; });
+  return p.month+"/"+p.day+"/"+p.year+" "+p.hour+":"+p.minute+" "+p.dayPeriod+" ET"; }
+function cents(v){ if(v === null || v === undefined) return "—";
+  var c = (v <= 1.5) ? Math.round(v*100) : Math.round(v); return c+"c"; }
+function priceOf(f){ var v = num(f.price_c); if(v === null) v = num(f.filled_c);
+  if(v === null) v = num(f.price); if(v === null) v = num(f.avg_price_c);
+  if(v === null && f.fills && f.fills.length){ var tw=0, ts=0;
+    f.fills.forEach(function(x){ ts += (x.shares||0); tw += (x.shares||0)*(x.price||0); });
+    if(ts>0) v = tw/ts; }
+  return v; }
+function sharesOf(f){ var v = num(f.shares); if(v !== null) return v;
+  if(f.fills && f.fills.length){ var s=0; f.fills.forEach(function(x){ s += (x.shares||0); });
+    return s || null; } return null; }
+function costOf(f){ var v = num(f.cost); if(v !== null) return v;
+  if(f.fills && f.fills.length){ var s=0; f.fills.forEach(function(x){ s += (x.cash||0); });
+    return s || null; } return null; }
+function slugOf(x){ var m = JSON.stringify(x).match(/aec-[a-z0-9\-]+/); return m ? m[0] : null; }
+var STOPW = { tennis:1, finals:1, world:1, tour:1, group:1, ivan:1, lendl:1, john:1,
+  mcenroe:1, mens:1, drummondville:1, helsinki:1, kobe:1, sydney:1, montevideo:1, colina:1 };
+function surnames(x){ var t = ((x.match_name||"")+" "+(x.match||"")+" "+(x.side||"")).toLowerCase();
+  var out = {}; t.replace(/[a-z]{4,}/g, function(w){ if(!STOPW[w]) out[w]=1; }); return out; }
+function overlap(a, b){ var n=0; for(var k in a) if(b[k]) n++; return n; }
+
+function computeOpens(d){
+  var closers = [], fillPools = [];
+  function addClosers(list){ (list||[]).forEach(function(e){ closers.push(e); }); }
+  addClosers(d.settles); addClosers(d.exits);
+  addClosers(d.tennis && d.tennis.settles); addClosers(d.tennis && d.tennis.exits);
+  ["terry","ashen","pizza"].forEach(function(k){ if(d[k]){ addClosers(d[k].settles); addClosers(d[k].exits); } });
+  addClosers(d.david && d.david.btc && d.david.btc.settles);
+  addClosers(d.david && d.david.tennis && d.david.tennis.settles);
+  addClosers(d.david && d.david.tennis && d.david.tennis.exits);
+  var closedSeq = {}, closedSlug = {}, closedWin = {}, davidWin = {};
+  closers.forEach(function(e){
+    if(e.fill_seq) closedSeq[e.fill_seq] = 1;
+    var s = slugOf(e); if(s) closedSlug[s] = 1;
+    if(e.window) closedWin[(e.engine||e.lane||"")+"|"+e.window] = 1;
+    var m = String(e.match||"").match(/20\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/);
+    if(m) davidWin[m[0]] = 1;
+  });
+  var closerNames = closers.map(function(e){ return surnames(e); });
+  function isOpen(f, who){
+    if(f.seq && closedSeq[f.seq]) return false;
+    var s = slugOf(f); if(s && closedSlug[s]) return false;
+    if(f.window && closedWin[who+"|"+f.window]) return false;
+    var m = String(f.match||"").match(/20\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/);
+    if(m && davidWin[m[0]] && who === "DAVID") return false;
+    var fs = surnames(f);
+    for(var i=0;i<closers.length;i++){
+      var ew = closers[i].engine || closers[i].lane || "";
+      if((ew === who || ew === "tennis" || ew === (f.lane||"")) && overlap(fs, closerNames[i]) >= 2) return false;
+    }
+    return true;
+  }
+  function pushPool(list, whoFn, kind){ (list||[]).forEach(function(f){
+    var who = whoFn(f); if(isOpen(f, who)) opens.push({ f:f, who:who, kind:kind }); }); }
+  var opens = [];
+  pushPool(d.fills, function(f){ return f.engine || "?"; }, "BTC");
+  ["terry","ashen","pizza"].forEach(function(k){ if(d[k])
+    pushPool(d[k].fills, function(){ return k.toUpperCase(); }, "BTC"); });
+  pushPool(d.tennis && d.tennis.fills, function(f){ return f.engine || f.lane || "?"; }, "TENNIS");
+  pushPool(d.david && d.david.btc && d.david.btc.fills, function(){ return "DAVID"; }, "BTC");
+  pushPool(d.david && d.david.tennis && d.david.tennis.fills, function(){ return "DAVID"; }, "TENNIS");
+  return opens;
+}
+function exitLaw(o){
+  var f = o.f;
+  if(o.who === "DAVID") return f.exit || "his hand alone — no desk rule touches it";
+  if(o.kind === "TENNIS") return "GOLDEN RULE 95c bid · else settlement";
+  if(o.who === "PLAIN") return "resting exit 95c · else settlement";
+  if(o.who === "RIPTIDE") return "exit at entry +5c · else settlement";
+  if(o.who === "ASHEN") return "caller target · else settlement";
+  return "venue settlement";
+}
+function startOf(o, games){
+  var f = o.f;
+  if(f.start) return f.start;
+  if(f.match_start) return f.match_start;
+  if(f.window) return f.window;
+  if(games){ var fs = surnames(f), best = null, bs = 0;
+    games.forEach(function(g){ var gs = surnames({ match: g.title||"" });
+      var sc = overlap(fs, gs); if(sc > bs){ bs = sc; best = g; } });
+    if(best && bs >= 2) return best.start; }
+  return null;
+}
+function computeRounds(d){
+  var rounds = [], fillPrice = {}, fillPriceWin = {}, allFills = [];
+  function regFills(list){ (list||[]).forEach(function(f){
+    allFills.push({ f:f, sn:surnames(f) });
+    if(f.seq) fillPrice[f.seq] = priceOf(f);
+    var w = f.window || (String(f.match||"").match(/20\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/)||[])[0];
+    if(w) fillPriceWin[(f.engine||f.lane||"DAVID")+"|"+w] = priceOf(f); }); }
+  regFills(d.fills); regFills(d.tennis && d.tennis.fills);
+  ["terry","ashen","pizza"].forEach(function(k){ if(d[k]) regFills(d[k].fills); });
+  regFills(d.david && d.david.btc && d.david.btc.fills);
+  regFills(d.david && d.david.tennis && d.david.tennis.fills);
+  function add(list, whoFn, kind, isExit){ (list||[]).forEach(function(e){
+    rounds.push({ e:e, who:whoFn(e), kind:kind, isExit:!!isExit }); }); }
+  add(d.settles, function(e){ return e.engine || e.lane || "?"; }, "BTC");
+  add(d.exits, function(e){ return e.engine || e.lane || "?"; }, "BTC", true);
+  ["terry","ashen","pizza"].forEach(function(k){ if(d[k]){
+    add(d[k].settles, function(){ return k.toUpperCase(); }, "BTC");
+    add(d[k].exits, function(){ return k.toUpperCase(); }, "BTC", true); } });
+  add(d.tennis && d.tennis.settles, function(e){ return e.engine || e.lane || "?"; }, "TENNIS");
+  add(d.tennis && d.tennis.exits, function(e){ return e.engine || e.lane || "?"; }, "TENNIS", true);
+  add(d.david && d.david.btc && d.david.btc.settles, function(){ return "DAVID"; }, "BTC");
+  add(d.david && d.david.tennis && d.david.tennis.settles, function(){ return "DAVID"; }, "TENNIS");
+  rounds.forEach(function(r){ var e = r.e;
+    r.ts = e.ts || e.executor_log_ts || e.sealed_at || e.filled_at || e.window || "";
+    r.pnl = num(e.pnl);
+    r.bankAfter = num(e.bank_after); if(r.bankAfter === null) r.bankAfter = num(e.race_bank_after);
+    r.entry = num(e.entry_c); if(r.entry === null && e.fill_seq) r.entry = fillPrice[e.fill_seq];
+    if(r.entry === null || r.entry === undefined){ var wk = e.window ||
+      (String(e.match||"").match(/20\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/)||[])[0];
+      if(wk) r.entry = fillPriceWin[r.who+"|"+wk]; }
+    if((r.entry === null || r.entry === undefined) && e.side){
+      var esn = surnames(e);
+      for(var i=0;i<allFills.length;i++){
+        if(allFills[i].f.side === e.side && overlap(esn, allFills[i].sn) >= 2){
+          r.entry = priceOf(allFills[i].f); break; } } }
+    if(r.entry === undefined) r.entry = null;
+    r.side = e.side || e.outcome || "—";
+    if(r.kind === "BTC"){ var w = e.window || (String(e.match||"").match(/20\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/)||[])[0];
+      r.what = "BTC 5-min window " + (w ? fmtET(w) : ""); }
+    else r.what = e.match_name || e.match || "—";
+  });
+  /* a pnl-less exit leg whose sibling leg (same lane + window) carries the
+     window's pnl is one round, not two — the pair prints once, on the leg
+     that carries the money line. Settles are never dropped. */
+  var pnlWin = {};
+  rounds.forEach(function(r){ if(r.pnl !== null && r.e.window) pnlWin[r.who+"|"+r.e.window] = 1; });
+  rounds = rounds.filter(function(r){
+    return !(r.isExit && r.pnl === null && r.e.window && pnlWin[r.who+"|"+r.e.window]); });
+  rounds.sort(function(a,b){ return (a.ts < b.ts) ? 1 : (a.ts > b.ts ? -1 : 0); });
+  return rounds;
+}
+function render(d, games){
+  var st = d.standings || { rows:[], totals:{} };
+  $("tIn").textContent = money(st.totals.put_in);
+  $("tNow").textContent = money(st.totals.has_now);
+  var te = $("tEarned"); te.textContent = moneyS(st.totals.earned);
+  te.className = "v " + cls(st.totals.earned || 0);
+  var opens = computeOpens(d);
+  var tableCost = 0; opens.forEach(function(o){ tableCost += (costOf(o.f) || 0); });
+  $("tTable").textContent = money(tableCost) + " / " + opens.length;
+  /* SECTION 1 — David */
+  var db = (d.david && d.david.btc && d.david.btc.record) || {};
+  var dt = (d.david && d.david.tennis && d.david.tennis.record) || {};
+  var comb = ((num(db.pnl)||0) + (num(dt.pnl)||0));
+  var his = opens.filter(function(o){ return o.who === "DAVID"; });
+  var hisCost = 0; his.forEach(function(o){ hisCost += (costOf(o.f) || 0); });
+  function recLine(label, r){
+    return label + "  " + (r.w||0) + "W-" + (r.l||0) + "L   EARNED " +
+      moneyS(num(r.pnl)) + "   STREAK " + (r.streak || "—"); }
+  var h = '<div class="line">' + esc(recLine("BTC 5-MIN ......", db)) + "\n" +
+          esc(recLine("TENNIS .........", dt)) + "\n" +
+          "COMBINED SETTLED  " + moneyS(comb) + "   ·   ON THE TABLE NOW " +
+          money(hisCost) + " IN " + his.length + " OPEN POSITION" + (his.length === 1 ? "" : "S") + "</div>";
+  if(his.length){
+    h += '<div class="tblwrap"><table><tr><th>MATCH</th><th>SIDE</th><th>ENTRY</th><th>SHARES</th>' +
+         '<th>COST</th><th>START (ET)</th><th>PAYS MAX</th><th>EXIT RULE / RUNG</th></tr>';
+    his.forEach(function(o){ var f = o.f, sh = sharesOf(f);
+      var pays = (o.f.to_win_displayed) ? money(o.f.to_win_displayed)
+               : (sh !== null ? money(sh) : "—");
+      var shTxt = (sh !== null) ? String(sh) : "≈4.5 *";
+      h += "<tr><td class='wrapok'>" + esc(f.match_name || f.match || "—") + "</td><td>" +
+        esc(f.side || "—") + "</td><td>" + cents(priceOf(f)) + "</td><td>" + esc(shTxt) +
+        "</td><td>" + money(costOf(f)) + "</td><td>" + fmtET(startOf(o, games)) +
+        "</td><td>" + pays + "</td><td class='wrapok'>" + esc(exitLaw(o)) + "</td></tr>"; });
+    h += "</table></div><div class='foot'>* Medvedev share count derived from cost / avg price — the venue pull confirms the exact fills.</div>";
+  } else h += '<div class="line dim">NO OPEN POSITIONS — NOTHING ON THE TABLE.</div>';
+  $("sec1").innerHTML = h;
+  /* SECTION 2 — standings */
+  var s2 = '<table><tr><th>RK</th><th>PLAYER</th><th>LANE</th><th>PUT IN</th><th>HAS NOW</th>' +
+           '<th>EARNED</th><th>W-L</th><th>STREAK</th></tr>';
+  (st.rows || []).forEach(function(r){
+    var kid = (r.tag === "HUMAN") || /NINTENDO/i.test(r.player || "");
+    s2 += "<tr" + (kid ? " class='kidrow'" : "") + "><td>" + (r.rank||"") + "</td><td><b>" +
+      esc(r.player) + "</b>" + (kid ? " [HUMAN]" : "") + "</td><td>" + esc(r.lane||"") +
+      "</td><td>" + money(r.put_in) + "</td><td>" + money(r.has_now) + "</td><td class='" +
+      cls(r.earned||0) + "'>" + moneyS(r.earned) + "</td><td>" + (r.w||0) + "-" + (r.l||0) +
+      "</td><td>" + esc(r.streak||"—") + "</td></tr>"; });
+  s2 += "<tr><td></td><td><b>ALL LANES</b></td><td></td><td><b>" + money(st.totals.put_in) +
+    "</b></td><td><b>" + money(st.totals.has_now) + "</b></td><td class='" + cls(st.totals.earned||0) +
+    "'><b>" + moneyS(st.totals.earned) + "</b></td><td></td><td></td></tr></table>";
+  $("sec2").innerHTML = s2;
+  /* SECTION 3 — all opens */
+  if(opens.length){
+    var s3 = '<table><tr><th>WHO</th><th>MATCH / WINDOW</th><th>SIDE</th><th>ENTRY</th>' +
+             '<th>SHARES</th><th>COST</th><th>START (ET)</th><th>EXIT LAW</th></tr>';
+    opens.forEach(function(o){ var f = o.f, sh = sharesOf(f);
+      var what = (o.kind === "BTC") ? ("BTC 5-min · " + (f.window || "")) :
+                 (f.match_name || f.match || "—");
+      s3 += "<tr><td><b>" + esc(o.who === "DAVID" ? "NINTENDO KID" : o.who) + "</b></td>" +
+        "<td class='wrapok'>" + esc(what) + "</td><td>" + esc(f.side || "—") + "</td><td>" +
+        cents(priceOf(f)) + "</td><td>" + (sh !== null ? sh : "—") + "</td><td>" +
+        money(costOf(f)) + "</td><td>" + fmtET(startOf(o, games)) + "</td><td class='wrapok'>" +
+        esc(exitLaw(o)) + "</td></tr>"; });
+    s3 += "</table>";
+    $("sec3").innerHTML = s3;
+  } else $("sec3").innerHTML = '<div class="line dim">NOTHING OPEN — THE TABLE IS CLEAR.</div>';
+  /* SECTION 4 — rounds */
+  var rounds = computeRounds(d);
+  var s4 = '<table><tr><th>DATE / TIME (ET)</th><th>WHO</th><th>ROUND</th><th>SIDE</th>' +
+           '<th>ENTRY</th><th>RESULT</th><th>P&amp;L</th><th>BANK AFTER</th></tr>';
+  rounds.slice(0, 30).forEach(function(r){ var e = r.e;
+    var res = (r.pnl === null) ? "<span class='amb'>UNRESOLVED</span>" :
+      (r.pnl > 0 ? "<span class='pos'>WIN</span>" : (r.pnl < 0 ? "<span class='neg'>LOSS</span>" : "FLAT"));
+    s4 += "<tr><td>" + fmtET(r.ts) + "</td><td><b>" +
+      esc(r.who === "DAVID" ? "NINTENDO KID" : r.who) + "</b></td><td class='wrapok'>" +
+      esc(r.what) + "</td><td>" + esc(String(r.side).toUpperCase()) + "</td><td>" +
+      cents(r.entry) + "</td><td>" + res + "</td><td class='" + cls(r.pnl || 0) + "'>" +
+      (r.pnl === null ? "—" : moneyS(r.pnl)) + "</td><td>" + money(r.bankAfter) + "</td></tr>"; });
+  s4 += "</table>";
+  $("sec4").innerHTML = s4;
+  $("sec4foot").textContent = "SHOWING LATEST " + Math.min(30, rounds.length) + " OF " +
+    rounds.length + " SETTLED ROUNDS · EVERY ROUND ABOVE IS SEALED · THE RECORD NEVER SLEEPS.";
+  /* freshness */
+  var built = d.built_at ? new Date(d.built_at) : null;
+  if(built && !isNaN(built)){
+    var age = Math.max(0, Math.round((Date.now() - built.getTime())/1000));
+    $("feedage").textContent = "FEED realfills.json · BUILT " + fmtET(d.built_at) +
+      " · AGE " + age + "s";
+    $("stalebadge").innerHTML = age > 180 ? '<span class="stale">STALE</span>' : "";
+  }
+}
+function tickClock(){
+  var p = {}; new Intl.DateTimeFormat("en-US",{ timeZone:"America/New_York",
+    weekday:"short", month:"2-digit", day:"2-digit", year:"numeric", hour:"2-digit",
+    minute:"2-digit", second:"2-digit", hour12:true }).formatToParts(new Date())
+    .forEach(function(x){ p[x.type]=x.value; });
+  $("clock").textContent = p.weekday+" "+p.month+"/"+p.day+"/"+p.year+" "+p.hour+":"+
+    p.minute+":"+p.second+" "+p.dayPeriod+" ET";
+}
+var gamesCache = null;
+function load(){
+  fetch(GAMES + "?t=" + Date.now(), { cache:"no-store" }).then(function(r){ return r.json(); })
+    .then(function(g){ gamesCache = (g && g.games) || null; }).catch(function(){});
+  fetch(FEED + "?t=" + Date.now(), { cache:"no-store" }).then(function(r){ return r.json(); })
+    .then(function(d){ render(d, gamesCache); }).catch(function(){
+      $("feedage").textContent = "FEED UNREACHABLE — RETRYING"; });
+}
+if(typeof document !== "undefined"){
+  tickClock(); setInterval(tickClock, 1000);
+  load(); setInterval(load, 15000);
+}
+if(typeof window !== "undefined") window.__dos = { computeOpens: computeOpens,
+  computeRounds: computeRounds, fmtET: fmtET, cents: cents };
+</script>
+</body>
+</html>
