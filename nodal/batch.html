@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNANIMOUS VOTE — shadow batch</title>
+<style>
+  :root{ --bg:#0b0e14; --panel:#131826; --line:#26304a; --txt:#e8ecf5; --dim:#8b96b0;
+         --gold:#ffd75e; --green:#3ddc84; --red:#ff6b6b; --blue:#57b6ff; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--txt);
+        font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  .wrap{ max-width:1020px; margin:0 auto; padding:18px 14px 40px; }
+  h1{ font-size:25px; letter-spacing:2px; margin:6px 0 2px; color:var(--gold); }
+  .sub{ color:var(--dim); font-size:13px; line-height:1.65; }
+  .stamp{ display:inline-block; color:#0b0e14; background:var(--gold); border-radius:6px;
+          padding:1px 8px; font-weight:800; font-size:12px; letter-spacing:1px; margin-left:8px; }
+  .clock{ color:var(--dim); font-size:12px; margin-top:4px; }
+  .fresh{ font-size:13.5px; margin-top:8px; color:var(--txt); }
+  .fresh b{ color:var(--gold); }
+  .totals{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .tot{ flex:1 1 140px; background:var(--panel); border:1px solid var(--line);
+        border-radius:12px; padding:12px 16px; }
+  .tot .k{ color:var(--dim); font-size:11px; letter-spacing:1.5px; }
+  .tot .v{ font-size:21px; font-weight:800; margin-top:4px; }
+  .master{ background:var(--panel); border:1px solid var(--gold); border-radius:12px;
+           padding:14px 16px; margin-top:16px; }
+  .master .k{ color:var(--gold); font-size:12px; letter-spacing:2px; font-weight:800; }
+  .master .win{ color:var(--dim); font-size:12px; margin-top:2px; }
+  .mrow{ display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
+         padding:9px 0; border-bottom:1px solid #1b2338; }
+  .mrow:last-child{ border-bottom:none; }
+  .mrow .lead{ color:var(--gold); font-weight:800; font-size:11px; letter-spacing:1px; }
+  .mrow .lane{ font-weight:800; font-size:16px; }
+  .mrow .meta{ color:var(--dim); font-size:12.5px; }
+  .side{ font-weight:800; font-size:15px; padding:0 8px; border-radius:5px; color:#0b0e14; }
+  .up{ background:var(--green); } .down{ background:var(--red); }
+  .verdict{ margin-top:10px; font-size:14.5px; font-weight:800; }
+  .tblwrap{ overflow-x:auto; margin-top:14px; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; min-width:720px; }
+  th{ text-align:left; color:var(--dim); font-size:11px; letter-spacing:1.5px;
+      padding:6px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  td{ padding:10px 8px; border-bottom:1px solid #1b2338; vertical-align:top; }
+  .wtime{ white-space:nowrap; font-weight:800; }
+  .stack{ line-height:1.75; white-space:nowrap; }
+  .stack .tot{ font-weight:800; }
+  .stack .who{ color:var(--dim); font-size:12px; }
+  .bcall{ font-weight:800; font-size:14.5px; }
+  .pos{ color:var(--green); font-weight:800; }
+  .neg{ color:var(--red); font-weight:800; }
+  .flat{ color:var(--dim); font-weight:800; }
+  .diss{ color:var(--dim); font-size:12.5px; line-height:1.7; }
+  .stale{ color:#0b0e14; background:var(--red); border-radius:6px; padding:0 6px;
+          font-weight:800; font-size:10.5px; }
+  .foot{ margin-top:16px; color:var(--dim); font-size:12px; line-height:1.7; }
+  a{ color:var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🗳️ UNANIMOUS VOTE — SHADOW BATCH <span class="stamp">SHADOW · SCORES ONLY — NO ORDERS</span></h1>
+  <div class="sub">Every lane votes IN or PASS on each BTC 5-minute window. Two or more IN
+  and the weighted vote becomes one pooled batch call — the heaviest records carry the call.
+  Whoever voted the other way rides as dissent: beat the batch and the bounty points score
+  <b>true</b>, as if it were play money. This page is a shadow replay of the sealed record —
+  no orders are placed from it, ever.</div>
+  <div class="fresh" id="fresh">Updated — · Current window —</div>
+  <div class="clock"><span id="clock">—</span> · all times on this page are Eastern (ET)</div>
+
+  <div class="master" id="master">
+    <div class="k">👑 MASTER CALL — FOLLOW THE TOP CALL</div>
+    <div class="win" id="mwin">loading the current window…</div>
+    <div id="mcalls"></div>
+    <div class="verdict" id="mverdict"></div>
+  </div>
+
+  <div class="totals">
+    <div class="tot"><div class="k">🗳️ BATCHES FORMED</div><div class="v" id="tBatches">—</div></div>
+    <div class="tot"><div class="k">🎯 BATCH RECORD</div><div class="v" id="tBRec">—</div></div>
+    <div class="tot"><div class="k">📈 BATCH POINTS</div><div class="v" id="tBPts">—</div></div>
+    <div class="tot"><div class="k">⚔️ DISSENT RECORD</div><div class="v" id="tDRec">—</div></div>
+    <div class="tot"><div class="k">🏴‍☠️ DISSENT BOUNTY</div><div class="v" id="tDBounty">—</div></div>
+    <div class="tot"><div class="k">🎾 SOLO RIDES</div><div class="v" id="tSolos">—</div></div>
+  </div>
+
+  <div class="tblwrap">
+  <table>
+    <thead><tr>
+      <th>WINDOW (ET)</th><th>VOTES — WEIGHTED</th><th>BATCH CALL</th>
+      <th>DISSENT</th><th>RESULT</th><th>POINTS</th>
+    </tr></thead>
+    <tbody id="rows"><tr><td colspan="6" class="diss">loading the record…</td></tr></tbody>
+  </table>
+  </div>
+
+  <div class="foot" id="how">How this works: declarations come from the sealed ledger only —
+  PLAIN's BTC5R signals, Riptide's flow plays, Terry's LOCKs (his plain CALLs ride the dissent
+  track), Ashen's counted seals, Pizza's counted calls. Weights v1 =
+  max(1, graded wins − graded losses) from each lane's graded record, so the proven callers
+  outweigh a flat head-count. Points follow the Callers' Contest law: a win pays 1.00 plus a
+  speed bonus for how early the call landed (pre-window +1.00 down to +0.00 at 240s in), the
+  window's first caller adds +0.25, a loss is −1.00 flat. The batch is graded at venue
+  settlement in this shadow v1 — the Golden Rule 95¢ exit is the live design's exit law and is
+  <b>pending</b> here. One rider in a window = a SOLO ride under its own law, shown for the
+  record and never counted as a batch. Verify anything: every window below is rebuilt from
+  ledger seals, and the full contest lives on the <a href="callers.html">Callers' Contest</a> board.</div>
+</div>
+<script>
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function et(iso, withDate){
+  if (!iso) return '—';
+  var d = new Date(iso);
+  var o = { timeZone:'America/New_York', hour:'numeric', minute:'2-digit', hour12:true };
+  if (withDate){ o.month = 'short'; o.day = 'numeric'; }
+  return d.toLocaleString('en-US', o) + ' ET';
+}
+function pts(v){ if (v == null) return '<span class="flat">—</span>';
+  var s = (v > 0 ? '+' : '') + v.toFixed(2);
+  return '<span class="' + (v > 0 ? 'pos' : (v < 0 ? 'neg' : 'flat')) + '">' + s + '</span>'; }
+function sideTag(side){ return '<span class="side ' + side + '">' + side.toUpperCase() + '</span>'; }
+var builtAt = null;
+
+function renderMaster(d){
+  var m = d.master;
+  if (!m){ document.getElementById('mwin').textContent = 'no window on record yet'; return; }
+  document.getElementById('mwin').textContent = 'Current window: ' + et(m.window, true) +
+    (m.outcome ? ' · settled ' + m.outcome.toUpperCase() + ' · ' + m.result : ' · awaiting settlement');
+  var html = '';
+  (m.calls || []).forEach(function(c, i){
+    html += '<div class="mrow">'
+      + (i === 0 ? '<span class="lead">👑 LEADER</span>' : '<span class="lead" style="color:var(--dim)">#' + (i + 1) + '</span>')
+      + '<span class="lane">' + esc(c.lane) + '</span>' + sideTag(c.side)
+      + '<span class="meta">weight ' + c.weight
+      + ' · record ' + c.w + 'W–' + c.l + 'L (' + (c.win_pct == null ? '—' : c.win_pct + '%') + ')'
+      + ' · streak ' + (c.streak || '—')
+      + (c.seconds_in != null ? ' · in at ' + c.seconds_in + 's' : ' · in time n/a')
+      + (c.confidence != null ? ' · conf ' + c.confidence + '%' : '')
+      + '</span></div>';
+  });
+  document.getElementById('mcalls').innerHTML = html || '<div class="mrow"><span class="meta">no calls yet this window</span></div>';
+  var v = document.getElementById('mverdict');
+  if (m.kind === 'BATCH' && m.batch_side)
+    v.innerHTML = 'BATCH CALL: ' + sideTag(m.batch_side) + ' — follow the leader at the top.';
+  else if (m.kind === 'SOLO')
+    v.textContent = 'SOLO RIDE — one rider in; it rides under its own law, no batch.';
+  else v.textContent = '';
+}
+
+function render(d){
+  builtAt = d.built_at ? Date.parse(d.built_at) : null;
+  document.getElementById('fresh').innerHTML =
+    'Updated <b>' + et(d.built_at, true) + '</b> · Current window <b>' + et(d.current_window, true) + '</b>';
+  renderMaster(d);
+  var s = d.summary || {};
+  document.getElementById('tBatches').textContent = s.batches_formed != null ? s.batches_formed : '—';
+  document.getElementById('tBRec').textContent = (s.batch_w || 0) + 'W–' + (s.batch_l || 0) + 'L';
+  var bp = document.getElementById('tBPts');
+  bp.textContent = (s.batch_points > 0 ? '+' : '') + (s.batch_points || 0).toFixed(2);
+  bp.className = 'v ' + (s.batch_points > 0 ? 'pos' : (s.batch_points < 0 ? 'neg' : 'flat'));
+  document.getElementById('tDRec').textContent = (s.dissent_w || 0) + 'W–' + (s.dissent_l || 0) + 'L';
+  var db = document.getElementById('tDBounty');
+  db.textContent = '+' + (s.dissent_bounty_points || 0).toFixed(2);
+  db.className = 'v ' + (s.dissent_bounty_points > 0 ? 'pos' : 'flat');
+  document.getElementById('tSolos').textContent =
+    (s.solos || 0) + ' (' + (s.solo_w || 0) + 'W–' + (s.solo_l || 0) + 'L)';
+
+  var tb = document.getElementById('rows');
+  var wins = d.windows || [];
+  if (!wins.length){ tb.innerHTML = '<tr><td colspan="6" class="diss">no windows on record yet</td></tr>'; return; }
+  var html = '';
+  wins.forEach(function(r){
+    var bySide = { up: [], down: [] };
+    (r.declarations || []).forEach(function(x){ if (bySide[x.side]) bySide[x.side].push(x); });
+    function stack(side){
+      var arr = bySide[side]; if (!arr.length) return '';
+      var tot = arr.reduce(function(a, x){ return a + (x.weight || 0); }, 0);
+      var who = arr.map(function(x){ return x.lane + ' ' + x.weight + (x.seconds_in != null ? ' @' + x.seconds_in + 's' : ''); }).join(' · ');
+      return '<div><span class="tot" style="color:var(--' + (side === 'up' ? 'green' : 'red') + ')">' +
+             side.toUpperCase() + ' ' + tot + '</span> <span class="who">' + esc(who) + '</span></div>';
+    }
+    var bcall = '—', diss = '—';
+    if (r.kind === 'BATCH'){
+      bcall = sideTag(r.batch_side);
+      var parts = [];
+      (r.dissenters || []).forEach(function(l){
+        var p = r.dissent_points ? r.dissent_points[l] : null;
+        parts.push(l + (p != null ? ' ' + (p > 0 ? '+' : '') + p.toFixed(2) : ''));
+      });
+      (r.dissent_track || []).forEach(function(t){
+        parts.push('TERRY call-track ' + t.side.toUpperCase() + (t.points != null ? ' ' + (t.points > 0 ? '+' : '') + t.points.toFixed(2) : ''));
+      });
+      diss = parts.length ? '<span class="diss">' + esc(parts.join('<br>')) + '</span>' : '—';
+    } else if (r.kind === 'SOLO'){
+      bcall = '<span class="flat">SOLO — ' + esc(r.solo_lane || '') + '</span>';
+    } else if (r.kind === 'TIE'){
+      bcall = '<span class="flat">TIE — no batch</span>';
+    }
+    var res = '—';
+    if (r.result === 'WIN') res = '<span class="pos">WIN ✓</span>';
+    else if (r.result === 'LOSS') res = '<span class="neg">LOSS ✗</span>';
+    else if (r.result === 'UNGRADED') res = '<span class="flat">UNGRADED</span>';
+    else res = '<span class="flat">' + esc(r.result || '—') + '</span>';
+    if (r.outcome) res += '<div class="diss">settled ' + r.outcome.toUpperCase() + '</div>';
+    var p = (r.kind === 'SOLO') ? r.solo_points : r.batch_points;
+    html += '<tr><td class="wtime">' + et(r.window, true) + '</td>'
+      + '<td class="stack">' + stack('up') + stack('down') + '</td>'
+      + '<td class="bcall">' + bcall + '</td>'
+      + '<td>' + diss + '</td>'
+      + '<td>' + res + '</td>'
+      + '<td>' + pts(p) + '</td></tr>';
+  });
+  tb.innerHTML = html;
+}
+function tick(){
+  var now = new Date();
+  document.getElementById('clock').textContent =
+    now.toLocaleTimeString('en-US', { timeZone:'America/New_York', hour12:true }) + ' ET now';
+  if (builtAt){
+    var age = Math.max(0, Math.round((Date.now() - builtAt) / 1000));
+    var el = document.getElementById('fresh');
+    if (age > 180 && el.innerHTML.indexOf('STALE') < 0)
+      el.innerHTML += ' <span class="stale">STALE</span>';
+  }
+}
+function load(){
+  fetch('batchdata.json?t=' + Date.now(), {cache: 'no-store'})
+    .then(function(r){ return r.json(); })
+    .then(render)
+    .catch(function(){});
+}
+load(); tick();
+setInterval(load, 15000);
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
