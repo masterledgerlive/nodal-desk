@@ -71,6 +71,7 @@
     <div class="k">👑 MASTER CALL — FOLLOW THE TOP CALL</div>
     <div class="win" id="mwin">loading the current window…</div>
     <div id="mcalls"></div>
+    <div id="mregistry"></div>
     <div class="verdict" id="mverdict"></div>
   </div>
 
@@ -82,6 +83,7 @@
     <div class="tot"><div class="k">🏴‍☠️ DISSENT BOUNTY</div><div class="v" id="tDBounty">—</div></div>
     <div class="tot"><div class="k">🎾 SOLO RIDES</div><div class="v" id="tSolos">—</div></div>
   </div>
+  <div class="fresh" id="banksLine"></div>
 
   <div class="tblwrap">
   <table>
@@ -138,6 +140,17 @@ function renderMaster(d){
       + '</span></div>';
   });
   document.getElementById('mcalls').innerHTML = html || '<div class="mrow"><span class="meta">no calls yet this window</span></div>';
+  var rg = '';
+  (m.registry || []).forEach(function(x){
+    var st = x.state === 'LOCK' ? '🔒 LOCK' : (x.state === 'BOUGHT IN' ? 'PASS → BOUGHT IN' : x.state);
+    rg += '<div class="mrow"><span class="lane">' + esc(x.lane) + '</span>'
+      + '<span class="meta">' + st + '</span>'
+      + (x.side ? sideTag(x.side) : '<span class="meta">—</span>')
+      + '<span class="meta">' + (x.stake != null ? ' · $' + Number(x.stake).toFixed(2) : '')
+      + (x.seconds_in != null ? ' · in at ' + x.seconds_in + 's' : '') + '</span></div>';
+  });
+  document.getElementById('mregistry').innerHTML = rg
+    ? '<div class="k" style="margin-top:10px">📋 LOCK-IN REGISTRY — EVERY LANE, BY NAME</div>' + rg : '';
   var v = document.getElementById('mverdict');
   if (m.kind === 'BATCH' && m.batch_side)
     v.innerHTML = 'BATCH CALL: ' + sideTag(m.batch_side) + ' — follow the leader at the top.';
@@ -164,6 +177,16 @@ function render(d){
   db.className = 'v ' + (s.dissent_bounty_points > 0 ? 'pos' : 'flat');
   document.getElementById('tSolos').textContent =
     (s.solos || 0) + ' (' + (s.solo_w || 0) + 'W–' + (s.solo_l || 0) + 'L)';
+  var bk = d.banks || {};
+  var bl = document.getElementById('banksLine');
+  if (bl){
+    var parts = Object.keys(bk).map(function(k){
+      var b = bk[k];
+      return esc(k) + ' <b>$' + Number(b.bank).toFixed(2) + '</b> (' + (b.delta >= 0 ? '+' : '−') + '$' + Math.abs(b.delta).toFixed(2) + ')' + (b.busted ? ' · BUSTED' : '');
+    });
+    bl.innerHTML = '🏦 SHADOW BANKS — agreement stakes (L4) · ' + parts.join(' · ')
+      + (d.banks_note ? '<br><span style="color:var(--dim)">' + esc(d.banks_note) + '</span>' : '');
+  }
 
   var tb = document.getElementById('rows');
   var wins = d.windows || [];
