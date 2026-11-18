@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T16:12:14Z",
+ "built_at": "2026-11-18T16:39:26Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -928,12 +928,33 @@
      "status": "UNRESOLVED AMOUNT \u2014 both readings stand",
      "seq": 18418,
      "sealed_at": "2026-11-18T05:31:10+0000"
+    },
+    {
+     "action": "SETTLE (venue settlement - position held to resolution)",
+     "bank": "David personal line - never touches engine banks (DAVID_PLAYER seq 14199)",
+     "cost": 0.9994,
+     "cost_breakdown": "base $0.9394 (4.27 sh x 22c) + commission $0.0600",
+     "entry_fill": "DAVID_TENNIS_FILL seq 18646 / venue order DSS40WZG14ET (2026-11-18T06:56:43Z)",
+     "lane": "DAVID_TENNIS",
+     "match": "Carlos Alcaraz vs Daniil Medvedev (ATP Finals, Ivan Lendl Group)",
+     "outcome": "SETTLED LOSS - Medvedev lost to Alcaraz; position held in full to resolution (no exit - seq 19819 voided by DAVID_TENNIS_EXIT_CORRECTION)",
+     "payout": 0.0,
+     "player": "DAVID",
+     "pnl": -0.9994,
+     "settle_ts": "2026-11-18T14:30:59.716917376Z",
+     "shares": 4.27,
+     "side": "Daniil Medvedev",
+     "tag": "HUMAN",
+     "tennis_record_after": "1W-3L, board P&L -$2.0980 (Rice ticket unresolved readings still ride)",
+     "verified_against": "Venue POSITION_RESOLUTION activity (recon_medvedev3.py): merged position resolved 14:30:59Z, payout $0, realized -$1.0516 base across David 4.27 sh + PLAIN 0.51 sh; David share = base $0.9394 + fee $0.0600 = $0.9994. David's app screenshot (MARKET RESOLVED, -$1.12 merged cost, payout $0) corroborates.",
+     "seq": 19833,
+     "sealed_at": "2026-11-18T16:14:08+0000"
     }
    ],
    "record": {
     "w": 2,
-    "l": 2,
-    "pnl": 1.2914,
+    "l": 3,
+    "pnl": 0.292,
     "streak": "W1"
    }
   }
@@ -1094,10 +1115,10 @@
     "lane": "Tennis \u00b7 add-on (Bank side)",
     "tag": "HUMAN",
     "put_in": 3.0803,
-    "has_now": 4.3717,
-    "earned": 1.2914,
+    "has_now": 3.3723,
+    "earned": 0.292,
     "w": 2,
-    "l": 2,
+    "l": 3,
     "streak": "W1",
     "rank": 1
    },
@@ -1172,8 +1193,8 @@
     "lane": "Tennis",
     "tag": null,
     "put_in": 5.0,
-    "has_now": 4.0359,
-    "earned": -0.9641,
+    "has_now": 4.2119,
+    "earned": -0.7881,
     "w": 3,
     "l": 3,
     "streak": "L1",
@@ -1185,8 +1206,8 @@
     "lane": "Tennis",
     "tag": null,
     "put_in": 5.0,
-    "has_now": 3.3715,
-    "earned": -1.6285,
+    "has_now": 3.6471,
+    "earned": -1.3529,
     "w": 0,
     "l": 3,
     "streak": "L3",
@@ -1195,8 +1216,8 @@
   ],
   "totals": {
    "put_in": 19.0803,
-   "has_now": 17.4406,
-   "earned": -1.6397
+   "has_now": 16.8928,
+   "earned": -2.1875
   }
  },
  "tennis": {
