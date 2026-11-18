@@ -202,31 +202,46 @@ function render(d){
   var tn = d.tennis || {};
   var ts2 = tn.summary || {};
   var tl = document.getElementById('tennisLine');
-  if (tl) tl.innerHTML = '🏁 Season ' + (tn.season || 2) + ' · matches with declarations ' + (ts2.matches_with_declarations || 0)
+  if (tl){
+    var tbk = tn.banks || {};
+    var tbparts = Object.keys(tbk).map(function(k){
+      var b = tbk[k];
+      return esc(k) + ' <b>$' + Number(b.bank).toFixed(2) + '</b> (' + (b.delta >= 0 ? '+' : '−') + '$' + Math.abs(b.delta).toFixed(2) + ')' + (b.busted ? ' · BUSTED' : '');
+    });
+    tl.innerHTML = '🏁 Season ' + (tn.season || 2) + ' · matches with declarations ' + (ts2.matches_with_declarations || 0)
     + ' · batches ' + (ts2.batches || 0) + ' (' + (ts2.batch_w || 0) + 'W–' + (ts2.batch_l || 0) + 'L · ' + ((ts2.batch_points >= 0 ? '+' : '') + (ts2.batch_points || 0).toFixed(2)) + ' pts)'
     + ' · solos ' + (ts2.solos || 0) + ' (' + (ts2.solo_w || 0) + 'W–' + (ts2.solo_l || 0) + 'L)'
+    + ' · left alone ' + (ts2.left_alone || 0)
     + ' · dissent ' + (ts2.dissent_w || 0) + 'W–' + (ts2.dissent_l || 0) + 'L'
+    + ' · buy-ins ' + (ts2.buyin_entries || 0)
     + ' · weights PLAIN ' + (((tn.weights || {}).PLAIN || {}).weight != null ? tn.weights.PLAIN.weight : '—')
     + ' / TAPE ' + (((tn.weights || {}).TAPE || {}).weight != null ? tn.weights.TAPE.weight : '—')
-    + '<br><span style="color:var(--dim)">' + esc(tn.golden_exit || '') + ' ' + esc(tn.grading_source || '') + '</span>';
+    + (tbparts.length ? '<br>🏦 TENNIS SHADOW BANKS — agreement stakes (L4) · ' + tbparts.join(' · ') : '')
+    + '<br><span style="color:var(--dim)">' + esc(tn.golden_exit || '') + ' ' + esc(tn.grading_source || '') + ' ' + esc(tn.banks_note || '') + '</span>';
+  }
   var ttb = document.getElementById('tennisRows');
   if (ttb){
     var tm = tn.matches || [];
     if (!tm.length){
-      ttb.innerHTML = '<tr><td colspan="5" class="diss">no tennis declarations yet this season — the registry fills as the arena seals picks and fills</td></tr>';
+      ttb.innerHTML = '<tr><td colspan="5" class="diss">no tennis matches on the season card yet — the registry fills as the arena card posts</td></tr>';
     } else {
       var th = '';
       tm.forEach(function(m){
         var reg = (m.registry || []).map(function(x){
-          return esc(x.lane) + ': ' + (x.state === 'LOCK'
-            ? '🔒 ' + esc(x.side || '') + ' · $' + Number(x.stake || 0).toFixed(2) + (x.sealed_at ? ' · sealed ' + et(x.sealed_at, true) : '')
-            : 'PASS');
+          if (x.state === 'PASS') return esc(x.lane) + ': PASS';
+          var st = x.state === 'LOCK' ? '🔒 LOCK' : (x.state === 'BOUGHT IN' ? 'PASS → BOUGHT IN' : x.state);
+          return esc(x.lane) + ': ' + st + ' · ' + esc(x.side || '') + ' · $' + Number(x.stake || 0).toFixed(2) + (x.sealed_at ? ' · sealed ' + et(x.sealed_at, true) : '');
         }).join('<br>');
-        var call = m.kind === 'BATCH' ? '<b>' + esc(m.batch_side || '') + '</b>'
-          : (m.kind === 'SOLO' ? 'SOLO · ' + esc(m.solo_lane || '') : '—');
-        th += '<tr><td>' + esc(m.match || '') + '</td><td class="who">' + reg + '</td><td>' + call + '</td><td>'
-          + (m.outcome ? esc(m.outcome) + ' won · ' : '') + esc(m.result || '')
+        var call = m.kind === 'BATCH' ? '<b>' + esc(m.batch_side || '') + '</b>' + (m.plan ? '<br><span class="who">PLAN: ' + esc(m.plan) + '</span>' : '')
+          : (m.kind === 'SOLO' ? 'SOLO · ' + esc(m.solo_lane || '')
+          : (m.kind === 'LEFT ALONE' ? '<span class="who">— left alone —</span>' : '—'));
+        th += '<tr><td>' + esc(m.match || '')
+          + (m.start ? '<br><span class="who">starts ' + et(m.start, true) + ' ET · ' + esc(m.match_state || '') + '</span>' : '')
+          + (m.freeze_note ? '<br><span class="who">' + esc(m.freeze_note) + '</span>' : '')
+          + '</td><td class="who">' + reg + '</td><td>' + call + '</td><td>'
+          + (m.kind === 'LEFT ALONE' ? '—' : (m.outcome ? esc(m.outcome) + ' won · ' : '') + esc(m.result || ''))
           + (m.dissent_points ? ' · dissent ' + Object.keys(m.dissent_points).map(function(k){ return esc(k) + ' ' + (m.dissent_points[k] > 0 ? '+' : '') + m.dissent_points[k].toFixed(2); }).join(', ') : '')
+          + ((m.buy_ins || []).length ? ' · bought in: ' + m.buy_ins.map(function(b2){ return esc(b2.lane); }).join(', ') : '')
           + '</td><td>' + (m.points == null ? '—' : (m.points > 0 ? '+' : '') + m.points.toFixed(2)) + '</td></tr>';
       });
       ttb.innerHTML = th;
