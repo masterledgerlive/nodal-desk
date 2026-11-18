@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T16:39:26Z",
+ "built_at": "2026-11-18T17:28:39Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -1575,6 +1575,31 @@
     "verified_against": "tennis_fills.log line 26 verbatim + tennis_executor.log lines 571/572/595 (GOLDEN MATH, RESTING BUY, FILLLOG) + executor-state position (open, 0.54 sh, cost $0.3024). Stake check: 10% of working bank $3.7265 = $0.3727 -> round-down-10c $0.30. Dupe-guard: order DSZR7MZ013ZK has no prior ledger mention.",
     "seq": 19818,
     "sealed_at": "2026-11-18T16:03:56+0000"
+   },
+   {
+    "cost": 0.4004,
+    "filled_ts": "2026-11-18T17:13:18Z",
+    "golden_math": {
+     "cost": 0.4004,
+     "net_at_95c": 0.01,
+     "net_pre_cut": 0.0176,
+     "proceeds_at_95c": 0.418
+    },
+    "lane": "TAPE",
+    "match": "Helsinki: Svyatoslav Gulin vs Toby Samuel",
+    "order_id": "DT0XXHW014F0",
+    "pick": "Svyatoslav Gulin",
+    "placed_ts": "2026-11-18T16:02:41Z",
+    "price": 0.91,
+    "shares": 0.44,
+    "side": "BUY_LONG",
+    "signal_seq": 19810,
+    "slug": "aec-atp-svygul-tobsam-2026-11-19",
+    "stake": 0.4,
+    "state_note": "Executor state position records qty_filled 0.3 (stale partial-fill field - resting order filled in pieces and the field froze at the first tranche); shares 0.44 / cost $0.4004 in the same state record are venue-correct. No state edit made - the live qty_filled staleness is noted for fix 19273 follow-up.",
+    "venue_verified": "orders.retrieve(DT0XXHW014F0): LIMIT GTC BUY_LONG, price 0.91, quantity 0.44, cumQuantity 0.44, leavesQuantity 0 - FULLY FILLED. portfolio.positions entry cost $0.4004. Sealed from the venue record per VENUE-BOOK-GOVERNS.",
+    "seq": 19936,
+    "sealed_at": "2026-11-18T17:20:42+0000"
    }
   ],
   "exits": [
