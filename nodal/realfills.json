@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T15:43:54Z",
+ "built_at": "2026-11-18T16:12:14Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -849,6 +849,32 @@
      "status": "UNRESOLVED \u2014 see ambiguity",
      "seq": 18415,
      "sealed_at": "2026-11-18T05:31:08+0000"
+    },
+    {
+     "action": "SELL (manual, his hand)",
+     "bank": "David personal line - never touches engine banks (DAVID_PLAYER seq 14199)",
+     "cost": 0.94,
+     "cost_note": "venue read-back cost $0.94 (4.27 sh x 22c) supersedes the $1.00 displayed cost in seq 18646 - actual fills, not the screenshot display",
+     "entry_fill": "DAVID_TENNIS_FILL seq 18646 (BUY Medvedev, ~22c avg)",
+     "exit_ts": "venue activity pull Nov 18 ~09:50 EST (main relay)",
+     "lane": "DAVID_TENNIS",
+     "manual": true,
+     "manual_indicator": "MANUAL_ORDER_INDICATOR_MANUAL - his hand, not the executor (executor fills show AUTOMATIC)",
+     "match": "Carlos Alcaraz vs Daniil Medvedev (ATP Finals, Ivan Lendl Group)",
+     "order": "DSS40WZG14ET",
+     "outcome": "SOLD FULL POSITION BEFORE SETTLEMENT - Medvedev lost to Alcaraz, but David exited at 78c first",
+     "player": "DAVID",
+     "pnl": 2.39,
+     "price": 0.78,
+     "proceeds": 3.33,
+     "resting_rung_note": "seq 18646 read the 2.27 sh @ 67c open order as his take-profit sell rung; the venue read-back shows the actual exit was 4.27 sh @ 78c - full position, not the rung",
+     "shares": 4.27,
+     "side": "Daniil Medvedev",
+     "tag": "HUMAN",
+     "tennis_record_after": "2W-2L, board P&L +$1.2914 (was 1W-2L, -$1.0986; Rice ticket unresolved readings still ride)",
+     "verified_against": "main Polymarket US activity pull Nov 18 ~09:50 EST (venue read-back): order DSS40WZG14ET, 4.27 sh @ 78c, MANUAL indicator, proceeds $3.33. Cross-checks: 4.27 x 0.78 = $3.3306; 4.27 x 0.22 = $0.9394 ~ $0.94 cost; 3.33 - 0.94 = $2.39. Entry seq 18646 confirmed in ledger (shares derived range 4.27-4.55 - venue figure 4.27 lands at the low end). No DAVID_TENNIS_SETTLE sealed: full position sold before settlement, no remainder to settle. Dupe-guard: order DSS40WZG14ET has no prior ledger mention.",
+     "seq": 19819,
+     "sealed_at": "2026-11-18T16:03:56+0000"
     }
    ],
    "settles": [
@@ -905,10 +931,10 @@
     }
    ],
    "record": {
-    "w": 1,
+    "w": 2,
     "l": 2,
-    "pnl": -1.0986,
-    "streak": "L1"
+    "pnl": 1.2914,
+    "streak": "W1"
    }
   }
  },
@@ -1063,6 +1089,19 @@
   "note": "REAL MONEY ONLY \u2014 ranked by earned (P&L). Banks from executor state (venue-derived), records from sealed exits/settles. The SIM contest lives on callers.html \u2014 never blended.",
   "rows": [
    {
+    "player": "THE NINTENDO KID",
+    "key": "DAVID",
+    "lane": "Tennis \u00b7 add-on (Bank side)",
+    "tag": "HUMAN",
+    "put_in": 3.0803,
+    "has_now": 4.3717,
+    "earned": 1.2914,
+    "w": 2,
+    "l": 2,
+    "streak": "W1",
+    "rank": 1
+   },
+   {
     "player": "ASHEN FOLLOW",
     "key": "ASHEN",
     "lane": "BTC 5-min \u00b7 caller follow",
@@ -1073,7 +1112,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 1
+    "rank": 2
    },
    {
     "player": "PIZZACALLS FOLLOW",
@@ -1086,7 +1125,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 2
+    "rank": 3
    },
    {
     "player": "TERRY FOLLOW",
@@ -1099,7 +1138,7 @@
     "w": 1,
     "l": 1,
     "streak": "L1",
-    "rank": 3
+    "rank": 4
    },
    {
     "player": "PLAIN",
@@ -1112,7 +1151,7 @@
     "w": 1,
     "l": 3,
     "streak": "L4",
-    "rank": 4
+    "rank": 5
    },
    {
     "player": "RIPTIDE",
@@ -1125,7 +1164,7 @@
     "w": 0,
     "l": 3,
     "streak": "L3",
-    "rank": 5
+    "rank": 6
    },
    {
     "player": "TAPE",
@@ -1137,19 +1176,6 @@
     "earned": -0.9641,
     "w": 3,
     "l": 3,
-    "streak": "L1",
-    "rank": 6
-   },
-   {
-    "player": "THE NINTENDO KID",
-    "key": "DAVID",
-    "lane": "Tennis \u00b7 add-on (Bank side)",
-    "tag": "HUMAN",
-    "put_in": 3.0803,
-    "has_now": 1.9817,
-    "earned": -1.0986,
-    "w": 1,
-    "l": 2,
     "streak": "L1",
     "rank": 7
    },
@@ -1169,8 +1195,8 @@
   ],
   "totals": {
    "put_in": 19.0803,
-   "has_now": 15.0506,
-   "earned": -4.0297
+   "has_now": 17.4406,
+   "earned": -1.6397
   }
  },
  "tennis": {
@@ -1501,6 +1527,33 @@
     "verified_against": "tennis_fills.log line 23 verbatim + tennis_executor.log lines 442/443 (GOLDEN MATH 12:00:17Z, FILLLOG 12:00:27Z); executor state position PLAIN|atp-alcaraz-medvede-2026-11-17 open (0.51 sh, cost $0.3978, entry 78c, sealed_ask 22c, prob 0.776, intent ORDER_INTENT_BUY_SHORT) + fired key stake 0.4; dupe-guard clean (order DSXF22B014EX has no prior ledger mention)",
     "seq": 19185,
     "sealed_at": "2026-11-18T12:04:14+0000"
+   },
+   {
+    "action": "BUY (resting buy filled)",
+    "bank_at_fill": 3.7265,
+    "combo_leg": "Combo #001 Leg 3 (Masarova 63.5%@53c vs Hercog, Nov 18 16:00Z) - leg grades off this position outcome; Leg 1 already grades LOSS so #001 cannot pay in full",
+    "cost": 0.3024,
+    "entry": 0.56,
+    "fill_ts": "2026-11-18T15:24:16.033204+00:00",
+    "golden_math": "profit at 95c net $0.2006 (proceeds $0.5130, cost $0.3024, cut $0.01) - executor log line 571",
+    "intent": "ORDER_INTENT_BUY_LONG",
+    "lane": "PLAIN",
+    "mandate": "TENNIS LIVE seq 12463",
+    "match": "Colina: Rebeka Masarova vs Polona Hercog",
+    "order": "DSZR7MZ013ZK",
+    "outcome": "FILLED - resting buy 0.54 sh @ 56c",
+    "placed_ts": "2026-11-18T14:40:22.810980+00:00",
+    "price": 0.56,
+    "sealed_ask": 0.56,
+    "shares": 0.54,
+    "side": "Rebeka Masarova",
+    "signal": "ARENA_PICK seq 14593 (WAVE, Masarova 63.5%)",
+    "stake": 0.3,
+    "start": "2026-11-18T16:00:00Z",
+    "tolerance": "LONG fill at sealed ask exactly - 0c drift, LAWFUL under packet law",
+    "verified_against": "tennis_fills.log line 26 verbatim + tennis_executor.log lines 571/572/595 (GOLDEN MATH, RESTING BUY, FILLLOG) + executor-state position (open, 0.54 sh, cost $0.3024). Stake check: 10% of working bank $3.7265 = $0.3727 -> round-down-10c $0.30. Dupe-guard: order DSZR7MZ013ZK has no prior ledger mention.",
+    "seq": 19818,
+    "sealed_at": "2026-11-18T16:03:56+0000"
    }
   ],
   "exits": [
