@@ -1,91 +1,87 @@
 {
- "built_at": 1794991349,
- "window": "2026-11-18T08:40:00Z",
- "window_ends_in_s": 151,
+ "built_at": 1794992590,
+ "window": "2026-11-18T09:00:00Z",
+ "window_ends_in_s": 110,
  "daemon": {
   "state": "LIVE",
-  "updated": "2026-11-18T08:33:29Z",
-  "chain": 18867,
+  "updated": "2026-11-18T09:03:10Z",
+  "chain": 18918,
   "stall_components": [],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FLAT",
-  "plain": "going up and down in place \u2014 resting",
-  "drift": 0.0,
-  "range": 0.0,
+  "state": "CLIMBING",
+  "plain": "going up and staying up",
+  "drift": 38.9,
+  "range": 38.9,
   "flips": 0,
-  "open": 64606.8,
-  "last": 64606.8
+  "open": 64654.0,
+  "last": 64692.9
  },
  "chart": {
   "points": [
    [
-    1794989781,
-    64543.75
-   ],
-   [
-    1794989872,
-    64526.98
-   ],
-   [
-    1794990090,
-    64577.25
-   ],
-   [
-    1794990272,
-    64671.6
-   ],
-   [
-    1794990364,
-    64670.854999999996
-   ],
-   [
-    1794990452,
-    64623.7
-   ],
-   [
-    1794990562,
-    64685.619999999995
-   ],
-   [
-    1794990700,
-    64682.72
-   ],
-   [
-    1794990809,
-    64677.0
-   ],
-   [
     1794991349,
     64606.8
+   ],
+   [
+    1794991589,
+    64705.22
+   ],
+   [
+    1794991856,
+    64693.62
+   ],
+   [
+    1794991981,
+    64655.4
+   ],
+   [
+    1794992176,
+    64557.3
+   ],
+   [
+    1794992266,
+    64564.715
+   ],
+   [
+    1794992358,
+    64594.63
+   ],
+   [
+    1794992480,
+    64654.0
+   ],
+   [
+    1794992590,
+    64692.9
    ]
   ],
   "bounds": [
-   1794989700,
-   1794990000,
-   1794990300,
-   1794990600,
    1794990900,
    1794991200,
-   1794991500
+   1794991500,
+   1794991800,
+   1794992100,
+   1794992400,
+   1794992700
   ],
-  "open": 64606.8,
-  "wstart": 1794989700,
-  "wend": 1794991500
+  "open": 64654.0,
+  "wstart": 1794990900,
+  "wend": 1794992700
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 0,
+   "streak": 1,
    "best": 22,
    "bank": 295707.61,
    "savings": 0.0,
-   "graded": 749,
-   "wins": 609,
-   "call": null,
-   "chance": null,
+   "graded": 750,
+   "wins": 610,
+   "call": "up",
+   "chance": 0.7888,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -122,7 +118,7 @@
    "savings": 1924.15,
    "graded": 285,
    "wins": 147,
-   "call": null,
+   "call": "up",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -130,23 +126,29 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": false
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.98 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
+  },
+  {
+   "text": "All the models that have called are pointing the same way: UP.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price jumped $39 in the last two minutes \u2014 a real push, not a drift.",
+   "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (+0 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 2 minutes 31 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+39 dollars this window). PLAIN says BUY UP; RIPTIDE says BUY UP. 1 minutes 50 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-18T07:55:00Z",
-   "result": "up",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-18T08:10:00Z",
    "result": "down",
@@ -163,6 +165,12 @@
    "window": "2026-11-18T08:25:00Z",
    "result": "up",
    "plain": false,
+   "early": null
+  },
+  {
+   "window": "2026-11-18T08:50:00Z",
+   "result": "down",
+   "plain": true,
    "early": null
   }
  ],
