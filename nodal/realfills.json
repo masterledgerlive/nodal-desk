@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T17:28:39Z",
+ "built_at": "2026-11-18T18:00:45Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -1600,6 +1600,30 @@
     "venue_verified": "orders.retrieve(DT0XXHW014F0): LIMIT GTC BUY_LONG, price 0.91, quantity 0.44, cumQuantity 0.44, leavesQuantity 0 - FULLY FILLED. portfolio.positions entry cost $0.4004. Sealed from the venue record per VENUE-BOOK-GOVERNS.",
     "seq": 19936,
     "sealed_at": "2026-11-18T17:20:42+0000"
+   },
+   {
+    "alignment": "CORRECTION TO MAIN RELAY: this is NOT head-to-head with PLAIN. BUY_SHORT Hercog = short the Hercog leg = hold the Masarova complement leg (Kjaer precedent: both lanes shorting the same pick held the same complement leg). PLAIN is LONG Masarova (seq 19818); TAPE is effectively LONG the Masarova outcome too. Both lanes win if Masarova wins, both lose if Hercog wins. Combo Leg 3 still grades off PLAIN position only.",
+    "complement_price": 0.2,
+    "cost": 0.4,
+    "filled_ts": "2026-11-18T17:30:44Z",
+    "golden_math": {
+     "net_at_95c": 0.065,
+     "note": "as relayed by main; Golden trigger caveat applies - side_bid inversion (Kjaer finding) means any Golden print on a BUY_SHORT reads the pick price, not the held leg; verify held-leg price before sealing any exit as a win"
+    },
+    "lane": "TAPE",
+    "match": "Colina: Rebeka Masarova vs Polona Hercog",
+    "order_id": "DT268EYG14ET",
+    "pick": "Polona Hercog",
+    "price": 0.8,
+    "shares": 0.5,
+    "side": "BUY_SHORT",
+    "signal_seq": 19946,
+    "slug": "aec-wta-rebmas-polher-2026-11-18",
+    "stake": 0.4,
+    "start_note": "State records TAPE start_ts 17:00Z vs PLAIN 16:00Z for the same match; fill landed 17:30:44Z. Start-time discrepancy noted, not adjudicated here.",
+    "venue_verified": "orders.retrieve(DT268EYG14ET): ORDER_SIDE_SELL, ORDER_INTENT_BUY_SHORT, price 0.20 (complement leg), quantity 0.5, cumQuantity 0.5, leavesQuantity 0 - FULLY FILLED. Cost $0.40 is the executor worst-case basis (0.5 x 0.80 named leg, Lepchenko rule seq 13851), same convention as Travaglia fill 19155 (venue-corrected later by 19853); venue position entry for the slug is merged with PLAIN Masarova long and not cleanly decomposable, so the fill books the executor basis and any venue correction follows at audit/settlement like Travaglia.",
+    "seq": 19952,
+    "sealed_at": "2026-11-18T17:35:34+0000"
    }
   ],
   "exits": [
