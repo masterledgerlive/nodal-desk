@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T14:41:17Z",
+ "built_at": "2026-11-18T14:53:31Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -192,6 +192,24 @@
    "window": "2026-11-18T09:15:00Z",
    "seq": 18978,
    "sealed_at": "2026-11-18T09:23:46+0000"
+  },
+  {
+   "action": "BUY (instant fill)",
+   "bank_at_fill": 1.5909,
+   "fill_ts": "2026-11-18T14:29:03.795000+00:00",
+   "lane": "PLAIN",
+   "mandate": "POLYUS_LIVE_MANDATE seq 12277",
+   "market": "cpc-btc-updown-5m-2026-11-18-1425z",
+   "order": "DSZK354013ZD",
+   "outcome": "FILLED - instant fill 0.19 sh @ 92c",
+   "price": 0.92,
+   "shares": 0.19,
+   "side": "DOWN",
+   "stake": 0.17,
+   "verified_against": "real_fills.log line 58 verbatim + real_executor.log lines 1258/1259 (INSTANT FILL 14:29:03Z 0.19 sh @ 92c; FILLLOG). Dupe-guard: order DSZK354013ZD has no prior ledger mention.",
+   "window": "2026-11-18T14:25:00Z",
+   "seq": 19624,
+   "sealed_at": "2026-11-18T14:45:40+0000"
   }
  ],
  "exits": [
@@ -338,6 +356,25 @@
    "window": "2026-11-18T09:15:00Z",
    "seq": 18980,
    "sealed_at": "2026-11-18T09:23:47+0000"
+  },
+  {
+   "action": "SETTLE (venue settlement)",
+   "bank_after": 1.42,
+   "bank_before": 1.5909,
+   "cost": 0.17,
+   "fill_order": "DSZK354013ZD",
+   "lane": "PLAIN",
+   "mandate": "POLYUS_LIVE_MANDATE seq 12277",
+   "market": "cpc-btc-updown-5m-2026-11-18-1425z",
+   "outcome": "SETTLED LOSS - DOWN lost, payout $0.00",
+   "payout": 0.0,
+   "pnl": -0.17,
+   "settle_ts": "2026-11-18T14:30:48.288613+00:00",
+   "side": "DOWN",
+   "verified_against": "real_fills.log line 59 verbatim + real_executor.log lines 1262/1263 (WATCHED EXIT expired unfilled 14:30:11Z - position rode to settlement; FILLLOG REAL SETTLE 14:30:48Z). Bank check: 1.5909 - 0.17 = 1.4209 ~ $1.42 printed. Dupe-guard: no prior settle for order DSZK354013ZD.",
+   "window": "2026-11-18T14:25:00Z",
+   "seq": 19625,
+   "sealed_at": "2026-11-18T14:45:40+0000"
   }
  ],
  "executor_log": [
@@ -1073,8 +1110,8 @@
     "has_now": 1.4161,
     "earned": -0.0839,
     "w": 1,
-    "l": 2,
-    "streak": "L3",
+    "l": 3,
+    "streak": "L4",
     "rank": 4
    },
    {
@@ -1096,8 +1133,8 @@
     "lane": "Tennis",
     "tag": null,
     "put_in": 5.0,
-    "has_now": 4.0785,
-    "earned": -0.9215,
+    "has_now": 4.0359,
+    "earned": -0.9641,
     "w": 3,
     "l": 3,
     "streak": "L1",
@@ -1122,8 +1159,8 @@
     "lane": "Tennis",
     "tag": null,
     "put_in": 5.0,
-    "has_now": 3.7265,
-    "earned": -1.2735,
+    "has_now": 3.3715,
+    "earned": -1.6285,
     "w": 0,
     "l": 3,
     "streak": "L3",
@@ -1132,8 +1169,8 @@
   ],
   "totals": {
    "put_in": 19.0803,
-   "has_now": 15.4482,
-   "earned": -3.6321
+   "has_now": 15.0506,
+   "earned": -4.0297
   }
  },
  "tennis": {
