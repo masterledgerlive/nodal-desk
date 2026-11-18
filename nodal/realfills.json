@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T05:07:25Z",
+ "built_at": "2026-11-18T05:26:35Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -86,6 +86,25 @@
    "window": "2026-11-17T14:40:00Z",
    "seq": 14077,
    "sealed_at": "2026-11-17T14:47:42+0000"
+  },
+  {
+   "cost": 0.0989,
+   "exit_note": "resting exit sell at 95c already placed at fill time \u2014 exit fill or settlement line to follow from the hook",
+   "exit_order": "DSQ2H66014EX",
+   "filled_at": "2026-11-18T04:33:38.325269+00:00",
+   "lane": "PLAIN",
+   "mandate": "POLYUS_LIVE_MANDATE seq 12277",
+   "note": "instant fill of the resting buy (sealed price 23c = fill price)",
+   "order": "DSQ2GXPG13YB",
+   "price": 0.23,
+   "shares": 0.43,
+   "side": "up",
+   "signal": "BTC5R_SIGNAL CALL, follow FIRE, ask 23c",
+   "signal_seq": 18261,
+   "stake": 0.1,
+   "window": "2026-11-18T04:30:00Z",
+   "seq": 18356,
+   "sealed_at": "2026-11-18T05:13:14+0000"
   }
  ],
  "exits": [
@@ -189,6 +208,25 @@
    "window": "2026-11-17T14:40:00Z",
    "seq": 14078,
    "sealed_at": "2026-11-17T14:47:42+0000"
+  },
+  {
+   "bank_after": 1.59,
+   "citation_note": "The hook\u2019s context cited an executor close record at \u201cseal seq 18270, closed_reason venue settlement\u201d \u2014 seq 18270 in the ledger is Terry\u2019s CALLER_CALL lock (DOWN, 97.5%) for this same window, not a close record. That citation is a misattribution in the relay; this settle rests on the verbatim real_fills.log line 47 and the FINAL_GRADE venue outcome, not on seq 18270.",
+   "cost": 0.0989,
+   "exit_note": "resting exit sell at 95c never filled; rode to venue settlement",
+   "exit_order": "DSQ2H66014EX",
+   "fill_seq": 18356,
+   "lane": "PLAIN",
+   "mandate": "POLYUS_LIVE_MANDATE seq 12277",
+   "order": "DSQ2GXPG13YB",
+   "payout": 0.0,
+   "pnl": -0.1,
+   "settled_at": "2026-11-18T04:35:50.532109+00:00",
+   "side": "up",
+   "venue_outcome": "DOWN won (FINAL_GRADE seq 18290, index_result down) \u2014 PLAIN\u2019s UP position settled at $0.00",
+   "window": "2026-11-18T04:30:00Z",
+   "seq": 18361,
+   "sealed_at": "2026-11-18T05:15:08+0000"
   }
  ],
  "executor_log": [
@@ -270,6 +308,122 @@
      "window": "2026-11-18T03:35:00Z",
      "seq": 18144,
      "sealed_at": "2026-11-18T03:44:30+0000"
+    },
+    {
+     "adds": [
+      {
+       "order": "DSPHVVCG53ZD",
+       "price": 0.1,
+       "shares": 0.19
+      },
+      {
+       "order": "DSPHACYG14EX",
+       "price": 0.18,
+       "shares": 0.48
+      },
+      {
+       "order": "DSPGXE9034F0",
+       "price": 0.24,
+       "shares": 0.37
+      }
+     ],
+     "engine": null,
+     "match": "DAVID|2026-11-18T03:55:00Z",
+     "note": "David manual, three adds into UP (Yes). DOWN won (Ashen Strong DOWN closed WIN). Pre-boundary \u2014 Season 1 side of his line.",
+     "order_id": "DSPHVVCG53ZD",
+     "order_ids": [
+      "DSPHVVCG53ZD",
+      "DSPHACYG14EX",
+      "DSPGXE9034F0"
+     ],
+     "price": 0.1867,
+     "season": 1,
+     "shares": 1.04,
+     "side": "up",
+     "source": "venue activity pull by main 2026-11-17 23:42\u201323:47 EST \u2014 every order ID cross-checked ABSENT from all executor logs = David\u2019s phone",
+     "stake": 0.1942,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T03:55:00Z",
+     "seq": 18363,
+     "sealed_at": "2026-11-18T05:16:23+0000"
+    },
+    {
+     "adds": [
+      {
+       "order": "DSPX86F014F0",
+       "price": 0.56,
+       "shares": 0.17
+      }
+     ],
+     "engine": null,
+     "match": "DAVID|2026-11-18T04:20:00Z",
+     "note": "David manual, BUY UP (Yes) 0.17 @ 56c. DOWN won.",
+     "order_id": "DSPX86F014F0",
+     "order_ids": [
+      "DSPX86F014F0"
+     ],
+     "price": 0.56,
+     "season": 2,
+     "shares": 0.17,
+     "side": "up",
+     "source": "venue activity pull by main 2026-11-17 23:42\u201323:47 EST \u2014 every order ID cross-checked ABSENT from all executor logs = David\u2019s phone",
+     "stake": 0.0952,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T04:20:00Z",
+     "seq": 18365,
+     "sealed_at": "2026-11-18T05:16:25+0000"
+    },
+    {
+     "adds": [
+      {
+       "order": "DSQ3WRPG344P",
+       "price": 0.89,
+       "shares": 0.1
+      }
+     ],
+     "engine": null,
+     "match": "DAVID|2026-11-18T04:35:00Z",
+     "note": "David manual, BUY DOWN (No) 0.10 @ 89c \u2014 prints in the feed as the paired SELL No @ 0.11, cash 0.0957; economics confirmed by David\u2019s own app screenshot (cost $0.09 at 89%, payout $0.10, profit +$0.01 / 12.4% -> exact P&L +$0.011). DOWN won. The cited example of the DAVID OWNERSHIP clarification: locked on his own, rode it through, won at settlement.",
+     "order_id": "DSQ3WRPG344P",
+     "order_ids": [
+      "DSQ3WRPG344P"
+     ],
+     "price": 0.89,
+     "season": 2,
+     "shares": 0.1,
+     "side": "down",
+     "source": "venue activity pull by main 2026-11-17 23:42\u201323:47 EST \u2014 every order ID cross-checked ABSENT from all executor logs = David\u2019s phone",
+     "stake": 0.089,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T04:35:00Z",
+     "seq": 18367,
+     "sealed_at": "2026-11-18T05:16:26+0000"
+    },
+    {
+     "adds": [
+      {
+       "order": "DSQBQMYG144P",
+       "price": 0.9,
+       "shares": 0.11
+      }
+     ],
+     "engine": null,
+     "match": "DAVID|2026-11-18T04:50:00Z",
+     "note": "David manual, BUY UP (Yes) 0.11 @ 90c. UP won (capture-verified: the 11:50\u201311:55 PM ET round closed UP).",
+     "order_id": "DSQBQMYG144P",
+     "order_ids": [
+      "DSQBQMYG144P"
+     ],
+     "price": 0.9,
+     "season": 2,
+     "shares": 0.11,
+     "side": "up",
+     "source": "venue activity reconciliation by main, 2026-11-18 00:06 EST \u2014 order IDs verified absent from all four executor logs = David\u2019s phone",
+     "stake": 0.099,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T04:50:00Z",
+     "seq": 18376,
+     "sealed_at": "2026-11-18T05:17:44+0000"
     }
    ],
    "settles": [
@@ -304,13 +458,73 @@
      "window": "2026-11-18T03:35:00Z",
      "seq": 18145,
      "sealed_at": "2026-11-18T03:44:31+0000"
+    },
+    {
+     "fill_seq": 18363,
+     "note": "Settled at venue settlement; outcome from capture-verified settlements + batchdata (main\u2019s pull).",
+     "order_id": "DSPHVVCG53ZD",
+     "outcome": "down",
+     "payout": 0.0,
+     "pnl": -0.1942,
+     "result": "LOSS",
+     "season": 1,
+     "side": "up",
+     "source": "venue activity pull by main 2026-11-17 23:42\u201323:47 EST \u2014 every order ID cross-checked ABSENT from all executor logs = David\u2019s phone",
+     "window": "2026-11-18T03:55:00Z",
+     "seq": 18364,
+     "sealed_at": "2026-11-18T05:16:23+0000"
+    },
+    {
+     "fill_seq": 18365,
+     "note": "Settled at venue settlement; outcome from capture-verified settlements + batchdata (main\u2019s pull).",
+     "order_id": "DSPX86F014F0",
+     "outcome": "down",
+     "payout": 0.0,
+     "pnl": -0.0952,
+     "result": "LOSS",
+     "season": 2,
+     "side": "up",
+     "source": "venue activity pull by main 2026-11-17 23:42\u201323:47 EST \u2014 every order ID cross-checked ABSENT from all executor logs = David\u2019s phone",
+     "window": "2026-11-18T04:20:00Z",
+     "seq": 18366,
+     "sealed_at": "2026-11-18T05:16:25+0000"
+    },
+    {
+     "fill_seq": 18367,
+     "note": "Settled at venue settlement; outcome from capture-verified settlements + batchdata (main\u2019s pull).",
+     "order_id": "DSQ3WRPG344P",
+     "outcome": "down",
+     "payout": 0.1,
+     "pnl": 0.011,
+     "result": "WIN",
+     "season": 2,
+     "side": "down",
+     "source": "venue activity pull by main 2026-11-17 23:42\u201323:47 EST \u2014 every order ID cross-checked ABSENT from all executor logs = David\u2019s phone",
+     "window": "2026-11-18T04:35:00Z",
+     "seq": 18368,
+     "sealed_at": "2026-11-18T05:16:27+0000"
+    },
+    {
+     "fill_seq": 18376,
+     "note": "Settled at venue settlement; outcome capture-verified (main\u2019s pull).",
+     "order_id": "DSQBQMYG144P",
+     "outcome": "up",
+     "payout": 0.11,
+     "pnl": 0.011,
+     "result": "WIN",
+     "season": 2,
+     "side": "up",
+     "source": "venue activity reconciliation by main, 2026-11-18 00:06 EST \u2014 order IDs verified absent from all four executor logs = David\u2019s phone",
+     "window": "2026-11-18T04:50:00Z",
+     "seq": 18377,
+     "sealed_at": "2026-11-18T05:17:45+0000"
     }
    ],
    "record": {
-    "w": 1,
-    "l": 1,
-    "pnl": -0.1533,
-    "streak": "L1"
+    "w": 3,
+    "l": 3,
+    "pnl": -0.4207,
+    "streak": "W2"
    }
   },
   "tennis": {
@@ -333,6 +547,45 @@
      "ts": "2026-11-17T21:22:00+00:00",
      "seq": 14991,
      "sealed_at": "2026-11-17T21:24:17+0000"
+    },
+    {
+     "engine": null,
+     "fills": [
+      {
+       "cash": 0.23,
+       "order": "DSQHFHMG13YB",
+       "price": 0.23,
+       "shares": 1.0
+      },
+      {
+       "order": "DSQHC0MG13YY",
+       "price": 0.29,
+       "shares": 0.3
+      },
+      {
+       "order": "DSQHC0MG13YY",
+       "price": 0.27,
+       "shares": 0.01
+      }
+     ],
+     "market": "aec-atp-keeric-liadra-2026-11-16",
+     "match": "Drummondville: Keegan Rice vs Liam Draxl",
+     "match_start": "2026-11-18T03:30:00Z",
+     "note": "David manual, BUY Keegan Rice in three fills during the match. The activity pull exposes no per-fill timestamps (time field null) \u2014 fills landed during the match, after the 03:30Z start; sealed with the match-start bound noted rather than an invented time. Per his words tonight: it stands on the boards as a live call from Nintendo Kid from when he made it.",
+     "order_id": "DSQHFHMG13YB",
+     "order_ids": [
+      "DSQHFHMG13YB",
+      "DSQHC0MG13YY"
+     ],
+     "price": 0.244,
+     "shares": 1.31,
+     "side": "Keegan Rice",
+     "source": "venue activity reconciliation by main, 2026-11-18 00:06 EST \u2014 order IDs verified absent from all four executor logs = David\u2019s phone",
+     "stake": 0.3197,
+     "status": "OPEN \u2014 no ARENA grade in the ledger yet; exit/settle tracked under DAVID_PLAYER (seq 14199)",
+     "venue_class": "REAL-POLYMARKET-US",
+     "seq": 18375,
+     "sealed_at": "2026-11-18T05:17:43+0000"
     }
    ],
    "exits": [],
@@ -562,8 +815,8 @@
     "key": "DAVID",
     "lane": "Tennis \u00b7 add-on (Bank side)",
     "tag": "HUMAN",
-    "put_in": 1.19,
-    "has_now": 0.0,
+    "put_in": 1.5097,
+    "has_now": 0.3197,
     "earned": -1.19,
     "w": 0,
     "l": 1,
@@ -572,8 +825,8 @@
    }
   ],
   "totals": {
-   "put_in": 17.19,
-   "has_now": 14.4563,
+   "put_in": 17.5097,
+   "has_now": 14.776,
    "earned": -2.7337
   }
  },

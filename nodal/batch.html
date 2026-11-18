@@ -270,6 +270,7 @@ function render(d){
           + (m.start ? '<br><span class="who">starts ' + et(m.start, true) + ' ET · ' + esc(m.match_state || '') + '</span>' : '')
           + (m.freeze_note ? '<br><span class="who">' + esc(m.freeze_note) + '</span>' : '')
           + (m.owned ? '<br><span class="who">👑 OWNED — RULE 2 countdown · owners: ' + esc((m.owners || []).join(', ')) + '</span>' : '')
+          + (m.rebase ? '<br><span class="who">🌱 FRESH BASE — standing locks from the frozen card pick</span>' : '')
           + '</td><td class="who">' + reg + '</td><td>' + call + '</td><td>'
           + (m.kind === 'LEFT ALONE' ? '—' : (m.outcome ? esc(m.outcome) + ' won · ' : '') + esc(m.result || ''))
           + (m.dissent_points ? ' · dissent ' + Object.keys(m.dissent_points).map(function(k){ return esc(k) + ' ' + (m.dissent_points[k] > 0 ? '+' : '') + m.dissent_points[k].toFixed(2); }).join(', ') : '')
