@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T11:25:04Z",
+ "built_at": "2026-11-18T12:32:18Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -1355,6 +1355,115 @@
     "verified_against": "tennis_fills.log line 20 + tennis_executor.log lines 357/358/368; dupe-guard clean (order DSQYC6H014F1 has no prior ledger mention)",
     "seq": 18550,
     "sealed_at": "2026-11-18T06:21:52+0000"
+   },
+   {
+    "action": "BUY",
+    "bank_at_fill": 4.3936,
+    "combo_note": "Travaglia is also Combo Leg 5 (COMBO_TICKET seq 18540, 53.4% @ 40c) - this real fill is a SEPARATE record; the combo ticket is untouched by it.",
+    "cost": 0.403,
+    "filled_at": "2026-11-18T11:31:37.252717+00:00",
+    "flags": [
+     "PRICE DRIFT - FILLED 27c ABOVE SEALED: signal ARENA_FILL seq 19151 sealed Travaglia at 38c (11:31:18Z); fill at 65c = +27c, OUTSIDE the TENNIS-PACKET-SPEC 10c tolerance (rest at min(sealed, live ask); live ask >10c above sealed = NO FIRE). Executor filled anyway. This seal records the real money moved and flags the breach for main/executor adjudication; NOT a lawful-price fill.",
+     "UNEXPLAINED PRICE - the sealed book snapshot at ~11:31:36Z (pregame_scalp marks, slug atp-svrcina-travagl-2026-11-18) shows Travaglia ask 38c, agreeing with the sealed 38c, not the 65c fill. Whether the venue filled a different leg/side or the book moved in the seconds between needs the executor log/executor-side explanation; do not assume.",
+     "GOLDEN MATH - executor log 11:31:32Z: profit at 95c target net of cut = $0.1760 (proceeds $0.5890, cost $0.4030, cut $0.01), computed on the FILLED 65c basis. Golden exit 95c or settlement."
+    ],
+    "golden_math_note": "Executor log 11:31:32Z: profit at 95c target net of cut $0.1760 (proceeds $0.5890, cost $0.4030, cut $0.01).",
+    "lane": "TAPE",
+    "mandate": "TENNIS_LIVE_MANDATE seq 12463",
+    "market": "aec-atp-dalsvr-stetra-2026-11-19",
+    "match": "Helsinki: Dalibor Svrcina vs Stefano Travaglia",
+    "match_start": "2026-11-19T06:30:00-05:00",
+    "order": "DSX1VS0013YY",
+    "position": "OPEN",
+    "pre_match": true,
+    "price": 0.65,
+    "price_note": "Filled 65c vs sealed 38c (+27c drift, outside 10c packet tolerance - see flags). Resting buy filled 19s after the signal seal (11:31:18Z -> 11:31:37Z), inside TAPE 120s fire window on timing; price is the breach, not timing.",
+    "shares": 0.62,
+    "side": "Stefano Travaglia",
+    "signal": {
+     "kind": "ARENA_FILL",
+     "sealed_at": "2026-11-18T11:31:18+0000",
+     "sealed_price": 0.38,
+     "seq": 19151,
+     "specialist": "SCOUT"
+    },
+    "stake": 0.4,
+    "verified_against": "tennis_fills.log line 21 verbatim + tennis_executor.log lines 432/433 (GOLDEN MATH 11:31:32Z, FILLLOG 11:31:37Z); executor state fired key TAPE|19151|TAPE|svrcina-travaglia|travaglia stake 0.4; dupe-guard clean (order DSX1VS0013YY has no prior ledger mention)",
+    "seq": 19155,
+    "sealed_at": "2026-11-18T11:36:47+0000"
+   },
+   {
+    "action": "BUY",
+    "bank_at_fill": 4.1243,
+    "cost": 0.3976,
+    "filled_at": "2026-11-18T11:40:44.504554+00:00",
+    "flags": [
+     "PRICE DRIFT - FILLED 12c ABOVE SEALED: executor state sealed_ask 44c; fill at 56c = +12c, OUTSIDE the TENNIS-PACKET-SPEC 10c tolerance (rest at min(sealed, live ask); live ask >10c above sealed = NO FIRE). Same tolerance question as the Travaglia fill (seq 19155, +27c) - flagged for main adjudication; NOT a lawful-price fill.",
+     "PATTERN NOTE (observation, not a conclusion): the 56c fill sits within 1c of the OPPONENT Rodionov ask (57c in the ~11:31:36Z sealed snapshot; Kjaer ask 44c) - the same shape as Travaglia (65c fill vs Svrcina ask 64c, Travaglia ask 38c). Executor intent on this position is ORDER_INTENT_BUY_SHORT. Whether BUY_SHORT fills the complement leg by design is for main/executor to explain.",
+     "GOLDEN MATH - executor log 11:40:37Z: profit at 95c target net of cut = $0.2669 (proceeds $0.6745, cost $0.3976, cut $0.01), computed on the FILLED 56c basis. Golden exit 95c or settlement."
+    ],
+    "golden_math_note": "Executor log 11:40:37Z: profit at 95c target net of cut $0.2669 (proceeds $0.6745, cost $0.3976, cut $0.01).",
+    "lane": "PLAIN",
+    "mandate": "TENNIS_LIVE_MANDATE seq 12463",
+    "market": "aec-atp-jurrod-nickja-2026-11-18",
+    "match": "Helsinki: Jurij Rodionov vs Nicolai Budkov Kjaer",
+    "match_start": "2026-11-18T13:00:00Z",
+    "order": "DSX61A6G14EX",
+    "other_positions_note": "TAPE already holds Kjaer on this same match (REAL_TENNIS_FILL seq 18430, 0.73 sh @ 55c) - separate lane, separate position. Kjaer is also Combo Leg 2 (COMBO_TICKET seq 18540) - this fill is a separate record; combo untouched.",
+    "position": "OPEN",
+    "pre_match": true,
+    "price": 0.56,
+    "price_note": "Filled 56c vs sealed ask 44c (+12c drift, outside 10c packet tolerance - see flags). Fill 11:40:44Z, ~80 min before first ball (13:00Z). PLAIN pre-match only; no timing breach.",
+    "shares": 0.71,
+    "side": "Nicolai Budkov Kjaer",
+    "signal": {
+     "kind": "ARENA_PICK",
+     "pick": "Nicolai Budkov Kjaer",
+     "prob": 0.679,
+     "sealed_ask": 0.44,
+     "seq": 13897,
+     "specialist": "WAVE"
+    },
+    "stake": 0.4,
+    "verified_against": "tennis_fills.log line 22 verbatim + tennis_executor.log lines 436/437 (GOLDEN MATH 11:40:37Z, FILLLOG 11:40:44Z); executor state position PLAIN|atp-rodiono-kjaer-2026-11-18 open (0.71 sh, cost $0.3976, entry 56c, sealed_ask 44c, prob 0.679) + fired key PLAIN|atp-rodiono-kjaer-2026-11-18 stake 0.4; dupe-guard clean (order DSX61A6G14EX has no prior ledger mention)",
+    "seq": 19163,
+    "sealed_at": "2026-11-18T11:44:55+0000"
+   },
+   {
+    "action": "BUY",
+    "bank_at_fill": 4.1243,
+    "cost": 0.3978,
+    "filled_at": "2026-11-18T12:00:27.073752+00:00",
+    "flags": [
+     "SHORT-FILL YARDSTICK (TENNIS_TOLERANCE_AMENDMENT seq 19166): filled 78c vs sealed ask 22c looks +56c against the named leg, but this is ORDER_INTENT_BUY_SHORT - judged against the complement ask 1 - 0.22 = 0.78. Filled EXACTLY at the complement ask (78c = 78c, 0c drift) - LAWFUL under the amended rule, first fill graded under it. Worst-case sizing held: size_price = max(0.22, 0.78) = 0.78, qty 0.51, cost $0.3978 = plan.",
+     "GOLDEN MATH - executor log 12:00:17Z: profit at 95c target net of cut = $0.0767 (proceeds $0.4845, cost $0.3978, cut $0.01), computed on the FILLED 78c basis. Golden exit 95c or settlement."
+    ],
+    "golden_math_note": "Executor log 12:00:17Z: profit at 95c target net of cut $0.0767 (proceeds $0.4845, cost $0.3978, cut $0.01).",
+    "lane": "PLAIN",
+    "mandate": "TENNIS_LIVE_MANDATE seq 12463",
+    "market": "aec-atp-caralc-danmed-2026-11-15",
+    "match": "ATP World Tour Finals, Ivan Lendl Group: Carlos Alcaraz vs Daniil Medvedev",
+    "match_start": "2026-11-18T13:00:00Z",
+    "order": "DSXF22B014EX",
+    "other_positions_note": "David own $1 @ 22c on this same match (DAVID_TENNIS_FILL seq 18646, resting 67c take-profit rung, settle-only reporting per his tap) and Combo Leg 1 (Medvedev 77.6% @ 23c, COMBO_TICKET seq 18540) are SEPARATE records - this PLAIN lane fill is its own position.",
+    "position": "OPEN",
+    "pre_match": true,
+    "price": 0.78,
+    "price_note": "Filled 78c = complement ask exactly (1 - sealed 22c), 0c drift under the amended SHORT-fill yardstick (seq 19166). Fill 12:00:27Z, ~60 min before first ball (13:00Z). PLAIN pre-match only; no timing breach.",
+    "shares": 0.51,
+    "side": "Daniil Medvedev",
+    "signal": {
+     "kind": "ARENA_PICK",
+     "pick": "Daniil Medvedev",
+     "prob": 0.776,
+     "sealed_ask": 0.22,
+     "seq": 3263,
+     "specialist": "WAVE"
+    },
+    "stake": 0.4,
+    "verified_against": "tennis_fills.log line 23 verbatim + tennis_executor.log lines 442/443 (GOLDEN MATH 12:00:17Z, FILLLOG 12:00:27Z); executor state position PLAIN|atp-alcaraz-medvede-2026-11-17 open (0.51 sh, cost $0.3978, entry 78c, sealed_ask 22c, prob 0.776, intent ORDER_INTENT_BUY_SHORT) + fired key stake 0.4; dupe-guard clean (order DSXF22B014EX has no prior ledger mention)",
+    "seq": 19185,
+    "sealed_at": "2026-11-18T12:04:14+0000"
    }
   ],
   "exits": [
