@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T09:18:55Z",
+ "built_at": "2026-11-18T09:32:45Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -105,6 +105,93 @@
    "window": "2026-11-18T04:30:00Z",
    "seq": 18356,
    "sealed_at": "2026-11-18T05:13:14+0000"
+  },
+  {
+   "bank_after": 1.0275,
+   "cost": 0.1001,
+   "direction": "up",
+   "exit_law": "settlement only (no caller target; TERRY EXIT LAW, executor log line 975)",
+   "filled_at": "2026-11-18T09:17:57.101032+00:00",
+   "filled_price_c": 77.0,
+   "lane": "TERRY",
+   "money_moved": true,
+   "notes": [
+    "Second TERRY FOLLOW fill (first: seq 17898, 01:45Z UP, settled +0.0275). Live-feed path per seq 17852: lock read 174s in (lock_at 162s), ask 77c under the 88c ICE, instant fill 0.13 sh at 77c; sealed-path dedupe correctly skipped the window at 09:20:13Z (executor log line 981, citing seal seq 18966).",
+    "WATCH NOTE, not a grade: the lock seal seq 18966 carries site_result down (Terry site read). If the venue settlement agrees, this position settles at 0.00 for a 0.10 loss. No REAL SETTLE line is in real_fills.log yet and no settle is relayed - the settle seals separately when it lands.",
+    "Bank 1.0275 is the executor-state figure at fill time; the 0.10 stake is committed against it and the bank moves only at settlement."
+   ],
+   "order": "DSV4NQWG14F1",
+   "outcome": "FILLED",
+   "position": "OPEN",
+   "shares": 0.13,
+   "signal": {
+    "caller": "TerryCalls",
+    "caller_pct": 93.5,
+    "category": "lock",
+    "counted": true,
+    "evidence_key": "TERRYLIVE|2026-11-18T09:15:00Z",
+    "seconds_in": 162,
+    "seq": 18966,
+    "source": "terry",
+    "via": "live"
+   },
+   "stake": 0.1,
+   "verified_against": {
+    "executor_log_lines": [
+     972,
+     973,
+     974,
+     975,
+     981
+    ],
+    "executor_state_fired_key": "TERRYLIVE|2026-11-18T09:15:00Z",
+    "real_fills_log_line": 52
+   },
+   "window": "2026-11-18T09:15:00Z",
+   "seq": 18967,
+   "sealed_at": "2026-11-18T09:20:52+0000"
+  },
+  {
+   "bank_after": 1.5929,
+   "cost": 0.002,
+   "direction": "up",
+   "exit": "resting sell 0.20 sh @ 95c (order DSV57QBG13ZK, executor log line 980) expired unfilled (line 982); position rode to settlement",
+   "filled_at": "2026-11-18T09:19:10.036210+00:00",
+   "filled_price_c": 1.0,
+   "lane": "PLAIN",
+   "money_moved": true,
+   "notes": [
+    "Dust fill, lawful: signal sealed 09:19:06Z (246s in, 4s before the fill) - CALL, FIRE, ask 51c, chance 86.22% (35c under model, inside the 88c ICE). Executor sized 0.20 sh off the sealed 51c ask for the 0.10 real stake and the resting buy filled instantly at the collapsed 1c live price; cost 0.002, which the log prints as stake 0.00 (rounded to cents).",
+    "Bank 1.5929 is the executor-state figure at fill time; the 0.002 cost moves the bank only at settlement (see REAL_SETTLE, same window)."
+   ],
+   "order": "DSV57N4G13ZD",
+   "outcome": "FILLED",
+   "position": "OPEN (at fill time)",
+   "shares": 0.2,
+   "signal": {
+    "ask": 0.51,
+    "chance": 0.8622,
+    "follow": "FIRE",
+    "kind": "BTC5R_SIGNAL",
+    "sealed_at": "2026-11-18T09:19:06+0000",
+    "seq": 18960,
+    "side": "up",
+    "signal": "CALL",
+    "stake_sim": 0.5
+   },
+   "stake": 0.0,
+   "verified_against": {
+    "executor_log_lines": [
+     978,
+     979,
+     980,
+     982
+    ],
+    "real_fills_log_line": 53
+   },
+   "window": "2026-11-18T09:15:00Z",
+   "seq": 18978,
+   "sealed_at": "2026-11-18T09:23:46+0000"
   }
  ],
  "exits": [
@@ -227,12 +314,33 @@
    "window": "2026-11-18T04:30:00Z",
    "seq": 18361,
    "sealed_at": "2026-11-18T05:15:08+0000"
+  },
+  {
+   "bank_after": 1.59,
+   "direction": "up",
+   "fill_order": "DSV57N4G13ZD",
+   "fill_seq": 18978,
+   "lane": "PLAIN",
+   "money_moved": true,
+   "note": "PLAIN BTC 09:15Z UP settles a dust LOSS: cost 0.002 (0.20 sh @ 1c), payout 0.00, venue pnl -0.00 as printed. DOWN won. PLAIN BTC record now 1W/3L, pnl +0.0898; bank 1.5929 -> 1.59 (exact 1.5909). The resting 95c exit (order DSV57QBG13ZK) expired unfilled before settlement.",
+   "order": "DSV57N4G13ZD",
+   "outcome": "DOWN won (venue)",
+   "payout": 0.0,
+   "pnl": -0.0,
+   "signal": {
+    "kind": "BTC5R_SIGNAL",
+    "seq": 18960
+   },
+   "verified_against": {
+    "executor_log_line": 985,
+    "real_fills_log_line": 55
+   },
+   "window": "2026-11-18T09:15:00Z",
+   "seq": 18980,
+   "sealed_at": "2026-11-18T09:23:47+0000"
   }
  ],
  "executor_log": [
-  "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:15:00Z \u00b7 UP \u00b7 order DS1D2FRG13YB rested at 50.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:19:36.229716+00:00",
-  "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 DOWN \u00b7 filled 54.00c \u00b7 stake $0.10 \u00b7 venue order DS1R872013Z6 \u00b7 2026-11-17T03:43:11.552529+00:00",
-  "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 sold 54.00c \u00b7 proceeds $0.10 \u00b7 reason resting exit sell filled at placement \u00b7 venue order DS1R8F8034EX \u00b7 2026-11-17T03:43:11.782137+00:00",
   "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 DOWN \u00b7 filled 62.00c \u00b7 stake $0.14 \u00b7 venue order DS1RBFB013YB \u00b7 2026-11-17T03:43:24.078529+00:00",
   "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:40:00Z \u00b7 sold 57.00c \u00b7 proceeds $0.13 \u00b7 reason resting exit sell filled at placement \u00b7 venue order DS1RBH2013Z6 \u00b7 2026-11-17T03:43:24.386343+00:00",
   "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T03:45:00Z \u00b7 DOWN \u00b7 order DS1TGN2014F0 rested at 56.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T03:49:37.600952+00:00",
@@ -269,7 +377,10 @@
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-18T07:25:00Z \u00b7 DOWN \u00b7 order DSSJVRZG14ET rested at 50.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T07:29:34.120311+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-18T07:55:00Z \u00b7 UP \u00b7 order DST0C46013YY rested at 37.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T07:59:36.997557+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-18T08:10:00Z \u00b7 DOWN \u00b7 order DST79WH013Z6 rested at 50.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T08:14:36.774225+00:00",
-  "REAL FILL \u00b7 TERRY \u00b7 2026-11-18T09:15:00Z \u00b7 UP \u00b7 filled 77.00c \u00b7 stake $0.10 \u00b7 venue order DSV4NQWG14F1 \u00b7 2026-11-18T09:17:57.101032+00:00"
+  "REAL FILL \u00b7 TERRY \u00b7 2026-11-18T09:15:00Z \u00b7 UP \u00b7 filled 77.00c \u00b7 stake $0.10 \u00b7 venue order DSV4NQWG14F1 \u00b7 2026-11-18T09:17:57.101032+00:00",
+  "REAL FILL \u00b7 PLAIN \u00b7 2026-11-18T09:15:00Z \u00b7 UP \u00b7 filled 1.00c \u00b7 stake $0.00 \u00b7 venue order DSV57N4G13ZD \u00b7 2026-11-18T09:19:10.036210+00:00",
+  "REAL SETTLE \u00b7 TERRY \u00b7 2026-11-18T09:15:00Z \u00b7 UP \u00b7 payout $0.00 \u00b7 pnl $-0.10 \u00b7 race bank $0.93 \u00b7 2026-11-18T09:20:51.151820+00:00",
+  "REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-18T09:15:00Z \u00b7 UP \u00b7 payout $0.00 \u00b7 pnl $-0.00 \u00b7 race bank $1.59 \u00b7 2026-11-18T09:20:51.255054+00:00"
  ],
  "banks": {
   "PLAIN": 1.7418,
@@ -797,7 +908,7 @@
  "terry": {
   "note": "TERRY FOLLOW \u2014 real-money follow lane (mandate seq 16410, spec seq 16413). Follows his sealed LOCKs only \u2014 best calls only; his unlocked CALLs never fire (risky line). No exit target in his data: his desk doctrine is hold-to-the-close, so positions ride to settlement. His contest record stays on the Callers' board (SIMULATION) \u2014 never blended.",
   "bank_start": 1.0,
-  "bank": 1.0275,
+  "bank": 0.93,
   "fills": [
    {
     "amendment_seq": 17852,
@@ -826,6 +937,35 @@
     "window": "2026-11-18T01:45:00Z",
     "seq": 17898,
     "sealed_at": "2026-11-18T01:51:31+0000"
+   },
+   {
+    "amendment_seq": 17852,
+    "ask_c": 77,
+    "bank_after": 1.0275,
+    "cost": 0.1001,
+    "engine": "TERRY",
+    "entry_c": 77.0,
+    "evidence_key": "TERRYLIVE|2026-11-18T09:15:00Z",
+    "exit": "venue settlement - no exit order (no caller target); position rides to settlement",
+    "filled_ts": "2026-11-18T09:17:57.101032+00:00",
+    "lane": "TERRY FOLLOW",
+    "live_feed": true,
+    "lock_at_s": 162,
+    "lock_pct": 93.5,
+    "match": "TERRY_FOLLOW_FILL|2026-11-18T09:15:00Z",
+    "note": "Second TERRY FOLLOW fill. Live-feed path per seq 17852: TERRY LIVE PACKET at 09:17:55Z, LOCK 93.5% at 162s in, read 174s in, live ask 77c (under the 88c ICE), INSTANT FILL 0.13 sh @ 77c, cost 0.1001 on the 0.10 stake. Sealed-path dedupe skipped the window at 09:20:13Z (already handled by the LIVE feed, seal seq 18966). Position open, rides to venue settlement. WATCH NOTE, not a grade: the lock seal seq 18966 carries site_result down - if the venue settlement agrees, this settles at 0.00. Lane-convention twin of REAL_FILL seq 18967: same single fill, same order DSV4NQWG14F1 - NOT a second fill; the builder counts REAL_FILL kinds in the top-level fills list and TERRY_FOLLOW_FILL kinds in the lane block, so each list carries it exactly once.",
+    "order": "DSV4NQWG14F1",
+    "planned_stake": 0.1,
+    "read_s": 174,
+    "shares": 0.13,
+    "side": "UP",
+    "signal": "CALLER_CALL TerryCalls LOCK up, caller_pct 0.935, seq 18966",
+    "signal_seq": 18966,
+    "slug": "cpc-btc-updown-5m-2026-11-18-0915z",
+    "stake": 0.1,
+    "window": "2026-11-18T09:15:00Z",
+    "seq": 18968,
+    "sealed_at": "2026-11-18T09:21:28+0000"
    }
   ],
   "exits": [],
@@ -852,14 +992,34 @@
     "window": "2026-11-18T01:45:00Z",
     "seq": 17903,
     "sealed_at": "2026-11-18T01:53:18+0000"
+   },
+   {
+    "bank_after": 0.93,
+    "fill_order": "DSV4NQWG14F1",
+    "fill_seq": 18967,
+    "lane": "TERRY FOLLOW",
+    "note": "TERRY FOLLOW second position settles a LOSS. DOWN won the 09:15Z window - the lock seal seq 18966 site_result down flag proved right. Cost 0.1001, payout 0.00, venue pnl -0.10 as printed. TERRY record now 1W/1L, pnl -0.0726, streak L1; bank 1.0275 -> 0.93 (exact 0.9274, venue rounds to cents).",
+    "order": "DSV4NQWG14F1",
+    "outcome": "DOWN won (venue)",
+    "payout": 0.0,
+    "pnl": -0.1,
+    "side": "UP",
+    "signal_seq": 18966,
+    "verified_against": {
+     "executor_log_line": 984,
+     "real_fills_log_line": 54
+    },
+    "window": "2026-11-18T09:15:00Z",
+    "seq": 18979,
+    "sealed_at": "2026-11-18T09:23:47+0000"
    }
   ],
   "nofills": [],
   "record": {
    "w": 1,
-   "l": 0,
-   "pnl": 0.0275,
-   "streak": "W1"
+   "l": 1,
+   "pnl": -0.0725,
+   "streak": "L1"
   }
  },
  "standings": {
@@ -871,25 +1031,12 @@
     "lane": "BTC 5-min race",
     "tag": null,
     "put_in": 1.5,
-    "has_now": 1.5929,
-    "earned": 0.0929,
+    "has_now": 1.5909,
+    "earned": 0.0909,
     "w": 1,
-    "l": 1,
-    "streak": "L1",
+    "l": 2,
+    "streak": "L3",
     "rank": 1
-   },
-   {
-    "player": "TERRY FOLLOW",
-    "key": "TERRY",
-    "lane": "BTC 5-min \u00b7 caller follow",
-    "tag": null,
-    "put_in": 1.0,
-    "has_now": 1.0275,
-    "earned": 0.0275,
-    "w": 1,
-    "l": 0,
-    "streak": "W1",
-    "rank": 2
    },
    {
     "player": "ASHEN FOLLOW",
@@ -902,7 +1049,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 3
+    "rank": 2
    },
    {
     "player": "PIZZACALLS FOLLOW",
@@ -915,6 +1062,19 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
+    "rank": 3
+   },
+   {
+    "player": "TERRY FOLLOW",
+    "key": "TERRY",
+    "lane": "BTC 5-min \u00b7 caller follow",
+    "tag": null,
+    "put_in": 1.0,
+    "has_now": 0.9274,
+    "earned": -0.0726,
+    "w": 1,
+    "l": 1,
+    "streak": "L1",
     "rank": 4
    },
    {
@@ -972,8 +1132,8 @@
   ],
   "totals": {
    "put_in": 19.0803,
-   "has_now": 16.438,
-   "earned": -2.6423
+   "has_now": 16.3359,
+   "earned": -2.7444
   }
  },
  "tennis": {
