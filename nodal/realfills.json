@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T01:50:11Z",
+ "built_at": "2026-11-18T02:13:31Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -192,7 +192,6 @@
   }
  ],
  "executor_log": [
-  "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T02:10:00Z \u00b7 DOWN \u00b7 order DS0ESWDG13YB rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T02:14:37.843067+00:00",
   "REAL NOFILL \u00b7 RIPTIDE \u00b7 2026-11-17T02:10:00Z \u00b7 DOWN \u00b7 order DS0F6T4G53ZD rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T02:14:39.962999+00:00",
   "REAL FILL \u00b7 PLAIN \u00b7 2026-11-17T02:15:00Z \u00b7 UP \u00b7 filled 17.00c \u00b7 stake $0.05 \u00b7 venue order DS0H2AHG14F1 \u00b7 2026-11-17T02:17:34.905264+00:00",
   "REAL EXIT FILL \u00b7 PLAIN \u00b7 2026-11-17T02:15:00Z \u00b7 sold 95.00c \u00b7 proceeds $0.29 \u00b7 reason resting exit sell @ 95.00c \u00b7 venue order DS0H2Q0G13YY \u00b7 2026-11-17T02:18:55.374633+00:00",
@@ -231,7 +230,8 @@
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T21:05:00Z \u00b7 DOWN \u00b7 order DSGPH9JG13YB rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T21:09:41.607639+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-18T00:10:00Z \u00b7 DOWN \u00b7 order DSKBC2B014F0 rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T00:14:32.636826+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-18T00:45:00Z \u00b7 UP \u00b7 order DSKVHYQ013Z6 rested at 51.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T00:49:36.954314+00:00",
-  "REAL FILL \u00b7 TERRY \u00b7 2026-11-18T01:45:00Z \u00b7 UP \u00b7 filled 75.00c \u00b7 stake $0.08 \u00b7 venue order DSMPM0RG14F0 \u00b7 2026-11-18T01:47:48.695034+00:00"
+  "REAL FILL \u00b7 TERRY \u00b7 2026-11-18T01:45:00Z \u00b7 UP \u00b7 filled 75.00c \u00b7 stake $0.08 \u00b7 venue order DSMPM0RG14F0 \u00b7 2026-11-18T01:47:48.695034+00:00",
+  "REAL SETTLE \u00b7 TERRY \u00b7 2026-11-18T01:45:00Z \u00b7 UP \u00b7 payout $0.11 \u00b7 pnl $+0.03 \u00b7 race bank $1.03 \u00b7 2026-11-18T01:50:51.247919+00:00"
  ],
  "banks": {
   "PLAIN": 1.7418,
@@ -334,16 +334,69 @@
  "terry": {
   "note": "TERRY FOLLOW \u2014 real-money follow lane (mandate seq 16410, spec seq 16413). Follows his sealed LOCKs only \u2014 best calls only; his unlocked CALLs never fire (risky line). No exit target in his data: his desk doctrine is hold-to-the-close, so positions ride to settlement. His contest record stays on the Callers' board (SIMULATION) \u2014 never blended.",
   "bank_start": 1.0,
-  "bank": 1.0,
-  "fills": [],
+  "bank": 1.0275,
+  "fills": [
+   {
+    "amendment_seq": 17852,
+    "ask_c": 87,
+    "bank_after": 1.0,
+    "engine": "TERRY",
+    "entry_c": 75.0,
+    "evidence_key": "TERRYLIVE|2026-11-18T01:45:00Z",
+    "exit": "venue settlement \u2014 no exit order (no caller target); position rides to settlement",
+    "filled_ts": "2026-11-18T01:47:48.695034+00:00",
+    "lane": "TERRY FOLLOW",
+    "live_feed": true,
+    "lock_at_s": 155,
+    "lock_pct": 93.5,
+    "match": "TERRY_FOLLOW_FILL|2026-11-18T01:45:00Z",
+    "note": "FIRST REAL FILL for the TERRY FOLLOW lane \u2014 and it came through the LIVE feed (amendment seq 17852): TERRY LIVE PACKET at 01:47:45Z, LOCK 93.5% at 155s in, read 162s in, live ask 87c (under the 88c ICE), INSTANT FILL 0.11 sh @ 75c \u2014 under the planned $0.10 stake because the fill priced 12c under the ask, cost $0.0825. The sealed path then saw the LOCK seal (seq 17894) and skipped \u2014 'window already handled by the LIVE feed' \u2014 the amendment's dedupe working live, no second fire. Position open, rides to venue settlement; TERRY bank $1.00 until settlement.",
+    "order": "DSMPM0RG14F0",
+    "planned_stake": 0.1,
+    "read_s": 162,
+    "shares": 0.11,
+    "side": "UP",
+    "signal": "CALLER_CALL TerryCalls LOCK up, caller_pct 0.935, seq 17894",
+    "signal_seq": 17894,
+    "slug": "cpc-btc-updown-5m-2026-11-18-0145z",
+    "stake": 0.0825,
+    "window": "2026-11-18T01:45:00Z",
+    "seq": 17898,
+    "sealed_at": "2026-11-18T01:51:31+0000"
+   }
+  ],
   "exits": [],
-  "settles": [],
+  "settles": [
+   {
+    "bank_after": 1.0275,
+    "bank_after_rounded": 1.03,
+    "engine": "TERRY",
+    "entry_c": 75.0,
+    "evidence_key": "TERRYLIVE|2026-11-18T01:45:00Z",
+    "fill_seq": 17898,
+    "lane": "TERRY FOLLOW",
+    "live_feed": true,
+    "match": "TERRY_FOLLOW_SETTLE|2026-11-18T01:45:00Z",
+    "note": "TERRY FOLLOW's FIRST SETTLE \u2014 and its first WIN. The live-feed position (fill seq 17898, 0.11 sh @ 75c, cost $0.0825) rode to venue settlement as the lane's law requires \u2014 no exit order, no caller target \u2014 and UP won. Payout $0.11, exact P&L +$0.0275 (log rounds to +$0.03), bank $1.00 \u2192 $1.0275 (log rounds to $1.03). TERRY FOLLOW record: 1W/0L, earned +$0.0275.",
+    "order": "DSMPM0RG14F0",
+    "payout": 0.11,
+    "pnl": 0.0275,
+    "pnl_rounded": 0.03,
+    "settled_ts": "2026-11-18T01:50:51.247919+00:00",
+    "shares": 0.11,
+    "side": "UP",
+    "stake": 0.0825,
+    "window": "2026-11-18T01:45:00Z",
+    "seq": 17903,
+    "sealed_at": "2026-11-18T01:53:18+0000"
+   }
+  ],
   "nofills": [],
   "record": {
-   "w": 0,
+   "w": 1,
    "l": 0,
-   "pnl": 0,
-   "streak": "\u2014"
+   "pnl": 0.0275,
+   "streak": "W1"
   }
  },
  "standings": {
@@ -363,21 +416,21 @@
     "rank": 1
    },
    {
-    "player": "ASHEN FOLLOW",
-    "key": "ASHEN",
+    "player": "TERRY FOLLOW",
+    "key": "TERRY",
     "lane": "BTC 5-min \u00b7 caller follow",
     "tag": null,
     "put_in": 1.0,
-    "has_now": 1.0,
-    "earned": 0.0,
-    "w": 0,
+    "has_now": 1.0275,
+    "earned": 0.0275,
+    "w": 1,
     "l": 0,
-    "streak": "\u2014",
+    "streak": "W1",
     "rank": 2
    },
    {
-    "player": "PIZZACALLS FOLLOW",
-    "key": "PIZZA",
+    "player": "ASHEN FOLLOW",
+    "key": "ASHEN",
     "lane": "BTC 5-min \u00b7 caller follow",
     "tag": null,
     "put_in": 1.0,
@@ -389,8 +442,8 @@
     "rank": 3
    },
    {
-    "player": "TERRY FOLLOW",
-    "key": "TERRY",
+    "player": "PIZZACALLS FOLLOW",
+    "key": "PIZZA",
     "lane": "BTC 5-min \u00b7 caller follow",
     "tag": null,
     "put_in": 1.0,
@@ -456,8 +509,8 @@
   ],
   "totals": {
    "put_in": 17.19,
-   "has_now": 14.5277,
-   "earned": -2.6623
+   "has_now": 14.5552,
+   "earned": -2.6348
   }
  },
  "tennis": {
