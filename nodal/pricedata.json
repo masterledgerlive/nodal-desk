@@ -1,6 +1,6 @@
 {
- "built_at": "2026-11-18T23:03:28Z",
- "head_seq": 20532,
+ "built_at": "2026-11-18T23:26:22Z",
+ "head_seq": 20571,
  "law": {
   "fee_model": "fee per share = 0.0695 * p * (1-p), charged on entry (the scalp/pressure rails' fee model)",
   "priced_formula": "per $1 staked at the sealed call price, held to settlement: WIN -> (1-ask)/ask - 0.0695*(1-ask); LOSS -> -1 - 0.0695*(1-ask)",
@@ -8,26 +8,27 @@
   "proven_line": {
    "t1": "T1 ACCURACY: >= 30 graded AND >= 70% hits",
    "t2": "T2 PRICED: >= 30 priced calls AND priced P&L > $0 at call prices (net of the fee model)",
-   "t3": "T3 EXECUTED: a real-money record exists AND is > $0 (sim rails: their own 3-banked-positive gate). Paper lines never substitute.",
-   "rule": "READY = T1 AND T2 AND T3. Accuracy alone never opens a lane (auto-open mandate seq 20502, as amended by the scoring reform 2026-11-18)."
+   "t3": "T3 EXECUTED: a real-money record exists AND is > $0 (sim rails: their own 3-banked-positive gate). Paper lines never substitute \u2014 ONE exception, by David's ruling 2026-11-18: paper-priced proof satisfies T3 for EARLY only, and EARLY's $1 lane is OPEN (mandate seq 20568). FINAL was not included and stays shut.",
+   "rule": "READY = T1 AND T2 AND T3. Accuracy alone never opens a lane (auto-open mandate seq 20502, as amended by the scoring reform 2026-11-18, and by David's T3 ruling for EARLY the same day)."
   },
-  "ready_count": 0
+  "ready_note": "EARLY is READY by David's ruling (2026-11-18): paper-priced proof satisfies its money test and its $1.00 lane is open. Every other model still needs all three tests as printed, executed test included.",
+  "ready_count": 1
  },
  "models": [
   {
    "name": "PLAIN",
    "room": "BTC 5-min",
    "record_basis": "full sim record (BTC5_GRADE)",
-   "graded": 781,
-   "w": 632,
+   "graded": 783,
+   "w": 634,
    "l": 149,
-   "hit_pct": 80.9,
+   "hit_pct": 81.0,
    "priced_n": 168,
-   "unpriced_n": 613,
+   "unpriced_n": 615,
    "priced_hit_pct": 89.3,
    "avg_ask": 0.5238,
    "paper_pnl": 117.53,
-   "paper_basis": "priced subset = the $5-packet CALL signals (BTC5R_SIGNAL, ask sealed); the other 613 graded calls carry no market price in their seals",
+   "paper_basis": "priced subset = the $5-packet CALL signals (BTC5R_SIGNAL, ask sealed); the other 615 graded calls carry no market price in their seals",
    "real_lane": {
     "put_in": 1.5,
     "has_now": 1.4161,
@@ -40,6 +41,7 @@
     "t1_accuracy": true,
     "t2_priced": true,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -64,32 +66,40 @@
    "avg_ask": 0.6288,
    "paper_pnl": 142.25,
    "paper_basis": "priced subset = the $5-packet CALL signals with a sealed ask (BTC5ER_SIGNAL); 74 signals sealed no ask and 13 are ungraded \u2014 excluded, not invented",
-   "real_lane": null,
+   "real_lane": {
+    "put_in": 1.0,
+    "has_now": 1.0,
+    "earned": 0.0,
+    "w": 0,
+    "l": 0,
+    "streak": "\u2014"
+   },
    "tests": {
     "t1_accuracy": true,
     "t2_priced": true,
-    "t3_executed": false,
-    "ready": false
+    "t3_executed": true,
+    "t3_basis": "satisfied BY DAVID'S RULING 2026-11-18 \u2014 paper-priced proof, not executed profit",
+    "ready": true
    },
    "gaps": {
     "calls_to_30_graded": 0,
     "priced_calls_to_30": 0,
     "hit_gap_pts": 0.0,
-    "dollars_to_ready": null,
-    "money_note": "no real-money lane record exists \u2014 there is no executed dollar figure to be positive; a paper line cannot open a lane"
+    "dollars_to_ready": 0.0,
+    "money_note": "lane OPEN at $1.00 by David's ruling 2026-11-18 (paper-priced proof satisfies T3, mandate seq 20568); the lane's executed record starts now and is the next proof \u2014 watch this row"
    }
   },
   {
    "name": "RIPTIDE",
    "room": "BTC 5-min",
    "record_basis": "flow record (BTC5F_GRADE call_hit)",
-   "graded": 697,
-   "w": 543,
+   "graded": 699,
+   "w": 545,
    "l": 154,
-   "hit_pct": 77.9,
-   "priced_n": 697,
+   "hit_pct": 78.0,
+   "priced_n": 699,
    "unpriced_n": 0,
-   "priced_hit_pct": 77.9,
+   "priced_hit_pct": 78.0,
    "avg_ask": null,
    "paper_pnl": 1568.85,
    "paper_basis": "haul_law is denominated in COMPOUNDING SIM STAKES (its law book: $5.0 -> $1540.3751) \u2014 a trajectory, not a per-$1 edge; never read as per-call profit",
@@ -105,6 +115,7 @@
     "t1_accuracy": true,
     "t2_priced": true,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -134,6 +145,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -148,19 +160,19 @@
    "name": "TerryCalls",
    "room": "BTC 5-min \u00b7 caller",
    "record_basis": "counted CALLER_CALL / CALLER_GRADE seals",
-   "graded": 832,
-   "w": 800,
+   "graded": 835,
+   "w": 803,
    "l": 32,
    "hit_pct": 96.2,
    "priced_n": 0,
-   "unpriced_n": 832,
+   "unpriced_n": 835,
    "priced_hit_pct": null,
    "avg_ask": null,
    "paper_pnl": null,
-   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1049 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
-   "race_sealed": 884.2,
-   "race_recomputed": 1034.45,
-   "first_wins": 601,
+   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1052 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
+   "race_sealed": 887.95,
+   "race_recomputed": 1038.7,
+   "first_wins": 603,
    "real_lane": {
     "put_in": 1.0,
     "has_now": 0.9274,
@@ -173,6 +185,7 @@
     "t1_accuracy": true,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -187,18 +200,18 @@
    "name": "Ashen Bot#6973",
    "room": "BTC 5-min \u00b7 caller",
    "record_basis": "counted CALLER_CALL / CALLER_GRADE seals",
-   "graded": 209,
+   "graded": 210,
    "w": 159,
-   "l": 50,
-   "hit_pct": 76.1,
+   "l": 51,
+   "hit_pct": 75.7,
    "priced_n": 0,
-   "unpriced_n": 209,
+   "unpriced_n": 210,
    "priced_hit_pct": null,
    "avg_ask": null,
    "paper_pnl": null,
-   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1049 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
-   "race_sealed": 176.7,
-   "race_recomputed": 216.2,
+   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1052 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
+   "race_sealed": 175.7,
+   "race_recomputed": 215.2,
    "first_wins": 158,
    "real_lane": {
     "put_in": 1.0,
@@ -212,6 +225,7 @@
     "t1_accuracy": true,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -235,7 +249,7 @@
    "priced_hit_pct": null,
    "avg_ask": null,
    "paper_pnl": null,
-   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1049 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
+   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1052 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
    "race_sealed": 3.75,
    "race_recomputed": 4.0,
    "first_wins": 1,
@@ -251,6 +265,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -274,7 +289,7 @@
    "priced_hit_pct": null,
    "avg_ask": null,
    "paper_pnl": null,
-   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1049 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
+   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1052 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
    "race_sealed": 1.1,
    "race_recomputed": 1.35,
    "first_wins": 1,
@@ -283,6 +298,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -306,7 +322,7 @@
    "priced_hit_pct": null,
    "avg_ask": null,
    "paper_pnl": null,
-   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1049 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
+   "paper_basis": "UNPRICED \u2014 no call-time market price was ever sealed for caller calls (0 of 1052 counted calls carry a price field); the priced test cannot be passed on data that does not exist",
    "race_sealed": -1.0,
    "race_recomputed": -1.0,
    "first_wins": 0,
@@ -315,6 +331,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -351,6 +368,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -388,6 +406,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "executed record",
     "ready": false
    },
    "gaps": {
@@ -418,6 +437,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "rail gate (3 banked positives)",
     "ready": false
    },
    "gaps": {
@@ -447,6 +467,7 @@
     "t1_accuracy": false,
     "t2_priced": false,
     "t3_executed": false,
+    "t3_basis": "rail gate (3 banked positives)",
     "ready": false
    },
    "gaps": {
@@ -471,6 +492,18 @@
     "w": 3,
     "l": 3,
     "streak": "W2"
+   },
+   {
+    "player": "EARLY",
+    "key": "EARLY_BTC",
+    "lane": "BTC 5-min \u00b7 engine lane (own calls)",
+    "tag": null,
+    "put_in": 1.0,
+    "has_now": 1.0,
+    "earned": 0.0,
+    "w": 0,
+    "l": 0,
+    "streak": "\u2014"
    },
    {
     "player": "ASHEN FOLLOW",
@@ -558,13 +591,13 @@
    }
   ],
   "totals": {
-   "put_in": 19.0803,
-   "has_now": 15.9429,
+   "put_in": 20.0803,
+   "has_now": 16.9429,
    "earned": -3.1374
   },
   "engine_totals": {
-   "put_in": 16.0,
-   "has_now": 12.5369,
+   "put_in": 17.0,
+   "has_now": 13.5369,
    "earned": -3.4631
   },
   "note": "Real money only, from the executor state via build_realfills standings. Every engine lane is flat or down. This table is the proof standard the claims are measured against."
@@ -590,17 +623,65 @@
   }
  ],
  "callers_audit": {
-  "sealed_sum": 1064.75,
-  "recomputed_sum": 1255.0,
-  "first_wins": 761,
+  "sealed_sum": 1067.5,
+  "recomputed_sum": 1258.25,
+  "first_wins": 763,
   "band_mismatches": 0,
-  "grades_checked": 1046,
-  "grades_total": 2173,
-  "grades_on_counted": 1022,
+  "grades_checked": 1050,
+  "grades_total": 2185,
+  "grades_on_counted": 1026,
   "regrade_seals": 105,
-  "delta": 190.25
+  "delta": 190.75
  },
  "recent_calls": [
+  {
+   "who": "TerryCalls",
+   "window": "2026-11-18T23:05:00Z",
+   "side": "up",
+   "seconds_in": 153,
+   "ask": null,
+   "win": true,
+   "first": true,
+   "band_pts": 1.25,
+   "race_pts": 1.5,
+   "priced_pnl": null
+  },
+  {
+   "who": "TerryCalls",
+   "window": "2026-11-18T22:55:00Z",
+   "side": "down",
+   "seconds_in": 153,
+   "ask": null,
+   "win": true,
+   "first": true,
+   "band_pts": 1.25,
+   "race_pts": 1.5,
+   "priced_pnl": null
+  },
+  {
+   "who": "TerryCalls",
+   "window": "2026-11-18T22:50:00Z",
+   "side": "up",
+   "seconds_in": 175,
+   "ask": null,
+   "win": true,
+   "first": false,
+   "band_pts": 1.25,
+   "race_pts": 1.25,
+   "priced_pnl": null
+  },
+  {
+   "who": "Ashen Bot#6973",
+   "window": "2026-11-18T22:50:00Z",
+   "side": "down",
+   "seconds_in": 60,
+   "ask": null,
+   "win": false,
+   "first": true,
+   "band_pts": -1.0,
+   "race_pts": -1.0,
+   "priced_pnl": null
+  },
   {
    "who": "TerryCalls",
    "window": "2026-11-18T22:45:00Z",
@@ -1128,61 +1209,13 @@
    "band_pts": -1.0,
    "race_pts": -1.0,
    "priced_pnl": null
-  },
-  {
-   "who": "TerryCalls",
-   "window": "2026-11-18T20:00:00Z",
-   "side": "down",
-   "seconds_in": 240,
-   "ask": null,
-   "win": true,
-   "first": true,
-   "band_pts": 1.0,
-   "race_pts": 1.25,
-   "priced_pnl": null
-  },
-  {
-   "who": "TerryCalls",
-   "window": "2026-11-18T19:55:00Z",
-   "side": "up",
-   "seconds_in": 208,
-   "ask": null,
-   "win": true,
-   "first": false,
-   "band_pts": 1.1,
-   "race_pts": 1.1,
-   "priced_pnl": null
-  },
-  {
-   "who": "Ashen Bot#6973",
-   "window": "2026-11-18T19:55:00Z",
-   "side": "down",
-   "seconds_in": 60,
-   "ask": null,
-   "win": false,
-   "first": true,
-   "band_pts": -1.0,
-   "race_pts": -1.0,
-   "priced_pnl": null
-  },
-  {
-   "who": "TerryCalls",
-   "window": "2026-11-18T19:50:00Z",
-   "side": "up",
-   "seconds_in": 227,
-   "ask": null,
-   "win": true,
-   "first": false,
-   "band_pts": 1.1,
-   "race_pts": 1.1,
-   "priced_pnl": null
   }
  ],
  "gaps": [
-  "CALLER_GRADE seals omit the +0.25 first-caller bonus: 761 of the winning grades checked were first-caller wins, so board race totals exceed the sum of sealed race_points by $190.25 of points (recomputed 1255.00 vs sealed 1064.75). The bonus IS recomputable from CALLER_CALL timestamps \u2014 but not from the grade seals alone, and Ashen's minute-precision seconds_in makes some first-calls order-dependent.",
-  "Two caller populations exist and are not the same number: CALLER_GRADE seals cover non-counted calls too (Terry's risky \"call\" category and Ashen's non-counted captures), and 105 matches carry a second, superseding grade seal. The earlier auto-open evaluation read ALL grades (Terry 1,632 graded / Ashen 532); the contest law population is counted-only (1022 grades on counted calls). This board keys off the counted population and prints both counts.",
+  "CALLER_GRADE seals omit the +0.25 first-caller bonus: 763 of the winning grades checked were first-caller wins, so board race totals exceed the sum of sealed race_points by $190.75 of points (recomputed 1258.25 vs sealed 1067.50). The bonus IS recomputable from CALLER_CALL timestamps \u2014 but not from the grade seals alone, and Ashen's minute-precision seconds_in makes some first-calls order-dependent.",
+  "Two caller populations exist and are not the same number: CALLER_GRADE seals cover non-counted calls too (Terry's risky \"call\" category and Ashen's non-counted captures), and 105 matches carry a second, superseding grade seal. The earlier auto-open evaluation read ALL grades (Terry 1,632 graded / Ashen 532); the contest law population is counted-only (1026 grades on counted calls). This board keys off the counted population and prints both counts.",
   "PLAIN / EARLY headline accuracy is UNPRICED: their PREDICT seals carry model chance and the spot path, never the market price. Priced lines exist only for the $5-packet signal subsets (168 and 401 calls). The other graded calls cannot be priced from sealed data \u2014 stated, not smoothed.",
-  "Caller calls are UNPRICED: 0 of 1049 counted CALLER_CALLs carry any call-time price field. No caller can pass the priced test until ingest seals the book price with the call.",
+  "Caller calls are UNPRICED: 0 of 1052 counted CALLER_CALLs carry any call-time price field. No caller can pass the priced test until ingest seals the book price with the call.",
   "The contest board's house rows are built from gamelog.json / finaldata.json feeds (gamelog retains ~90 entries), not from the ledger \u2014 the population under a house total shifts as the feed rotates. This feed's house rows are ledger-wide.",
   "Two different \"points\" share one word: gamelog book points (stake P&L inside the sim bank) and contest race points (the band law). They are labeled apart here and must stay apart.",
   "Riptide's haul_law (+$1568.85) is denominated in compounding sim stakes \u2014 a bank trajectory, not a per-$1 edge. Quoting it as profit per call would be fabrication; it prints with its basis attached.",

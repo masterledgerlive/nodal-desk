@@ -103,7 +103,7 @@ async function load(){
     $('fresh').textContent='Feed built '+built.toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true})+' ET · ledger head seq '+d.head_seq+' · this page checks every 15s · all times ET';
     $('stale').style.display=(Date.now()-built.getTime()>180000)?'block':'none';
     $('readybig').textContent='READY: '+d.law.ready_count;
-    $('readywhy').innerHTML='Models that pass all three tests and may hold a real-money lane under the standing auto-open rule: <b>'+d.law.ready_count+'</b>. The rule stays armed — nothing fires until a model makes money on priced grading <i>and</i> executed record first.';
+    $('readywhy').innerHTML='Models that pass all three tests and may hold a real-money lane under the standing auto-open rule: <b>'+d.law.ready_count+'</b>. '+(d.law.ready_note||'The rule stays armed — nothing fires until a model makes money on priced grading <i>and</i> executed record first.');
     $('provenline').innerHTML='<b>'+d.law.proven_line.t1+'</b><br><b>'+d.law.proven_line.t2+'</b><br><b>'+d.law.proven_line.t3+'</b><br>'+d.law.proven_line.rule;
     $('feemodel').textContent='Priced formula — '+d.law.priced_formula+'. Fee model — '+d.law.fee_model+'.';
     const tb=$('models').querySelector('tbody'); tb.innerHTML='';
@@ -111,7 +111,7 @@ async function load(){
       const tr=document.createElement('tr');
       const rec=(m.w===null||m.w===undefined)?(m.graded+' banked'):(m.w+'W–'+m.l+'L · '+m.graded+' graded');
       const priced=(m.paper_pnl===null||m.paper_pnl===undefined)?'<span class="neg">UNPRICED</span>':('n='+m.priced_n+' · avg ask '+fmtC(m.avg_ask)+' · <b class="'+(m.paper_pnl>0?'pos':'neg')+'">'+fmt$(m.paper_pnl)+'</b> per $1/call');
-      const tests=chip(m.tests.t1_accuracy,'T1')+chip(m.tests.t2_priced,'T2')+chip(m.tests.t3_executed,'T3')+(m.tests.ready?' <span class="chip pass">READY</span>':'');
+      const tests=chip(m.tests.t1_accuracy,'T1')+chip(m.tests.t2_priced,'T2')+chip(m.tests.t3_executed,'T3')+(m.tests.ready?' <span class="chip pass">READY</span>':'')+((m.tests.t3_basis&&m.tests.t3_basis.indexOf('RULING')>=0)?'<br><span class="gap">T3: '+m.tests.t3_basis+'</span>':'');
       const g=m.gaps||{};
       let gap='';
       if(g.calls_to_30_graded>0) gap+=g.calls_to_30_graded+' more graded calls · ';
