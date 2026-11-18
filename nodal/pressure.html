@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRE-GAME PRESSURE — the positive-trend rail (SIM)</title>
+<style>
+  :root{ --bg:#0b0e14; --panel:#131826; --line:#26304a; --txt:#e8ecf5; --dim:#8b96b0;
+         --gold:#ffd75e; --green:#3ddc84; --red:#ff6b6b; --blue:#57b6ff; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--txt);
+        font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  .wrap{ max-width:1020px; margin:0 auto; padding:18px 14px 40px; }
+  h1{ font-size:25px; letter-spacing:2px; margin:6px 0 2px; color:var(--gold); }
+  h2{ font-size:16px; letter-spacing:1.5px; margin:22px 0 6px; color:var(--gold); }
+  .sub{ color:var(--dim); font-size:13px; line-height:1.65; }
+  .clock{ color:var(--dim); font-size:12px; margin-top:4px; }
+  .totals{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .tot{ flex:1 1 150px; background:var(--panel); border:1px solid var(--line);
+        border-radius:12px; padding:12px 16px; }
+  .tot .k{ color:var(--dim); font-size:11px; letter-spacing:1.5px; }
+  .tot .v{ font-size:21px; font-weight:800; margin-top:4px; }
+  .card{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
+         padding:12px 16px; margin-top:10px; font-size:13px; line-height:1.7; }
+  .tblwrap{ overflow-x:auto; margin-top:10px; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; min-width:640px; }
+  th{ text-align:left; color:var(--dim); font-size:11px; letter-spacing:1.5px;
+      padding:6px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  td{ padding:9px 8px; border-bottom:1px solid #1b2338; vertical-align:top; }
+  .pos{ color:var(--green); font-weight:800; }
+  .neg{ color:var(--red); font-weight:800; }
+  .flat{ color:var(--dim); font-weight:800; }
+  .dim{ color:var(--dim); }
+  .gold{ color:var(--gold); font-weight:800; }
+  .stub{ color:#0b0e14; background:var(--gold); border-radius:5px; padding:0 5px;
+         font-size:10px; font-weight:800; }
+  .stale{ color:#0b0e14; background:var(--red); border-radius:6px; padding:0 6px;
+          font-weight:800; font-size:10.5px; }
+  .reasons{ color:var(--dim); font-size:11.5px; line-height:1.55; }
+  .foot{ margin-top:16px; color:var(--dim); font-size:12px; line-height:1.7; }
+  a{ color:var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🌡️ PRE-GAME PRESSURE</h1>
+  <div class="sub">The pre-match layer in front of the engines — <b style="color:var(--gold)">SIMULATION ONLY</b>.
+  Picks are posted hours to a day ahead, on the <b>positive-trend side only</b>: model edge ≥ 0
+  <i>and</i> price-path slope ≥ 0. A side in a downtrend is never entered, however strong the model —
+  the Medvedev lesson (card 77.6%, market ~21.5¢, dead from the start). When a real bid offers full
+  cost back plus +3¢/share net, the rail banks cost + profit and the leftover <span class="stub">STUB</span>
+  rides into live play, flexing on fresh per-round votes.</div>
+  <div class="clock"><span id="clock">—</span> · <span id="feedage">feed —</span></div>
+
+  <div class="totals">
+    <div class="tot"><div class="k">🏦 SIM BANK</div><div class="v" id="tBank">—</div></div>
+    <div class="tot"><div class="k">📈 REALIZED</div><div class="v" id="tReal">—</div></div>
+    <div class="tot"><div class="k">🎯 PROOF GATE</div><div class="v" id="tGate">—</div></div>
+    <div class="tot"><div class="k">📋 RECORD</div><div class="v" id="tRec">—</div></div>
+  </div>
+  <div class="sub" id="gateLine" style="margin-top:8px"></div>
+
+  <h2>🎾 OPEN POSITIONS</h2>
+  <div id="positions"><div class="card dim">loading…</div></div>
+
+  <h2>🃏 COMBO BOARD (shadow line)</h2>
+  <div id="combos"><div class="card dim">loading…</div></div>
+  <div class="sub" id="comboNote"></div>
+
+  <h2>📊 THE PRE-MATCH BOARD — pressure reads</h2>
+  <div class="tblwrap">
+  <table>
+    <thead><tr>
+      <th>MATCH</th><th>START (ET)</th><th>MODEL SIDE</th><th>PROB</th><th>EDGE</th>
+      <th>TREND (PTS/HR)</th><th>ONE-SIDED</th><th>READ</th>
+    </tr></thead>
+    <tbody id="rows"><tr><td colspan="8" class="dim">loading the board…</td></tr></tbody>
+  </table>
+  </div>
+
+  <h2>✅ RECENT CLOSES</h2>
+  <div id="closes"><div class="card dim">no closes yet</div></div>
+
+  <div class="foot" id="how">How this rail works: entries only at real asks, exits only at real bids,
+  fees 0.0695·sh·p·(1−p) on every sim trade; mid is used for the trend/read only, never for a fill.
+  Entry rules P1–P7 (strong model ≥ 0.65 · positive trend · before-math ≥ +1.5¢/sh net · Hsu thin-book
+  guard · 2h–48h before start · one entry per match). Cash-out banks full cost + profit; the stub rides.
+  Live flex (dip-buy / side-switch) fires only on a fresh per-round vote — batchdata lane declarations,
+  or the pressure read alone labeled VOTE_PROXY. Proof gate: 3 banked POSITIVE fully-closed results =
+  PROVEN. Promotion is David's tap only; this rail never arms anything real. Full spec:
+  PRESSURE-RAIL-SPEC.md on the desk.</div>
+</div>
+<script>
+function fmt$(v){ var s = Math.abs(v).toFixed(4).replace(/0+$/,'').replace(/\.$/,'');
+  if (s.indexOf('.') < 0) s += '.00'; else if (s.split('.')[1].length === 1) s += '0';
+  return '$' + s; }
+function fmtE(v){ if (v > 0) return '+$' + fmt$(v).slice(1); if (v < 0) return '−$' + fmt$(-v).slice(1); return '$0.00'; }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function fmtET(iso){ if (!iso) return '—'; var d = new Date(iso);
+  return d.toLocaleString('en-US', {timeZone: 'America/New_York', month: 'short', day: 'numeric',
+    hour: 'numeric', minute: '2-digit'}) + ' ET'; }
+var builtAt = null;
+function render(d){
+  builtAt = d.updated ? Date.parse(d.updated) : null;
+  document.getElementById('tBank').textContent = fmt$(d.bank || 0);
+  var tr = document.getElementById('tReal');
+  tr.textContent = fmtE(d.realized || 0);
+  tr.className = 'v ' + ((d.realized || 0) > 0 ? 'pos' : ((d.realized || 0) < 0 ? 'neg' : 'flat'));
+  var g = d.proof_gate || {};
+  document.getElementById('tGate').textContent = (g.banked_positives || 0) + ' / ' + (g.target || 3);
+  document.getElementById('gateLine').innerHTML = esc(g.status || '') +
+    ' · seed ' + fmt$((d.allotment || {}).seed_bank || 1.5) + ' · stake ' + esc((d.allotment || {}).stake_shape || '');
+  var r = d.record || {};
+  document.getElementById('tRec').textContent = (r.wins || 0) + 'W–' + (r.losses || 0) + 'L · ' + (r.open || 0) + ' open';
+
+  var pos = d.positions || [];
+  var ph = '';
+  if (!pos.length) ph = '<div class="card dim">no open positions — the board below shows why each match was passed</div>';
+  pos.forEach(function(p){
+    ph += '<div class="card"><b>' + esc(p.match) + '</b> — <span class="gold">' + esc(p.side) + '</span>'
+      + (p.stub ? ' <span class="stub">STUB — profit-funded, cost basis $0</span>' : '')
+      + '<br><span class="dim">entered</span> ' + fmtET(p.entry_at) + ' @ ask ' + Number(p.entry_ask).toFixed(3)
+      + ' · model ' + Number(p.model_prob).toFixed(3) + ' · edge ' + (p.edge_at_entry >= 0 ? '+' : '') + Number(p.edge_at_entry).toFixed(3)
+      + ' · trend ' + (p.trend_at_entry >= 0 ? '+' : '') + Number(p.trend_at_entry).toFixed(3) + ' pts/hr'
+      + '<br>' + Number(p.shares).toFixed(2) + ' sh · cost ' + fmt$(p.total_cost)
+      + ' · banked so far ' + fmt$(p.banked_proceeds || 0)
+      + ' · starts ' + fmtET(p.start)
+      + (p.switches ? ' · switches: ' + p.switches : '')
+      + ((p.adds && p.adds.length) ? ' · dip-buys: ' + p.adds.length : '')
+      + '</div>';
+  });
+  document.getElementById('positions').innerHTML = ph;
+
+  var cards = d.combo_cards || [];
+  var ch = '';
+  if (!cards.length) ch = '<div class="card dim">no combo card yet — a card needs ≥ 2 entered legs on one ET slate date</div>';
+  cards.forEach(function(c){
+    var legs = (c.legs || []).map(function(l){
+      return esc(l.side) + ' (' + Number(l.model_prob).toFixed(2) + ')'; }).join(' · ');
+    ch += '<div class="card"><b>' + esc(c.date) + ' ET slate</b> — status <b>' + esc(c.status) + '</b>'
+      + '<br>' + legs
+      + '<br><span class="dim">model-combined</span> ' + (c.model_combined != null ? (Number(c.model_combined) * 100).toFixed(2) + '%' : '—')
+      + ' · <span class="dim">market-combined</span> ' + (c.market_combined != null ? (Number(c.market_combined) * 100).toFixed(3) + '%' : '—')
+      + '</div>';
+  });
+  document.getElementById('combos').innerHTML = ch;
+  document.getElementById('comboNote').textContent = d.combo_note || '';
+
+  var ms = d.matches || [];
+  var tb = document.getElementById('rows');
+  if (!ms.length){ tb.innerHTML = '<tr><td colspan="8" class="dim">no pre-match games on the card</td></tr>'; }
+  else {
+    var html = '';
+    ms.forEach(function(m){
+      var tr = (m.sides && m.model_side_idx != null) ? m.sides[String(m.model_side_idx)] : null;
+      var slope = tr && tr.trend_slope_pts_hr != null ? tr.trend_slope_pts_hr : null;
+      var slopeTxt = slope == null ? '<span class="dim">unreadable</span>'
+        : '<span class="' + (slope >= 0 ? 'pos' : 'neg') + '">' + (slope >= 0 ? '+' : '') + slope.toFixed(3) + '</span>';
+      var edgeTxt = m.model_edge == null ? '—'
+        : '<span class="' + (m.model_edge >= 0 ? 'pos' : 'neg') + '">' + (m.model_edge >= 0 ? '+' : '') + Number(m.model_edge).toFixed(3) + '</span>';
+      var read = m.open_position ? '<span class="gold">POSITION OPEN</span>'
+        : (m.positive_trend ? '<span class="pos">POSITIVE TREND</span>' : '<span class="dim">no entry</span>');
+      html += '<tr><td>' + esc(m.match) + '<div class="reasons">' + (m.reasons || []).map(esc).join('<br>') + '</div></td>'
+        + '<td>' + fmtET(m.start) + '</td>'
+        + '<td>' + esc(m.model_side || '—') + '</td>'
+        + '<td>' + (m.model_prob != null ? Number(m.model_prob).toFixed(3) : '—') + '</td>'
+        + '<td>' + edgeTxt + '</td><td>' + slopeTxt + '</td>'
+        + '<td>' + esc(m.one_sided || '—') + '</td><td>' + read + '</td></tr>';
+    });
+    tb.innerHTML = html;
+  }
+
+  var trades = (d.trades || []).slice().reverse();
+  var cl = '';
+  if (!trades.length) cl = '<div class="card dim">no closes yet</div>';
+  trades.slice(0, 12).forEach(function(t){
+    cl += '<div class="card"><b>' + esc(t.match) + '</b> — ' + esc(t.side)
+      + ' · <span class="' + (t.pnl > 0 ? 'pos' : (t.pnl < 0 ? 'neg' : 'flat')) + '">' + fmtE(t.pnl) + '</span>'
+      + ' <span class="dim">(' + esc(t.how) + (t.was_stub ? ', stub' : '') + ') ' + esc(t.note || '') + '</span></div>';
+  });
+  document.getElementById('closes').innerHTML = cl;
+}
+function tick(){
+  var now = new Date();
+  document.getElementById('clock').textContent =
+    now.toLocaleTimeString('en-US', {timeZone: 'America/New_York', hour12: false}) + ' ET';
+  var el = document.getElementById('feedage');
+  if (builtAt){
+    var age = Math.max(0, Math.round((Date.now() - builtAt) / 1000));
+    el.innerHTML = 'feed built ' + age + 's ago' + (age > 180 ? ' <span class="stale">STALE</span>' : '');
+  }
+}
+function load(){
+  fetch('pressuredata.json?t=' + Date.now(), {cache: 'no-store'})
+    .then(function(r){ return r.json(); })
+    .then(render)
+    .catch(function(){});
+}
+load(); tick();
+setInterval(load, 15000);
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
