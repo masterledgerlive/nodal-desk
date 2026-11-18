@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T13:29:55Z",
+ "built_at": "2026-11-18T14:01:50Z",
  "bands": [
   {
    "band": "60\u201370%",
@@ -9,9 +9,9 @@
   },
   {
    "band": "70\u201380%",
-   "n": 196,
+   "n": 197,
    "stated": 75.0,
-   "actual": 78.6
+   "actual": 78.7
   },
   {
    "band": "80\u201390%",
@@ -31,16 +31,16 @@
   "name": "BTC 5-min desk (our specialist, sim)",
   "kind": "BTC Up/Down 5m windows \u00b7 plain vol model btc5-plain-v1 \u00b7 stand-in index",
   "calls": 762,
-  "graded": 761,
-  "correct": 617,
+  "graded": 762,
+  "correct": 618,
   "accuracy": 81.1,
-  "brier": 0.1436,
-  "streak_now": 0,
+  "brier": 0.1435,
+  "streak_now": 1,
   "streak_best": 22,
   "status": "APPROVED",
   "note": "graded from BTC5_GRADE records in the sealed ledger"
  },
- "proof_built_at": "2026-11-18T13:28:27Z",
+ "proof_built_at": "2026-11-18T14:01:19Z",
  "borrows": {
   "lifetime": {
    "PEER": 0,
@@ -62,7 +62,7 @@
    "PEER": "A borrow from the other engines \u2014 counted on the record like every borrow."
   }
  },
- "last_graded_window": "2026-11-18T13:15:00Z",
+ "last_graded_window": "2026-11-18T13:25:00Z",
  "recent_calls": [
   {
    "window": "2026-11-18T13:25:00Z",
@@ -75,12 +75,12 @@
    "move_usd": 44.07,
    "band": "70\u201380%",
    "why": "BTC rose $44 from the window open with 188s left \u2014 the model put UP at 78%.",
-   "result": null,
-   "correct": null,
-   "brier": null,
+   "result": "up",
+   "correct": true,
+   "brier": 0.0477,
    "seq": 19428,
    "sealed_at": "2026-11-18T13:26:54+0000",
-   "grade_seq": null,
+   "grade_seq": 19444,
    "plan": "HOLD \u2014 ride to settlement; PLAIN's only early exit is a sell at a bid of 95\u00a2 or better",
    "final_answer": {
     "side": "up",
@@ -88,8 +88,20 @@
     "locked_at": "2026-11-18T13:26:54+0000",
     "via": "the sealed call itself \u2014 PLAIN never flips, so the call IS the final answer, locked at seal time"
    },
-   "money": null,
-   "money_note": "UNPRICED \u2014 the REAL watch sealed no ask for this window; no money line is invented"
+   "money": {
+    "ask": 0.52,
+    "stake": 26512.9,
+    "pnl": 23588.98,
+    "bank_after": 288718.86,
+    "run": 1,
+    "borrowed": false,
+    "self_borrowed": false,
+    "borrow_source": null,
+    "borrow_count": null,
+    "borrow_from": null,
+    "how": "settlement"
+   },
+   "money_note": "the $5.00 bet algorithm (THE PROOF RECORD): stake sized by the banking law on the joint timeline, in at the sealed ask, entry fee in; settlement pays no exit trade \u2014 a directional win that loses money shows as a money LOSS"
   },
   {
    "window": "2026-11-18T13:15:00Z",
@@ -763,6 +775,68 @@
  ],
  "recent_windows": [
   {
+   "window": "2026-11-18T14:00:00Z",
+   "open_px": 63898.58,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T13:55:00Z",
+   "open_px": 63877.7,
+   "call": null,
+   "abstain": {
+    "why": "vol not ready (<20 trailing returns)",
+    "at": 1795010255
+   },
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T13:50:00Z",
+   "open_px": 63953.76,
+   "call": null,
+   "abstain": {
+    "why": "vol not ready (<20 trailing returns)",
+    "at": 1795009956
+   },
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T13:45:00Z",
+   "open_px": 63922.82,
+   "call": null,
+   "abstain": {
+    "why": "vol not ready (<20 trailing returns)",
+    "at": 1795009680
+   },
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T13:40:00Z",
+   "open_px": 63940.185,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T13:35:00Z",
+   "open_px": 64080.665,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T13:30:00Z",
+   "open_px": 64089.1,
+   "call": null,
+   "abstain": {
+    "why": "model chance 0.5 < 0.6",
+    "chance": 0.5,
+    "at": 1795008768
+   },
+   "grade": null
+  },
+  {
    "window": "2026-11-18T13:25:00Z",
    "open_px": 63940.3,
    "call": {
@@ -771,7 +845,11 @@
     "at": 1795008411
    },
    "abstain": null,
-   "grade": null
+   "grade": {
+    "result": "up",
+    "correct": true,
+    "brier": 0.0477
+   }
   },
   {
    "window": "2026-11-18T13:20:00Z",
@@ -833,87 +911,22 @@
     "at": 1795006648
    },
    "grade": null
-  },
-  {
-   "window": "2026-11-18T12:50:00Z",
-   "open_px": 63967.850000000006,
-   "call": null,
-   "abstain": {
-    "why": "vol not ready (<20 trailing returns)",
-    "at": 1795006333
-   },
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T12:45:00Z",
-   "open_px": 64028.345,
-   "call": null,
-   "abstain": {
-    "why": "vol not ready (<20 trailing returns)",
-    "at": 1795006014
-   },
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T12:40:00Z",
-   "open_px": 63957.18,
-   "call": null,
-   "abstain": null,
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T12:35:00Z",
-   "open_px": 64095.9,
-   "call": null,
-   "abstain": null,
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T12:30:00Z",
-   "open_px": 64137.9,
-   "call": null,
-   "abstain": {
-    "why": "vol not ready (<20 trailing returns)",
-    "at": 1795005179
-   },
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T12:25:00Z",
-   "open_px": 64221.06,
-   "call": null,
-   "abstain": {
-    "why": "vol not ready (<20 trailing returns)",
-    "at": 1795004890
-   },
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T12:20:00Z",
-   "open_px": 64312.494999999995,
-   "call": null,
-   "abstain": null,
-   "grade": null
   }
  ],
- "abstains_total": 123,
+ "abstains_total": 127,
  "counters": {
-  "graded": 761,
-  "wins": 617,
+  "graded": 762,
+  "wins": 618,
   "win_rate": 81.1,
-  "streak_type": "L",
+  "streak_type": "W",
   "streak_n": 1,
   "best_win_streak": 22,
-  "last12": "WWWLWLWLWWWL"
+  "last12": "WWLWLWLWWWLW"
  },
  "live_window": {
-  "window": "2026-11-18T13:25:00Z",
-  "open_px": 63940.3,
-  "call": {
-   "side": "up",
-   "chance": 0.7815,
-   "at": 1795008411
-  },
+  "window": "2026-11-18T14:00:00Z",
+  "open_px": 63898.58,
+  "call": null,
   "abstain": null,
   "grade": null
  },
