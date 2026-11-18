@@ -1,189 +1,230 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LIVE FOLLOW — ride the models live</title>
+<title>LIVE FOLLOW — watch the desk, follow a model, press it yourself · NODAL</title>
 <style>
-  :root{ --bg:#0b0e14; --panel:#131826; --line:#26304a; --txt:#e8ecf5; --dim:#8b96b0;
-         --gold:#ffd75e; --green:#3ddc84; --red:#ff6b6b; --blue:#57b6ff; }
-  *{ box-sizing:border-box; }
-  body{ margin:0; background:var(--bg); color:var(--txt);
-        font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
-  .wrap{ max-width:1060px; margin:0 auto; padding:18px 14px 44px; }
-  h1{ font-size:25px; letter-spacing:2px; margin:6px 0 2px; color:var(--gold); }
-  .sub{ color:var(--dim); font-size:13px; line-height:1.65; }
-  .clock{ color:var(--dim); font-size:12px; margin-top:4px; }
-  .stale{ color:#0b0e14; background:var(--red); border-radius:6px; padding:0 6px;
-          font-weight:800; font-size:10.5px; }
-  .guideonly{ margin-top:12px; background:#1a1408; border:1px solid var(--gold);
-    border-radius:12px; padding:10px 14px; font-size:13.5px; line-height:1.6; }
-  .sec{ margin-top:22px; }
-  .sec h2{ font-size:17px; letter-spacing:1.5px; color:var(--gold); margin:0 0 4px; }
-  .sec .note{ color:var(--dim); font-size:12.5px; line-height:1.6; margin-bottom:10px; }
-  .picker{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-  .pk{ background:var(--panel); border:1px solid var(--line); color:var(--txt);
-    border-radius:10px; padding:9px 14px; font:inherit; font-size:13.5px; font-weight:800;
-    cursor:pointer; letter-spacing:.5px; }
-  .pk.on{ border-color:var(--gold); color:var(--gold); background:#1a1408; }
-  .guide{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
-  @media (max-width:720px){ .guide{ grid-template-columns:1fr; } }
-  .gbox{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
-  .gbox .gk{ color:var(--dim); font-size:11px; letter-spacing:1.5px; }
-  .gbox .gm{ font-size:13px; margin:6px 0 10px; line-height:1.55; }
-  .gbtns{ display:flex; gap:10px; }
-  .gb{ flex:1; border-radius:12px; padding:18px 8px; font:inherit; font-size:19px; font-weight:800;
-    background:#0d1119; color:var(--dim); border:2px solid var(--line); cursor:default;
-    transition:all .25s; letter-spacing:1px; }
-  .gb small{ display:block; font-size:11px; font-weight:400; letter-spacing:.5px; margin-top:4px; }
-  .gb.lit-up{ background:#0e2a1a; color:var(--green); border-color:var(--green);
-    box-shadow:0 0 22px rgba(61,220,132,.45); }
-  .gb.lit-down{ background:#2a0e12; color:var(--red); border-color:var(--red);
-    box-shadow:0 0 22px rgba(255,107,107,.45); }
-  .gb.lit-pick{ background:#0e1a2b; color:var(--blue); border-color:var(--blue);
-    box-shadow:0 0 22px rgba(87,182,255,.45); }
-  .gb.seq{ filter:brightness(1.9); }
-  .board{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
-    padding:10px 12px; }
-  .brow{ position:relative; display:flex; align-items:center; gap:10px; padding:7px 6px;
-    border-bottom:1px solid #1b2338; will-change:transform; }
-  .brow:last-child{ border-bottom:none; }
-  .brank{ width:26px; font-weight:800; color:var(--dim); font-size:15px; }
-  .bname{ width:170px; font-weight:800; font-size:13.5px; white-space:nowrap; overflow:hidden;
-    text-overflow:ellipsis; }
-  .btrack{ flex:1; position:relative; height:16px; background:#0d1119; border-radius:4px;
-    overflow:hidden; min-width:80px; }
-  .btrack::after{ content:""; position:absolute; left:50%; top:0; bottom:0; width:1px;
-    background:#3a4560; }
-  .bfill{ position:absolute; top:2px; bottom:2px; border-radius:3px;
-    transition:all .8s cubic-bezier(.2,.8,.2,1); }
-  .bfill.p{ background:var(--green); } .bfill.n{ background:var(--red); }
-  .bstat{ width:250px; text-align:right; font-size:12.5px; color:var(--dim); white-space:nowrap; }
-  .bstat b{ color:var(--txt); }
-  .pos{ color:var(--green); font-weight:800; } .neg{ color:var(--red); font-weight:800; }
-  .cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
-  .card{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
-    padding:12px 14px; transition:opacity .3s, border-color .3s; }
-  .card.dim{ opacity:.32; }
-  .card.focus{ border-color:var(--gold); }
-  .card .top{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
-  .model{ font-weight:800; font-size:15px; letter-spacing:.5px; }
-  .liveb{ background:var(--red); color:#fff; font-size:10.5px; font-weight:800;
-    border-radius:6px; padding:2px 8px; letter-spacing:1px; animation:pl 1.1s infinite; }
-  .recentb{ background:#26304a; color:var(--dim); font-size:10.5px; font-weight:800;
-    border-radius:6px; padding:2px 8px; letter-spacing:1px; }
-  .deckb{ background:#0e1a2b; color:var(--blue); font-size:10.5px; font-weight:800;
-    border-radius:6px; padding:2px 8px; letter-spacing:1px; }
-  @keyframes pl{ 50%{ opacity:.35; } }
-  .dir{ font-size:24px; font-weight:800; margin:8px 0 2px; }
-  .dir.up{ color:var(--green); } .dir.down{ color:var(--red); } .dir.pick{ color:var(--blue); }
-  .ev{ font-size:13px; line-height:1.55; }
-  .meta{ color:var(--dim); font-size:12.5px; line-height:1.7; margin-top:6px; }
-  .meta b{ color:var(--txt); }
-  .empty{ color:var(--dim); font-size:13.5px; background:var(--panel); border:1px dashed var(--line);
-    border-radius:12px; padding:14px 16px; line-height:1.6; }
-  .foot{ margin-top:20px; color:var(--dim); font-size:12px; line-height:1.7; }
-  a{ color:var(--blue); }
-</style>
-</head>
-<body>
-<div class="wrap">
+:root{ --bg:#0b0e14; --panel:#131826; --panel2:#0f1420; --line:#232a3d; --ink:#e8ecf4;
+  --mut:#8b94a9; --gold:#ffd75e; --grn:#3ddc84; --red:#ff6b6b; --blu:#57b6ff; }
+*{ box-sizing:border-box; } body{ margin:0; background:var(--bg); color:var(--ink);
+  font:14.5px/1.55 ui-monospace,'SF Mono',Menlo,Consolas,monospace; }
+.wrap{ max-width:1060px; margin:0 auto; padding:22px 16px 60px; }
+a{ color:var(--blu); text-decoration:none; } a:hover{ text-decoration:underline; }
+h1{ font-size:21px; margin:0; letter-spacing:.5px; }
+.sub{ color:var(--mut); font-size:13px; margin-top:6px; max-width:820px; }
+.clock{ color:var(--mut); font-size:12.5px; margin-top:8px; }
+.stale{ background:#4a1420; color:#ffb3ba; border:1px solid #7a2436; border-radius:8px;
+  padding:6px 12px; font-weight:800; display:none; margin-top:10px; font-size:13px; }
+.guideonly{ background:#241d05; border:1px solid #6b5710; color:#ffe9a8; border-radius:10px;
+  padding:10px 14px; margin-top:12px; font-size:13.5px; line-height:1.6; }
+h2{ font-size:15px; letter-spacing:2px; color:var(--gold); margin:30px 0 4px; font-weight:800; }
+.h2sub{ color:var(--mut); font-size:12.5px; margin-bottom:10px; }
+/* picker boxes */
+.pgroup{ color:var(--mut); font-size:12px; letter-spacing:2px; font-weight:800; margin:12px 0 6px; }
+.pboxes{ display:flex; flex-wrap:wrap; gap:8px; }
+.pbox{ background:var(--panel); border:2px solid var(--line); border-radius:12px;
+  padding:9px 12px; cursor:pointer; min-width:128px; max-width:230px; text-align:left;
+  color:var(--ink); font:inherit; }
+.pbox:hover{ border-color:var(--mut); }
+.pbox.sel{ border-color:var(--grn); background:#0d2016; box-shadow:0 0 0 1px var(--grn); }
+.pbox .nm{ font-weight:800; font-size:14px; letter-spacing:.5px; }
+.pbox.sel .nm{ color:var(--grn); }
+.pbox .dc{ color:var(--mut); font-size:11.5px; margin-top:3px; line-height:1.45; }
+.pbox .dc b{ color:var(--ink); }
+.pgap{ height:22px; }
+/* mode boxes */
+.mboxes{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+.mbox{ background:var(--panel); border:2px solid var(--line); border-radius:12px;
+  padding:10px 14px; cursor:pointer; color:var(--ink); font:inherit; max-width:320px; text-align:left; }
+.mbox.sel{ border-color:var(--grn); background:#0d2016; box-shadow:0 0 0 1px var(--grn); }
+.mbox .nm{ font-weight:800; } .mbox.sel .nm{ color:var(--grn); }
+.mbox .dc{ color:var(--mut); font-size:11.5px; margin-top:2px; line-height:1.45; }
+.decision{ background:var(--panel2); border:1px solid var(--line); border-radius:12px;
+  padding:13px 16px; margin-top:12px; font-size:13.5px; line-height:1.7; }
+.voidbox{ background:#3d0f16; border:1px solid #8c2434; color:#ffc4cb; border-radius:10px;
+  padding:9px 13px; margin-top:10px; font-size:13.5px; line-height:1.6; }
+/* boards */
+.boards{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:760px){ .boards{ grid-template-columns:1fr; } }
+.board{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+.board .bt{ font-weight:800; letter-spacing:1.5px; font-size:13px; margin-bottom:4px; }
+.board .bs{ color:var(--mut); font-size:11.5px; margin-bottom:10px; }
+.brow{ position:relative; padding:7px 10px; border-radius:8px; margin-bottom:5px;
+  background:#0d1119; transition:transform .8s ease, background .3s; overflow:hidden; }
+.brow .who{ display:flex; justify-content:space-between; gap:8px; position:relative; z-index:1; }
+.brow .nm{ font-weight:700; } .brow .st{ color:var(--mut); font-size:12px; text-align:right; }
+.brow .bar{ position:absolute; top:0; bottom:0; opacity:.20; }
+.bar.pos{ background:var(--grn); } .bar.neg{ background:var(--red); }
+.tag{ font-size:10px; border:1px solid var(--line); border-radius:99px; padding:1px 7px;
+  color:var(--mut); vertical-align:2px; margin-left:6px; }
+/* guide */
+.guide{ display:flex; flex-wrap:wrap; gap:14px; align-items:stretch; margin-top:6px; }
+.gcol{ flex:1 1 300px; background:var(--panel); border:1px solid var(--line);
+  border-radius:12px; padding:13px 15px; }
+.gcol .gt{ font-weight:800; letter-spacing:1px; font-size:12.5px; color:var(--mut); }
+.gbtns{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.gbtn{ flex:1; min-width:120px; border:2px solid var(--line); background:#0d1119; color:var(--ink);
+  border-radius:12px; padding:14px 8px; font:inherit; font-weight:800; font-size:16px;
+  text-align:center; transition:background .15s,border-color .15s,box-shadow .15s; }
+.gbtn small{ display:block; font-weight:400; font-size:11px; color:var(--mut); margin-top:3px; }
+.gbtn.lit-up{ border-color:var(--grn); background:#0f2c1a; box-shadow:0 0 18px #3ddc8455; color:var(--grn); }
+.gbtn.lit-down{ border-color:var(--red); background:#2c0f14; box-shadow:0 0 18px #ff6b6b55; color:var(--red); }
+.gbtn.lit-pick{ border-color:var(--gold); background:#2c2307; box-shadow:0 0 18px #ffd75e55; color:var(--gold); }
+.gtext{ color:var(--mut); font-size:12.5px; margin-top:10px; line-height:1.55; }
+.gtext b{ color:var(--ink); }
+/* cards */
+.cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(315px,1fr)); gap:12px; margin-top:12px; }
+.card{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
+  padding:14px 16px; transition:opacity .3s, box-shadow .3s; }
+.card.dim{ opacity:.38; } .card.focus{ box-shadow:0 0 0 2px var(--gold); }
+.card .top{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.card .model{ font-weight:800; letter-spacing:.5px; }
+.liveb{ color:#08130c; background:var(--grn); font-weight:800; font-size:11px;
+  border-radius:99px; padding:2px 9px; animation:pulse 1.6s infinite; }
+@keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.55; } }
+.recentb{ color:var(--gold); border:1px solid #6b5710; font-size:11px; border-radius:99px; padding:2px 9px; }
+.deckb{ color:var(--blu); border:1px solid #274a6b; font-size:11px; border-radius:99px; padding:2px 9px; }
+.livebadge{ color:var(--red); border:1px solid #7a2436; font-size:11px; border-radius:99px; padding:2px 9px; }
+.card .dir{ font-size:24px; font-weight:800; margin-top:8px; }
+.dir.up{ color:var(--grn); } .dir.down{ color:var(--red); } .dir.pick{ color:var(--gold); font-size:19px; }
+.card .ev{ color:var(--mut); font-size:12px; margin-top:2px; }
+.card .meta{ font-size:12.5px; margin-top:9px; line-height:1.65; }
+.card .meta b{ color:var(--ink); } .card .src{ color:var(--mut); font-size:11px; margin-top:8px; }
+.empty{ color:var(--mut); font-size:13px; padding:14px 4px; }
+/* big tennis match cards */
+.mcard{ background:var(--panel); border:1px solid var(--line); border-radius:12px;
+  padding:16px 18px; margin-top:12px; transition:opacity .3s, box-shadow .3s; }
+.mcard.dim{ opacity:.42; } .mcard.focus{ box-shadow:0 0 0 2px var(--gold); }
+.mcard .mt{ font-size:16.5px; font-weight:800; line-height:1.4; }
+.mcard .ms{ color:var(--mut); font-size:12.5px; margin-top:3px; }
+.who{ margin-top:11px; border-top:1px solid var(--line); padding-top:10px; }
+.who .wk{ color:var(--mut); font-size:11px; letter-spacing:2px; font-weight:800; margin-bottom:6px; }
+.whorow{ display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:3.5px 0; }
+.whorow .wl{ font-weight:700; } .whorow .wr{ text-align:right; }
+.whorow .pass{ color:var(--mut); }
+.addbtn{ border:1px solid var(--line); background:#0d1119; color:var(--blu); border-radius:8px;
+  font:inherit; font-size:11.5px; padding:3px 10px; cursor:pointer; margin-left:8px; }
+.addbtn:hover{ border-color:var(--blu); } .addbtn.added{ color:var(--grn); border-color:var(--grn); }
+/* combo */
+.legrow{ display:flex; justify-content:space-between; gap:10px; font-size:13px;
+  padding:6px 0; border-bottom:1px dashed #232a3d; }
+.legrow .prov{ color:var(--mut); font-size:11px; }
+.legrow.voidleg{ opacity:.55; text-decoration:line-through; }
+.combosum{ font-size:13.5px; line-height:1.7; margin-top:10px; }
+select{ background:#0d1119; color:var(--ink); border:1px solid var(--line); border-radius:8px;
+  font:inherit; padding:6px 9px; }
+.foot{ color:var(--mut); font-size:12.5px; margin-top:34px; line-height:1.7;
+  border-top:1px solid var(--line); padding-top:14px; }
+</style></head><body><div class="wrap">
+  <div style="font-size:12px"><a href="index.html">← NODAL DESK HUB</a></div>
   <h1>📡 LIVE FOLLOW</h1>
-  <div class="sub">Ride the models live. The boards re-rank themselves as rounds settle, and the
-  moment a model fires, its card lights up — model, direction, price, and the clock — so you can
-  jump on the same call yourself, fast. BTC 5-minute on top, tennis below.</div>
+  <div class="sub">The desk, live on one page: the boards, every model's call the moment it
+  lands, and a press-through guide that lights the button for the model you chose.
+  Pick your model, pick your mode — the page points, <b style="color:var(--ink)">you press</b>.</div>
   <div class="clock"><span id="clock">—</span> · <span id="feedage">feeds —</span></div>
   <div class="clock" id="winstrip" style="font-size:13.5px;color:var(--gold)">CURRENT WINDOW —</div>
+  <div class="stale" id="stale">⚠ STALE — a feed is older than 3 minutes; ages are printed above, trust the printed times, not the badges.</div>
+  <div class="guideonly">🧭 <b>GUIDE ONLY.</b> This page places <b>NO orders</b> and touches no account.
+  It shows you what the models called and lights the button that matches — the press on the
+  venue is always the human's own hand.</div>
 
-  <div class="guideonly">⚠ <b>GUIDE ONLY — THIS PAGE PLACES NO ORDERS.</b> The buttons below are a
-  visual press-through guide for semi-human play: they light in sequence behind the model you
-  choose. The human presses on the venue themselves, with their own account and their own limits.</div>
+  <h2>🎯 CHOOSE YOUR MODEL</h2>
+  <div class="h2sub">Tap a box — green is the one you run with. Each box carries that model's
+  current decision inside it. One model, all BTC, or all tennis.</div>
+  <div class="pgroup">— BTC 5-MIN MODELS —</div>
+  <div class="pboxes" id="btcBoxes"></div>
+  <div class="pgap"></div>
+  <div class="pgroup">— TENNIS MODELS —</div>
+  <div class="pboxes" id="tenBoxes"></div>
 
-  <div class="sec">
-    <h2>🎛️ CHOOSE YOUR MODEL</h2>
-    <div class="note">Pick a model and the page follows it: its live calls stay lit, everyone else
-    dims, and the guide strip below presses through its latest call. ALL = the whole room.</div>
-    <div class="picker" id="picker"></div>
-    <div class="guide">
-      <div class="gbox">
-        <div class="gk">BTC 5-MIN · PRESS-THROUGH GUIDE</div>
-        <div class="gm" id="guideBtcText">Pick a model above to arm the guide.</div>
-        <div class="gbtns">
-          <button class="gb" id="guide-btc-up" data-guide-direction="up">▲ UP<small>buy the up side</small></button>
-          <button class="gb" id="guide-btc-down" data-guide-direction="down">▼ DOWN<small>buy the down side</small></button>
-        </div>
+  <h2>🎚️ FOLLOW MODE</h2>
+  <div class="mboxes">
+    <button class="mbox" data-mode="TRUST-ALL"><div class="nm">🤝 TRUST-ALL</div>
+      <div class="dc">Follow the agreed math decision of all the engines you chose.</div></button>
+    <button class="mbox" data-mode="SOLO"><div class="nm">🎯 SOLO</div>
+      <div class="dc">Follow one chosen engine — its call, its record.</div></button>
+    <button class="mbox" data-mode="COMBO"><div class="nm">🎾 COMBO</div>
+      <div class="dc">Tennis only. Follow a model's combo — or mix two engines' combos and add legs.</div></button>
+  </div>
+  <div class="decision" id="decision">Decision —</div>
+  <div class="voidbox">⚖️ <b>THE FOLLOW RULE (this page only):</b> your follow decision cancels —
+  <b>VOID, stay out that round</b> — ONLY on an exact EQUAL split among your chosen engines:
+  2 against 2 of 4, 1 against 1 of 2. A minority can never cancel it; anything short of
+  equality, the agreed math decision stands. This is follower-side page logic for YOUR
+  selection — it is <b>not</b> the desk's sealed batch law and changes no lane's rules.</div>
+
+  <h2>₿ BTC 5-MIN — LIVE CALLS</h2>
+  <div class="guide">
+    <div class="gcol"><div class="gt">PRESS-THROUGH GUIDE — BTC (lights behind your model's current-window call)</div>
+      <div class="gbtns">
+        <button class="gbtn" id="guide-btc-up" data-guide-room="btc" data-guide-side="up">▲ UP<small>yes — up wins</small></button>
+        <button class="gbtn" id="guide-btc-down" data-guide-room="btc" data-guide-side="down">▼ DOWN<small>no — down wins</small></button>
       </div>
-      <div class="gbox">
-        <div class="gk">TENNIS · PRESS-THROUGH GUIDE</div>
-        <div class="gm" id="guideTenText">Pick a model above to arm the guide.</div>
-        <div class="gbtns">
-          <button class="gb" id="guide-ten-p1" data-guide-player="p1">—<small>player 1</small></button>
-          <button class="gb" id="guide-ten-p2" data-guide-player="p2">—<small>player 2</small></button>
-        </div>
+      <div class="gtext" id="guideBtcText">Waiting for the current window's calls…</div>
+    </div>
+  </div>
+  <div class="cards" id="btcCards"></div>
+
+  <h2>🎾 TENNIS — MATCHES & WHO'S IN</h2>
+  <div class="h2sub">Bigger cards: every match shows which models have a bet on it, and on which side.</div>
+  <div class="guide">
+    <div class="gcol"><div class="gt">PRESS-THROUGH GUIDE — TENNIS (lights behind your model's pick)</div>
+      <div class="gbtns">
+        <button class="gbtn" id="guide-ten-p1" data-guide-room="tennis" data-guide-player="">—<small>player 1</small></button>
+        <button class="gbtn" id="guide-ten-p2" data-guide-room="tennis" data-guide-player="">—<small>player 2</small></button>
       </div>
+      <div class="gtext" id="guideTenText">Pick a model above — its next tennis pick lights here.</div>
+    </div>
+  </div>
+  <div id="tenCards"></div>
+
+  <h2>🧩 COMBO & MIXER — TENNIS ONLY</h2>
+  <div class="h2sub">Combos live in tennis only — there is no BTC combo here, by design.
+  A model's combo = the legs that model LOCKED. The ROOM combo = legs all three lanes locked together.</div>
+  <div class="decision">
+    <div>COMBO OF: <span id="comboBtns"></span></div>
+    <div id="comboLegs" style="margin-top:8px">—</div>
+    <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px">
+      <b>🎛️ MIXER</b> — bring two engines, combine the combos they already chose, add new legs on top.<br>
+      ENGINE A <select id="mixA"></select> · ENGINE B <select id="mixB"></select>
+      <span style="color:var(--mut);font-size:12px">— add legs from the match cards above with their + ADD buttons.</span>
+      <div id="mixLegs" style="margin-top:8px">—</div>
     </div>
   </div>
 
-  <div class="sec">
-    <h2>🏁 BTC 5-MIN — SIM CONTEST BOARD (SEASON 2)</h2>
-    <div class="note">Contest points under the desk's scoring law — speed points for early calls,
-    losses −1 flat. SIM: no money on this board. Bars move as rounds grade.</div>
-    <div class="board" id="simBoard"><div class="empty">LOADING…</div></div>
+  <h2>🏁 THE BOARDS — NEVER BLENDED</h2>
+  <div class="boards">
+    <div class="board"><div class="bt" style="color:var(--blu)">🎮 SIM CONTEST — SEASON 2</div>
+      <div class="bs">Race points from the Callers' Contest board · sealed calls, graded in the open · not money</div>
+      <div id="simBoard"></div></div>
+    <div class="board"><div class="bt" style="color:var(--gold)">💵 REAL MONEY — THE RACE</div>
+      <div class="bs">Earned = the only number that ranks · banks and records from sealed fills only</div>
+      <div id="realBoard"></div></div>
   </div>
 
-  <div class="sec">
-    <h2>💵 REAL MONEY BOARD — ALL LANES</h2>
-    <div class="note">Real lanes only, ranked by EARNED. This is the money board — the same sealed
-    record as <a href="standings.html">THE RANKINGS</a> and the <a href="dos.html">DOS TERMINAL</a>.</div>
-    <div class="board" id="realBoard"><div class="empty">LOADING…</div></div>
-  </div>
-
-  <div class="sec">
-    <h2>🔴 BTC 5-MIN — LIVE CALLS</h2>
-    <div class="note">A card lights the moment its model fires on the current window. Confidence
-    prints only where the source itself gives one — never invented.</div>
-    <div class="cards" id="btcCards"><div class="empty">LOADING…</div></div>
-  </div>
-
-  <div class="sec">
-    <h2>🎾 TENNIS — LIVE CALLS &amp; ON DECK</h2>
-    <div class="note">Live matches carry the arena's in-play positions; on-deck matches carry the
-    frozen card pick, sealed before first ball. The card pick is the desk's model call — the
-    market price beside it is the venue's, and they often disagree. That disagreement is the game.</div>
-    <div class="cards" id="tenCards"><div class="empty">LOADING…</div></div>
-  </div>
-
-  <div class="foot">SOURCES: callersdata.json (contest) · realfills.json (real money) ·
-  gamelog.json + flowdata.json + finaldata.json + batchdata.json (BTC live calls) ·
-  gamesdata.json (tennis). Zero AI in the pipeline — the desk's daemon rebuilds every feed,
-  this page just reads them. Cards carry stable data hooks (data-hook="live-call") so the
-  overlay kit can attach in a later slice. Nothing here is financial advice; the record is
-  the record, losers and all.</div>
+  <div class="foot">Sources: the desk's public feeds — gamelog · batchdata · callersdata ·
+  gamesdata · realfills · flowdata · finaldata — rebuilt by the AI-free daemon and refreshed
+  here every 15 seconds. Every card prints the exact time its call was sealed; a card is LIVE
+  only when it belongs to the current window on the clock above. SIM points and REAL money
+  are never blended. The desk's full record — losers included — is on
+  <a href="standings.html">standings</a>, <a href="callers.html">the contest board</a> and
+  <a href="batch.html">the batch page</a>.</div>
 </div>
-
 <script>
 "use strict";
-function $(id){ return document.getElementById(id); }
-function num(v){ return (typeof v === "number" && isFinite(v)) ? v : null; }
+var $ = function(id){ return document.getElementById(id); };
 function esc(s){ return String(s === null || s === undefined ? "" : s)
   .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-function moneyS(v){ if(v === null || v === undefined) return "—";
-  return (v > 0 ? "+$" : (v < 0 ? "-$" : "$")) + Math.abs(v).toFixed(2); }
-function money(v){ if(v === null || v === undefined) return "—";
-  return (v < 0 ? "-$" : "$") + Math.abs(v).toFixed(2); }
-function cents(v){ if(v === null || v === undefined) return "—";
-  var c = (v <= 1.5) ? Math.round(v*100) : Math.round(v); return c+"c"; }
-var FMTD = new Intl.DateTimeFormat("en-US",{ timeZone:"America/New_York",
-  weekday:"short", month:"short", day:"numeric" });
-var FMTT = new Intl.DateTimeFormat("en-US",{ timeZone:"America/New_York",
-  hour:"numeric", minute:"2-digit", hour12:true });
-var FMTTS = new Intl.DateTimeFormat("en-US",{ timeZone:"America/New_York",
-  hour:"numeric", minute:"2-digit", second:"2-digit", hour12:true });
-function fmtET(iso){ if(!iso) return "—"; var d = new Date(iso); if(isNaN(d)) return "—";
-  var p = {}; new Intl.DateTimeFormat("en-US",{ timeZone:"America/New_York", month:"2-digit",
-    day:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit", hour12:true })
-    .formatToParts(d).forEach(function(x){ p[x.type]=x.value; });
-  return p.month+"/"+p.day+"/"+p.year+" "+p.hour+":"+p.minute+" "+p.dayPeriod+" ET"; }
+function num(x){ var n = parseFloat(x); return isFinite(n) ? n : null; }
+function money(x){ var n = num(x); if(n === null) return "—";
+  return (n < 0 ? "-$" : "$") + Math.abs(n).toFixed(2); }
+function cents(p){ var n = num(p); return n === null ? "—" : Math.round(n) + "¢"; }
+function ageStr(iso){ if(!iso) return "—"; var s = (Date.now() - new Date(iso).getTime())/1000;
+  if(!isFinite(s)) return "—"; if(s < 90) return Math.max(0,Math.round(s)) + "s ago";
+  if(s < 5400) return Math.round(s/60) + "m ago"; return (s/3600).toFixed(1) + "h ago"; }
+var TZ = "America/New_York";
+var FMTT = new Intl.DateTimeFormat("en-US",{ timeZone:TZ, hour:"numeric", minute:"2-digit", hour12:true });
+var FMTTS = new Intl.DateTimeFormat("en-US",{ timeZone:TZ, hour:"numeric", minute:"2-digit", second:"2-digit", hour12:true });
+var FMTD = new Intl.DateTimeFormat("en-US",{ timeZone:TZ, weekday:"short", month:"short", day:"numeric" });
 function btcEvent(windowIso){
   var a = new Date(windowIso), b = new Date(a.getTime() + 5*60000);
   return "BTC 5-MIN · " + FMTD.format(a) + " · " + FMTT.format(a) + "–" + FMTT.format(b) + " ET"; }
@@ -191,50 +232,68 @@ function curWinISO(){ var t = Math.floor(Date.now()/300000)*300000;
   return new Date(t).toISOString().slice(0,19) + "Z"; }
 function prevWinISO(){ var t = Math.floor(Date.now()/300000)*300000 - 300000;
   return new Date(t).toISOString().slice(0,19) + "Z"; }
-function streakOf(form){ if(!form || !form.length) return "—";
-  var last = form[form.length-1], n = 0;
-  for(var i = form.length-1; i >= 0; i--){ if(form[i] === last) n++; else break; }
-  return last + n; }
+function winKey(a, b){ return [a, b].sort().join("|"); }
 
-/* ---------- live call cards: BTC ---------- */
+/* ---------- state ---------- */
+var FEEDS = {};
+var SEL = { room: "BOTH", model: null };       /* picker selection */
+var MODE = "TRUST-ALL";
+var COMBO_MODEL = "ROOM";
+var MIX = { a: "PLAIN", b: "TAPE", added: {} }; /* added: key -> leg */
+var FEEDNAMES = ["gamelog","batchdata","callersdata","gamesdata","realfills","flowdata","finaldata"];
+var BTC_MODELS = ["PLAIN","EARLY","RIPTIDE","FINAL","TERRY","ASHEN","PIZZA"];
+var TEN_MODELS = ["ARENA CARD","PLAIN","TAPE","RIPTIDE"];
+
+function fetchJSON(name){
+  return fetch(name + ".json?t=" + Date.now(), { cache: "no-store" })
+    .then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; }); }
+function load(){
+  Promise.all(FEEDNAMES.map(fetchJSON)).then(function(res){
+    FEEDNAMES.forEach(function(n, i){ if(res[i]) FEEDS[n] = res[i]; });
+    renderAll();
+  }); }
+
+/* ---------- BTC cards (Part 1 binding: LIVE = the clock's own window) ---------- */
 function computeBtcCards(F){
-  var cards = [], seen = {};
-  function push(c){ var k = c.model + "|" + c.window;
-    if(seen[k]) return; seen[k] = 1; cards.push(c); }
-  var gl = F.gamelog || {}, live = gl.live || [];
-  live.forEach(function(e){
-    if(e.status !== "LIVE") return;
-    var ask = (e.fire_ice && num(e.fire_ice.ask)) || (e.press && num(e.press.buy));
+  var byKey = {};
+  function push(c){ var k = c.model + "|" + c.window; if(!byKey[k]) byKey[k] = c; }
+  var gl = F.gamelog || {};
+  (gl.live || []).forEach(function(e){
+    if(!e || !e.engine) return;
+    var ask = (e.fire_ice && num(e.fire_ice.ask)) || (e.press && num(e.press.buy)) ||
+      (e.decision ? num(String(e.decision).replace(/[^0-9.]/g, "")) : null);
     push({ model: e.engine, side: e.side, window: e.window,
       called: e.sealed_ts || null, secondsIn: null,
       entry: ask, conf: num(e.chance) !== null ? Math.round(e.chance*1000)/10 : null,
       live: e.window === curWinISO(), src: "gamelog" }); });
   (gl.log || []).forEach(function(e){
-    if(!e.window || !e.engine) return;
-    var age = (Date.now() - new Date(e.window).getTime())/60000;
-    if(age < -5 || age >= 20) return;
+    if(!e || !e.engine) return;
     var ask2 = (e.fire_ice && num(e.fire_ice.ask)) || (e.press && num(e.press.buy));
     var calledL = e.sealed_ts || null;
     if(!calledL && e.steps && e.steps.length && e.steps[0].ts) calledL = e.steps[0].ts;
     push({ model: e.engine, side: e.side, window: e.window,
       called: calledL, secondsIn: null, entry: ask2,
       conf: num(e.chance) !== null ? Math.round(e.chance*1000)/10 : null,
-      live: false, src: "gamelog" }); });
-  var fl = (F.flowdata || {}).live || {};
-  if(fl.window){
-    var plays = fl.plays || [];
-    if(plays.length){ var p = plays[plays.length-1];
-      push({ model: "RIPTIDE", side: p.side || (fl.seed && fl.seed.side),
-        window: fl.window, called: p.ts || null, secondsIn: num(p.elapsed),
-        entry: num(p.price), conf: null, live: true, src: "flow plays" }); }
-    else if(fl.seed && fl.seed.side){
-      push({ model: "RIPTIDE", side: fl.seed.side, window: fl.window, called: null,
-        secondsIn: null, entry: null, conf: null, live: true, seedOnly: true,
-        src: "flow seed" }); } }
-  var fd = (F.finaldata || {}).current || {};
-  if(fd.window && fd.decided){
-    push({ model: "FINAL", side: fd.decided, window: fd.window, called: null,
-      secondsIn: null, entry: null, conf: null, live: true, src: "finaldata" }); }
+      live: false, src: "gamelog log" }); });
+  var fl = F.flowdata || {};
+  var flLive = Array.isArray(fl.live) ? fl.live
+    : (fl.live && fl.live.window ? [fl.live] : []);
+  flLive.forEach(function(e){
+    if(!e) return; var plays = e.plays || [];
+    var seedSide = e.side || (e.seed && e.seed.side);
+    if(!plays.length){ if(!seedSide) return;
+      push({ model: "RIPTIDE", side: seedSide, window: e.window,
+      called: null, secondsIn: null, entry: null, conf: num(e.model),
+      seedOnly: true, live: e.window === curWinISO(), src: "flowdata seed" }); return; }
+    var p = plays[plays.length - 1];
+    push({ model: "RIPTIDE", side: p.side || e.side, window: e.window,
+      called: p.ts || null, secondsIn: num(p.elapsed), entry: num(p.price),
+      conf: num(e.model), live: e.window === curWinISO(), src: "flowdata" }); });
+  var fd = F.finaldata || {};
+  if(fd.current && fd.current.decided && fd.current.side && fd.current.window){
+    push({ model: "FINAL", side: fd.current.side, window: fd.current.window,
+      called: null, secondsIn: null, entry: num(fd.current.ask),
+      conf: num(fd.current.conf), live: fd.current.window === curWinISO(), src: "finaldata" }); }
   var bd = F.batchdata || {}, wins = bd.windows || [];
   wins.slice(0, 2).forEach(function(w){
     (w.all_declarations || w.declarations || []).forEach(function(dc){
@@ -248,129 +307,237 @@ function computeBtcCards(F){
   var cd = F.callersdata || {};
   (cd.rows || []).forEach(function(r){
     (r.calls || []).forEach(function(c){
-      if(c.win !== null && c.win !== undefined) return;
-      if(!c.counted) return;
-      var nm = r.name === "TerryCalls" ? "TERRY" :
-               /ashen/i.test(r.name) ? "ASHEN" : /pizza|dallen/i.test(r.name) ? "PIZZA" : null;
+      if(!c.counted || c.win !== null) return;
+      var nm = r.name === "TerryCalls" ? "TERRY" : r.name === "Ashen Bot#6973" ? "ASHEN"
+        : (String(r.name || "").indexOf("Pizza") === 0 ? "PIZZA" : null);
       if(!nm) return;
       push({ model: nm, side: c.side, window: c.window, called: c.posted || null,
         secondsIn: num(c["in"]), entry: null,
         conf: num(c.confidence), live: c.window === curWinISO(), src: "callers" }); }); });
   var now = Date.now(), cw = curWinISO();
+  var cards = Object.keys(byKey).map(function(k){ return byKey[k]; });
   cards.forEach(function(c){ var t = new Date(c.window).getTime();
     c.ageMin = (now - t)/60000; c.isCurrent = (c.window === cw); });
-  cards = cards.filter(function(c){ return c.ageMin > -5 && c.ageMin < 20; });
-  cards.sort(function(a,b){ return (a.window < b.window) ? 1 : -1; });
-  return cards;
-}
-/* ---------- live call cards: tennis ---------- */
+  return cards.filter(function(c){ return c.ageMin > -5 && c.ageMin < 20; })
+    .sort(function(a, b){ return a.window < b.window ? 1 : -1; }); }
+
+/* ---------- tennis matches: gamesdata merged with the batch registry ---------- */
 function cardPick(g){
-  var pk = (g.picks && g.picks.picks) || {};
-  var names = Object.keys(pk); if(!names.length) return null;
-  var counts = {}, best = {};
-  names.forEach(function(k){ var p = pk[k]; if(!p || !p.pick) return;
-    counts[p.pick] = (counts[p.pick]||0)+1;
-    if(!best[p.pick] || (p.prob||0) > (best[p.pick].prob||0)) best[p.pick] = { prob: p.prob, by: k }; });
-  var pick = null, n = 0;
-  for(var k in counts) if(counts[k] > n){ n = counts[k]; pick = k; }
-  if(!pick) return null;
-  var wv = pk.WAVE;
-  if(wv && wv.pick) return { pick: wv.pick, prob: wv.prob, by: "WAVE", agree: counts[wv.pick]||0, of: names.length };
-  return { pick: pick, prob: best[pick].prob, by: best[pick].by, agree: n, of: names.length };
-}
-function computeTennisCards(F){
-  var games = (F.gamesdata && F.gamesdata.games) || [], cards = [];
-  games.forEach(function(g){
-    var st = g.state, live = st && st !== "pre-match";
-    var cp = cardPick(g);
-    var pos = g.positions || [];
-    if(live){
-      if(cp) cards.push({ model: "ARENA CARD", pick: cp.pick, prob: cp.prob, by: cp.by,
-        title: g.title, start: g.start, live: true, kind: "card",
-        price: bookFor(g, cp.pick) });
-      var list = Array.isArray(pos) ? pos : Object.keys(pos).map(function(k){
-        var o = pos[k] || {}; o.specialist = o.specialist || k; return o; });
-      list.forEach(function(p){
-        cards.push({ model: p.specialist || p.engine || "ARENA", pick: p.side || p.player || p.pick,
-          prob: null, title: g.title, start: g.start, live: true, kind: "position",
-          price: num(p.price) || num(p.entry) || num(p.avg_price) }); });
-    } else if(st === "pre-match" && cp){
-      cards.push({ model: "ARENA CARD", pick: cp.pick, prob: cp.prob, by: cp.by,
-        title: g.title, start: g.start, live: false, kind: "deck",
-        price: bookFor(g, cp.pick), agree: cp.agree, of: cp.of });
-    } });
-  cards.sort(function(a,b){
-    if(a.live !== b.live) return a.live ? -1 : 1;
-    return String(a.start||"") < String(b.start||"") ? -1 : 1; });
-  return cards;
-}
-function bookFor(g, pickName){
-  var b = (g.books && g.books.POLY) || null; if(!b) return null;
-  var names = g.names || [];
-  var idx = names.indexOf(pickName); if(idx < 0) return null;
-  var ask = (b.ask || [])[idx]; return num(ask);
-}
-/* ---------- leaderboards ---------- */
-function simRows(cd){
-  return (cd.rows || []).map(function(r){
-    return { key: r.name, name: r.name, pts: num(r.race) || 0,
-      stat: "<b>" + (num(r.race)||0).toFixed(2) + " pts</b> · " + (r.w||0) + "W-" + (r.l||0) +
-        "L · streak <b>" + streakOf(r.form) + "</b>" }; })
-    .sort(function(a,b){ return b.pts - a.pts; });
-}
-function realRows(rf){
-  var st = (rf.standings || {}).rows || [];
-  return st.map(function(r){
-    return { key: r.player, name: r.player + (r.tag === "HUMAN" ? " [HUMAN]" : ""), pts: num(r.earned) || 0,
-      stat: "<b class='" + (r.earned > 0 ? "pos" : (r.earned < 0 ? "neg" : "")) + "'>" +
-        moneyS(r.earned) + "</b> · bank <b>" + money(r.has_now) + "</b> · " + (r.w||0) + "W-" +
-        (r.l||0) + "L · streak <b>" + esc(r.streak||"—") + "</b>" }; })
-    .sort(function(a,b){ return b.pts - a.pts; });
-}
-function renderBoard(el, rows){
-  var max = 0; rows.forEach(function(r){ max = Math.max(max, Math.abs(r.pts)); });
-  if(!max) max = 1;
-  var old = {};
-  Array.prototype.forEach.call(el.children, function(ch){
-    if(ch.dataset && ch.dataset.key) old[ch.dataset.key] = ch.getBoundingClientRect().top; });
-  var frag = document.createDocumentFragment(), fresh = {};
-  rows.forEach(function(r, i){
-    var row = old[r.key] ? null : document.createElement("div");
-    var node = row || (function(){ for(var k in old){} return null; })();
-    var div = document.createElement("div");
-    div.className = "brow"; div.dataset.key = r.key;
-    var pct = Math.abs(r.pts)/max*50;
-    var fill = r.pts >= 0
-      ? "left:50%;width:" + pct + "%" : "right:50%;width:" + pct + "%";
-    div.innerHTML = "<div class='brank'>" + (i+1) + "</div><div class='bname'>" + esc(r.name) +
-      "</div><div class='btrack'><div class='bfill " + (r.pts >= 0 ? "p" : "n") +
-      "' style='" + fill + "'></div></div><div class='bstat'>" + r.stat + "</div>";
-    frag.appendChild(div); fresh[r.key] = div; });
-  /* reuse existing nodes for FLIP smoothness */
-  var existing = {};
-  Array.prototype.forEach.call(el.children, function(ch){
-    if(ch.dataset && ch.dataset.key) existing[ch.dataset.key] = ch; });
-  el.innerHTML = "";
-  rows.forEach(function(r){ var node = existing[r.key] || fresh[r.key];
-    if(existing[r.key]){ /* update contents in place */
-      var pct = Math.abs(r.pts)/max*50;
-      node.querySelector(".brank").textContent = String(rows.indexOf(r)+1);
-      node.querySelector(".bfill").className = "bfill " + (r.pts >= 0 ? "p" : "n");
-      node.querySelector(".bfill").style.cssText = r.pts >= 0
-        ? "left:50%;width:" + pct + "%" : "right:50%;width:" + pct + "%";
-      node.querySelector(".bstat").innerHTML = r.stat;
-      node.querySelector(".bname").textContent = r.name; }
-    el.appendChild(node); });
-  rows.forEach(function(r){ var node = existing[r.key];
-    if(node && old[r.key] !== undefined){
-      var dy = old[r.key] - node.getBoundingClientRect().top;
-      if(dy){ node.style.transform = "translateY(" + dy + "px)";
-        node.style.transition = "none";
-        requestAnimationFrame(function(){ node.style.transition = "transform .6s cubic-bezier(.2,.8,.2,1)";
-          node.style.transform = ""; }); } } });
-}
-/* ---------- cards render ---------- */
-var chosen = "ALL";
+  var raw = g.picks;
+  if(raw && !Array.isArray(raw) && raw.picks) raw = raw.picks;
+  var picks = Array.isArray(raw) ? raw
+    : (raw ? Object.keys(raw).map(function(k){ var p = raw[k] || {};
+        if(!p.specialist) p.specialist = k; return p; }) : []);
+  var wave = null, modal = null, modalP = -1, cnt = {};
+  picks.forEach(function(p){ cnt[p.pick] = (cnt[p.pick] || 0) + 1;
+    if(p.specialist === "WAVE" && !wave) wave = p;
+    if(num(p.prob) !== null && p.prob > modalP){ modalP = p.prob; modal = p; } });
+  var pk = wave || modal; if(!pk) return null;
+  var names = g.names || [], idx = names.indexOf(pk.pick);
+  var book = (g.books || {}).POLY || {}, ask = null;
+  if(book.ask && idx >= 0) ask = num(book.ask[idx]);
+  return { side: pk.pick, prob: num(pk.prob), by: pk.specialist, ask: ask,
+    agree: cnt[pk.pick] || 0, total: picks.length }; }
+function tenMatches(F){
+  var bd = (F.batchdata || {}).tennis || {}, reg = {};
+  (bd.matches || []).forEach(function(m){ reg[m.key] = m; });
+  var gd = F.gamesdata || {}, out = [];
+  (gd.games || []).forEach(function(g){
+    var names = g.names || []; if(names.length < 2) return;
+    var key = winKey(names[0], names[1]), rm = reg[key] || null;
+    out.push({ key: key, title: g.title || (names[0] + " vs " + names[1]),
+      names: names, start: g.start, state: g.state, dp: g.dp || [],
+      books: g.books || {}, positions: Array.isArray(g.positions) ? g.positions : [], pick: cardPick(g),
+      registry: rm ? (rm.registry || []) : [], declarations: rm ? (rm.declarations || []) : [],
+      kind: rm ? rm.kind : null, batchSide: rm ? rm.batch_side : null,
+      matchState: rm ? rm.match_state : null }); });
+  Object.keys(reg).forEach(function(k){
+    if(!out.some(function(m){ return m.key === k; })){
+      var rm = reg[k];
+      out.push({ key: k, title: rm.match, names: k.split("|"), start: rm.start,
+        state: null, dp: [], books: {}, positions: [], pick: null,
+        registry: rm.registry || [], declarations: rm.declarations || [],
+        kind: rm.kind, batchSide: rm.batch_side, matchState: rm.match_state }); } });
+  return out.sort(function(a, b){ return String(a.start) < String(b.start) ? -1 : 1; }); }
+function regRow(m, lane){
+  return (m.registry || []).filter(function(r){ return r.lane === lane; })[0] || null; }
+function venueAsk(m, player){
+  var idx = (m.names || []).indexOf(player), bk = (m.books || {}).POLY || {};
+  if(idx < 0 || !bk.ask) return null; return num(bk.ask[idx]); }
+
+/* ---------- combos (tennis only) ---------- */
+function modelLegs(F, model){
+  var bd = (F.batchdata || {}).tennis || {}, legs = [];
+  (bd.matches || []).forEach(function(m){
+    var now = Date.now(), st = new Date(m.start).getTime();
+    if(isFinite(st) && st < now - 36*3600*1000) return;
+    (m.declarations || []).forEach(function(dc){
+      if(dc.lane === model && dc.side)
+        legs.push({ key: m.key, match: m.match, side: dc.side, prob: num(dc.prob),
+          price: num(dc.price), start: m.start, prov: model }); }); });
+  return legs.sort(function(a, b){ return String(a.start) < String(b.start) ? -1 : 1; }); }
+function roomLegs(F){
+  var bd = (F.batchdata || {}).tennis || {}, legs = [];
+  (bd.matches || []).forEach(function(m){
+    var now = Date.now(), st = new Date(m.start).getTime();
+    if(isFinite(st) && st < now - 36*3600*1000) return;
+    var locks = (m.registry || []).filter(function(r){ return r.state === "LOCK" && r.side; });
+    var lanes = {}; locks.forEach(function(r){ lanes[r.lane] = r.side; });
+    var sides = {}; locks.forEach(function(r){ sides[r.side] = true; });
+    if(locks.length >= 3 && Object.keys(sides).length === 1){
+      var dcs = m.declarations || [];
+      var dProb = dcs.filter(function(d){ return num(d.prob) !== null; })[0] || {};
+      var dPrice = dcs.filter(function(d){ return num(d.price) !== null; })[0] || {};
+      legs.push({ key: m.key, match: m.match, side: locks[0].side,
+        prob: num(dProb.prob), price: num(dPrice.price), start: m.start, prov: "ROOM" }); } });
+  return legs.sort(function(a, b){ return String(a.start) < String(b.start) ? -1 : 1; }); }
+function comboMath(legs){
+  var mp = 1, mn = 0, kp = 1, kn = 0;
+  legs.forEach(function(l){
+    if(num(l.prob) !== null && l.prob > 0){ mp *= l.prob; mn++; }
+    if(num(l.price) !== null && l.price > 0 && l.price < 1){ kp *= l.price; kn++; } });
+  return { modelPct: mn ? mp*100 : null, modelN: mn, mktPct: kn ? kp*100 : null, mktN: kn }; }
+function mixerLegs(F){
+  var seen = {}, legs = [], voids = [];
+  function addLeg(l, prov){
+    var k = l.key;
+    if(seen[k]){
+      if(seen[k].side === l.side){ if(seen[k].prov.indexOf(prov) < 0) seen[k].prov += "+" + prov; }
+      else { seen[k].voidLeg = true; voids.push(seen[k]); }
+      return; }
+    var nl = { key: l.key, match: l.match, side: l.side, prob: l.prob,
+      price: l.price, start: l.start, prov: prov };
+    seen[k] = nl; legs.push(nl); }
+  modelLegs(F, MIX.a).forEach(function(l){ addLeg(l, MIX.a); });
+  modelLegs(F, MIX.b).forEach(function(l){ addLeg(l, MIX.b); });
+  Object.keys(MIX.added).forEach(function(k){ addLeg(MIX.added[k], "ADDED"); });
+  return { legs: legs.filter(function(l){ return !l.voidLeg; }),
+           voids: legs.filter(function(l){ return l.voidLeg; }) }; }
+
+/* ---------- selection helpers ---------- */
+function selBtcActive(model){
+  if(SEL.room === "TENNIS") return false;
+  return !SEL.model || SEL.model === model; }
+function selTenActive(model){
+  if(SEL.room === "BTC") return false;
+  if(!SEL.model) return true;
+  return SEL.model === model || (SEL.model === "PLAIN" && model === "ARENA CARD"); }
+
+/* ---------- picker boxes ---------- */
+function btcBoxDecision(cards, model){
+  var mine = cards.filter(function(c){ return c.model === model; });
+  if(!mine.length) return "no call on the board";
+  var cur = mine.filter(function(c){ return c.isCurrent; })[0], c = cur || mine[0];
+  var dir = String(c.side || "").toUpperCase();
+  var when = c.called ? "called " + FMTT.format(new Date(c.called)) : btcEvent(c.window).split("· ")[2];
+  return (cur ? "<b>" + dir + "</b> · " + (c.entry ? cents(c.entry * (c.entry <= 1.5 ? 100 : 1)) + " · " : "") + esc(when) + " · THIS WINDOW"
+    : "last: <b>" + dir + "</b> · " + esc(btcEvent(c.window).split("· ")[2] || "") + " (not this window)"); }
+function renderBoxes(cards, matches){
+  var bh = '<button class="pbox' + (SEL.room !== "TENNIS" && !SEL.model ? " sel" : "") +
+    '" data-sel="ALLBTC"><div class="nm">ALL BTC</div><div class="dc">' +
+    cards.filter(function(c){ return c.isCurrent; }).length + ' call(s) on the current window</div></button>';
+  BTC_MODELS.forEach(function(m){
+    bh += '<button class="pbox' + (SEL.room !== "TENNIS" && SEL.model === m ? " sel" : "") +
+      '" data-sel="BTC:' + m + '"><div class="nm">' + m + '</div><div class="dc">' +
+      btcBoxDecision(cards, m) + '</div></button>'; });
+  $("btcBoxes").innerHTML = bh;
+  var th = '<button class="pbox' + (SEL.room !== "BTC" && !SEL.model ? " sel" : "") +
+    '" data-sel="ALLTEN"><div class="nm">ALL TENNIS</div><div class="dc">' +
+    matches.filter(function(m){ return m.pick; }).length + ' card picks on the slate</div></button>';
+  TEN_MODELS.forEach(function(m){
+    var dc = "—";
+    if(m === "ARENA CARD"){
+      var nx = matches.filter(function(x){ return x.pick && x.state === "pre-match"; })[0];
+      dc = nx ? "next pick: <b>" + esc(nx.pick.side) + "</b> " +
+        (nx.pick.prob ? Math.round(nx.pick.prob*1000)/10 + "%" : "") + " · " +
+        esc(FMTD.format(new Date(nx.start))) + " " + esc(FMTT.format(new Date(nx.start))) : "no pick on deck";
+    } else {
+      var legs = modelLegs(FEEDS, m);
+      var first = legs[0];
+      dc = first ? "combo leg 1: <b>" + esc(first.side) + "</b> · " + legs.length + " leg(s) locked"
+        : "no locks on the slate";
+      if(m === "RIPTIDE"){
+        var wv = ((FEEDS.batchdata || {}).tennis || {}).wave || {};
+        dc += "<br>wave: " + (wv.entries || 0) + " entries · bank " + money(wv.bank); }
+    }
+    th += '<button class="pbox' + (SEL.room !== "BTC" && SEL.model === m ? " sel" : "") +
+      '" data-sel="TEN:' + m + '"><div class="nm">' + m + '</div><div class="dc">' + dc + '</div></button>'; });
+  $("tenBoxes").innerHTML = th;
+  Array.prototype.forEach.call(document.querySelectorAll(".pbox"), function(b){
+    b.onclick = function(){
+      var s = b.getAttribute("data-sel");
+      if(s === "ALLBTC"){ SEL = { room: "BTC", model: null }; }
+      else if(s === "ALLTEN"){ SEL = { room: "TENNIS", model: null }; }
+      else if(s.indexOf("BTC:") === 0){ SEL = { room: "BTC", model: s.slice(4) }; }
+      else { SEL = { room: "TENNIS", model: s.slice(4) }; }
+      litKey = null; renderAll(); }; }); }
+
+/* ---------- decision panel ---------- */
+function weights(){ return (FEEDS.batchdata || {}).weights || {}; }
+function trustAllBtc(cards){
+  var cur = cards.filter(function(c){ return c.isCurrent && selBtcActive(c.model); });
+  if(!cur.length) return "🤝 <b>TRUST-ALL · BTC:</b> no chosen engine has a call on the current window (" +
+    esc(btcEvent(curWinISO()).split("· ").slice(1).join("· ")) + ") yet — the decision lands when they call.";
+  var w = weights(), upE = {}, dnE = {}, upW = 0, dnW = 0;
+  cur.forEach(function(c){ var wt = (w[c.model] && num(w[c.model].weight)) || 1;
+    if(String(c.side).toLowerCase() === "up"){ upE[c.model] = 1; upW += wt; }
+    else { dnE[c.model] = 1; dnW += wt; } });
+  var nu = Object.keys(upE).length, nd = Object.keys(dnE).length;
+  var tally = "engines UP " + nu + " (weight " + upW + ") · DOWN " + nd + " (weight " + dnW + ")";
+  if(nu === nd && nu > 0)
+    return "🤝 <b>TRUST-ALL · BTC:</b> " + tally + "<br>⚖️ <b>VOID — exact equal split (" + nu +
+      " against " + nd + "). Stay out this round.</b> (the follow rule, this page only)";
+  var side = upW >= dnW ? "UP" : "DOWN";
+  return "🤝 <b>TRUST-ALL · BTC:</b> the agreed math decision is <b>" + side + "</b> — " + tally +
+    ". The BTC guide below is lit on it."; }
+function trustAllTennis(matches){
+  var rows = [];
+  matches.filter(function(m){ return m.registry && m.registry.length; }).slice(0, 4)
+  .forEach(function(m){
+    var bySide = {};
+    m.registry.forEach(function(r){ if(r.state === "LOCK" && r.side && selTenActive(r.lane))
+      bySide[r.side] = (bySide[r.side] || 0) + 1; });
+    var sides = Object.keys(bySide);
+    if(!sides.length) return;
+    if(sides.length === 2 && bySide[sides[0]] === bySide[sides[1]])
+      rows.push(esc(m.names.join(" vs ")) + ": ⚖️ <b>VOID</b> — exact equal split " +
+        bySide[sides[0]] + "–" + bySide[sides[1]]);
+    else { var best = sides.sort(function(a, b){ return bySide[b] - bySide[a]; })[0];
+      rows.push(esc(m.names.join(" vs ")) + ": <b>" + esc(best) + "</b> (" +
+        sides.map(function(s){ return esc(s) + " " + bySide[s]; }).join(" · ") + ")"); } });
+  return rows.length ? "🤝 <b>TRUST-ALL · TENNIS:</b><br>" + rows.join("<br>")
+    : "🤝 <b>TRUST-ALL · TENNIS:</b> no locks from your chosen engines on the slate right now."; }
+function renderDecision(cards, matches){
+  var h = "";
+  if(MODE === "TRUST-ALL"){ h = trustAllBtc(cards) + "<br>" + trustAllTennis(matches); }
+  else if(MODE === "SOLO"){
+    if(!SEL.model) h = "🎯 <b>SOLO:</b> pick ONE model in the boxes above — its current call becomes your follow.";
+    else if(SEL.room === "BTC"){
+      var c = cards.filter(function(x){ return x.model === SEL.model; })[0];
+      h = c ? "🎯 <b>SOLO · " + SEL.model + ":</b> " +
+        (c.isCurrent ? "<b>" + esc(String(c.side).toUpperCase()) + "</b> on the current window · " +
+          esc(btcEvent(c.window)) + (c.entry ? " · entry " + cents(c.entry * (c.entry <= 1.5 ? 100 : 1)) : "")
+          : "no call on the current window — last card " + esc(String(c.side).toUpperCase()) +
+            " · " + esc(btcEvent(c.window)) + " (shown below as " +
+            (c.window === prevWinISO() ? "LAST WINDOW" : "RECENT") + ", the guide does not light on it)")
+        : "🎯 <b>SOLO · " + SEL.model + ":</b> no call on the board right now.";
+    } else {
+      var legs = modelLegs(FEEDS, SEL.model);
+      h = "🎯 <b>SOLO · " + SEL.model + " (tennis):</b> " + (legs.length
+        ? legs.length + " lock(s) on the slate — first: <b>" + esc(legs[0].side) + "</b> · " +
+          esc(legs[0].match) + " · " + esc(FMTT.format(new Date(legs[0].start))) + " ET"
+        : "no locks on the slate right now."); } }
+  else { var legs = COMBO_MODEL === "ROOM" ? roomLegs(FEEDS) : modelLegs(FEEDS, COMBO_MODEL);
+    var cm = comboMath(legs);
+    h = "🎾 <b>COMBO · " + COMBO_MODEL + ":</b> " + legs.length + " leg(s)" +
+      (cm.modelPct !== null ? " · model-combined " + cm.modelPct.toFixed(2) + "%" : "") +
+      " — the full leg list is in the COMBO & MIXER section below."; }
+  $("decision").innerHTML = h;
+  Array.prototype.forEach.call(document.querySelectorAll(".mbox"), function(b){
+    b.classList.toggle("sel", b.getAttribute("data-mode") === MODE);
+    b.onclick = function(){ MODE = b.getAttribute("data-mode"); renderAll(); }; }); }
+
+/* ---------- BTC cards + guide ---------- */
 function cardHTML(c){
   var badge = c.isCurrent ? '<span class="liveb">● LIVE</span>'
     : (c.window === prevWinISO() ? '<span class="recentb">LAST WINDOW</span>'
@@ -383,124 +550,239 @@ function cardHTML(c){
   else meta += "CALLED <b>—</b> (source prints no submit time) · ";
   if(c.secondsIn !== null && c.secondsIn !== undefined && !c.calledDerived)
     meta += "<b>" + c.secondsIn + "s in</b> · ";
-  if(c.entry !== null && c.entry !== undefined) meta += "ENTRY <b>" + cents(c.entry) + "</b> · ";
-  if(c.conf !== null && c.conf !== undefined) meta += "CONFIDENCE <b>" + c.conf + "%</b> · ";
-  if(c.seedOnly) meta += "<b>SEED ONLY — no press yet</b> · ";
-  meta += "SRC " + esc(c.src || "");
-  return "<div class='card' data-hook='live-call' data-model='" + esc(c.model) +
-    "' data-side='" + esc(dir) + "' data-window='" + esc(c.window||"") + "'>" +
-    "<div class='top'><span class='model'>" + esc(c.model) + "</span>" + badge + "</div>" +
-    "<div class='dir " + dirCls + "'>" + (dir === "UP" ? "▲ UP" : dir === "DOWN" ? "▼ DOWN" : esc(dir)) +
-    "</div><div class='ev'>" + esc(btcEvent(c.window)) + "</div>" +
-    "<div class='meta'>" + meta + "</div></div>";
-}
-function tenCardHTML(c){
-  var badge = c.live ? '<span class="liveb">● LIVE</span>' : '<span class="deckb">ON DECK</span>';
-  var meta = "";
-  if(c.start) meta += "START <b>" + esc(fmtET(c.start)) + "</b> · ";
-  if(c.price !== null && c.price !== undefined) meta += "VENUE <b>" + cents(c.price) + "</b> · ";
-  if(c.prob !== null && c.prob !== undefined) meta += "MODEL <b>" + Math.round(c.prob*1000)/10 +
-    "%</b> (" + esc(c.by || "card") + ") · ";
-  if(c.agree) meta += "SPECIALISTS <b>" + c.agree + "/" + c.of + "</b> · ";
-  meta += c.kind === "position" ? "ARENA POSITION (SIM)" : "FROZEN CARD PICK";
-  return "<div class='card' data-hook='live-call' data-model='" + esc(c.model) +
-    "' data-side='" + esc(c.pick || "") + "' data-window='" + esc(c.start || "") + "'>" +
-    "<div class='top'><span class='model'>" + esc(c.model) + "</span>" + badge + "</div>" +
-    "<div class='dir pick'>" + esc(c.pick || "—") + "</div>" +
-    "<div class='ev'>" + esc(c.title || "") + "</div>" +
-    "<div class='meta'>" + meta + "</div></div>";
-}
-/* ---------- guide strip ---------- */
-var litKey = "";
+  if(c.entry) meta += "ENTRY <b>" + cents(c.entry * (c.entry <= 1.5 ? 100 : 1)) + "</b> · ";
+  if(c.conf !== null && c.conf !== undefined) meta += "CONF <b>" + c.conf + "%</b>";
+  if(c.seedOnly) meta += "<b>SEED ONLY — no press yet</b>";
+  var dim = selBtcActive(c.model) ? "" : " dim";
+  return '<div class="card' + dim + '" data-hook="live-call" data-model="' + esc(c.model) +
+    '" data-side="' + esc(String(c.side).toLowerCase()) + '" data-window="' + esc(c.window) + '">' +
+    '<div class="top"><span class="model">' + esc(c.model) + '</span>' + badge + '</div>' +
+    '<div class="dir ' + dirCls + '">' + (dir === "UP" ? "▲ UP" : dir === "DOWN" ? "▼ DOWN" : esc(dir)) + '</div>' +
+    '<div class="ev">' + esc(btcEvent(c.window)) + '</div>' +
+    '<div class="meta">' + meta + '</div>' +
+    '<div class="src">SRC ' + esc(c.src) + '</div></div>'; }
+var litKey = null, seqTimers = [];
 function seqLight(el, cls){
-  el.classList.add(cls);
-  [0, 260, 520].forEach(function(t, i){
-    setTimeout(function(){ el.classList.add("seq"); }, t);
-    setTimeout(function(){ el.classList.remove("seq"); }, t + 170); });
-}
-function updateGuide(btcCards, tenCards){
+  seqTimers.forEach(clearTimeout); seqTimers = [];
+  ["lit-up","lit-down","lit-pick"].forEach(function(k){ el.classList.remove(k); });
+  [0,1,2].forEach(function(i){ seqTimers.push(setTimeout(function(){
+    el.classList.toggle(cls, i % 2 === 0); }, i * 250)); });
+  seqTimers.push(setTimeout(function(){ el.classList.add(cls); }, 750)); }
+function renderBtc(cards){
+  $("btcCards").innerHTML = cards.length ? cards.map(cardHTML).join("")
+    : '<div class="empty">No BTC calls on the board right now — cards land the moment a model seals one.</div>';
   var up = $("guide-btc-up"), dn = $("guide-btc-down");
-  var p1 = $("guide-ten-p1"), p2 = $("guide-ten-p2");
-  up.className = "gb"; dn.className = "gb"; p1.className = "gb"; p2.className = "gb";
-  var key = chosen;
-  var mine = btcCards.filter(function(c){ return chosen === "ALL" || c.model === chosen; });
-  var bc = mine.filter(function(c){ return c.isCurrent; })[0];
-  var tc = tenCards.filter(function(c){ return chosen === "ALL" || c.model === chosen ||
-    (chosen === "PLAIN" && c.model === "ARENA CARD"); })[0];
+  up.classList.remove("lit-up"); dn.classList.remove("lit-down");
+  var key = JSON.stringify(SEL) + "|" + MODE;
+  var bc = null;
+  if(MODE === "TRUST-ALL"){
+    var cur = cards.filter(function(c){ return c.isCurrent && selBtcActive(c.model); });
+    var w = weights(), upE = {}, dnE = {}, upW = 0, dnW = 0;
+    cur.forEach(function(c){ var wt = (w[c.model] && num(w[c.model].weight)) || 1;
+      if(String(c.side).toLowerCase() === "up"){ upE[c.model] = 1; upW += wt; }
+      else { dnE[c.model] = 1; dnW += wt; } });
+    var nu = Object.keys(upE).length, nd = Object.keys(dnE).length;
+    if(cur.length && !(nu === nd && nu > 0))
+      bc = { model: "TRUST-ALL", side: upW >= dnW ? "up" : "down", window: curWinISO(), entry: null };
+  } else {
+    var mine = cards.filter(function(c){ return SEL.room !== "TENNIS" &&
+      (!SEL.model || c.model === SEL.model); });
+    bc = mine.filter(function(c){ return c.isCurrent; })[0] || null;
+    if(!bc && mine.length){
+      $("guideBtcText").innerHTML = "NO CALL ON THE CURRENT WINDOW (" +
+        esc(btcEvent(curWinISO()).split("· ").slice(1).join("· ")) + ") — the guide does not " +
+        "light on a stale card. Last card: <b>" + esc(mine[0].model) + " " +
+        esc(String(mine[0].side).toUpperCase()) + "</b> · " + esc(btcEvent(mine[0].window)) +
+        ", shown below as " + (mine[0].window === prevWinISO() ? "LAST WINDOW" : "RECENT") + ".";
+      litKey = key; return; } }
   if(bc){ key += "|btc:" + bc.model + bc.side + bc.window;
     $("guideBtcText").innerHTML = "<b>" + esc(bc.model) + "</b> · " + esc(btcEvent(bc.window)) +
-      (bc.entry ? " · entry <b>" + cents(bc.entry) + "</b>" : "") +
+      (bc.entry ? " · entry <b>" + cents(bc.entry * (bc.entry <= 1.5 ? 100 : 1)) + "</b>" : "") +
       (bc.seedOnly ? " · <b>seed only — no press yet</b>" : "");
     if(String(bc.side).toLowerCase() === "up"){ if(litKey !== key) seqLight(up, "lit-up"); else up.classList.add("lit-up"); }
     else if(String(bc.side).toLowerCase() === "down"){ if(litKey !== key) seqLight(dn, "lit-down"); else dn.classList.add("lit-down"); }
-  } else if(mine.length){
-    $("guideBtcText").innerHTML = "NO CALL ON THE CURRENT WINDOW (" +
-      esc(btcEvent(curWinISO()).split("· ").slice(1).join("· ")) + ") — the guide does not " +
-      "light on a stale card. Last card: <b>" + esc(mine[0].model) + " " +
-      esc(String(mine[0].side).toUpperCase()) + "</b> · " + esc(btcEvent(mine[0].window)) +
-      ", shown below as " + (mine[0].window === prevWinISO() ? "LAST WINDOW" : "RECENT") + ".";
-  } else $("guideBtcText").textContent = chosen === "ALL" ? "No live BTC call right now."
-    : "No live BTC call from " + chosen + " right now.";
-  if(tc){ key += "|ten:" + tc.title + tc.pick;
-    var names = (tc.title || "").split(": ").pop().split(" vs ");
-    var n1 = names[0] || "PLAYER 1", n2 = names[1] || "PLAYER 2";
-    p1.innerHTML = esc(n1) + "<small>player 1</small>";
-    p2.innerHTML = esc(n2) + "<small>player 2</small>";
-    p1.dataset.guidePlayer = n1; p2.dataset.guidePlayer = n2;
-    $("guideTenText").innerHTML = "<b>" + esc(tc.model) + "</b> · " + esc(tc.title || "") +
-      (tc.start ? " · starts <b>" + esc(fmtET(tc.start)) + "</b>" : "");
-    var target = (tc.pick === n1) ? p1 : (tc.pick === n2 ? p2 : null);
-    if(target){ if(litKey !== key) seqLight(target, "lit-pick"); else target.classList.add("lit-pick"); }
-  } else $("guideTenText").textContent = chosen === "ALL" ? "No tennis call on the board."
-    : "No tennis call from " + chosen + " on the board.";
-  litKey = key;
-}
-/* ---------- main ---------- */
-var FEEDS = {};
-function applyFocus(){
-  document.querySelectorAll("[data-hook='live-call']").forEach(function(el){
-    var m = el.getAttribute("data-model");
-    el.classList.toggle("dim", chosen !== "ALL" && m !== chosen &&
-      !(chosen === "PLAIN" && m === "ARENA CARD"));
-    el.classList.toggle("focus", chosen !== "ALL" && (m === chosen ||
-      (chosen === "PLAIN" && m === "ARENA CARD"))); });
-}
-function buildPicker(btcCards, tenCards){
-  var models = ["ALL","PLAIN","EARLY","RIPTIDE","FINAL","TERRY","ASHEN","PIZZA","ARENA CARD","TAPE"];
-  var pk = $("picker"); pk.innerHTML = "";
-  models.forEach(function(m){
-    var b = document.createElement("button");
-    b.className = "pk" + (chosen === m ? " on" : "");
-    b.textContent = m; b.dataset.modelPicker = m;
-    b.onclick = function(){ chosen = m; buildPicker(btcCards, tenCards);
-      updateGuide(lastBtc, lastTen); applyFocus(); };
-    pk.appendChild(b); });
-}
-var lastBtc = [], lastTen = [];
-function renderAll(){
-  var cd = FEEDS.callersdata, rf = FEEDS.realfills;
-  if(cd) renderBoard($("simBoard"), simRows(cd));
-  if(rf) renderBoard($("realBoard"), realRows(rf));
-  lastBtc = computeBtcCards(FEEDS);
-  lastTen = computeTennisCards(FEEDS);
-  $("btcCards").innerHTML = lastBtc.length ? lastBtc.map(cardHTML).join("") :
-    "<div class='empty'>NO LIVE BTC CALLS RIGHT NOW — the next window's calls land here the second they seal.</div>";
-  $("tenCards").innerHTML = lastTen.length ? lastTen.map(tenCardHTML).join("") :
-    "<div class='empty'>NO TENNIS ON THE BOARD — the next card's picks land here when the slate posts.</div>";
-  buildPicker(lastBtc, lastTen);
-  updateGuide(lastBtc, lastTen);
-  applyFocus();
-  var ages = [];
-  ["callersdata","realfills","gamelog","batchdata","gamesdata"].forEach(function(k){
-    var f = FEEDS[k]; if(f && f.built_at){
-      var age = Math.max(0, Math.round((Date.now() - new Date(f.built_at).getTime())/1000));
-      ages.push(k + " " + age + "s"); } });
-  var stale = ages.some(function(a){ return parseInt(a.split(" ")[1]) > 180; });
-  $("feedage").innerHTML = "feeds · " + ages.join(" · ") +
-    (stale ? " <span class='stale'>STALE</span>" : "");
-}
+  } else $("guideBtcText").textContent = "No chosen model has a call on the current window yet.";
+  litKey = key; }
+
+/* ---------- tennis big cards + guide ---------- */
+function matchInvolved(m){
+  var inv = {};
+  (m.registry || []).forEach(function(r){ if(r.state && r.state !== "PASS") inv[r.lane] = 1; });
+  (m.positions || []).forEach(function(p){ inv[p.specialist || "?"] = 1; });
+  if(m.pick) inv["ARENA CARD"] = 1;
+  return inv; }
+function tenCardHTML(m){
+  var live = m.state && m.state !== "pre-match";
+  var badge = live ? '<span class="livebadge">● IN PLAY</span>'
+    : '<span class="deckb">ON DECK</span>';
+  var when = m.start ? FMTD.format(new Date(m.start)) + " · " + FMTT.format(new Date(m.start)) + " ET" : "—";
+  var inv = matchInvolved(m);
+  var active = Object.keys(inv).some(function(k){ return selTenActive(k); });
+  var cls = (SEL.room === "BTC" || SEL.model) && !active ? " dim" : "";
+  var h = '<div class="mcard' + cls + '" data-hook="live-call" data-model="ARENA CARD" data-match="' +
+    esc(m.key) + '"><div class="top" style="display:flex;justify-content:space-between;gap:8px">' +
+    '<span class="mt">' + esc(m.title) + '</span>' + badge + '</div>' +
+    '<div class="ms">' + esc(when) + (m.kind ? " · desk read: " + esc(m.kind) +
+      (m.batchSide ? " → " + esc(m.batchSide) : "") : "") + '</div>';
+  if(m.pick) h += '<div class="meta" style="font-size:13.5px;margin-top:8px">🎴 CARD PICK <b>' +
+    esc(m.pick.side) + '</b>' + (m.pick.prob ? " · model <b>" + Math.round(m.pick.prob*1000)/10 + "%</b>" : "") +
+    " · by " + esc(m.pick.by || "card") +
+    (m.pick.ask ? " · venue ask <b>" + cents(m.pick.ask*100) + "</b>" : "") +
+    " · specialists agreeing " + m.pick.agree + "/" + m.pick.total + '</div>';
+  h += '<div class="who"><div class="wk">WHO HAS A MODEL BET ON THIS MATCH</div>';
+  var rows = "";
+  (m.registry || []).forEach(function(r){
+    rows += '<div class="whorow"><span class="wl">' + esc(r.lane) + '</span><span class="wr">' +
+      (r.state === "PASS" || !r.side ? '<span class="pass">PASS — not in</span>'
+        : "<b>" + esc(r.state) + " → " + esc(r.side) + "</b>" +
+          (r.stake ? " · stake " + money(r.stake) : "")) + '</span></div>'; });
+  (m.positions || []).forEach(function(p){
+    rows += '<div class="whorow"><span class="wl">' + esc(p.specialist || "ARENA") +
+      '</span><span class="wr">in → <b>' + esc(m.names[p.side] || "?") + "</b> @ " +
+      cents((num(p.entry) || 0) * (num(p.entry) <= 1.5 ? 100 : 1)) + " · " + money(p.stake) + '</span></div>'; });
+  if(!rows) rows = '<div class="whorow"><span class="pass">No model is in on this match yet.</span></div>';
+  h += rows + '</div>';
+  if(!live && m.names.length === 2){
+    var added = MIX.added[m.key];
+    h += '<div style="margin-top:10px">MIXER: ' +
+      '<button class="addbtn' + (added && added.side === m.names[0] ? " added" : "") +
+        '" data-add="' + esc(m.key) + '" data-side="0">+ ADD ' + esc(m.names[0]) + '</button>' +
+      '<button class="addbtn' + (added && added.side === m.names[1] ? " added" : "") +
+        '" data-add="' + esc(m.key) + '" data-side="1">+ ADD ' + esc(m.names[1]) + '</button></div>'; }
+  return h + '</div>'; }
+function renderTennis(matches){
+  var show = matches.filter(function(m){
+    return m.state === "pre-match" || (m.state && m.state !== "pre-match") || m.registry.length; });
+  var live = show.filter(function(m){ return m.state && m.state !== "pre-match"; });
+  var deck = show.filter(function(m){ return m.state === "pre-match" && m.pick; }).slice(0, 10);
+  var list = live.concat(deck);
+  $("tenCards").innerHTML = list.length ? list.map(tenCardHTML).join("")
+    : '<div class="empty">No tennis matches on the board right now.</div>';
+  Array.prototype.forEach.call(document.querySelectorAll("[data-add]"), function(b){
+    b.onclick = function(){
+      var m = matches.filter(function(x){ return x.key === b.getAttribute("data-add"); })[0];
+      if(!m) return; var side = m.names[parseInt(b.getAttribute("data-side"), 10)];
+      if(MIX.added[m.key] && MIX.added[m.key].side === side) delete MIX.added[m.key];
+      else MIX.added[m.key] = { key: m.key, match: m.title, side: side,
+        prob: m.pick && m.pick.side === side ? m.pick.prob : null,
+        price: venueAsk(m, side), start: m.start, prov: "ADDED" };
+      renderAll(); }; });
+  /* guide: focused match = first live, else first on-deck, honoring the selection */
+  var foc = list.filter(function(m){
+    if(!SEL.model || SEL.room === "BTC") return true;
+    var inv = matchInvolved(m);
+    return Object.keys(inv).some(function(k){ return selTenActive(k); }); })[0] || list[0];
+  var p1 = $("guide-ten-p1"), p2 = $("guide-ten-p2");
+  p1.classList.remove("lit-pick"); p2.classList.remove("lit-pick");
+  if(foc && foc.names.length === 2){
+    p1.firstChild.nodeValue = foc.names[0]; p2.firstChild.nodeValue = foc.names[1];
+    p1.setAttribute("data-guide-player", foc.names[0]); p2.setAttribute("data-guide-player", foc.names[1]);
+    var side = null, who = "";
+    var laneRow = SEL.model ? regRow(foc, SEL.model) : null;
+    if(laneRow && laneRow.side){ side = laneRow.side; who = SEL.model; }
+    else if(foc.pick){ side = foc.pick.side; who = "ARENA CARD"; }
+    if(side){ var el = side === foc.names[0] ? p1 : p2;
+      var key = "ten|" + foc.key + "|" + side;
+      if(litKey !== key) seqLight(el, "lit-pick"); else el.classList.add("lit-pick");
+      litKey = key;
+      $("guideTenText").innerHTML = "<b>" + esc(who) + "</b> is on <b>" + esc(side) + "</b> · " +
+        esc(foc.title) + " · " + esc(FMTD.format(new Date(foc.start))) + " " +
+        esc(FMTT.format(new Date(foc.start))) + " ET"; }
+    else $("guideTenText").textContent = "The focused match has no pick from your model yet.";
+  } else $("guideTenText").textContent = "No tennis match to guide right now."; }
+
+/* ---------- combo + mixer ---------- */
+function legRow(l, extra){
+  return '<div class="legrow' + (extra || "") + '"><span><b>' + esc(l.side) + "</b> · " +
+    esc(l.match) + "<br><span class=\"prov\">" + esc(l.prov || "") + " · " +
+    esc(l.start ? FMTD.format(new Date(l.start)) + " " + FMTT.format(new Date(l.start)) + " ET" : "—") +
+    '</span></span><span>' + (l.prob ? Math.round(l.prob*1000)/10 + "%" : "—") + " · " +
+    (l.price ? cents(l.price*100) : "—") + '</span></div>'; }
+function renderCombo(){
+  var btns = "";
+  ["ROOM","PLAIN","TAPE","RIPTIDE"].forEach(function(m){
+    btns += '<button class="addbtn' + (COMBO_MODEL === m ? " added" : "") +
+      '" data-combo="' + m + '" style="font-size:12.5px;padding:5px 12px">' +
+      (m === "ROOM" ? "🏠 THE ROOM" : m) + '</button> '; });
+  $("comboBtns").innerHTML = btns;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-combo]"), function(b){
+    b.onclick = function(){ COMBO_MODEL = b.getAttribute("data-combo"); renderAll(); }; });
+  var legs = COMBO_MODEL === "ROOM" ? roomLegs(FEEDS) : modelLegs(FEEDS, COMBO_MODEL);
+  var cm = comboMath(legs);
+  $("comboLegs").innerHTML = (legs.length ? legs.map(function(l){ return legRow(l); }).join("")
+    : '<div class="empty">No legs — this combo is empty on the current slate.</div>') +
+    '<div class="combosum">' + legs.length + " leg(s)" +
+    (cm.modelPct !== null ? " · model-combined <b>" + cm.modelPct.toFixed(2) + "%</b> over " + cm.modelN + " priced leg(s)" : "") +
+    (cm.mktPct !== null ? " · market-combined <b>" + cm.mktPct.toFixed(4) + "%</b> over " + cm.mktN + " leg(s)" : "") +
+    "<br><span style=\"color:var(--mut)\">Model % = the card model's own math; market % = the venue prices multiplied. They disagree on purpose — that gap is the whole game.</span></div>";
+  var opts = ["PLAIN","TAPE","RIPTIDE"].map(function(m){
+    return '<option value="' + m + '">' + m + '</option>'; }).join("");
+  $("mixA").innerHTML = opts; $("mixB").innerHTML = opts;
+  $("mixA").value = MIX.a; $("mixB").value = MIX.b;
+  $("mixA").onchange = function(){ MIX.a = $("mixA").value; renderAll(); };
+  $("mixB").onchange = function(){ MIX.b = $("mixB").value; renderAll(); };
+  var mx = mixerLegs(FEEDS), mm = comboMath(mx.legs);
+  $("mixLegs").innerHTML =
+    (mx.legs.length ? mx.legs.map(function(l){ return legRow(l); }).join("")
+      : '<div class="empty">The mix is empty — the two engines have no legs on this slate yet.</div>') +
+    mx.voids.map(function(l){ return legRow(l, " voidleg").replace("</span></div>",
+      "</span><span>⚖️ VOID — 1 against 1 on this match (equal split cancels the leg)</span></div>"); }).join("") +
+    '<div class="combosum">YOUR MIX: ' + mx.legs.length + " live leg(s)" +
+    (mx.voids.length ? " · " + mx.voids.length + " voided on an exact equal split" : "") +
+    (mm.modelPct !== null ? " · model-combined <b>" + mm.modelPct.toFixed(2) + "%</b>" : "") +
+    (mm.mktPct !== null ? " · market-combined <b>" + mm.mktPct.toFixed(4) + "%</b>" : "") + "</div>"; }
+
+/* ---------- boards ---------- */
+function streakOf(form){ if(!form || !form.length) return "—";
+  var last = form[form.length - 1], n = 0;
+  for(var i = form.length - 1; i >= 0; i--){ if(form[i] === last) n++; else break; }
+  return last + n; }
+function renderBoards(prev){
+  var cd = FEEDS.callersdata || {}, rows = (cd.rows || []).slice()
+    .sort(function(a, b){ return (b.race || 0) - (a.race || 0); });
+  var maxAbs = 1; rows.forEach(function(r){ maxAbs = Math.max(maxAbs, Math.abs(r.race || 0)); });
+  $("simBoard").innerHTML = rows.map(function(r){
+    var v = r.race || 0, pct = Math.min(50, Math.abs(v)/maxAbs*50);
+    var bar = v >= 0 ? '<div class="bar pos" style="left:50%;width:' + pct + '%"></div>'
+      : '<div class="bar neg" style="left:' + (50 - pct) + '%;width:' + pct + '%"></div>';
+    return '<div class="brow" data-name="' + esc(r.name) + '">' + bar +
+      '<div class="who"><span class="nm">' + esc(r.name) +
+      (r.house ? '<span class="tag">HOUSE</span>' : '<span class="tag">GUEST</span>') +
+      '</span><span class="st"><b style="color:var(--ink)">' + v.toFixed(2) + ' pts</b> · ' +
+      (r.w || 0) + 'W–' + (r.l || 0) + 'L · streak ' + streakOf(r.form) + '</span></div></div>'; }).join("")
+    || '<div class="empty">Contest board loading…</div>';
+  var rf = FEEDS.realfills || {}, st = rf.standings || {}, srows = (st.rows || []).slice();
+  var maxE = 0.01; srows.forEach(function(r){ maxE = Math.max(maxE, Math.abs(r.earned || 0)); });
+  $("realBoard").innerHTML = srows.map(function(r){
+    var v = r.earned || 0, pct = Math.min(50, Math.abs(v)/maxE*50);
+    var bar = v >= 0 ? '<div class="bar pos" style="left:50%;width:' + pct + '%"></div>'
+      : '<div class="bar neg" style="left:' + (50 - pct) + '%;width:' + pct + '%"></div>';
+    return '<div class="brow" data-name="' + esc(r.player) + '">' + bar +
+      '<div class="who"><span class="nm">' + esc(r.player) +
+      (r.lane === "HUMAN" ? '<span class="tag">HUMAN</span>' : '') +
+      '</span><span class="st"><b style="color:' + (v >= 0 ? "var(--grn)" : "var(--red)") + '">' +
+      money(v) + '</b> · bank ' + money(r.has_now) + ' · ' + (r.w || 0) + 'W–' + (r.l || 0) +
+      'L · ' + esc(r.streak || "—") + '</span></div></div>'; }).join("")
+    || '<div class="empty">Real-money board loading…</div>';
+  if(prev){ ["simBoard","realBoard"].forEach(function(id){
+    var el = $(id); if(!el) return;
+    var before = prev[id] || {};
+    Array.prototype.forEach.call(el.children, function(ch, i){
+      var nm = ch.getAttribute("data-name"); if(!nm) return;
+      if(before[nm] !== undefined && before[nm] !== i){
+        ch.style.transform = "translateY(" + (before[nm] - i) * (ch.offsetHeight + 5) + "px)";
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){
+          ch.style.transform = ""; }); }); } }); }); }
+  var snap = { simBoard: {}, realBoard: {} };
+  ["simBoard","realBoard"].forEach(function(id){
+    var el = $(id); if(!el) return;
+    Array.prototype.forEach.call(el.children, function(ch, i){
+      var nm = ch.getAttribute("data-name"); if(nm) snap[id][nm] = i; }); });
+  return snap; }
+
+/* ---------- chrome: clock, window strip, feed ages ---------- */
 function tickClock(){
-  var p = {}; new Intl.DateTimeFormat("en-US",{ timeZone:"America/New_York",
+  var p = {}; new Intl.DateTimeFormat("en-US",{ timeZone:TZ,
     weekday:"short", month:"2-digit", day:"2-digit", year:"numeric", hour:"2-digit",
     minute:"2-digit", second:"2-digit", hour12:true }).formatToParts(new Date())
     .forEach(function(x){ p[x.type]=x.value; });
@@ -511,26 +793,26 @@ function tickClock(){
   $("winstrip").textContent = "CURRENT WINDOW · " + btcEvent(cw).split("· ").slice(1).join("· ") +
     " · ends in " + Math.floor(left/60) + ":" + String(left%60).padStart(2,"0") +
     " — a card is LIVE only if it belongs to this window"; }
-function load(){
-  var names = ["callersdata","realfills","gamelog","flowdata","finaldata","batchdata","gamesdata"];
-  var done = 0;
-  names.forEach(function(n){
-    fetch(n + ".json?t=" + Date.now(), { cache:"no-store" })
-      .then(function(r){ return r.json(); })
-      .then(function(j){ FEEDS[n] = j; })
-      .catch(function(){})
-      .then(function(){ if(++done === names.length) renderAll(); }); });
-}
-if(typeof document !== "undefined"){
+function renderFresh(){
+  var parts = [], worst = 0;
+  FEEDNAMES.forEach(function(n){ var f = FEEDS[n]; if(!f) return;
+    var b = f.built_at || f.updated; if(!b) return;
+    var age = (Date.now() - new Date(b).getTime())/1000; if(isFinite(age)){
+      worst = Math.max(worst, age); parts.push(n + " " + ageStr(b)); } });
+  $("feedage").textContent = parts.length ? "feeds: " + parts.join(" · ") : "feeds —";
+  $("stale").style.display = worst > 180 ? "block" : "none"; }
+
+var prevSnap = null;
+function renderAll(){
+  var cards = computeBtcCards(FEEDS), matches = tenMatches(FEEDS);
+  renderFresh(); renderBoxes(cards, matches); renderDecision(cards, matches);
+  renderBtc(cards); renderTennis(matches); renderCombo();
+  prevSnap = renderBoards(prevSnap); }
+if(typeof window !== "undefined" && typeof document !== "undefined" && document.getElementById){
   tickClock(); setInterval(tickClock, 1000);
   load(); setInterval(load, 15000);
-  /* soft re-render every 5s on cached feeds: window badges and the guide
-     roll over on the real window boundary, not on the fetch cadence */
-  setInterval(function(){ if(FEEDS.callersdata || FEEDS.gamelog) renderAll(); }, 5000);
-}
-if(typeof window !== "undefined") window.__follow = { computeBtcCards: computeBtcCards,
-  computeTennisCards: computeTennisCards, simRows: simRows, realRows: realRows,
-  streakOf: streakOf, btcEvent: btcEvent };
-</script>
-</body>
-</html>
+  setInterval(function(){ if(FEEDS.callersdata || FEEDS.gamelog) renderAll(); }, 5000); }
+if(typeof window !== "undefined"){ window.__follow = { computeBtcCards: computeBtcCards,
+  tenMatches: tenMatches, modelLegs: modelLegs, roomLegs: roomLegs,
+  mixerLegs: mixerLegs, comboMath: comboMath, btcEvent: btcEvent }; }
+</script></body></html>
