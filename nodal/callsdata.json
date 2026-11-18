@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T14:29:54Z",
+ "built_at": "2026-11-18T14:37:06Z",
  "bands": [
   {
    "band": "60\u201370%",
@@ -15,9 +15,9 @@
   },
   {
    "band": "80\u201390%",
-   "n": 169,
-   "stated": 84.5,
-   "actual": 89.9
+   "n": 170,
+   "stated": 84.6,
+   "actual": 89.4
   },
   {
    "band": "90\u201399%",
@@ -31,16 +31,16 @@
   "name": "BTC 5-min desk (our specialist, sim)",
   "kind": "BTC Up/Down 5m windows \u00b7 plain vol model btc5-plain-v1 \u00b7 stand-in index",
   "calls": 763,
-  "graded": 762,
+  "graded": 763,
   "correct": 618,
-  "accuracy": 81.1,
-  "brier": 0.1435,
-  "streak_now": 1,
+  "accuracy": 81.0,
+  "brier": 0.1444,
+  "streak_now": 0,
   "streak_best": 22,
   "status": "APPROVED",
   "note": "graded from BTC5_GRADE records in the sealed ledger"
  },
- "proof_built_at": "2026-11-18T14:28:54Z",
+ "proof_built_at": "2026-11-18T14:34:16Z",
  "borrows": {
   "lifetime": {
    "PEER": 0,
@@ -62,7 +62,7 @@
    "PEER": "A borrow from the other engines \u2014 counted on the record like every borrow."
   }
  },
- "last_graded_window": "2026-11-18T13:25:00Z",
+ "last_graded_window": "2026-11-18T14:25:00Z",
  "recent_calls": [
   {
    "window": "2026-11-18T14:25:00Z",
@@ -75,12 +75,12 @@
    "move_usd": -47.53,
    "band": "80\u201390%",
    "why": "BTC fell $48 from the window open with 185s left \u2014 the model put DOWN at 90%.",
-   "result": null,
-   "correct": null,
-   "brier": null,
+   "result": "up",
+   "correct": false,
+   "brier": 0.8028,
    "seq": 19569,
    "sealed_at": "2026-11-18T14:26:55+0000",
-   "grade_seq": null,
+   "grade_seq": 19592,
    "plan": "HOLD \u2014 ride to settlement; PLAIN's only early exit is a sell at a bid of 95\u00a2 or better",
    "final_answer": {
     "side": "down",
@@ -775,6 +775,13 @@
  ],
  "recent_windows": [
   {
+   "window": "2026-11-18T14:35:00Z",
+   "open_px": 63434.67,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
    "window": "2026-11-18T14:25:00Z",
    "open_px": 63897.335,
    "call": {
@@ -783,7 +790,11 @@
     "at": 1795012014
    },
    "abstain": null,
-   "grade": null
+   "grade": {
+    "result": "up",
+    "correct": false,
+    "brier": 0.8028
+   }
   },
   {
    "window": "2026-11-18T14:20:00Z",
@@ -889,37 +900,37 @@
     "correct": true,
     "brier": 0.0477
    }
-  },
-  {
-   "window": "2026-11-18T13:20:00Z",
-   "open_px": 63984.73,
-   "call": null,
-   "abstain": null,
-   "grade": null
   }
  ],
  "abstains_total": 127,
  "counters": {
-  "graded": 762,
+  "graded": 763,
   "wins": 618,
-  "win_rate": 81.1,
-  "streak_type": "W",
+  "win_rate": 81.0,
+  "streak_type": "L",
   "streak_n": 1,
   "best_win_streak": 22,
-  "last12": "WWLWLWLWWWLW"
+  "last12": "WLWLWLWWWLWL"
  },
  "live_window": {
-  "window": "2026-11-18T14:25:00Z",
-  "open_px": 63897.335,
-  "call": {
-   "side": "down",
-   "chance": 0.896,
-   "at": 1795012014
-  },
+  "window": "2026-11-18T14:35:00Z",
+  "open_px": 63434.67,
+  "call": null,
   "abstain": null,
   "grade": null
  },
  "lessons": [
+  {
+   "window": "2026-11-18T14:25:00Z",
+   "side": "down",
+   "chance": 0.896,
+   "band": "80\u201390%",
+   "move_usd": -47.53,
+   "settle_move_usd": 20.88,
+   "brier": 0.8028,
+   "what_happened": "Called DOWN at 90% on a $-48 move from the open. BTC settled $+21 on the other side of the open. After the call the price reversed back through the open and never came back.",
+   "lesson": "Momentum is not a promise: a real move reversed inside three minutes. The model prices the drift it sees; it cannot see the turn coming. Streaks end like this, not with a bang."
+  },
   {
    "window": "2026-11-18T13:15:00Z",
    "side": "up",
@@ -996,17 +1007,6 @@
    "brier": 0.8332,
    "what_happened": "Called UP at 91% on a $+39 move from the open. BTC settled on the other side of the open (venue word \u2014 late regrade; no stand-in settle price). The price never crossed back \u2014 it just kept drifting the wrong way.",
    "lesson": "Tail loss, priced in: a 90%+ call still loses about one time in ten. This was the one. The system survives it by sizing, not by being surprised."
-  },
-  {
-   "window": "2026-11-18T06:10:00Z",
-   "side": "down",
-   "chance": 0.6981,
-   "band": "60\u201370%",
-   "move_usd": -19.92,
-   "settle_move_usd": null,
-   "brier": 0.4873,
-   "what_happened": "Called DOWN at 70% on a $-20 move from the open. BTC settled on the other side of the open (venue word \u2014 late regrade; no stand-in settle price). The price never crossed back \u2014 it just kept drifting the wrong way.",
-   "lesson": "Thin move + the cold band: a sub-70% call on a sub-$25 drift is the desk's known leak \u2014 this band has run near 50%, not its stated ~65%. The $5 rulebook's 0.70 floor exists because of calls like this."
   }
  ],
  "rule": {
