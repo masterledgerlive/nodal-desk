@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T22:59:13Z",
+ "built_at": "2026-11-18T23:28:12Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -420,8 +420,12 @@
   "REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-18T14:25:00Z \u00b7 DOWN \u00b7 payout $0.00 \u00b7 pnl $-0.17 \u00b7 race bank $1.42 \u00b7 2026-11-18T14:30:48.288613+00:00"
  ],
  "banks": {
-  "PLAIN": 1.7418,
-  "RIPTIDE": 1.42
+  "PLAIN": 1.4161,
+  "RIPTIDE": 1.318,
+  "ASHEN": 1.0,
+  "PIZZA": 1.0,
+  "TERRY": 0.9274,
+  "EARLY": 1.0
  },
  "david": {
   "note": "DAVID \u00b7 HUMAN \u2014 David's own plays (DAVID_PLAYER seq 14199), sealed from venue reconciliation + his reported taps. Never blended with the engines. Add-on plays print here labeled BANK SIDE \u2014 their P&L is the Bank's, never an engine's.",
@@ -1146,6 +1150,19 @@
     "rank": 1
    },
    {
+    "player": "EARLY",
+    "key": "EARLY_BTC",
+    "lane": "BTC 5-min \u00b7 engine lane (own calls)",
+    "tag": null,
+    "put_in": 1.0,
+    "has_now": 1.0,
+    "earned": 0.0,
+    "w": 0,
+    "l": 0,
+    "streak": "\u2014",
+    "rank": 2
+   },
+   {
     "player": "ASHEN FOLLOW",
     "key": "ASHEN",
     "lane": "BTC 5-min \u00b7 caller follow",
@@ -1156,7 +1173,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 2
+    "rank": 3
    },
    {
     "player": "PIZZACALLS FOLLOW",
@@ -1169,7 +1186,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 3
+    "rank": 4
    },
    {
     "player": "TERRY FOLLOW",
@@ -1182,7 +1199,7 @@
     "w": 1,
     "l": 1,
     "streak": "L1",
-    "rank": 4
+    "rank": 5
    },
    {
     "player": "PLAIN",
@@ -1195,7 +1212,7 @@
     "w": 1,
     "l": 3,
     "streak": "L4",
-    "rank": 5
+    "rank": 6
    },
    {
     "player": "RIPTIDE",
@@ -1208,7 +1225,7 @@
     "w": 0,
     "l": 3,
     "streak": "L3",
-    "rank": 6
+    "rank": 7
    },
    {
     "player": "TAPE",
@@ -1221,7 +1238,7 @@
     "w": 3,
     "l": 4,
     "streak": "L2",
-    "rank": 7
+    "rank": 8
    },
    {
     "player": "PLAIN",
@@ -1234,12 +1251,12 @@
     "w": 0,
     "l": 5,
     "streak": "L5",
-    "rank": 8
+    "rank": 9
    }
   ],
   "totals": {
-   "put_in": 19.0803,
-   "has_now": 15.9429,
+   "put_in": 20.0803,
+   "has_now": 16.9429,
    "earned": -3.1374
   }
  },
@@ -1666,6 +1683,47 @@
     "venue_verified": "orders.retrieve DT331ECG13ZD: ORDER_SIDE_BUY, ORDER_INTENT_BUY_LONG, price 0.44, qty 0.68, cum 0.68, leaves 0, ORDER_STATE_FILLED, avgPx 0.4400, principal $0.2992. Position entry: net 1, cost $0.3090, realized $0.",
     "seq": 20016,
     "sealed_at": "2026-11-18T18:36:59+0000"
+   },
+   {
+    "arena_model": 0.7,
+    "arena_price": 0.54,
+    "bank_after": 3.8019,
+    "bank_source": "tennis_executor_state.json banks TAPE at seal time",
+    "cost": 0.3016,
+    "exit": "GOLDEN RULE: own-side bid 95c = WIN, exit automatically (tennis solo-lane rule seq 12864)",
+    "fee_convention": "open fill seals at executor principal 0.3016, no fee; the 0.01 commission books at settlement/exit via REAL_TENNIS_FILL_CORRECTION to venue basis (main ruling 2026-11-18)",
+    "fill_seconds_after_signal": 18,
+    "filled_ts": "2026-11-18T22:55:08.326491+00:00",
+    "lane": "TAPE",
+    "match": "Helsinki: Nicolai Budkov Kjaer vs Laslo Djere",
+    "note": "Kjaer burned both lanes this morning (Masarova/Hercog netting day, Kjaer close-out -0.3550/-0.3577); TAPE rides WITH him tonight. Resting fill under sealed 54c (live ask 52c). Venue slug dates the match Nov 20; arena market key said Nov 19 \u2014 venue governs.",
+    "order_id": "DT6TRB1013Z6",
+    "pick": "Nicolai Budkov Kjaer",
+    "price": 0.52,
+    "room": "tennis",
+    "shares": 0.58,
+    "side": "BUY_LONG",
+    "signal_engine": "SCOUT",
+    "signal_kind": "ARENA_FILL",
+    "signal_seq": 20516,
+    "slug": "aec-atp-nickja-lasdje-2026-11-20",
+    "stake": 0.3,
+    "start": "2026-11-20",
+    "venue": "Polymarket US",
+    "venue_verified": {
+     "avgPx": 0.52,
+     "cashOrderQty_print": 0.0,
+     "commission": 0.01,
+     "cumQuantity": 0.58,
+     "intent": "ORDER_INTENT_BUY_LONG",
+     "order_state": "ORDER_STATE_FILLED",
+     "position_cost": 0.312,
+     "position_cost_gap": 0.0004,
+     "position_cost_gap_note": "venue position cost 0.3120 vs principal+commission 0.3116; printed, not papered over; settlement books on POSITION_RESOLUTION economics",
+     "principal": 0.3016
+    },
+    "seq": 20556,
+    "sealed_at": "2026-11-18T23:17:05+0000"
    }
   ],
   "exits": [
@@ -1982,8 +2040,8 @@
    }
   ],
   "banks": {
-   "TAPE": 4.3936,
-   "PLAIN": 4.1243
+   "TAPE": 3.8019,
+   "PLAIN": 3.0735
   }
  }
 }
