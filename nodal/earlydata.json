@@ -1,6 +1,6 @@
 {
- "built_at": "2026-11-18T05:30:31Z",
- "proof_built_at": "2026-11-18T05:29:59Z",
+ "built_at": "2026-11-18T06:00:25Z",
+ "proof_built_at": "2026-11-18T06:00:02Z",
  "borrows": {
   "lifetime": {
    "PEER": 0,
@@ -22,16 +22,16 @@
    "PEER": "A borrow from the other engines \u2014 counted on the record like every borrow."
   }
  },
- "last_graded_window": "2026-11-18T04:30:00Z",
+ "last_graded_window": "2026-11-18T05:25:00Z",
  "counters": {
-  "plays": 590,
-  "plays_won": 480,
+  "plays": 591,
+  "plays_won": 481,
   "win_rate": 81.4,
-  "score": 481,
-  "streak_points": 0,
+  "score": 482,
+  "streak_points": 1,
   "best_streak_points": 34,
   "double_wins": 1,
-  "form": "WWWWWLWWWWWLWL",
+  "form": "WWWWLWWWWWLWLW",
   "calls_made": 606,
   "values": 230,
   "flips": 26
@@ -63,33 +63,41 @@
     "at_elapsed_s": 216,
     "why": "No value banked and the early read is being run over: BTC crossed back through the open to $-40 and the model puts DOWN at 84% with 83s left. SAVE FLIP \u2014 take the other side for the final answer rather than ride a dead call."
    },
-   "grade": null,
+   "grade": {
+    "result": "down",
+    "correct": true,
+    "outcome": "WIN",
+    "points": 1,
+    "brier": 0.0263,
+    "early_correct": false,
+    "settle_px": 64618.15
+   },
    "playback": [
     {
-     "t": 1794979519,
+     "chance_up": 0.5,
+     "drift": 0.0,
      "elapsed": 19,
      "px": 64658.315,
-     "drift": 0.0,
-     "chance_up": 0.5
+     "t": 1794979519
     },
     {
-     "t": 1794979607,
+     "chance_up": 0.8112,
+     "drift": 50.17,
      "elapsed": 107,
      "px": 64708.485,
-     "drift": 50.17,
-     "chance_up": 0.8112
+     "t": 1794979607
     },
     {
-     "t": 1794979716,
+     "chance_up": 0.1622,
+     "drift": -40.17,
      "elapsed": 216,
      "px": 64618.149999999994,
-     "drift": -40.17,
-     "chance_up": 0.1622
+     "t": 1794979716
     }
    ],
    "seq": 18401,
    "sealed_at": "2026-11-18T05:26:48+0000",
-   "grade_seq": null,
+   "grade_seq": 18420,
    "plan": "THE PLAN, as sealed: TAKE VALUE if the read reaches the 88% line \u00b7 ONE FLIP armed if the wave turns (a flip after value, or a save flip) \u00b7 otherwise HOLD to settlement \u00b7 FLIPPED to DOWN at 216s (sealed seq 18407)",
    "final_answer": {
     "side": "down",
@@ -97,9 +105,21 @@
     "locked_at": "2026-11-18T05:28:39+0000",
     "via": "the sealed FLIP record \u2014 the plan updated only through that sealed record, never a silent edit"
    },
-   "money": null,
-   "money_note": "UNPRICED \u2014 the REAL watch sealed no ask for this window; no money line is invented",
-   "lesson": null
+   "money": {
+    "ask": 0.34,
+    "stake": 2030.8,
+    "pnl": 3848.99,
+    "bank_after": 24157.43,
+    "run": 1,
+    "borrowed": false,
+    "self_borrowed": false,
+    "borrow_source": null,
+    "borrow_count": null,
+    "borrow_from": null,
+    "how": "settlement on the final side"
+   },
+   "money_note": "the $5.00 bet algorithm (THE PROOF RECORD): stake sized by the banking law on the joint timeline, in at the sealed ask, fees in on BOTH legs where an exit trades (the 88\u00a2 value exit pays its fee too); the flip leg is never priced by invention \u2014 a directional win that loses money shows as a money LOSS",
+   "lesson": "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
   },
   {
    "window": "2026-11-18T04:30:00Z",
@@ -1514,6 +1534,90 @@
  ],
  "lessons": [
   {
+   "window": "2026-11-18T05:25:00Z",
+   "side": "up",
+   "chance": 0.8112,
+   "at_elapsed_s": 107,
+   "seconds_left": 192,
+   "open_px": 64658.315,
+   "index_px": 64708.485,
+   "move_usd": 50.17,
+   "why_call": "BTC rose $50 from the window open with 192s left \u2014 the model put UP at 81%. Early read at 107s in, 30s before the plain desk's span opens.",
+   "telegraph": [
+    {
+     "chance": 0.8112,
+     "elapsed": 107,
+     "side": "up",
+     "t": 1794979607
+    }
+   ],
+   "value": null,
+   "flip": {
+    "to_side": "down",
+    "chance": 0.8378,
+    "kind": "SAVE_FLIP",
+    "at_elapsed_s": 216,
+    "why": "No value banked and the early read is being run over: BTC crossed back through the open to $-40 and the model puts DOWN at 84% with 83s left. SAVE FLIP \u2014 take the other side for the final answer rather than ride a dead call."
+   },
+   "grade": {
+    "result": "down",
+    "correct": true,
+    "outcome": "WIN",
+    "points": 1,
+    "brier": 0.0263,
+    "early_correct": false,
+    "settle_px": 64618.15
+   },
+   "playback": [
+    {
+     "chance_up": 0.5,
+     "drift": 0.0,
+     "elapsed": 19,
+     "px": 64658.315,
+     "t": 1794979519
+    },
+    {
+     "chance_up": 0.8112,
+     "drift": 50.17,
+     "elapsed": 107,
+     "px": 64708.485,
+     "t": 1794979607
+    },
+    {
+     "chance_up": 0.1622,
+     "drift": -40.17,
+     "elapsed": 216,
+     "px": 64618.149999999994,
+     "t": 1794979716
+    }
+   ],
+   "seq": 18401,
+   "sealed_at": "2026-11-18T05:26:48+0000",
+   "grade_seq": 18420,
+   "plan": "THE PLAN, as sealed: TAKE VALUE if the read reaches the 88% line \u00b7 ONE FLIP armed if the wave turns (a flip after value, or a save flip) \u00b7 otherwise HOLD to settlement \u00b7 FLIPPED to DOWN at 216s (sealed seq 18407)",
+   "final_answer": {
+    "side": "down",
+    "locked_seq": 18407,
+    "locked_at": "2026-11-18T05:28:39+0000",
+    "via": "the sealed FLIP record \u2014 the plan updated only through that sealed record, never a silent edit"
+   },
+   "money": {
+    "ask": 0.34,
+    "stake": 2030.8,
+    "pnl": 3848.99,
+    "bank_after": 24157.43,
+    "run": 1,
+    "borrowed": false,
+    "self_borrowed": false,
+    "borrow_source": null,
+    "borrow_count": null,
+    "borrow_from": null,
+    "how": "settlement on the final side"
+   },
+   "money_note": "the $5.00 bet algorithm (THE PROOF RECORD): stake sized by the banking law on the joint timeline, in at the sealed ask, fees in on BOTH legs where an exit trades (the 88\u00a2 value exit pays its fee too); the flip leg is never priced by invention \u2014 a directional win that loses money shows as a money LOSS",
+   "lesson": "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
+  },
+  {
    "window": "2026-11-18T04:30:00Z",
    "side": "up",
    "chance": 0.7853,
@@ -2050,143 +2154,74 @@
    },
    "money_note": "the $5.00 bet algorithm (THE PROOF RECORD): stake sized by the banking law on the joint timeline, in at the sealed ask, fees in on BOTH legs where an exit trades (the 88\u00a2 value exit pays its fee too); the flip leg is never priced by invention \u2014 a directional win that loses money shows as a money LOSS",
    "lesson": "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
-  },
-  {
-   "window": "2026-11-18T02:30:00Z",
-   "side": "down",
-   "chance": 0.7164,
-   "at_elapsed_s": 120,
-   "seconds_left": 179,
-   "open_px": 64477.45,
-   "index_px": 64427.380000000005,
-   "move_usd": -50.07,
-   "why_call": "BTC fell $50 from the window open with 179s left \u2014 the model put DOWN at 72%. Early read at 120s in, 30s before the plain desk's span opens.",
-   "telegraph": [
-    {
-     "chance": 0.7164,
-     "elapsed": 120,
-     "side": "down",
-     "t": 1794969120
-    }
-   ],
-   "value": {
-    "chance": 0.9798,
-    "at_elapsed_s": 254,
-    "why": "Early DOWN ran to 98% ($-90 from the open) at 254s \u2014 value taken, the early read is banked whatever happens next."
-   },
-   "flip": null,
-   "grade": {
-    "result": "down",
-    "correct": true,
-    "outcome": "WIN",
-    "points": 1,
-    "brier": 0.0804,
-    "early_correct": true,
-    "settle_px": 64387.21
-   },
-   "playback": [
-    {
-     "chance_up": 0.5,
-     "drift": 0.0,
-     "elapsed": 17,
-     "px": 64477.45,
-     "t": 1794969017
-    },
-    {
-     "chance_up": 0.2836,
-     "drift": -50.07,
-     "elapsed": 120,
-     "px": 64427.380000000005,
-     "t": 1794969120
-    },
-    {
-     "chance_up": 0.0202,
-     "drift": -90.24,
-     "elapsed": 254,
-     "px": 64387.215,
-     "t": 1794969254
-    }
-   ],
-   "seq": 17988,
-   "sealed_at": "2026-11-18T02:32:02+0000",
-   "grade_seq": 18004,
-   "plan": "THE PLAN, as sealed: TAKE VALUE if the read reaches the 88% line \u00b7 ONE FLIP armed if the wave turns (a flip after value, or a save flip) \u00b7 otherwise HOLD to settlement \u00b7 value TAKEN at 254s (sealed seq 17996)",
-   "final_answer": {
-    "side": "down",
-    "locked_seq": 17988,
-    "locked_at": "2026-11-18T02:32:02+0000",
-    "via": "the sealed early call \u2014 no flip sealed, so the call stood as the final answer"
-   },
-   "money": null,
-   "money_note": "UNPRICED \u2014 the REAL watch sealed no ask for this window; no money line is invented",
-   "lesson": "A clean early read that never needed the second move. The early span's whole edge is deciding 30 seconds sooner with the same model \u2014 this window, sooner was right."
   }
  ],
  "live_window": {
-  "window": "2026-11-18T05:25:00Z",
-  "open_px": 64658.315,
+  "window": "2026-11-18T05:55:00Z",
+  "open_px": 64587.55,
   "lean": {
-   "side": "down",
-   "chance": 0.8378,
-   "at": 1794979716
+   "side": "up",
+   "chance": 0.982,
+   "at": 1794981588
   },
   "telegraph": [
    {
-    "t": 1794979607,
-    "elapsed": 107,
+    "t": 1794981380,
+    "elapsed": 80,
     "side": "up",
-    "chance": 0.8112
+    "chance": 0.5
    },
    {
-    "t": 1794979716,
-    "elapsed": 216,
+    "t": 1794981468,
+    "elapsed": 168,
     "side": "down",
-    "chance": 0.8378
+    "chance": 0.5117
+   },
+   {
+    "t": 1794981588,
+    "elapsed": 288,
+    "side": "up",
+    "chance": 0.982
    }
   ],
-  "call": {
-   "side": "up",
-   "chance": 0.8112,
-   "at": 1794979607,
-   "at_elapsed_s": 107,
-   "why": "BTC rose $50 from the window open with 192s left \u2014 the model put UP at 81%. Early read at 107s in, 30s before the plain desk's span opens."
-  },
+  "call": null,
   "value": null,
-  "flip": {
-   "to_side": "down",
-   "chance": 0.8378,
-   "kind": "SAVE_FLIP",
-   "at": 1794979716,
-   "why": "No value banked and the early read is being run over: BTC crossed back through the open to $-40 and the model puts DOWN at 84% with 83s left. SAVE FLIP \u2014 take the other side for the final answer rather than ride a dead call."
+  "flip": null,
+  "abstain": {
+   "why": "no early call by 140s (span closed)",
+   "at": 1794981468
   },
-  "abstain": null,
   "grade": null,
   "samples": [
    {
-    "t": 1794979519,
-    "elapsed": 19,
-    "px": 64658.315,
+    "t": 1794981380,
+    "elapsed": 80,
+    "px": 64587.55,
     "drift": 0.0,
     "chance_up": 0.5
    },
    {
-    "t": 1794979607,
-    "elapsed": 107,
-    "px": 64708.485,
-    "drift": 50.17,
-    "chance_up": 0.8112
+    "t": 1794981468,
+    "elapsed": 168,
+    "px": 64586.17,
+    "drift": -1.38,
+    "chance_up": 0.4883
    },
    {
-    "t": 1794979716,
-    "elapsed": 216,
-    "px": 64618.149999999994,
-    "drift": -40.17,
-    "chance_up": 0.1622
+    "t": 1794981588,
+    "elapsed": 288,
+    "px": 64616.5,
+    "drift": 28.95,
+    "chance_up": 0.982
    }
   ],
   "plain": {
    "call": null,
-   "abstain": null
+   "abstain": {
+    "why": "model chance 0.5028 < 0.6",
+    "chance": 0.5028,
+    "at": 1794981466
+   }
   }
  },
  "rule": {
