@@ -95,6 +95,18 @@
   </table>
   </div>
 
+  <div style="color:var(--gold);font-size:15px;letter-spacing:2px;font-weight:800;margin-top:26px">🎾 TENNIS — SHADOW BATCH · SCORES ONLY — NO ORDERS</div>
+  <div class="fresh" id="tennisLine"></div>
+  <div class="tblwrap">
+  <table>
+    <thead><tr>
+      <th>MATCH</th><th>REGISTRY — LOCK / PASS, BY NAME</th><th>BATCH CALL</th>
+      <th>RESULT</th><th>POINTS</th>
+    </tr></thead>
+    <tbody id="tennisRows"><tr><td colspan="5" class="diss">loading the tennis record…</td></tr></tbody>
+  </table>
+  </div>
+
   <div class="foot" id="how">How this works: declarations come from the sealed ledger only —
   PLAIN's BTC5R signals, Riptide's flow plays, Terry's LOCKs (his plain CALLs ride the dissent
   track), Ashen's counted seals, Pizza's counted calls. Weights v1 =
@@ -186,6 +198,39 @@ function render(d){
     });
     bl.innerHTML = '🏦 SHADOW BANKS — agreement stakes (L4) · ' + parts.join(' · ')
       + (d.banks_note ? '<br><span style="color:var(--dim)">' + esc(d.banks_note) + '</span>' : '');
+  }
+  var tn = d.tennis || {};
+  var ts2 = tn.summary || {};
+  var tl = document.getElementById('tennisLine');
+  if (tl) tl.innerHTML = '🏁 Season ' + (tn.season || 2) + ' · matches with declarations ' + (ts2.matches_with_declarations || 0)
+    + ' · batches ' + (ts2.batches || 0) + ' (' + (ts2.batch_w || 0) + 'W–' + (ts2.batch_l || 0) + 'L · ' + ((ts2.batch_points >= 0 ? '+' : '') + (ts2.batch_points || 0).toFixed(2)) + ' pts)'
+    + ' · solos ' + (ts2.solos || 0) + ' (' + (ts2.solo_w || 0) + 'W–' + (ts2.solo_l || 0) + 'L)'
+    + ' · dissent ' + (ts2.dissent_w || 0) + 'W–' + (ts2.dissent_l || 0) + 'L'
+    + ' · weights PLAIN ' + (((tn.weights || {}).PLAIN || {}).weight != null ? tn.weights.PLAIN.weight : '—')
+    + ' / TAPE ' + (((tn.weights || {}).TAPE || {}).weight != null ? tn.weights.TAPE.weight : '—')
+    + '<br><span style="color:var(--dim)">' + esc(tn.golden_exit || '') + ' ' + esc(tn.grading_source || '') + '</span>';
+  var ttb = document.getElementById('tennisRows');
+  if (ttb){
+    var tm = tn.matches || [];
+    if (!tm.length){
+      ttb.innerHTML = '<tr><td colspan="5" class="diss">no tennis declarations yet this season — the registry fills as the arena seals picks and fills</td></tr>';
+    } else {
+      var th = '';
+      tm.forEach(function(m){
+        var reg = (m.registry || []).map(function(x){
+          return esc(x.lane) + ': ' + (x.state === 'LOCK'
+            ? '🔒 ' + esc(x.side || '') + ' · $' + Number(x.stake || 0).toFixed(2) + (x.sealed_at ? ' · sealed ' + et(x.sealed_at, true) : '')
+            : 'PASS');
+        }).join('<br>');
+        var call = m.kind === 'BATCH' ? '<b>' + esc(m.batch_side || '') + '</b>'
+          : (m.kind === 'SOLO' ? 'SOLO · ' + esc(m.solo_lane || '') : '—');
+        th += '<tr><td>' + esc(m.match || '') + '</td><td class="who">' + reg + '</td><td>' + call + '</td><td>'
+          + (m.outcome ? esc(m.outcome) + ' won · ' : '') + esc(m.result || '')
+          + (m.dissent_points ? ' · dissent ' + Object.keys(m.dissent_points).map(function(k){ return esc(k) + ' ' + (m.dissent_points[k] > 0 ? '+' : '') + m.dissent_points[k].toFixed(2); }).join(', ') : '')
+          + '</td><td>' + (m.points == null ? '—' : (m.points > 0 ? '+' : '') + m.points.toFixed(2)) + '</td></tr>';
+      });
+      ttb.innerHTML = th;
+    }
   }
 
   var tb = document.getElementById('rows');
