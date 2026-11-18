@@ -269,6 +269,7 @@ function render(d){
         th += '<tr><td>' + esc(m.match || '')
           + (m.start ? '<br><span class="who">starts ' + et(m.start, true) + ' ET · ' + esc(m.match_state || '') + '</span>' : '')
           + (m.freeze_note ? '<br><span class="who">' + esc(m.freeze_note) + '</span>' : '')
+          + (m.owned ? '<br><span class="who">👑 OWNED — RULE 2 countdown · owners: ' + esc((m.owners || []).join(', ')) + '</span>' : '')
           + '</td><td class="who">' + reg + '</td><td>' + call + '</td><td>'
           + (m.kind === 'LEFT ALONE' ? '—' : (m.outcome ? esc(m.outcome) + ' won · ' : '') + esc(m.result || ''))
           + (m.dissent_points ? ' · dissent ' + Object.keys(m.dissent_points).map(function(k){ return esc(k) + ' ' + (m.dissent_points[k] > 0 ? '+' : '') + m.dissent_points[k].toFixed(2); }).join(', ') : '')
@@ -317,6 +318,7 @@ function render(d){
     else res = '<span class="flat">' + esc(r.result || '—') + '</span>';
     if (r.outcome) res += '<div class="diss">settled ' + r.outcome.toUpperCase() + '</div>';
     var p = (r.kind === 'SOLO') ? r.solo_points : r.batch_points;
+    if (r.owned) res += '<div class="who">👑 OWNED — RULE 2 countdown · owners: ' + esc((r.owners || []).join(', ')) + '</div>';
     html += '<tr><td class="wtime">' + et(r.window, true) + '</td>'
       + '<td class="stack">' + stack('up') + stack('down') + '</td>'
       + '<td class="bcall">' + bcall + '</td>'
