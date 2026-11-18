@@ -93,6 +93,7 @@
   moment a model fires, its card lights up — model, direction, price, and the clock — so you can
   jump on the same call yourself, fast. BTC 5-minute on top, tennis below.</div>
   <div class="clock"><span id="clock">—</span> · <span id="feedage">feeds —</span></div>
+  <div class="clock" id="winstrip" style="font-size:13.5px;color:var(--gold)">CURRENT WINDOW —</div>
 
   <div class="guideonly">⚠ <b>GUIDE ONLY — THIS PAGE PLACES NO ORDERS.</b> The buttons below are a
   visual press-through guide for semi-human play: they light in sequence behind the model you
@@ -186,6 +187,10 @@ function fmtET(iso){ if(!iso) return "—"; var d = new Date(iso); if(isNaN(d)) 
 function btcEvent(windowIso){
   var a = new Date(windowIso), b = new Date(a.getTime() + 5*60000);
   return "BTC 5-MIN · " + FMTD.format(a) + " · " + FMTT.format(a) + "–" + FMTT.format(b) + " ET"; }
+function curWinISO(){ var t = Math.floor(Date.now()/300000)*300000;
+  return new Date(t).toISOString().slice(0,19) + "Z"; }
+function prevWinISO(){ var t = Math.floor(Date.now()/300000)*300000 - 300000;
+  return new Date(t).toISOString().slice(0,19) + "Z"; }
 function streakOf(form){ if(!form || !form.length) return "—";
   var last = form[form.length-1], n = 0;
   for(var i = form.length-1; i >= 0; i--){ if(form[i] === last) n++; else break; }
@@ -203,14 +208,16 @@ function computeBtcCards(F){
     push({ model: e.engine, side: e.side, window: e.window,
       called: e.sealed_ts || null, secondsIn: null,
       entry: ask, conf: num(e.chance) !== null ? Math.round(e.chance*1000)/10 : null,
-      live: true, src: "gamelog" }); });
+      live: e.window === curWinISO(), src: "gamelog" }); });
   (gl.log || []).forEach(function(e){
     if(!e.window || !e.engine) return;
     var age = (Date.now() - new Date(e.window).getTime())/60000;
     if(age < -5 || age >= 20) return;
     var ask2 = (e.fire_ice && num(e.fire_ice.ask)) || (e.press && num(e.press.buy));
+    var calledL = e.sealed_ts || null;
+    if(!calledL && e.steps && e.steps.length && e.steps[0].ts) calledL = e.steps[0].ts;
     push({ model: e.engine, side: e.side, window: e.window,
-      called: e.sealed_ts || null, secondsIn: null, entry: ask2,
+      called: calledL, secondsIn: null, entry: ask2,
       conf: num(e.chance) !== null ? Math.round(e.chance*1000)/10 : null,
       live: false, src: "gamelog" }); });
   var fl = (F.flowdata || {}).live || {};
@@ -231,10 +238,13 @@ function computeBtcCards(F){
   var bd = F.batchdata || {}, wins = bd.windows || [];
   wins.slice(0, 2).forEach(function(w){
     (w.all_declarations || w.declarations || []).forEach(function(dc){
+      var calledD = null;
+      if(num(dc.seconds_in) !== null)
+        calledD = new Date(new Date(w.window).getTime() + dc.seconds_in*1000).toISOString();
       push({ model: dc.lane, side: dc.side, window: w.window,
-        called: null, secondsIn: num(dc.seconds_in), entry: num(dc.ask),
-        conf: num(dc.confidence), live: w.window === bd.current_window,
-        src: "batch " + (dc.kind || "") }); }); });
+        called: calledD, calledDerived: !!calledD, secondsIn: num(dc.seconds_in),
+        entry: num(dc.ask), conf: num(dc.confidence),
+        live: w.window === curWinISO(), src: "batch " + (dc.kind || "") }); }); });
   var cd = F.callersdata || {};
   (cd.rows || []).forEach(function(r){
     (r.calls || []).forEach(function(c){
@@ -243,12 +253,12 @@ function computeBtcCards(F){
       var nm = r.name === "TerryCalls" ? "TERRY" :
                /ashen/i.test(r.name) ? "ASHEN" : /pizza|dallen/i.test(r.name) ? "PIZZA" : null;
       if(!nm) return;
-      push({ model: nm, side: c.side, window: c.window, called: null,
+      push({ model: nm, side: c.side, window: c.window, called: c.posted || null,
         secondsIn: num(c["in"]), entry: null,
-        conf: num(c.confidence), live: true, src: "callers" }); }); });
-  var now = Date.now();
+        conf: num(c.confidence), live: c.window === curWinISO(), src: "callers" }); }); });
+  var now = Date.now(), cw = curWinISO();
   cards.forEach(function(c){ var t = new Date(c.window).getTime();
-    c.ageMin = (now - t)/60000; c.isCurrent = c.ageMin >= 0 && c.ageMin < 5; });
+    c.ageMin = (now - t)/60000; c.isCurrent = (c.window === cw); });
   cards = cards.filter(function(c){ return c.ageMin > -5 && c.ageMin < 20; });
   cards.sort(function(a,b){ return (a.window < b.window) ? 1 : -1; });
   return cards;
@@ -362,13 +372,17 @@ function renderBoard(el, rows){
 /* ---------- cards render ---------- */
 var chosen = "ALL";
 function cardHTML(c){
-  var badge = c.live ? (c.isCurrent === false ? '<span class="recentb">RECENT</span>'
-    : '<span class="liveb">● LIVE</span>') : '<span class="deckb">ON DECK</span>';
+  var badge = c.isCurrent ? '<span class="liveb">● LIVE</span>'
+    : (c.window === prevWinISO() ? '<span class="recentb">LAST WINDOW</span>'
+    : '<span class="recentb">RECENT</span>');
   var dir = String(c.side || "").toUpperCase();
   var dirCls = dir === "UP" ? "up" : (dir === "DOWN" ? "down" : "pick");
   var meta = "";
-  if(c.called) meta += "CALLED <b>" + esc(FMTTS.format(new Date(c.called))) + " ET</b> · ";
-  if(c.secondsIn !== null && c.secondsIn !== undefined) meta += "<b>" + c.secondsIn + "s in</b> · ";
+  if(c.called) meta += "CALLED <b>" + esc(FMTTS.format(new Date(c.called))) + " ET</b>" +
+    (c.calledDerived ? " (window +" + c.secondsIn + "s, per the seal)" : "") + " · ";
+  else meta += "CALLED <b>—</b> (source prints no submit time) · ";
+  if(c.secondsIn !== null && c.secondsIn !== undefined && !c.calledDerived)
+    meta += "<b>" + c.secondsIn + "s in</b> · ";
   if(c.entry !== null && c.entry !== undefined) meta += "ENTRY <b>" + cents(c.entry) + "</b> · ";
   if(c.conf !== null && c.conf !== undefined) meta += "CONFIDENCE <b>" + c.conf + "%</b> · ";
   if(c.seedOnly) meta += "<b>SEED ONLY — no press yet</b> · ";
@@ -409,7 +423,8 @@ function updateGuide(btcCards, tenCards){
   var p1 = $("guide-ten-p1"), p2 = $("guide-ten-p2");
   up.className = "gb"; dn.className = "gb"; p1.className = "gb"; p2.className = "gb";
   var key = chosen;
-  var bc = btcCards.filter(function(c){ return chosen === "ALL" || c.model === chosen; })[0];
+  var mine = btcCards.filter(function(c){ return chosen === "ALL" || c.model === chosen; });
+  var bc = mine.filter(function(c){ return c.isCurrent; })[0];
   var tc = tenCards.filter(function(c){ return chosen === "ALL" || c.model === chosen ||
     (chosen === "PLAIN" && c.model === "ARENA CARD"); })[0];
   if(bc){ key += "|btc:" + bc.model + bc.side + bc.window;
@@ -418,6 +433,12 @@ function updateGuide(btcCards, tenCards){
       (bc.seedOnly ? " · <b>seed only — no press yet</b>" : "");
     if(String(bc.side).toLowerCase() === "up"){ if(litKey !== key) seqLight(up, "lit-up"); else up.classList.add("lit-up"); }
     else if(String(bc.side).toLowerCase() === "down"){ if(litKey !== key) seqLight(dn, "lit-down"); else dn.classList.add("lit-down"); }
+  } else if(mine.length){
+    $("guideBtcText").innerHTML = "NO CALL ON THE CURRENT WINDOW (" +
+      esc(btcEvent(curWinISO()).split("· ").slice(1).join("· ")) + ") — the guide does not " +
+      "light on a stale card. Last card: <b>" + esc(mine[0].model) + " " +
+      esc(String(mine[0].side).toUpperCase()) + "</b> · " + esc(btcEvent(mine[0].window)) +
+      ", shown below as " + (mine[0].window === prevWinISO() ? "LAST WINDOW" : "RECENT") + ".";
   } else $("guideBtcText").textContent = chosen === "ALL" ? "No live BTC call right now."
     : "No live BTC call from " + chosen + " right now.";
   if(tc){ key += "|ten:" + tc.title + tc.pick;
@@ -484,7 +505,12 @@ function tickClock(){
     minute:"2-digit", second:"2-digit", hour12:true }).formatToParts(new Date())
     .forEach(function(x){ p[x.type]=x.value; });
   $("clock").textContent = p.weekday+" "+p.month+"/"+p.day+"/"+p.year+" "+p.hour+":"+
-    p.minute+":"+p.second+" "+p.dayPeriod+" ET"; }
+    p.minute+":"+p.second+" "+p.dayPeriod+" ET";
+  var cw = curWinISO(), left = Math.max(0, Math.round(
+    (new Date(cw).getTime() + 300000 - Date.now())/1000));
+  $("winstrip").textContent = "CURRENT WINDOW · " + btcEvent(cw).split("· ").slice(1).join("· ") +
+    " · ends in " + Math.floor(left/60) + ":" + String(left%60).padStart(2,"0") +
+    " — a card is LIVE only if it belongs to this window"; }
 function load(){
   var names = ["callersdata","realfills","gamelog","flowdata","finaldata","batchdata","gamesdata"];
   var done = 0;
@@ -498,6 +524,9 @@ function load(){
 if(typeof document !== "undefined"){
   tickClock(); setInterval(tickClock, 1000);
   load(); setInterval(load, 15000);
+  /* soft re-render every 5s on cached feeds: window badges and the guide
+     roll over on the real window boundary, not on the fetch cadence */
+  setInterval(function(){ if(FEEDS.callersdata || FEEDS.gamelog) renderAll(); }, 5000);
 }
 if(typeof window !== "undefined") window.__follow = { computeBtcCards: computeBtcCards,
   computeTennisCards: computeTennisCards, simRows: simRows, realRows: realRows,
