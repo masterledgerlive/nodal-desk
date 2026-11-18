@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LIVE FOLLOW — watch the desk, follow a model, press it yourself · NODAL</title>
+<title>LIVE FOLLOW v3 — watch the desk, follow a model, press it yourself · NODAL</title>
 <style>
 :root{ --bg:#0b0e14; --panel:#131826; --panel2:#0f1420; --line:#232a3d; --ink:#e8ecf4;
   --mut:#8b94a9; --gold:#ffd75e; --grn:#3ddc84; --red:#ff6b6b; --blu:#57b6ff; }
@@ -122,6 +122,16 @@ select{ background:#0d1119; color:var(--ink); border:1px solid var(--line); bord
   Pick your model, pick your mode — the page points, <b style="color:var(--ink)">you press</b>.</div>
   <div class="clock"><span id="clock">—</span> · <span id="feedage">feeds —</span></div>
   <div class="clock" id="winstrip" style="font-size:13.5px;color:var(--gold)">CURRENT WINDOW —</div>
+  <style>
+  #declstrip{margin:10px 0 4px;border:1px solid #2a3350;border-radius:10px;padding:8px 10px;background:#101527}
+  .drow{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:3px 0}
+  .dlab{font-size:11.5px;color:#ffd75e;min-width:250px;font-weight:600}
+  .dchip{font-size:11.5px;padding:2px 7px;border-radius:20px;border:1px solid #2a3350;color:#8a93a8;white-space:nowrap}
+  .dchip.lk{color:#0b0e14;background:#3ddc84;border-color:#3ddc84;font-weight:700}
+  .dchip.ps{color:#5b6480}
+  .drow.dim2{opacity:.75}
+  </style>
+  <div id="declstrip"><div class="drow"><span class="dlab">DECLARATIONS</span> feed loading…</div></div>
   <div class="stale" id="stale">⚠ STALE — a feed is older than 3 minutes; ages are printed above, trust the printed times, not the badges.</div>
   <div class="guideonly">🧭 <b>GUIDE ONLY.</b> This page places <b>NO orders</b> and touches no account.
   It shows you what the models called and lights the button that matches — the press on the
@@ -202,7 +212,7 @@ select{ background:#0d1119; color:var(--ink); border:1px solid var(--line); bord
   </div>
 
   <div class="foot">Sources: the desk's public feeds — gamelog · batchdata · callersdata ·
-  gamesdata · realfills · flowdata · finaldata — rebuilt by the AI-free daemon and refreshed
+  gamesdata · realfills · flowdata · finaldata · declaredata — rebuilt by the AI-free daemon and refreshed
   here every 15 seconds. Every card prints the exact time its call was sealed; a card is LIVE
   only when it belongs to the current window on the clock above. SIM points and REAL money
   are never blended. The desk's full record — losers included — is on
@@ -240,7 +250,7 @@ var SEL = { room: "BOTH", model: null };       /* picker selection */
 var MODE = "TRUST-ALL";
 var COMBO_MODEL = "ROOM";
 var MIX = { a: "PLAIN", b: "TAPE", added: {} }; /* added: key -> leg */
-var FEEDNAMES = ["gamelog","batchdata","callersdata","gamesdata","realfills","flowdata","finaldata"];
+var FEEDNAMES = ["gamelog","batchdata","callersdata","gamesdata","realfills","flowdata","finaldata","declaredata"];
 var BTC_MODELS = ["PLAIN","EARLY","RIPTIDE","FINAL","TERRY","ASHEN","PIZZA"];
 var TEN_MODELS = ["ARENA CARD","PLAIN","TAPE","RIPTIDE"];
 
@@ -257,6 +267,22 @@ function load(){
 function computeBtcCards(F){
   var byKey = {};
   function push(c){ var k = c.model + "|" + c.window; if(!byKey[k]) byKey[k] = c; }
+  /* v3: the DECLARATION FEED is the first source — every engine,
+     every window, LOCKs from native seals (incl. EARLY + FINAL,
+     which no older feed carries together). Pushed first so these
+     cards win the per-model/window dedupe. */
+  var dd = F.declaredata || {};
+  (dd.windows || []).forEach(function(w){
+    (w.registry || []).forEach(function(r){
+      if(r.state !== "LOCK" || !r.side) return;
+      var calledD = null;
+      if(num(r.seconds_in) !== null)
+        calledD = new Date(new Date(w.window).getTime() + r.seconds_in*1000).toISOString();
+      var ch = num(r.chance);
+      push({ model: r.lane, side: r.side, window: w.window,
+        called: calledD, calledDerived: !!calledD, secondsIn: num(r.seconds_in),
+        entry: num(r.ask), conf: ch === null ? null : (ch <= 1.5 ? Math.round(ch*1000)/10 : ch),
+        live: w.window === curWinISO(), src: "declarations " + (r.kind || "") }); }); });
   var gl = F.gamelog || {};
   (gl.live || []).forEach(function(e){
     if(!e || !e.engine) return;
@@ -793,6 +819,31 @@ function tickClock(){
   $("winstrip").textContent = "CURRENT WINDOW · " + btcEvent(cw).split("· ").slice(1).join("· ") +
     " · ends in " + Math.floor(left/60) + ":" + String(left%60).padStart(2,"0") +
     " — a card is LIVE only if it belongs to this window"; }
+function renderDecl(){
+  var el = $("declstrip"); if(!el) return;
+  var dd = FEEDS.declaredata;
+  if(!dd || !dd.windows){ el.innerHTML = '<div class="drow"><span class="dlab">DECLARATIONS</span> feed loading…</div>'; return; }
+  var nowW = null, nextW = null, recent = [];
+  dd.windows.forEach(function(w){ if(w.live) nowW = w; else if(w.up_next) nextW = w; else recent.push(w); });
+  function chips(w){
+    return w.registry.map(function(r){
+      var cls = r.state === "LOCK" ? "lk" : (r.state === "PASS" ? "ps" : "pd");
+      var t = r.lane;
+      if(r.state === "LOCK"){
+        t += " " + (r.side === "up" ? "▲" : "▼");
+        if(r.seconds_in !== null && r.seconds_in !== undefined) t += " " + r.seconds_in + "s";
+        if(r.ask !== null && r.ask !== undefined) t += " " + Math.round(r.ask*100) + "¢";
+        if(w.outcome) t += (r.side === w.outcome ? " ✓" : " ✗");
+      } else t += " " + r.state;
+      return '<span class="dchip ' + cls + '">' + esc(t) + '</span>'; }).join(""); }
+  function cd(w){ if(!w) return ""; var s = Math.max(0, Math.round((new Date(w.ends_at).getTime() - Date.now())/1000));
+    return " · ends in " + Math.floor(s/60) + ":" + ("0" + (s % 60)).slice(-2); }
+  var h = "";
+  if(nowW) h += '<div class="drow"><span class="dlab">ON NOW · ' + esc(btcEvent(nowW.window)) + cd(nowW) + '</span>' + chips(nowW) + '</div>';
+  if(nextW) h += '<div class="drow"><span class="dlab">UP NEXT · ' + esc(btcEvent(nextW.window)) + '</span>' + chips(nextW) + '</div>';
+  recent.slice(0, 3).forEach(function(w){
+    h += '<div class="drow dim2"><span class="dlab">' + esc(btcEvent(w.window)) + (w.outcome ? ' · WENT ' + esc(String(w.outcome).toUpperCase()) : '') + '</span>' + chips(w) + '</div>'; });
+  el.innerHTML = h; }
 function renderFresh(){
   var parts = [], worst = 0;
   FEEDNAMES.forEach(function(n){ var f = FEEDS[n]; if(!f) return;
@@ -805,7 +856,7 @@ function renderFresh(){
 var prevSnap = null;
 function renderAll(){
   var cards = computeBtcCards(FEEDS), matches = tenMatches(FEEDS);
-  renderFresh(); renderBoxes(cards, matches); renderDecision(cards, matches);
+  renderDecl(); renderFresh(); renderBoxes(cards, matches); renderDecision(cards, matches);
   renderBtc(cards); renderTennis(matches); renderCombo();
   prevSnap = renderBoards(prevSnap); }
 if(typeof window !== "undefined" && typeof document !== "undefined" && document.getElementById){
