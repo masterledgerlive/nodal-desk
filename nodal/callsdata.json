@@ -1,11 +1,11 @@
 {
- "built_at": "2026-11-18T22:29:56Z",
+ "built_at": "2026-11-18T22:54:33Z",
  "bands": [
   {
    "band": "60\u201370%",
-   "n": 264,
+   "n": 265,
    "stated": 65.0,
-   "actual": 68.6
+   "actual": 68.3
   },
   {
    "band": "70\u201380%",
@@ -31,16 +31,16 @@
   "name": "BTC 5-min desk (our specialist, sim)",
   "kind": "BTC Up/Down 5m windows \u00b7 plain vol model btc5-plain-v1 \u00b7 stand-in index",
   "calls": 781,
-  "graded": 780,
+  "graded": 781,
   "correct": 632,
-  "accuracy": 81.0,
-  "brier": 0.1441,
-  "streak_now": 9,
+  "accuracy": 80.9,
+  "brier": 0.1444,
+  "streak_now": 0,
   "streak_best": 22,
   "status": "APPROVED",
   "note": "graded from BTC5_GRADE records in the sealed ledger"
  },
- "proof_built_at": "2026-11-18T22:27:29Z",
+ "proof_built_at": "2026-11-18T22:49:19Z",
  "borrows": {
   "lifetime": {
    "PEER": 0,
@@ -62,7 +62,7 @@
    "PEER": "A borrow from the other engines \u2014 counted on the record like every borrow."
   }
  },
- "last_graded_window": "2026-11-18T22:20:00Z",
+ "last_graded_window": "2026-11-18T22:25:00Z",
  "recent_calls": [
   {
    "window": "2026-11-18T22:25:00Z",
@@ -75,12 +75,12 @@
    "move_usd": 11.97,
    "band": "60\u201370%",
    "why": "BTC rose $12 from the window open with 143s left \u2014 the model put UP at 61%.",
-   "result": null,
-   "correct": null,
-   "brier": null,
+   "result": "down",
+   "correct": false,
+   "brier": 0.377,
    "seq": 20473,
    "sealed_at": "2026-11-18T22:27:38+0000",
-   "grade_seq": null,
+   "grade_seq": 20494,
    "plan": "HOLD \u2014 ride to settlement; PLAIN's only early exit is a sell at a bid of 95\u00a2 or better",
    "final_answer": {
     "side": "up",
@@ -739,6 +739,45 @@
  ],
  "recent_windows": [
   {
+   "window": "2026-11-18T22:50:00Z",
+   "open_px": 62234.3,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T22:45:00Z",
+   "open_px": 62403.5,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T22:40:00Z",
+   "open_px": 62449.1,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T22:35:00Z",
+   "open_px": 62509.3,
+   "call": null,
+   "abstain": null,
+   "grade": null
+  },
+  {
+   "window": "2026-11-18T22:30:00Z",
+   "open_px": 62512.4,
+   "call": null,
+   "abstain": {
+    "why": "model chance 0.5 < 0.6",
+    "chance": 0.5,
+    "at": 1795041134
+   },
+   "grade": null
+  },
+  {
    "window": "2026-11-18T22:25:00Z",
    "open_px": 62441.845,
    "call": {
@@ -747,7 +786,11 @@
     "at": 1795040856
    },
    "abstain": null,
-   "grade": null
+   "grade": {
+    "result": "down",
+    "correct": false,
+    "brier": 0.377
+   }
   },
   {
    "window": "2026-11-18T22:20:00Z",
@@ -832,82 +875,37 @@
    "call": null,
    "abstain": null,
    "grade": null
-  },
-  {
-   "window": "2026-11-18T21:40:00Z",
-   "open_px": 62319.4,
-   "call": null,
-   "abstain": null,
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T21:35:00Z",
-   "open_px": 62392.825,
-   "call": {
-    "side": "down",
-    "chance": 0.9364,
-    "at": 1795037886
-   },
-   "abstain": null,
-   "grade": {
-    "result": "down",
-    "correct": true,
-    "brier": 0.004
-   }
-  },
-  {
-   "window": "2026-11-18T21:30:00Z",
-   "open_px": 62353.06,
-   "call": null,
-   "abstain": {
-    "why": "vol not ready (<20 trailing returns)",
-    "at": 1795037524
-   },
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T21:25:00Z",
-   "open_px": 62418.645,
-   "call": null,
-   "abstain": {
-    "why": "vol not ready (<20 trailing returns)",
-    "at": 1795037219
-   },
-   "grade": null
-  },
-  {
-   "window": "2026-11-18T21:20:00Z",
-   "open_px": 62450.509999999995,
-   "call": null,
-   "abstain": {
-    "why": "vol not ready (<20 trailing returns)",
-    "at": 1795036971
-   },
-   "grade": null
   }
  ],
- "abstains_total": 159,
+ "abstains_total": 160,
  "counters": {
-  "graded": 780,
+  "graded": 781,
   "wins": 632,
-  "win_rate": 81.0,
-  "streak_type": "W",
-  "streak_n": 9,
+  "win_rate": 80.9,
+  "streak_type": "L",
+  "streak_n": 1,
   "best_win_streak": 22,
-  "last12": "WLLWWWWWWWWW"
+  "last12": "LLWWWWWWWWWL"
  },
  "live_window": {
-  "window": "2026-11-18T22:25:00Z",
-  "open_px": 62441.845,
-  "call": {
-   "side": "up",
-   "chance": 0.614,
-   "at": 1795040856
-  },
+  "window": "2026-11-18T22:50:00Z",
+  "open_px": 62234.3,
+  "call": null,
   "abstain": null,
   "grade": null
  },
  "lessons": [
+  {
+   "window": "2026-11-18T22:25:00Z",
+   "side": "up",
+   "chance": 0.614,
+   "band": "60\u201370%",
+   "move_usd": 11.97,
+   "settle_move_usd": null,
+   "brier": 0.377,
+   "what_happened": "Called UP at 61% on a $+12 move from the open. BTC settled on the other side of the open (venue word \u2014 late regrade; no stand-in settle price). The price never crossed back \u2014 it just kept drifting the wrong way.",
+   "lesson": "Thin move + the cold band: a sub-70% call on a sub-$25 drift is the desk's known leak \u2014 this band has run near 50%, not its stated ~65%. The $5 rulebook's 0.70 floor exists because of calls like this."
+  },
   {
    "window": "2026-11-18T16:05:00Z",
    "side": "down",
@@ -984,17 +982,6 @@
    "brier": 0.679,
    "what_happened": "Called DOWN at 82% on a $-38 move from the open. BTC settled on the other side of the open (venue word \u2014 late regrade; no stand-in settle price). The price never crossed back \u2014 it just kept drifting the wrong way.",
    "lesson": "A clean miss at an honest price. Logged, counted, and left in the record \u2014 the desk does not edit its losses out."
-  },
-  {
-   "window": "2026-11-18T09:15:00Z",
-   "side": "up",
-   "chance": 0.8622,
-   "band": "80\u201390%",
-   "move_usd": 55.5,
-   "settle_move_usd": -28.7,
-   "brier": 0.7434,
-   "what_happened": "Called UP at 86% on a $+56 move from the open. BTC settled $-29 on the other side of the open. After the call the price reversed back through the open and never came back.",
-   "lesson": "Momentum is not a promise: a real move reversed inside three minutes. The model prices the drift it sees; it cannot see the turn coming. Streaks end like this, not with a bang."
   }
  ],
  "rule": {
