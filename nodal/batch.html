@@ -149,7 +149,8 @@ function renderMaster(d){
 function render(d){
   builtAt = d.built_at ? Date.parse(d.built_at) : null;
   document.getElementById('fresh').innerHTML =
-    'Updated <b>' + et(d.built_at, true) + '</b> · Current window <b>' + et(d.current_window, true) + '</b>';
+    'Updated <b>' + et(d.built_at, true) + '</b> · Current window <b>' + et(d.current_window, true) + '</b>'
+    + ' · 🏁 Season <b>' + (d.season || 1) + '</b> · points count from ' + et(d.season_from, true);
   renderMaster(d);
   var s = d.summary || {};
   document.getElementById('tBatches').textContent = s.batches_formed != null ? s.batches_formed : '—';

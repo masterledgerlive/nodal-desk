@@ -92,7 +92,7 @@
   <div class="livestrip" id="realStrip">—</div>
   <div class="foot" style="margin-top:6px">Real records only, from the sealed REAL fills — full numbers on <a href="wholegame.html">the whole game</a>, <a href="tennis-real.html">the tennis real board</a>, and each player's <a href="players.html">profile</a>. A contest record above never adds a cent here, and a real record here never adds a point above.</div>
 
-  <h2 class="sec">🔍 THE AUDIT — EVERY CALL, CHECKABLE</h2>
+  <h2 class="sec">🔍 THE AUDIT — EVERY CALL, CHECKABLE (ALL-TIME)</h2>
   <div id="audit"></div>
 
   <div class="foot">Contest era from the first guest window, Nov 16, 2026 · 9:35 PM ET. House rows
@@ -135,6 +135,7 @@ function render(){
   $('feedAges').innerHTML = '🕐 feed built ' + etClock(cdBuilt) + (age!==null ? ' (' + age + 's ago)' : '')
     + ' · now ' + etClock(new Date().toISOString())
     + (lv.window ? ' · current window ' + etWin(lv.window) : '')
+    + (cd.season ? ' · 🏁 SEASON ' + cd.season + ' standings · from ' + etWin(cd.season_start) : '')
     + ' · all times on this page are Eastern (ET)'
     + (age > 180 ? ' <span class="stale">STALE</span>' : '');
   if((lv.calls||[]).length){
@@ -149,7 +150,7 @@ function render(){
   if(rows.length){
     const best = Math.max.apply(null, rows.map(r => r.streak_best_n||0));
     const holders = rows.filter(r => (r.streak_best_n||0)===best);
-    $('crownStrip').innerHTML = '👑 STREAK CROWN — best run: <b>' + best + ' in a row</b> · '
+    $('crownStrip').innerHTML = '👑 SEASON ' + (cd.season || 1) + ' STREAK CROWN — best run: <b>' + best + ' in a row</b> · '
       + holders.map(r => esc(r.name) + ' (now ' + esc(r.streak) + ')').join(' · ')
       + '<br><span class="tag">the race never closes — the crown is held, never owned</span>';
   }
@@ -158,7 +159,8 @@ function render(){
     '<tr class="' + (r.rank===1?'r1':'') + (r.house?' house':'') + '"><td>' + r.rank + '</td>'
     + '<td><a class="name" href="players.html?p=' + encodeURIComponent(r.name) + '">' + esc(r.name) + '</a> ' + (r.provisional ? '<span class="prov">PROVISIONAL</span>' : '')
     + '<br><span class="' + (r.house?'house-tag':'tag') + '">' + esc(r.tag||'') + '</span>'
-    + (r.pnl!==null && r.pnl!==undefined ? '<br><span class="tag">🧑 HUMAN · P&amp;L <b class="' + (r.pnl>=0?'pos':'neg') + '">' + (r.pnl>=0?'+':'−') + '$' + Math.abs(r.pnl).toFixed(2) + '</b></span>' : '') + '</td>'
+    + (r.pnl!==null && r.pnl!==undefined ? '<br><span class="tag">🧑 HUMAN · P&amp;L <b class="' + (r.pnl>=0?'pos':'neg') + '">' + (r.pnl>=0?'+':'−') + '$' + Math.abs(r.pnl).toFixed(2) + '</b></span>' : '')
+    + (r.alltime && r.alltime.graded ? '<br><span class="tag">all-time · race ' + Number(r.alltime.race).toFixed(2) + ' · ' + r.alltime.w + 'W–' + r.alltime.l + 'L · best streak ' + r.alltime.streak_best_n + '</span>' : '') + '</td>'
     + '<td><b style="font-size:17px;color:var(--gold)">' + (r.streak_best_n||0) + '</b></td>'
     + '<td>' + esc(r.streak) + '</td>'
     + '<td><b>' + Number(r.race).toFixed(2) + '</b></td>'
