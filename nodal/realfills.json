@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T18:00:45Z",
+ "built_at": "2026-11-18T18:36:59Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -1193,11 +1193,11 @@
     "lane": "Tennis",
     "tag": null,
     "put_in": 5.0,
-    "has_now": 4.2119,
-    "earned": -0.7881,
+    "has_now": 3.8019,
+    "earned": -1.1981,
     "w": 3,
-    "l": 3,
-    "streak": "L1",
+    "l": 4,
+    "streak": "L2",
     "rank": 7
    },
    {
@@ -1206,18 +1206,18 @@
     "lane": "Tennis",
     "tag": null,
     "put_in": 5.0,
-    "has_now": 3.6471,
-    "earned": -1.3529,
+    "has_now": 3.3827,
+    "earned": -1.6173,
     "w": 0,
-    "l": 3,
-    "streak": "L3",
+    "l": 4,
+    "streak": "L4",
     "rank": 8
    }
   ],
   "totals": {
    "put_in": 19.0803,
-   "has_now": 16.8928,
-   "earned": -2.1875
+   "has_now": 16.2184,
+   "earned": -2.8619
   }
  },
  "tennis": {
@@ -1624,6 +1624,25 @@
     "venue_verified": "orders.retrieve(DT268EYG14ET): ORDER_SIDE_SELL, ORDER_INTENT_BUY_SHORT, price 0.20 (complement leg), quantity 0.5, cumQuantity 0.5, leavesQuantity 0 - FULLY FILLED. Cost $0.40 is the executor worst-case basis (0.5 x 0.80 named leg, Lepchenko rule seq 13851), same convention as Travaglia fill 19155 (venue-corrected later by 19853); venue position entry for the slug is merged with PLAIN Masarova long and not cleanly decomposable, so the fill books the executor basis and any venue correction follows at audit/settlement like Travaglia.",
     "seq": 19952,
     "sealed_at": "2026-11-18T17:35:34+0000"
+   },
+   {
+    "cost": 0.2992,
+    "fee_note": "Venue position cost is $0.3090 = principal $0.2992 + commission $0.01 collected. Sealed at executor principal $0.2992, the convention used on every other open fill (Masarova $0.3024, Gulin $0.4004). The $0.01 fee treatment is flagged for main to rule on - do not treat $0.3090 as a correction yet.",
+    "filled_ts": "2026-11-18T18:33:37Z",
+    "golden_math_net_95c": 0.3368,
+    "lane": "PLAIN",
+    "match": "ATP World Tour Finals, Ivan Lendl Group: Flavio Cobolli vs Frances Tiafoe",
+    "order_id": "DT331ECG13ZD",
+    "pick": "Flavio Cobolli",
+    "pressure_note": "Same match the PRESSURE rail holds in sim (entered 43c, seq per pressure feed). Separate books, never blended; this real fill is independent.",
+    "price": 0.44,
+    "shares": 0.68,
+    "side": "BUY_LONG",
+    "slug": "aec-atp-flacob-fratia-2026-11-15",
+    "stake": 0.3,
+    "venue_verified": "orders.retrieve DT331ECG13ZD: ORDER_SIDE_BUY, ORDER_INTENT_BUY_LONG, price 0.44, qty 0.68, cum 0.68, leaves 0, ORDER_STATE_FILLED, avgPx 0.4400, principal $0.2992. Position entry: net 1, cost $0.3090, realized $0.",
+    "seq": 20016,
+    "sealed_at": "2026-11-18T18:36:59+0000"
    }
   ],
   "exits": [
@@ -1719,6 +1738,29 @@
     "verified_against": "Main adjudication (verified arithmetic: 0.71/1.44 x 0.0864 = 0.0426; 0.0426 - 0.3976 = -0.3550; 4.1243 - 0.3550 = 3.7693). Venue evidence: tennis_fills.log line 24 (TAPE merged close, order DSZH3AS0144P) + tennis_executor.log lines 479-480 + state bank proof (TAPE 4.0785 = 4.3936 - 0.3151 on full $0.0864 proceeds). PLAIN close attempts failed NotFoundError 36x by 14:38:09Z because the shares were already sold in the merged close - no separate PLAIN exit order exists. Note: same venue order DSZH3AS0144P as seq 19582 (TAPE) - one close, two lane records, pro-rata split.",
     "seq": 19602,
     "sealed_at": "2026-11-18T14:39:57+0000"
+   },
+   {
+    "bank_plain_after": 3.3827,
+    "combo_leg3": "Combo #001 Leg 3 grades off the MATCH outcome, not this exit P&L: if Masarova wins the leg is a WIN for the card even though PLAIN sealed exit P&L is -$0.2644. Match not finished - leg NOT graded here.",
+    "cost": 0.3024,
+    "filled_ts": "2026-11-18T18:08:46Z",
+    "lane": "PLAIN",
+    "match": "Colina: Rebeka Masarova vs Polona Hercog",
+    "netting": "Only 0.04 of PLAIN 0.54 sh survived to the exit: TAPE BUY_SHORT Hercog (seq 19952) netted 0.5 sh against PLAIN long at the venue (merged position cost was $0.0224 = 0.04 x 56c; exit qty 0.04 = 0.54 - 0.5). The naive $0.51 proceeds expectation assumed 0.54 sh - wrong. Venue book governs: proceeds $0.038, pnl -$0.2644.",
+    "order_id": "DT2QNF4014EX",
+    "pick": "Rebeka Masarova",
+    "pnl": -0.2644,
+    "proceeds": 0.038,
+    "reason": "GOLDEN RULE 95c",
+    "self_correction": "WITHDRAWN: the seq-19952 alignment claim (lanes aligned, not head-to-head) was WRONG. The venue netting proves the lanes WERE head-to-head: TAPE short-Hercog offset PLAIN long-Masarova share-for-share. The Kjaer analogy did not transfer - there both lanes held the same complement leg; here they took opposite sides of one market. Main relay was right; desk corrects the record plainly.",
+    "shares_sold": 0.04,
+    "side": "BUY_LONG",
+    "slug": "aec-wta-rebmas-polher-2026-11-18",
+    "sold_price": 0.95,
+    "tape_ghost": "TAPE position still open=true in state (0.5 sh, $0.40) but the venue holds NOTHING for this slug - its leg was consumed by the netting and PLAIN exit closed the net remainder. Do NOT seal a TAPE exit/settle yet: its economics need main adjudication (Kjaer pro-rata precedent). Any future TAPE close attempt will fail NotFoundError like PLAIN Kjaer retries did.",
+    "venue_verified": "Exit used orders.close_position (venue close, synchronous). Venue close response via executor: avg 95c, proceeds $0.04 (log rounds; exact $0.038 = 0.04 x 0.95, confirmed by bank delta -$0.2644 = $0.038 - $0.3024). Order record DT2QNF4014EX: SELL_LONG, qty 0.04, cum 0.04, leaves 0 (price 0.01 is the venue market-close floor, not the execution price). Venue position for the slug is now CLOSED (no entry). Golden trigger genuine: executor log 18:08:43Z own-side bid 95.00c; arena marks series confirms Masarova mid rising 0.555 -> 0.955.",
+    "seq": 19980,
+    "sealed_at": "2026-11-18T18:16:43+0000"
    }
   ],
   "settles": [
@@ -1859,6 +1901,24 @@
     "verified_against": "tennis_fills.log line 25 verbatim + tennis_executor.log line 520 (FILLLOG REAL TENNIS SETTLE, payout $0.00 pnl $-0.40 tennis bank $3.73) + state (position closed_reason venue settlement; settled entry payout 0.0 pnl -0.3978 ts 1795012266; bank PLAIN 3.7265 = 4.1243 - 0.3978). Dupe-guard: order DSXF22B014EX has one prior ledger mention (fill seq 19185); no prior settle. Note: bank_at_settle $3.7265 is the pre-Kjaer-correction figure; after the Kjaer pro-rata correction (-$0.3550, seq 19602) final PLAIN bank is $3.3715. Combo Leg 1 (Medvedev 77.6%) grades LOSS.",
     "seq": 19603,
     "sealed_at": "2026-11-18T14:40:10+0000"
+   },
+   {
+    "bank_tape_after": 3.8019,
+    "combo_leg3": "Unchanged: grades off the MATCH outcome, not this close-out.",
+    "cost": 0.41,
+    "lane": "TAPE",
+    "match": "Colina: Rebeka Masarova vs Polona Hercog",
+    "order_id": "DT268EYG14ET",
+    "pick": "Polona Hercog",
+    "pnl": -0.41,
+    "proceeds": 0.0,
+    "reason": "NETTING_CONSUMED",
+    "reconciliation": "Account total on the slug: PLAIN -$0.2644 (seq 19980, stands) minus TAPE venue cash $0.41 = -$0.6744. Cash check: in PLAIN $0.3024 + TAPE $0.41 = $0.7124; out PLAIN exit $0.038 + TAPE $0 = $0.038; net -$0.6744. RECONCILES EXACTLY - no flag.",
+    "side": "BUY_SHORT",
+    "slug": "aec-wta-rebmas-polher-2026-11-18",
+    "venue_record": "Venue holds NOTHING for slug aec-wta-rebmas-polher-2026-11-18 (portfolio.positions: no entry). TAPE leg was consumed by the netting when it filled 17:30:44Z - venue offset 0.5 sh against PLAIN long 0.54 (merged cost $0.0224 = 0.04 x 56c); PLAIN Golden exit closed the net 0.04 remainder (seq 19980). Netting returned $0 cash to TAPE leg. No separate exit order exists or is possible (a close attempt would fail NotFoundError, PLAIN Kjaer retry precedent). State closed via stop-edit-start, backup nodal/tennis_executor_state.json.pre-tape-colina-netting.",
+    "seq": 19991,
+    "sealed_at": "2026-11-18T18:24:25+0000"
    }
   ],
   "banks": {
