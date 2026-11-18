@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROVEN MEANS PROFITABLE — The Money-Readiness Board · NODAL</title>
+<style>
+  :root{--bg:#0b0e14;--card:#131826;--line:#232a3d;--gold:#ffd75e;--green:#3ddc84;--red:#ff6b6b;--blue:#57b6ff;--txt:#e8ecf5;--dim:#8b94a7}
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:0;padding:18px 14px 60px}
+  .wrap{max-width:1060px;margin:0 auto}
+  h1{font-size:21px;letter-spacing:1.5px;color:var(--gold);margin:0 0 4px}
+  .sub{color:var(--dim);font-size:12.5px;line-height:1.6}
+  .fresh{font-size:12px;color:var(--dim);margin:8px 0 0}
+  .stale{display:none;background:#3d1420;border:1px solid var(--red);color:#ffb3b3;border-radius:8px;padding:6px 10px;font-size:12px;margin-top:8px}
+  .readybox{background:#1a0f14;border:2px solid var(--red);border-radius:14px;padding:18px;margin:16px 0;text-align:center}
+  .readybox .big{font-size:44px;font-weight:800;color:var(--red);letter-spacing:2px}
+  .readybox .why{font-size:13px;line-height:1.7;color:var(--txt);margin-top:6px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .card h2{font-size:15px;letter-spacing:1.2px;color:var(--gold);margin:0 0 10px}
+  .card p{font-size:12.5px;line-height:1.7;color:var(--txt)}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{color:var(--dim);text-align:left;padding:6px 6px;border-bottom:1px solid var(--line);font-weight:600;letter-spacing:.5px}
+  td{padding:6px;border-bottom:1px solid #1a2033;vertical-align:top;line-height:1.5}
+  .pos{color:var(--green)} .neg{color:var(--red)} .dim{color:var(--dim)}
+  .chip{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;margin-right:4px}
+  .pass{background:#0f2c1c;color:var(--green);border:1px solid var(--green)}
+  .fail{background:#2c1218;color:var(--red);border:1px solid var(--red)}
+  .scroll{overflow-x:auto}
+  .gap{font-size:11px;color:var(--dim);line-height:1.6}
+  ul{margin:6px 0;padding-left:18px} li{font-size:12.5px;line-height:1.7;margin-bottom:6px}
+  .clockbox{border:1px dashed var(--blue);border-radius:12px;padding:14px 18px;margin:14px 0;background:#0e1622}
+  .clockbox h2{color:var(--blue);font-size:15px;letter-spacing:1.2px;margin:0 0 8px}
+  a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>💰 PROVEN MEANS PROFITABLE</h1>
+  <div class="sub">The money-readiness board — David's scoring reform, 2026-11-18. Every model's claims on one page with the proof standard printed next to them: a win is worth what it <b>paid at its call price</b>, speed points are <b>recomputed from the seals</b>, and a lane opens only when the money — real money — says the model works.</div>
+  <div class="fresh" id="fresh">loading…</div>
+  <div class="stale" id="stale">⚠ STALE — this feed has not updated in over 3 minutes. Do not act on it.</div>
+
+  <div class="readybox">
+    <div class="big" id="readybig">READY: —</div>
+    <div class="why" id="readywhy"></div>
+  </div>
+
+  <div class="card">
+    <h2>THE PROVEN LINE — ALL THREE TESTS, OR NO LANE</h2>
+    <p id="provenline"></p>
+    <p class="dim" id="feemodel"></p>
+  </div>
+
+  <div class="card">
+    <h2>EVERY MODEL — RECORD, PRICED LINE, TESTS, GAP TO READY</h2>
+    <div class="scroll"><table id="models"><thead><tr>
+      <th>MODEL</th><th>RECORD</th><th>HIT</th><th>PRICED LINE (at call prices)</th><th>TESTS</th><th>GAP TO READY</th>
+    </tr></thead><tbody></tbody></table></div>
+    <p class="dim">PAPER-PRICED = what $1 per call at the sealed call price would have paid, net of fees, held to settlement. It assumes an instant fill at that ask — the real executor filled at 89–92¢ or not at all against these same signals — so a paper line is an upper bound, never proof. UNPRICED = no call-time price exists in the seals; the line is not estimated, it is absent.</p>
+  </div>
+
+  <div class="card">
+    <h2>🩸 THE BLEEDING — REAL MONEY, START → NOW</h2>
+    <div class="scroll"><table id="bleed"><thead><tr>
+      <th>LANE</th><th>PUT IN</th><th>HAS NOW</th><th>EARNED</th><th>W–L</th><th>STREAK</th>
+    </tr></thead><tbody></tbody></table></div>
+    <p id="bleedtot"></p>
+  </div>
+
+  <div class="card">
+    <h2>PER-CALL PROOF — THE LAST CALLS, EVERY NUMBER RECOMPUTABLE</h2>
+    <div class="scroll"><table id="calls"><thead><tr>
+      <th>WHO</th><th>WINDOW (ET)</th><th>SIDE</th><th>IN</th><th>ASK</th><th>RESULT</th><th>BAND</th><th>RACE PTS</th><th>PRICED $ / $1</th>
+    </tr></thead><tbody></tbody></table></div>
+    <p class="dim" id="bandtable"></p>
+    <p class="dim" id="auditline"></p>
+  </div>
+
+  <div class="clockbox">
+    <h2>⏱ THE FLUCTUATION CLOCK — SPEC, NOT LAW</h2>
+    <p style="font-size:12.5px;line-height:1.7" id="clocktext"></p>
+  </div>
+
+  <div class="card">
+    <h2>THE HONEST GAPS — WHAT CANNOT BE RECOMPUTED (YET)</h2>
+    <ul id="gaps"></ul>
+  </div>
+
+  <p class="sub">Rebuilt from the sealed ledger by build_priced.py on the desk's normal cadence. Nothing here rewrites history: the reform grades forward and restates boards; the seals stand as sealed.</p>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const fmt$=v=>v===null||v===undefined?'—':(v<0?'−$':'+$')+Math.abs(v).toFixed(2);
+const fmtC=v=>v===null||v===undefined?'—':Math.round(v*100)+'¢';
+function et(iso){ if(!iso) return '—'; const d=new Date(iso); return d.toLocaleString('en-US',{timeZone:'America/New_York',month:'numeric',day:'numeric',hour:'numeric',minute:'2-digit',hour12:true}); }
+function chip(ok,label){ return '<span class="chip '+(ok?'pass':'fail')+'">'+label+' '+(ok?'✓':'✗')+'</span>'; }
+async function load(){
+  try{
+    const r=await fetch('pricedata.json?t='+Date.now(),{cache:'no-store'});
+    const d=await r.json();
+    const built=new Date(d.built_at);
+    $('fresh').textContent='Feed built '+built.toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true})+' ET · ledger head seq '+d.head_seq+' · this page checks every 15s · all times ET';
+    $('stale').style.display=(Date.now()-built.getTime()>180000)?'block':'none';
+    $('readybig').textContent='READY: '+d.law.ready_count;
+    $('readywhy').innerHTML='Models that pass all three tests and may hold a real-money lane under the standing auto-open rule: <b>'+d.law.ready_count+'</b>. The rule stays armed — nothing fires until a model makes money on priced grading <i>and</i> executed record first.';
+    $('provenline').innerHTML='<b>'+d.law.proven_line.t1+'</b><br><b>'+d.law.proven_line.t2+'</b><br><b>'+d.law.proven_line.t3+'</b><br>'+d.law.proven_line.rule;
+    $('feemodel').textContent='Priced formula — '+d.law.priced_formula+'. Fee model — '+d.law.fee_model+'.';
+    const tb=$('models').querySelector('tbody'); tb.innerHTML='';
+    for(const m of d.models){
+      const tr=document.createElement('tr');
+      const rec=(m.w===null||m.w===undefined)?(m.graded+' banked'):(m.w+'W–'+m.l+'L · '+m.graded+' graded');
+      const priced=(m.paper_pnl===null||m.paper_pnl===undefined)?'<span class="neg">UNPRICED</span>':('n='+m.priced_n+' · avg ask '+fmtC(m.avg_ask)+' · <b class="'+(m.paper_pnl>0?'pos':'neg')+'">'+fmt$(m.paper_pnl)+'</b> per $1/call');
+      const tests=chip(m.tests.t1_accuracy,'T1')+chip(m.tests.t2_priced,'T2')+chip(m.tests.t3_executed,'T3')+(m.tests.ready?' <span class="chip pass">READY</span>':'');
+      const g=m.gaps||{};
+      let gap='';
+      if(g.calls_to_30_graded>0) gap+=g.calls_to_30_graded+' more graded calls · ';
+      if(g.priced_calls_to_30>0) gap+=g.priced_calls_to_30+' more priced calls · ';
+      if(g.hit_gap_pts>0) gap+='hit% short by '+g.hit_gap_pts+' pts · ';
+      if(g.dollars_to_ready!==null&&g.dollars_to_ready!==undefined&&g.dollars_to_ready>0) gap+='real lane must climb +$'+g.dollars_to_ready.toFixed(2)+' to reach $0 · ';
+      gap+='<span>'+(g.money_note||'')+'</span>';
+      tr.innerHTML='<td><b>'+m.name+'</b><br><span class="dim">'+m.room+'</span></td><td>'+rec+'<br><span class="gap">'+m.record_basis+'</span></td><td>'+(m.hit_pct===null||m.hit_pct===undefined?'—':m.hit_pct+'%')+'</td><td>'+priced+'<br><span class="gap">'+m.paper_basis+'</span></td><td>'+tests+'</td><td class="gap">'+gap+'</td>';
+      tb.appendChild(tr);
+    }
+    const bb=$('bleed').querySelector('tbody'); bb.innerHTML='';
+    for(const r of d.bleeding.rows){
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td><b>'+r.player+'</b><br><span class="dim">'+r.lane+'</span></td><td>$'+Number(r.put_in).toFixed(2)+'</td><td>$'+Number(r.has_now).toFixed(2)+'</td><td class="'+(r.earned>0?'pos':(r.earned<0?'neg':''))+'"><b>'+fmt$(r.earned)+'</b></td><td>'+r.w+'W–'+r.l+'L</td><td>'+r.streak+'</td>';
+      bb.appendChild(tr);
+    }
+    $('bleedtot').innerHTML='Engine lanes together: put in $'+d.bleeding.engine_totals.put_in.toFixed(2)+' → have $'+d.bleeding.engine_totals.has_now.toFixed(2)+' · earned <b class="neg">'+fmt$(d.bleeding.engine_totals.earned)+'</b>. '+d.bleeding.note;
+    const cb=$('calls').querySelector('tbody'); cb.innerHTML='';
+    for(const c of d.recent_calls){
+      const tr=document.createElement('tr');
+      tr.innerHTML='<td>'+c.who+(c.first?' ⚡':'')+'</td><td>'+et(c.window)+'</td><td>'+(c.side||'').toUpperCase()+'</td><td>'+(c.seconds_in===null||c.seconds_in===undefined?'—':c.seconds_in+'s')+'</td><td>'+fmtC(c.ask)+'</td><td class="'+(c.win?'pos':'neg')+'">'+(c.win?'WIN':'LOSS')+'</td><td>'+(c.band_pts===null||c.band_pts===undefined?'—':Number(c.band_pts).toFixed(2))+'</td><td>'+(c.race_pts===null||c.race_pts===undefined?'—':Number(c.race_pts).toFixed(2))+'</td><td>'+(c.priced_pnl===null||c.priced_pnl===undefined?'<span class="dim">no price sealed</span>':'<span class="'+(c.priced_pnl>0?'pos':'neg')+'">'+fmt$(c.priced_pnl)+'</span>')+'</td>';
+      cb.appendChild(tr);
+    }
+    $('bandtable').textContent='Expiring points (standing contest law): '+d.law.band_table+'. ⚡ = first counted call of the window.';
+    const a=d.callers_audit;
+    $('auditline').textContent='Recomputation audit: '+a.grades_checked+' counted caller grades recomputed from seals — band mismatches: '+a.band_mismatches+'. Sealed race_points sum '+a.sealed_sum.toFixed(2)+' vs recomputed '+a.recomputed_sum.toFixed(2)+'; the entire difference is the +0.25 first-caller bonus on '+a.first_wins+' first-caller wins, which the grade seals do not carry (see gaps).';
+    $('clocktext').innerHTML='<b>Status: '+d.clock.status+'</b> — specced in FLUCTUATION-CLOCK-SPEC.md, awaiting David\'s word before it scores anything. The rule in one breath: when the market makes a major move back and forth across a call — the called side crosses the 50¢ line against the call on a move of at least 15¢ from the call price — the timing clock is set again, and the speed band is read from the moment the price crosses back in the call\'s favor (or the adverse crossing, if it never does). Losses stay −1.00 flat; the priced money line never moves. Worked example: a call 45s in at 62¢ that dives to 38¢ and crosses back at 210s scores 1.10, not 1.75. <span class="dim">'+d.clock.note+'</span>';
+    const gl=$('gaps'); gl.innerHTML='';
+    for(const g of d.gaps){ const li=document.createElement('li'); li.textContent=g; gl.appendChild(li); }
+  }catch(e){ $('fresh').textContent='feed unavailable — retrying…'; }
+}
+load(); setInterval(load,15000);
+setInterval(()=>{ const el=$('fresh'); },1000);
+</script>
+</body>
+</html>
