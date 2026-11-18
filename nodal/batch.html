@@ -97,6 +97,7 @@
 
   <div style="color:var(--gold);font-size:15px;letter-spacing:2px;font-weight:800;margin-top:26px">🎾 TENNIS — SHADOW BATCH · SCORES ONLY — NO ORDERS</div>
   <div class="fresh" id="tennisLine"></div>
+  <div class="fresh" id="waveLine"></div>
   <div class="tblwrap">
   <table>
     <thead><tr>
@@ -218,6 +219,22 @@ function render(d){
     + ' / TAPE ' + (((tn.weights || {}).TAPE || {}).weight != null ? tn.weights.TAPE.weight : '—')
     + (tbparts.length ? '<br>🏦 TENNIS SHADOW BANKS — agreement stakes (L4) · ' + tbparts.join(' · ') : '')
     + '<br><span style="color:var(--dim)">' + esc(tn.golden_exit || '') + ' ' + esc(tn.grading_source || '') + ' ' + esc(tn.banks_note || '') + '</span>';
+  }
+  var wv = tn.wave || {};
+  var wl = document.getElementById('waveLine');
+  if (wl){
+    var wtr = (wv.trades || []).slice(-6).reverse().map(function(t){
+      return esc(t.action || '') + ' ' + esc(t.side || '') + ' @ ' + (t.price != null ? Number(t.price).toFixed(2) : '—')
+        + (t.pnl != null ? ' · ' + (t.pnl >= 0 ? '+' : '−') + '$' + Math.abs(t.pnl).toFixed(2) : '')
+        + ' · ' + esc(t.match || '');
+    }).join('<br>');
+    wl.innerHTML = '🌊 RIPTIDE WAVE LINE — SHADOW TRIAL (spec §§W) · matches traded ' + (wv.matches_traded || 0) + '/' + (wv.span || 20)
+      + ' · entries ' + (wv.entries || 0) + ' · exits ' + (wv.closed || 0) + ' · flips ' + (wv.flips || 0)
+      + ' · realized ' + ((wv.realized >= 0 ? '+' : '−') + '$' + Math.abs(wv.realized || 0).toFixed(2))
+      + ' · wave bank <b>$' + Number(wv.bank != null ? wv.bank : 1.50).toFixed(2) + '</b>'
+      + (wv.open_stake ? ' · open stake $' + Number(wv.open_stake).toFixed(2) : '')
+      + '<br><span style="color:var(--dim)">' + esc(wv.proof_status || '') + '</span>'
+      + (wtr ? '<br>' + wtr : '');
   }
   var ttb = document.getElementById('tennisRows');
   if (ttb){
