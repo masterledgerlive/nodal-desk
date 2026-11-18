@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T23:28:18Z",
+ "built_at": "2026-11-18T23:58:35Z",
  "conventions": [
   "Every step under a call comes from the sealed ledger \u2014 nothing here is reconstructed from memory.",
   "EARLY and RIPTIDE WHY / EXIT lines are the engines' own sealed words, quoted.",
@@ -69,8 +69,8 @@
      }
     ],
     "priced": 168,
-    "unpriced": 615,
-    "streak_now": 2,
+    "unpriced": 616,
+    "streak_now": 3,
     "streak_best": 22,
     "savings": 0.0,
     "counterfactual": 258903.56,
@@ -155,10 +155,51 @@
     "lent_out": 0,
     "defaults_suffered": 0,
     "defaults_caused": 0,
-    "calls_total": 783,
+    "calls_total": 784,
     "calls_listed": 150
    },
    "calls": [
+    {
+     "engine": "PLAIN",
+     "window": "2026-11-18T23:45:00Z",
+     "side": "up",
+     "chance": 0.9524,
+     "result": "up",
+     "correct": true,
+     "brier": 0.0023,
+     "seq": [
+      20613,
+      20620
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-18T23:45:00Z",
+       "text": "Window opened \u2014 index open 62,991.05."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+178s",
+       "text": "Index verified from kraken (stand-in median); live index 63,106.20 at the call; remaining sigma 0.0011."
+      },
+      {
+       "kind": "WHY",
+       "at": "+178s",
+       "text": "BTC rose $115 from the open with 121s left \u2014 the model put UP at 95% (call floor 60%). Called 178s in. [read off the sealed call fields]"
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
+      },
+      {
+       "kind": "SETTLE",
+       "at": "2026-11-18T23:45:00Z",
+       "text": "Settled UP at 63,142.13 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0023."
+      }
+     ],
+     "priced": null
+    },
     {
      "engine": "PLAIN",
      "window": "2026-11-18T23:15:00Z",
@@ -6621,47 +6662,6 @@
        "kind": "SETTLE",
        "at": "2026-11-17T12:40:00Z",
        "text": "Settled UP at 64,898.35 \u2014 call RIGHT \u2713 \u00b7 Brier 0.1296."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "PLAIN",
-     "window": "2026-11-17T12:35:00Z",
-     "side": "down",
-     "chance": 0.6219,
-     "result": "up",
-     "correct": false,
-     "brier": 0.3868,
-     "seq": [
-      13776,
-      13784
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T12:35:00Z",
-       "text": "Window opened \u2014 index open 64,830.24."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+120s",
-       "text": "Index verified from coinbase + kraken (stand-in median); live index 64,810.03 at the call; remaining sigma 0.0010."
-      },
-      {
-       "kind": "WHY",
-       "at": "+120s",
-       "text": "BTC fell $20 from the open with 179s left \u2014 the model put DOWN at 62% (call floor 60%). Called 120s in. [read off the sealed call fields]"
-      },
-      {
-       "kind": "EXIT",
-       "at": "\u2014",
-       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T12:35:00Z",
-       "text": "Settled UP \u2014 per Polymarket Gamma closed outcomePrices (no index settle price on this record) \u2014 call WRONG \u2717 \u00b7 Brier 0.3868 \u00b7 LATE REGRADE (Gamma)."
       }
      ],
      "priced": null
