@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T21:34:01Z",
+ "built_at": "2026-11-18T22:04:23Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -1206,18 +1206,18 @@
     "lane": "Tennis",
     "tag": null,
     "put_in": 5.0,
-    "has_now": 3.3827,
-    "earned": -1.6173,
+    "has_now": 3.0735,
+    "earned": -1.9265,
     "w": 0,
-    "l": 4,
-    "streak": "L4",
+    "l": 5,
+    "streak": "L5",
     "rank": 8
    }
   ],
   "totals": {
    "put_in": 19.0803,
-   "has_now": 16.2184,
-   "earned": -2.8619
+   "has_now": 15.9092,
+   "earned": -3.1711
   }
  },
  "tennis": {
@@ -1919,6 +1919,43 @@
     "venue_record": "Venue holds NOTHING for slug aec-wta-rebmas-polher-2026-11-18 (portfolio.positions: no entry). TAPE leg was consumed by the netting when it filled 17:30:44Z - venue offset 0.5 sh against PLAIN long 0.54 (merged cost $0.0224 = 0.04 x 56c); PLAIN Golden exit closed the net 0.04 remainder (seq 19980). Netting returned $0 cash to TAPE leg. No separate exit order exists or is possible (a close attempt would fail NotFoundError, PLAIN Kjaer retry precedent). State closed via stop-edit-start, backup nodal/tennis_executor_state.json.pre-tape-colina-netting.",
     "seq": 19991,
     "sealed_at": "2026-11-18T18:24:25+0000"
+   },
+   {
+    "bank_after": 3.0735,
+    "combo_leg": "Combo #001 Leg 4 grades LOSS on the match outcome (Tiafoe won); leg grading itself is main-side, no combo seal kind issued here.",
+    "correction_seq": {
+     "hash": "4e2e35e0dc4272c7f310dc4502616bc0580e3c682568d2a5e5ca1a0ad65ae61b",
+     "kind": "REAL_TENNIS_FILL_CORRECTION",
+     "payload": {
+      "fill_seq": 20016,
+      "lane": "PLAIN",
+      "match": "ATP World Tour Finals, Ivan Lendl Group: Flavio Cobolli vs Frances Tiafoe",
+      "new_cost": 0.3092,
+      "old_cost": 0.2992,
+      "order_id": "DT331ECG13ZD",
+      "pick": "Flavio Cobolli",
+      "reason": "Venue book governs (fee convention, main ruling 2026-11-18): venue basis = principal $0.2992 + commission $0.0100 collected (order commissionNotionalTotalCollected). POSITION_RESOLUTION beforePosition cost $0.3092, fees $0.0100, baseCost $0.2992. Corrects fill-note misread of venue cost as $0.3090.",
+      "slug": "aec-atp-flacob-fratia-2026-11-15",
+      "venue_verified": "orders.retrieve DT331ECG13ZD: BUY_LONG, 0.68 sh, avgPx 0.4400, principal $0.2992, commission $0.0100. POSITION_RESOLUTION: before cost $0.3092, after realized -$0.2992 (venue realized excludes fees; cash basis is -$0.3092)."
+     },
+     "prev": "0cdd31b142ab312aac003ec0a1e36400f6c1375b4aa58db798b1340e5b2099d0",
+     "seq": 20423,
+     "ts": "2026-11-18T21:56:45+0000"
+    },
+    "cost": 0.3092,
+    "executor_note": "Executor FILLLOG 2026-11-18T21:49:52.799617Z settled at pnl $-0.30 / bank $3.08 (rounded, principal-only $0.2992). Sealed at venue cash basis -$0.3092 per fee convention; $0.01 fee booked here via the correction above. Executor state bank was $3.0835; desk adjusts to $3.0735.",
+    "fill_seq": 20016,
+    "lane": "PLAIN",
+    "match": "ATP World Tour Finals, Ivan Lendl Group: Flavio Cobolli vs Frances Tiafoe",
+    "order_id": "DT331ECG13ZD",
+    "payout": 0.0,
+    "pick": "Flavio Cobolli",
+    "pnl": -0.3092,
+    "shares": 0.68,
+    "slug": "aec-atp-flacob-fratia-2026-11-15",
+    "winner": "Frances Tiafoe",
+    "seq": 20424,
+    "sealed_at": "2026-11-18T21:56:46+0000"
    }
   ],
   "banks": {
