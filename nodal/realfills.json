@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T03:34:34Z",
+ "built_at": "2026-11-18T04:03:55Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -240,13 +240,77 @@
  "david": {
   "note": "DAVID \u00b7 HUMAN \u2014 David's own plays (DAVID_PLAYER seq 14199), sealed from venue reconciliation + his reported taps. Never blended with the engines. Add-on plays print here labeled BANK SIDE \u2014 their P&L is the Bank's, never an engine's.",
   "btc": {
-   "fills": [],
-   "settles": [],
+   "fills": [
+    {
+     "engine": null,
+     "match": "DAVID|2026-11-18T03:25:00Z",
+     "note": "David manual, copying Terry calls by hand from his phone. BUY Yes 0.14 sh @ 68c, cost $0.0952.",
+     "order_id": "DSP3EWG013ZK",
+     "price": 0.68,
+     "shares": 0.14,
+     "side": "up",
+     "source": "venue activity feed, relayed by main 2026-11-17 EST \u2014 manual order, not in any executor log",
+     "stake": 0.0952,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T03:25:00Z",
+     "seq": 18142,
+     "sealed_at": "2026-11-18T03:44:29+0000"
+    },
+    {
+     "engine": null,
+     "match": "DAVID|2026-11-18T03:35:00Z",
+     "note": "David manual, two buys: 0.23 sh @ 43c ($0.0989) + 0.16 sh @ 62c ($0.0992) = 0.39 sh, cost $0.1981, avg 50.79c \u2014 matches his screenshot ($0.20 cost, 51%, to win $0.39).",
+     "order_id": "DSP7X80013YY + DSP852C014F0",
+     "price": 0.5079,
+     "shares": 0.39,
+     "side": "up",
+     "source": "venue activity feed, relayed by main 2026-11-17 EST \u2014 manual orders, not in any executor log",
+     "stake": 0.1981,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T03:35:00Z",
+     "seq": 18144,
+     "sealed_at": "2026-11-18T03:44:30+0000"
+    }
+   ],
+   "settles": [
+    {
+     "correct": true,
+     "match": "DAVID|2026-11-18T03:25:00Z",
+     "order_id": "DSP3EWG013ZK",
+     "payout": 0.14,
+     "pnl": 0.0448,
+     "price": 0.68,
+     "result": "up",
+     "settle_source": "venue \u2014 market closed, UP won (long side $1); venue activity feed",
+     "side": "up",
+     "stake": 0.0952,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T03:25:00Z",
+     "seq": 18143,
+     "sealed_at": "2026-11-18T03:44:30+0000"
+    },
+    {
+     "correct": false,
+     "match": "DAVID|2026-11-18T03:35:00Z",
+     "order_id": "DSP7X80013YY + DSP852C014F0",
+     "payout": 0.0,
+     "pnl": -0.1981,
+     "price": 0.5079,
+     "result": "down",
+     "settle_source": "venue \u2014 market closed, DOWN won (long side $0); venue activity feed",
+     "side": "up",
+     "stake": 0.1981,
+     "venue_class": "REAL-POLYMARKET-US",
+     "window": "2026-11-18T03:35:00Z",
+     "seq": 18145,
+     "sealed_at": "2026-11-18T03:44:31+0000"
+    }
+   ],
    "record": {
-    "w": 0,
-    "l": 0,
-    "pnl": 0,
-    "streak": "\u2014"
+    "w": 1,
+    "l": 1,
+    "pnl": -0.1533,
+    "streak": "L1"
    }
   },
   "tennis": {

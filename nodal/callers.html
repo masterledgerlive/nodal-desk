@@ -95,7 +95,7 @@
   <h2 class="sec">🔍 THE AUDIT — EVERY CALL, CHECKABLE</h2>
   <div id="audit"></div>
 
-  <div class="foot">Contest era from the first guest window, 2026-11-17 02:35Z. House rows
+  <div class="foot">Contest era from the first guest window, Nov 16, 2026 · 9:35 PM ET. House rows
   build from the desk feeds' retained contest-era windows; guest rows are complete from the
   sealed ledger. The timed meter under each live call shows where in the 300-second window
   the call landed (the striped tail is the 95¢ decided zone). Board refreshes every 15s.</div>
@@ -105,7 +105,10 @@
 "use strict";
 let cd = null, cdBuilt = null, rf = null;
 const $ = id => document.getElementById(id);
-const hhmm = s => s ? s.substr(11,5)+'Z' : '—';
+const etWinFmt = new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',hour12:true});
+const etClockFmt = new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
+const etWin = s => s ? etWinFmt.format(new Date(s)) + ' ET' : '—';
+const etClock = s => s ? etClockFmt.format(new Date(s)) + ' ET' : '—';
 const esc = s => String(s===null||s===undefined?'':s).replace(/</g,'&lt;');
 
 async function poll(){
@@ -128,16 +131,19 @@ function meter(inS){
 function render(){
   if(!cd) return;
   const age = cdBuilt ? Math.max(0, Math.round((Date.now() - Date.parse(cdBuilt))/1000)) : null;
-  $('feedAges').innerHTML = 'callersdata built ' + hhmm(cdBuilt) + (age!==null ? ' (' + age + 's ago)' : '')
-    + (age > 180 ? ' <span class="stale">STALE</span>' : '');
   const lv = cd.live || {};
+  $('feedAges').innerHTML = '🕐 feed built ' + etClock(cdBuilt) + (age!==null ? ' (' + age + 's ago)' : '')
+    + ' · now ' + etClock(new Date().toISOString())
+    + (lv.window ? ' · current window ' + etWin(lv.window) : '')
+    + ' · all times on this page are Eastern (ET)'
+    + (age > 180 ? ' <span class="stale">STALE</span>' : '');
   if((lv.calls||[]).length){
-    $('liveStrip').innerHTML = '⏱ window ' + hhmm(lv.window) + '<br>' + lv.calls.map(c =>
+    $('liveStrip').innerHTML = '⏱ window ' + etWin(lv.window) + '<br>' + lv.calls.map(c =>
       (c.first ? '⚡ ' : '') + '<b>' + esc(c.who) + '</b> · ' + (c.side||'').toUpperCase()
       + (c.win===true ? ' · <span class="wlw">WON</span>' : c.win===false ? ' · <span class="wll">LOST</span>' : '')
       + meter(c.in)).join('<br>');
   } else {
-    $('liveStrip').innerHTML = '⏱ window ' + hhmm(lv.window) + ' — no counted calls captured yet this window.';
+    $('liveStrip').innerHTML = '⏱ window ' + etWin(lv.window) + ' — no counted calls captured yet this window.';
   }
   const rows = cd.rows||[];
   if(rows.length){
@@ -165,7 +171,7 @@ function render(){
   $('audit').innerHTML = (cd.rows||[]).map(r =>
     '<div class="audit"><b style="color:var(--txt)">' + esc(r.name) + '</b>'
     + (r.calls||[]).map(c =>
-      '<div class="c">' + (c.first?'⚡ ':'') + hhmm(c.window) + ' · ' + (c.side||'—').toUpperCase()
+      '<div class="c">' + (c.first?'⚡ ':'') + etWin(c.window) + ' · ' + (c.side||'—').toUpperCase()
       + (c.counted ? '' : ' · NOT COUNTED (' + esc(c.void||'') + ')')
       + (c.win===true ? ' · <span class="wlw">WIN</span>' : c.win===false ? ' · <span class="wll">LOSS</span>' : ' · pending')
       + (c.in!==null && c.in!==undefined ? ' · ' + c.in + 's in' : '')
