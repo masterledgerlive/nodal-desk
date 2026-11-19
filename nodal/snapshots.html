@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BTC Snapshot Library — NODAL DESK</title>
+<style>
+  * { box-sizing: border-box; }
+  body { background:#0b0e14; color:#dfe6f2; font-family: ui-monospace, Menlo, Consolas, monospace; margin:0; padding:18px; }
+  h1 { color:#ffd75e; font-size:22px; margin:0 0 4px; letter-spacing:1px; }
+  h2 { color:#ffd75e; font-size:15px; margin:22px 0 8px; letter-spacing:1px; border-bottom:1px solid #232a3d; padding-bottom:5px;}
+  .sub { color:#8fa1bd; font-size:12px; }
+  .card { background:#131826; border:1px solid #232a3d; border-radius:8px; padding:12px 14px; margin:10px 0; }
+  .flag { border-left:4px solid #ffd75e; }
+  .flag.FLIP_RISK, .flag.ONE_TURNER_FIRED { border-left-color:#ff6b6b; }
+  .flag.CHOP_WATCH { border-left-color:#57b6ff; }
+  .fname { color:#ffd75e; font-weight:bold; font-size:14px; }
+  .match { color:#57b6ff; }
+  .conf { color:#8fa1bd; font-size:12px; }
+  .reason { font-size:13px; margin:3px 0; }
+  table { border-collapse: collapse; width:100%; font-size:12.5px; }
+  th, td { border:1px solid #232a3d; padding:5px 8px; text-align:right; }
+  th { color:#ffd75e; text-align:right; background:#0e1220;}
+  td:first-child, th:first-child { text-align:left; }
+  .up { color:#3ddc84; } .down { color:#ff6b6b; }
+  .badge { display:inline-block; padding:1px 7px; border-radius:9px; font-size:11px; border:1px solid #3a4560; color:#dfe6f2; margin-right:5px;}
+  .badge.FLIP { background:#3d1420; } .badge.ONE_TURNER { background:#33270a; }
+  .badge.CHOP { background:#12283d; } .badge.CLEAN { background:#0f2d1c; }
+  .badge.el { background:#4d0f2a; color:#ffb3d1; }
+  .why { color:#b9c6dc; font-size:12.5px; margin:2px 0 2px 14px; }
+  .finding p { font-size:13.5px; line-height:1.5; color:#cfdaee; margin:4px 0; }
+  .finding .ft { color:#ffd75e; font-weight:bold; font-size:14px; }
+  .stale { color:#ff6b6b; font-weight:bold; }
+  .stat { display:inline-block; margin-right:18px; font-size:13px; }
+  .stat b { color:#ffd75e; }
+  a { color:#57b6ff; }
+  canvas { width:100%; height:180px; background:#0e1220; border:1px solid #232a3d; border-radius:6px; }
+  canvas.mini { height:54px; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap:10px; }
+  .grid .card { margin:0; }
+</style>
+</head>
+<body>
+<h1>📸 BTC SNAPSHOT LIBRARY</h1>
+<div class="sub">Every 5-minute BTC window, recorded as it happens — chart shape, price path, order flow, where the decision point broke, and a graded WHY. Windows loop into families; a live window that matches a family pulls that family's whole counted history. <b style="color:#ffd75e">Flags inform — they never call the window for you.</b></div>
+<div class="sub" id="clockline">—</div>
+
+<h2>🔴 LIVE WINDOW — FLAGS FIRST</h2>
+<div class="card">
+  <div id="livestats">waiting for the feed…</div>
+  <canvas id="livechart" width="1100" height="180"></canvas>
+  <div class="sub">Gold line: UP mid price (0–1). Dashed: 50¢ — the decision line. A window is only ever graded after it settles.</div>
+</div>
+<div id="flags"></div>
+
+<h2>👪 THE FAMILIES — COUNTED BASE RATES</h2>
+<div class="card">
+  <table id="famtable"><tr><th>family</th><th>counted</th><th>ended UP</th><th>PLAIN hit</th><th>EARLY hit</th><th>crowd hit</th><th>everyone-loses</th><th>median break</th></tr></table>
+  <div class="sub" style="margin-top:8px">Families are computed from the recorded path alone: ONE-TURNER = quiet (range ≤ 0.30) then one move ≥ 0.30 that never crosses back · FLIP = a side led ≥ 0.60 before 240s and lost · CHOP = ≥ 4 crosses of 50¢ · CLEAN = ≤ 1 cross and one side held ≥ 80% of the window · MIXED = everything else. Small families print small numbers — that is the honest confidence.</div>
+</div>
+
+<h2>🗂️ RECENT SNAPSHOTS</h2>
+<div class="grid" id="recent"></div>
+
+<h2>🔬 FINDINGS — WHAT THE DATA ACTUALLY SHOWS</h2>
+<div id="findings"><div class="card">findings loading…</div></div>
+
+<div class="sub" style="margin-top:20px">Snapshots are stored on Walrus testnet (free) — blob links ride each card once the read-back verifies. The library's capture is full-window from 2026-11-19; earlier windows are partial paths from the RIPTIDE flow polls and say so on their card. Page refreshes on the desk's batched deploy cadence; the feed's own clock below is the truth about freshness.</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let lastBuilt = null;
+
+function et(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleString('en-US', {timeZone:'America/New_York', hour12:false,
+    month:'short', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit'}) + ' ET';
+}
+function pct(x) { return (x === null || x === undefined) ? '—' : Math.round(x*100) + '%'; }
+
+function drawChart(cv, polls, live) {
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  ctx.clearRect(0,0,W,H);
+  if (!polls || polls.length < 2) { ctx.fillStyle='#8fa1bd'; ctx.fillText('not enough polls yet', 12, 20); return; }
+  const x = e => 30 + (e/300)*(W-40);
+  const y = m => 8 + (1-m)*(H-16);
+  ctx.strokeStyle = '#3a4560'; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(30, y(0.5)); ctx.lineTo(W-10, y(0.5)); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#8fa1bd'; ctx.font = '10px monospace';
+  ctx.fillText('1.00', 2, y(1)+3); ctx.fillText('0.50', 2, y(0.5)+3); ctx.fillText('0.00', 2, y(0)+3);
+  ctx.strokeStyle = '#ffd75e'; ctx.lineWidth = 2; ctx.beginPath();
+  polls.forEach((p,i) => { const px = x(p.elapsed), py = y(p.up_mid); i ? ctx.lineTo(px,py) : ctx.moveTo(px,py); });
+  ctx.stroke(); ctx.lineWidth = 1;
+  const last = polls[polls.length-1];
+  ctx.fillStyle = last.up_mid >= 0.5 ? '#3ddc84' : '#ff6b6b';
+  ctx.beginPath(); ctx.arc(x(last.elapsed), y(last.up_mid), 4, 0, 7); ctx.fill();
+}
+
+function render(d) {
+  lastBuilt = d.built_at;
+  const L = d.live || {};
+  const f = L.features || {};
+  const lastPoll = (L.polls||[])[(L.polls||[]).length-1] || {};
+  $('livestats').innerHTML =
+    `<span class="stat">window <b>${L.wiso ? et(L.wiso) : '—'}</b></span>` +
+    `<span class="stat">elapsed <b>${L.elapsed||0}s</b> / 300s</span>` +
+    `<span class="stat">UP mid <b>${lastPoll.up_mid ?? '—'}</b></span>` +
+    `<span class="stat">BTC <b>${lastPoll.btc_px ? '$'+Math.round(lastPoll.btc_px).toLocaleString() : '—'}</b></span>` +
+    `<span class="stat">crosses <b>${f.crossings ?? '—'}</b></span>` +
+    `<span class="stat">range <b>${f.range ?? '—'}</b></span>` +
+    `<span class="stat">leader <b>${f.leader_before_240 || '—'} ${f.leader_mid_before_240 ? '('+f.leader_mid_before_240+')' : ''}</b></span>` +
+    `<span class="stat">library <b>${d.library_n}</b> snapshots</span>`;
+  drawChart($('livechart'), L.polls||[], true);
+
+  const fl = $('flags');
+  if (!L.flags || !L.flags.length) {
+    fl.innerHTML = '<div class="card">No flags on the forming window right now — no family profile is matching. That is information too.</div>';
+  } else {
+    fl.innerHTML = L.flags.map(g => {
+      const b = g.base || {};
+      const base = b.n ? `family base rates — n=${b.n} · ended UP ${pct(b.up_rate)} · PLAIN hit ${pct(b.plain_hit)} · EARLY hit ${pct(b.early_hit)} · crowd hit ${pct(b.crowd_hit)} · everyone-loses ${pct(b.everyone_loses_rate)}` : 'no counted base rates yet';
+      return `<div class="card flag ${g.flag}"><span class="fname">${g.flag.replace(/_/g,' ')}</span> <span class="match">profile match ${g.match_pct}%</span>` +
+        g.reasons.map(r => `<div class="reason">• ${r}</div>`).join('') +
+        `<div class="conf">${g.confidence} · ${base}</div></div>`;
+    }).join('');
+  }
+
+  const ft = $('famtable');
+  const rows = ['ONE_TURNER','FLIP','CHOP','CLEAN','MIXED'].map(name => {
+    const s = (d.families||{})[name] || {n:0};
+    return `<tr><td>${name.replace('_','-')}</td><td>${s.n||0}</td><td>${pct(s.up_rate)}</td><td>${pct(s.plain_hit)}</td><td>${pct(s.early_hit)}</td><td>${pct(s.crowd_hit)}</td><td>${pct(s.everyone_loses_rate)}</td><td>${s.median_break_s ? s.median_break_s+'s' : '—'}</td></tr>`;
+  }).join('');
+  ft.innerHTML = '<tr><th>family</th><th>counted</th><th>ended UP</th><th>PLAIN hit</th><th>EARLY hit</th><th>crowd hit</th><th>everyone-loses</th><th>median break</th></tr>' + rows;
+
+  $('recent').innerHTML = (d.recent||[]).map((s,i) => {
+    const res = s.result === 'up' ? '<span class="up">UP ▲</span>' : '<span class="down">DOWN ▼</span>';
+    const blob = s.blob ? ` · <a href="https://aggregator.walrus-testnet.walrus.space/v1/blobs/${s.blob}" target="_blank">blob</a>` : '';
+    const el = s.everyone_loses ? '<span class="badge el">EVERYONE LOSES</span>' : '';
+    return `<div class="card"><div><span class="badge ${s.family}">${(s.family||'').replace('_','-')}</span>${el}<b>${et(s.wiso)}</b> · ${res}</div>` +
+      `<canvas class="mini" id="mini${i}" width="330" height="54"></canvas>` +
+      `<div class="sub">break ${s.break_s ?? '—'}s · range ${s.range ?? '—'} · crosses ${s.crossings ?? '—'} · ${s.path_quality} path · ${s.source}${blob}</div>` +
+      (s.why||[]).map(w => `<div class="why">why: ${w}</div>`).join('') + `</div>`;
+  }).join('');
+  (d.recent||[]).forEach((s,i) => { const cv = $('mini'+i); if (cv) drawChart(cv, s.polls||[], false); });
+
+  const fd = d.findings;
+  $('findings').innerHTML = (!fd || !fd.findings) ? '<div class="card">The discovery pass has not published findings yet.</div>' :
+    fd.findings.map(x => `<div class="card finding"><div class="ft">${x.title}</div><p>${x.text}</p></div>`).join('') +
+    `<div class="sub">findings computed ${et(fd.built_at)} — re-run as the library grows; numbers are recomputed, never carried forward.</div>`;
+}
+
+function tick() {
+  const now = new Date();
+  let line = 'now ' + now.toLocaleString('en-US', {timeZone:'America/New_York', hour12:false}) + ' ET';
+  if (lastBuilt) {
+    const age = Math.round((Date.now() - new Date(lastBuilt).getTime())/1000);
+    line += ' · feed built ' + et(lastBuilt) + ' (' + age + 's ago)';
+    if (age > 180) line += ' · <span class="stale">STALE</span>';
+  }
+  $('clockline').innerHTML = line;
+}
+async function load() {
+  try {
+    const r = await fetch('snapshotdata.json?t=' + Date.now(), {cache:'no-store'});
+    render(await r.json());
+  } catch(e) { $('livestats').textContent = 'feed not reachable yet — the library is still recording.'; }
+  tick();
+}
+load(); setInterval(load, 15000); setInterval(tick, 1000);
+</script>
+</body>
+</html>

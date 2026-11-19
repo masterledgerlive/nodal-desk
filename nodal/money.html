@@ -73,6 +73,7 @@
   <div class="note" id="method"></div>
   <div class="spot" id="spot"></div>
   <div id="tbl"></div>
+  <div id="follow"></div>
 
   <div class="foot">
     Method: usernames resolved to public profiles (Polymarket US
@@ -85,7 +86,10 @@
     public. Chat badges are David's screenshots from the room tonight
     (Nov 18, ~9:33–9:56 PM ET): the app's own display of each
     chatter's live position in that market, and for US users the only
-    public money signal there is.
+    public money signal there is. <b>Tickets, not words:</b> every
+    flag, grade, label, and follow entry on this board derives from
+    actual positions and trades in the public record — chat talk
+    puts a name on the roster and nothing more.
   </div>
 </div>
 <script>
@@ -191,6 +195,29 @@ function row(p){
   if(!u.found && !(p.com && p.com.found)) plat = 'not found';
   const surf = (p.surfaces || ['room']).join(' · ');
   const pat = p.pattern || {};
+  let per = '';
+  if(pat.periods){
+    const L = {day:'today', week:'this week', month:'this month',
+               year:'this year', all:'all-time'};
+    const parts = [];
+    for(const k of ['day','week','month','year','all']){
+      const b = pat.periods[k];
+      if(b && (b.settled_n || b.trades_n))
+        parts.push(L[k] + ': ' + b.settled_n + ' settled · ' + b.w +
+          'W–' + b.l + 'L · <span class="' + cls(b.pnl) + '">' +
+          money(b.pnl) + '</span> · ' + b.trades_n + ' trades');
+    }
+    if(parts.length) per = '<div class="badge">' + parts.join('<br>') +
+      '</div>';
+  }
+  let bf = '';
+  if(pat.backfill && pat.backfill.earliest_ts)
+    bf = '<div class="badge">record reaches ' +
+      et(pat.backfill.earliest_ts * 1000) + ' ET · ' +
+      pat.backfill.trades_n + ' public trades' +
+      (pat.backfill.capped ? ' (API-capped)' : '') + '</div>';
+  else if(pat.backfill && pat.backfill.note)
+    bf = '<div class="badge">' + pat.backfill.note + '</div>';
   let contest = '';
   if(p.contest)
     contest = '<div class="badge">contest: ' + p.contest.graded +
@@ -205,6 +232,7 @@ function row(p){
       '<div class="badge">' + book + '</div>' : '') + '</td>' +
     '<td class="verd"><b>' + (pat.label || 'UNGRADED') + '</b>' +
     (pat.basis ? '<div class="badge">' + pat.basis + '</div>' : '') +
+    per + bf +
     '</td></tr>';
 }
 
@@ -246,7 +274,57 @@ function tick(){
     $('stale').style.display = 'block';
   else $('stale').style.display = 'none';
 }
+async function follow(){
+  try{
+    const f = await (await fetch('followdata.json?t=' + Date.now(),
+      {cache:'no-store'})).json();
+    let h = '<div class="sub" style="margin-top:26px">FOLLOW SUITE' +
+      ' — FOLLOW THE TOP · <span class="warn">SHADOW / PAPER ONLY' +
+      '</span></div>';
+    h += '<div class="flag">🐋 Whale line: a single-round position ' +
+      '≥ <b>' + money(f.whale_line_usd) + '</b> flags as a whale ' +
+      'round (top tier of the room\u2019s observed stakes). <b>A ' +
+      'whale\u2019s call is their ticket:</b> a big position ' +
+      'opening in a 5-min BTC market IS a call here — direction, ' +
+      'size, entry price, and time from the public record, ' +
+      'announced in #callers-contest while the round is live ' +
+      'whenever the data allows (a 45-second watch polls the ' +
+      'tracked books), graded at settlement like any contest ' +
+      'call, and followed below in shadow. A bet that only ' +
+      'becomes visible after settlement is marked LATE-CAPTURED ' +
+      'and still graded.</div>';
+    h += '<div class="foot">' + f.follow_rule + '. ' + f.note +
+      '</div>';
+    let t = '<table><tr><th>Player</th><th>Flagged rounds</th>' +
+      '<th>W–L</th><th>Follow P&amp;L / $1 · global (their price)' +
+      '</th><th>Follow P&amp;L / $1 · our US book</th>' +
+      '<th>This month</th></tr>';
+    for(const p of f.players){
+      const a = p.periods.all, m = p.periods.month;
+      t += '<tr><td class="nm">' + p.name + '</td><td>' +
+        a.rounds + '</td><td>' + a.w + 'W–' + a.l + 'L</td>' +
+        '<td class="' + cls(a.pnl_global) + '">' +
+        (a.rounds ? money(a.pnl_global) : '—') + '</td><td>' +
+        (a.us_priced ? '<span class="' + cls(a.pnl_us) + '">' +
+          money(a.pnl_us) + '</span> · ' + a.us_priced +
+          ' priced' : 'unpriced — no desk book record') +
+        '</td><td>' + (m.rounds ? m.rounds + ' rounds · ' +
+          m.w + 'W–' + m.l + 'L · ' + money(m.pnl_global) :
+          'no rounds') + '</td></tr>';
+    }
+    h += t + '</table>';
+    h += '<div class="foot">Both platforms: the global side is ' +
+      'their real public book, flagged from the API; the US side ' +
+      'is this follow calculation priced on our book — strangers' +
+      '\u2019 US books stay hidden, and no US positions of theirs ' +
+      'are shown or claimed. The follow suite covers tracked ' +
+      'players with public books; private US books produce no ' +
+      'flagged rounds to follow.</div>';
+    $('follow').innerHTML = h;
+  }catch(e){ /* follow feed not deployed yet */ }
+}
 load(); setInterval(load, 15000); setInterval(tick, 1000); tick();
+follow(); setInterval(follow, 60000);
 </script>
 </body>
 </html>
