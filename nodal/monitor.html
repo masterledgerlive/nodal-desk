@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MASTER LEDGER — MONITOR HALL · NODAL DESK</title>
+<style>
+  body { background:#0b0e14; color:#e8ecf4; font-family:ui-monospace,Menlo,Consolas,monospace; margin:0; padding:18px; }
+  h1 { color:#ffd75e; font-size:22px; margin:0 0 4px; }
+  h2 { color:#ffd75e; font-size:16px; margin:26px 0 8px; }
+  .sub { color:#8fa1bd; font-size:12px; }
+  .card { background:#131826; border:1px solid #232a3d; border-radius:10px; padding:12px 14px; margin:10px 0; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; color:#8fa1bd; font-weight:normal; padding:4px 6px; border-bottom:1px solid #232a3d; }
+  td { padding:5px 6px; border-bottom:1px solid #1a2030; vertical-align:top; }
+  .pos { color:#3ddc84; } .neg { color:#ff6b6b; }
+  .q { color:#ffd75e; } .fact { color:#ffd75e; font-weight:bold; }
+  .trig { border-left:3px solid #57b6ff; padding:6px 10px; margin:6px 0; background:#101623; font-size:13px; }
+  #fresh.stale { color:#ff6b6b; }
+  svg text { fill:#e8ecf4; font-family:ui-monospace,Menlo,Consolas,monospace; }
+  a { color:#57b6ff; }
+</style>
+</head>
+<body>
+<h1>🏛️ MASTER LEDGER — MONITOR HALL</h1>
+<div class="sub">The master ledger of ledgers — an eyeball on every ledger we can honestly read. Public records only. Masked = ❓ question mark, always; a line earns <b>100% FACTS</b> only when its record closes. Wires start thin and weak; every counted repetition makes them bolder — the picture IS the confidence.</div>
+<div class="sub" id="fresh">loading…</div>
+
+<h2>🔌 THE WIRES — PATHWAYS, WEIGHTED BY EVIDENCE</h2>
+<div class="card">
+  <svg id="wires" width="100%" height="430" viewBox="0 0 960 430" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="sub">How to read it: <span style="color:#8fa1bd">┄ thin dashed</span> = ❓ first sighting · growing solid = the tell repeating (FORMING → STRONG) · <span style="color:#ffd75e">gold bold</span> = FACT, record closed. Node size grows with the evidence flowing through it. Every wire below the diagram carries its counted evidence — nothing here is drawn from a claim.</div>
+  <table id="wiretable" style="margin-top:10px"><tr><th>from</th><th>to</th><th>kind</th><th>evidence (counted)</th><th>grade</th><th>what the record says</th></tr></table>
+</div>
+
+<h2>🏆 WINNER WINNERS — THE BLOCKCHAIN GAME'S HIGH SCORES</h2>
+<div class="card">
+  <div class="sub" style="margin-bottom:6px">Polymarket.com's own public leaderboard — recorded wins, not words. The RECORD is the venue's book; the IDENTITY stays ❓ masked unless they named themselves.</div>
+  <table id="winall"><tr><th>#</th><th>player</th><th>identity</th><th>all-time PnL</th><th>volume</th><th>trades counted</th></tr></table>
+</div>
+<div class="card">
+  <div class="sub" style="margin-bottom:6px">THIS MONTH</div>
+  <table id="winmonth"><tr><th>#</th><th>player</th><th>identity</th><th>month PnL</th><th>volume</th></tr></table>
+</div>
+
+<h2>🚪 THE GATES — FLAGGED WALLETS &amp; BIG MOVES</h2>
+<div class="card" id="whalecard"></div>
+<div class="card" id="suicard"></div>
+<div class="card">
+  <div class="fname" style="color:#ffd75e">Chain-flow trace — flagged sightings (latest trace)</div>
+  <div id="sightings" style="font-size:13px; margin-top:6px"></div>
+  <div class="sub" style="margin-top:6px">Sightings are the desk's recorded reporting (Arkham / Lookonchain / Whale Alert as cited in the traces) — sighted, not desk-verified. Repetition across traces is what strengthens them.</div>
+</div>
+<div class="card">
+  <div class="fname" style="color:#ffd75e">Polymarket US roster — books HIDDEN</div>
+  <div class="sub" id="usroster" style="margin-top:6px"></div>
+  <div class="sub">The US app shows badges, not books. Where a book is hidden, the Hall draws NO wire — the <a href="money.html">money board</a> carries what is public (profile stats) and says the rest plainly.</div>
+</div>
+
+<h2>🎯 GATE TRIGGERS — BIG PLAYS, SNAPSHOTTED</h2>
+<div id="triggers"></div>
+
+<div class="card">
+  <div class="fname" style="color:#ffd75e">THE HALL'S HONESTY RULES</div>
+  <div id="honesty" class="sub" style="margin-top:6px; line-height:1.7"></div>
+</div>
+
+<div class="sub" style="margin-top:20px">Refreshed on the desk's monitor cycle (~30 min) and carried by the batched deploy. All times ET. The BTC window-by-window library lives on its own page: <a href="snapshots.html">Snapshot Library</a>.</div>
+<div class="sub" id="clock"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const money = n => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('en-US', {maximumFractionDigits: 0});
+function et(ts) {
+  if (!ts) return '—';
+  const d = typeof ts === 'number' ? new Date(ts * 1000) : new Date(ts);
+  return d.toLocaleString('en-US', {timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'}) + ' ET';
+}
+function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+function drawWires(wires) {
+  const svg = $('wires');
+  const froms = [...new Set(wires.map(w => w.from))];
+  const tos = [...new Set(wires.map(w => w.to))];
+  const H = Math.max(430, froms.length * 52 + 30, tos.length * 90 + 30);
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 960 ${H}`);
+  const fx = 235, tx = 725;
+  const fy = i => 30 + i * ((H - 60) / Math.max(1, froms.length - 1 || 1));
+  const ty = i => 30 + i * ((H - 60) / Math.max(1, tos.length - 1 || 1));
+  const evOf = {};
+  wires.forEach(w => { evOf[w.from] = (evOf[w.from] || 0) + w.evidence_n; evOf[w.to] = (evOf[w.to] || 0) + w.evidence_n; });
+  let s = '';
+  wires.forEach(w => {
+    const y1 = fy(froms.indexOf(w.from)), y2 = ty(tos.indexOf(w.to));
+    const ev = w.evidence_n || 0;
+    const width = Math.min(8, 1 + Math.log2(ev + 1) * 1.1).toFixed(1);
+    const op = Math.min(0.95, 0.25 + Math.log10(ev + 1) * 0.3).toFixed(2);
+    const isFact = (w.grade || '').startsWith('FACT');
+    const color = isFact ? '#ffd75e' : '#57b6ff';
+    const dash = (w.grade || '').includes('QUESTION') ? ' stroke-dasharray="4 5"' : '';
+    s += `<path d="M ${fx} ${y1} C 480 ${y1}, 480 ${y2}, ${tx} ${y2}" fill="none" stroke="${color}" stroke-width="${width}" stroke-opacity="${op}"${dash}><title>${esc(w.from)} → ${esc(w.to)} · evidence ${ev} · ${esc(w.grade)}</title></path>`;
+  });
+  froms.forEach((n, i) => {
+    const r = Math.min(13, 5 + Math.log2((evOf[n] || 0) + 1) * 1.2);
+    s += `<circle cx="${fx}" cy="${fy(i)}" r="${r}" fill="#1b2338" stroke="#57b6ff"/><text x="${fx - r - 8}" y="${fy(i) + 4}" text-anchor="end" font-size="12">${esc(n.length > 30 ? n.slice(0, 29) + '…' : n)}</text>`;
+  });
+  tos.forEach((n, i) => {
+    const r = Math.min(15, 5 + Math.log2((evOf[n] || 0) + 1) * 1.2);
+    s += `<circle cx="${tx}" cy="${ty(i)}" r="${r}" fill="#1b2338" stroke="#ffd75e"/><text x="${tx + r + 8}" y="${ty(i) + 4}" font-size="12">${esc(n)}</text>`;
+  });
+  svg.innerHTML = s;
+}
+
+async function tick() {
+  $('clock').textContent = 'your clock: ' + new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}) + ' ET';
+  try {
+    const d = await (await fetch('monitordata.json?t=' + Date.now(), {cache: 'no-store'})).json();
+    const age = Math.round((Date.now() - new Date(d.built_at).getTime()) / 60000);
+    const f = $('fresh');
+    f.textContent = `feed built ${et(d.built_at)} · ${age} min old`;
+    f.className = 'sub' + (age > 75 ? ' stale' : '');
+    f.id = 'fresh';
+
+    drawWires(d.wires);
+    $('wiretable').innerHTML = '<tr><th>from</th><th>to</th><th>kind</th><th>evidence (counted)</th><th>grade</th><th>what the record says</th></tr>' +
+      d.wires.map(w => `<tr><td>${esc(w.from)}</td><td>${esc(w.to)}</td><td>${esc(w.kind)}</td><td>${esc(w.evidence_label || w.evidence_n)}</td><td class="${w.grade.startsWith('FACT') ? 'fact' : (w.grade.includes('QUESTION') ? 'q' : '')}">${esc(w.grade)}</td><td style="text-align:left">${esc(w.note)}</td></tr>`).join('');
+
+    const wrow = r => `<tr><td>${r.rank}</td><td>${esc(r.name)}${r.x ? ` <span class="sub">@${esc(r.x)}</span>` : ''}</td><td class="${r.identity.includes('MASKED') ? 'q' : ''}">${esc(r.identity)}</td><td class="${r.pnl >= 0 ? 'pos' : 'neg'}">${money(r.pnl)}</td><td>${money(r.volume)}</td>`;
+    $('winall').innerHTML = '<tr><th>#</th><th>player</th><th>identity</th><th>all-time PnL</th><th>volume</th><th>trades counted</th></tr>' +
+      d.winners_all.map(r => wrow(r) + `<td>${r.trades_counted === null || r.trades_counted === undefined ? '—' : (r.trades_counted >= 300 ? '300+' : r.trades_counted)}</td></tr>`).join('');
+    $('winmonth').innerHTML = '<tr><th>#</th><th>player</th><th>identity</th><th>month PnL</th><th>volume</th></tr>' +
+      d.winners_month.map(r => wrow(r) + '</tr>').join('');
+
+    const W = d.whale;
+    $('whalecard').innerHTML = `<div class="fname" style="color:#ffd75e">🐋 The money-board whale — 8888888888888888 (Polymarket.com wallet)</div>
+      <div style="font-size:13px; margin-top:6px">Recorded book: all-time PnL <span class="${W.pnl_all >= 0 ? 'pos' : 'neg'}">${money(W.pnl_all)}</span> · volume ${money(W.volume)} · ${W.trades_seen} trades · ${W.settled_positions} settled position · last trade ${et(W.last_trade_ts)}. The room badge that flagged this name ($3.18k on a 5-min DOWN call) has NO matching trade in this wallet's public book — the badge is not the book, and the Hall keeps the line at <span class="fact">FACT — record closed</span> for the book itself, ❓ for whoever holds the badge.</div>`;
+
+    $('suicard').innerHTML = `<div class="fname" style="color:#ffd75e">Sui mainnet — our own gates (LOUD identities)</div>` +
+      d.sui.map(w => `<div style="font-size:13px; margin-top:6px"><b>${esc(w.name)}</b> · ${esc(w.addr.slice(0, 10))}…${esc(w.addr.slice(-6))} · balance read live: <b>${w.sui ?? '?'} SUI</b>${w.wal ? ` · ${w.wal} WAL` : ''} · sightings strengthen this wire every monitor cycle</div>`).join('');
+
+    $('sightings').innerHTML = d.flow.sightings.map(s => `<div style="margin:5px 0">👁 ${esc(s)}</div>`).join('') +
+      `<div class="sub" style="margin-top:6px">source: ${esc(d.flow.latest_file)} · gateway repetition across the last ${d.flow.trace_days} traces — BTC ETF outflow days: ${d.flow.btc_etf_out_days} · ETH ETF outflow days: ${d.flow.eth_etf_out_days} · stablecoin contraction prints: ${d.flow.stable_down_days}</div>`;
+
+    $('usroster').textContent = d.us_roster.join(' · ');
+
+    $('triggers').innerHTML = d.triggers.map(t => `<div class="trig"><b>${esc(t.gate)}</b> — ${esc(t.text)} <span class="sub">(${esc(t.source)})</span></div>`).join('');
+    $('honesty').innerHTML = d.honesty.map(h => `• ${esc(h)}`).join('<br>');
+  } catch (e) {
+    $('fresh').textContent = 'feed unavailable — the Hall never guesses';
+    $('fresh').className = 'sub stale'; $('fresh').id = 'fresh';
+  }
+}
+tick(); setInterval(tick, 15000);
+</script>
+</body>
+</html>
