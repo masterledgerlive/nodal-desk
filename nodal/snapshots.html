@@ -105,6 +105,7 @@
 <h2>🔬 FINDINGS — WHAT THE DATA ACTUALLY SHOWS</h2>
 <div id="findings"><div class="card">findings loading…</div></div>
 
+<div class="sub" id="registryline" style="margin-top:16px"></div>
 <div class="sub" style="margin-top:20px">Snapshots are stored on Walrus testnet (free) — blob links ride each card once the read-back verifies. Every snapshot is fingerprinted at ingest and carries a compact marker (SNAP1|…) designed to port: today it rides beside the blob mirror; in the future form the same marker rides in a chain transaction's data field. The library's capture is full-window from 2026-11-19; earlier windows are partial paths from the RIPTIDE flow polls and say so on their card. Page refreshes on the desk's batched deploy cadence; the feed's own clock below is the truth about freshness.</div>
 
 <script>
@@ -236,6 +237,12 @@ async function load() {
     if (viewMode === 'flow') buildField(d);
     fillBuoyTargets(d); evalBuoys(d);
   } catch(e) { $('livestats').textContent = 'feed not reachable yet — the library is still recording.'; }
+  try {
+    const rs = await (await fetch('snapshot_registry_status.json?t=' + Date.now(), {cache: 'no-store'})).json();
+    $('registryline').innerHTML = rs.status === 'BLOB-LIVE'
+      ? `🧠 Registry memory: <b style="color:#3ddc84">BLOB-LIVE</b> — this library's registry (families, thresholds, buoy routes, leader grades) lives in Walrus blob ${rs.blob_id} · sha ${rs.sha256}…, proven by read-back, re-blobbed before expiry. Local files are cache only.`
+      : `🧠 Registry memory: <b style="color:#ffd75e">${rs.status}</b> — the registry blob PUT is pending (the public Walrus publisher is out of WAL coins at last check); the registry rides in cache, labeled as cache, until the reblobber lands it.`;
+  } catch (e) {}
   tick();
 }
 

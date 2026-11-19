@@ -87,6 +87,19 @@
 <h2>🎯 GATE TRIGGERS — BIG PLAYS, SNAPSHOTTED</h2>
 <div id="triggers"></div>
 
+<h2>🚩 GATE FLAGS — EVERY FLAG CARRIES ITS TRIGGER</h2>
+<div id="gateflags"></div>
+
+<h2>🛤️ FULL PATHS — BEGINNING TO END</h2>
+<div class="sub" style="margin-bottom:6px">A flagged wallet's movement as a path: where it began, every recorded leg, hot while it's traveling (a leg inside the last 24 hours), and the destination in plain sight. When a known name passes a gate, the flag above says why we were watching — you already knew this guy was coming; that was a snapshot.</div>
+<div id="paths"></div>
+
+<div class="card">
+  <div class="fname" style="color:#ffd75e">🧠 REGISTRY MEMORY — THE BLOB IS THE MEMORY</div>
+  <div class="sub" id="registryline" style="margin-top:6px"></div>
+  <div class="sub">This Hall's registry (wallets, paths, flags) lives in a Walrus blob, re-proven by read-back and re-blobbed before its epochs lapse by the registry reblobber. Local files are cache/working copies only — never the record of truth.</div>
+</div>
+
 <div class="card">
   <div class="fname" style="color:#ffd75e">THE HALL'S HONESTY RULES</div>
   <div id="honesty" class="sub" style="margin-top:6px; line-height:1.7"></div>
@@ -175,6 +188,22 @@ async function tick() {
     $('usroster').textContent = d.us_roster.join(' · ');
 
     $('triggers').innerHTML = d.triggers.map(t => `<div class="trig"><b>${esc(t.gate)}</b> — ${esc(t.text)} <span class="sub">(${esc(t.source)})</span></div>`).join('');
+
+    $('gateflags').innerHTML = (d.flags && d.flags.length) ? d.flags.map(f =>
+      `<div class="trig" style="border-left-color:#ffd75e"><b>${esc(f.flag)}</b> — ${esc(f.entity)} <span class="sub">(${et(f.at)})</span><br><span class="sub">trigger:</span> ${esc(f.trigger)}<br><span class="sub">why it fired:</span> ${esc(f.reason)}</div>`).join('')
+      : '<div class="sub">No gate flags yet — the gates are watching; a flag fires the moment a snapshotted name moves, and it will carry its trigger with it.</div>';
+
+    $('paths').innerHTML = (d.paths || []).map(p =>
+      `<div class="card"><div class="fname" style="color:${p.hot ? '#ff6b6b' : '#57b6ff'}">${p.hot ? '🔥 HOT PATH' : '🛤️ PATH'} — ${esc(p.name)}</div>` +
+      `<div class="sub" style="margin:4px 0">${esc(p.coverage)} · began ${et(p.began)} · last leg ${et(p.last_leg)}</div>` +
+      `<div style="font-size:12.5px; line-height:2">` +
+      p.legs.map(l => `<span style="background:#1b2338;border:1px solid #2a3a55;border-radius:6px;padding:2px 7px;white-space:nowrap">${et(l.t)} · ${esc(l.action)}${l.usd !== null && l.usd !== undefined ? ' · $' + l.usd : ''} <span class="sub">${esc((l.market || '').slice(0, 44))}</span></span>`).join(' <span style="color:#ffd75e">→</span> ') +
+      ` <span style="color:#ffd75e">→</span> <span style="background:#2a2410;border:1px solid #ffd75e;border-radius:6px;padding:2px 7px">🎯 ${esc(p.destination)}</span></div></div>`).join('');
+
+    const R = d.registry || {};
+    $('registryline').innerHTML = R.status === 'BLOB-LIVE'
+      ? `monitor-registry: <b style="color:#3ddc84">BLOB-LIVE</b> · blob ${esc(R.blob_id || '')} · sha ${esc(R.sha256 || '')}… — recall proven by read-back.`
+      : `monitor-registry: <b style="color:#ffd75e">${esc(R.status || 'UNKNOWN')}</b> — the blob PUT has not landed yet (the public Walrus publisher is out of WAL coins at last check); the registry rides in cache, labeled as cache, and the reblobber lands it the moment the publisher recovers.`;
     $('honesty').innerHTML = d.honesty.map(h => `• ${esc(h)}`).join('<br>');
   } catch (e) {
     $('fresh').textContent = 'feed unavailable — the Hall never guesses';
