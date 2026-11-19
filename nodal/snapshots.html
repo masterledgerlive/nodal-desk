@@ -52,6 +52,11 @@
   <div class="sub">Gold line: UP mid price (0–1). Dashed: 50¢ — the decision line. A window is only ever graded after it settles.</div>
 </div>
 <div id="flags"></div>
+<div class="card" id="routecard" style="display:none">
+  <div class="fname">🧭 BUOY ROUTE — HOW FAR DOWN THE ROUTE IS THIS PLAY?</div>
+  <div id="routestrip" style="font-size:13.5px; margin-top:6px; line-height:1.9"></div>
+  <div class="sub">Buoys are laid along each family's route in our own snapshot space. A forming play crosses them in sequence — hit, hit, hit — each one confirming direction and timing, so the route progress reads BEFORE the big move. The chain's aim is the fire point at the low: the decisive buoy tripping, not the move completing.</div>
+</div>
 
 <h2>👪 THE FAMILIES — COUNTED BASE RATES</h2>
 <div class="card">
@@ -72,7 +77,7 @@
 <h2>🔬 FINDINGS — WHAT THE DATA ACTUALLY SHOWS</h2>
 <div id="findings"><div class="card">findings loading…</div></div>
 
-<div class="sub" style="margin-top:20px">Snapshots are stored on Walrus testnet (free) — blob links ride each card once the read-back verifies. The library's capture is full-window from 2026-11-19; earlier windows are partial paths from the RIPTIDE flow polls and say so on their card. Page refreshes on the desk's batched deploy cadence; the feed's own clock below is the truth about freshness.</div>
+<div class="sub" style="margin-top:20px">Snapshots are stored on Walrus testnet (free) — blob links ride each card once the read-back verifies. Every snapshot is fingerprinted at ingest and carries a compact marker (SNAP1|…) designed to port: today it rides beside the blob mirror; in the future form the same marker rides in a chain transaction's data field. The library's capture is full-window from 2026-11-19; earlier windows are partial paths from the RIPTIDE flow polls and say so on their card. Page refreshes on the desk's batched deploy cadence; the feed's own clock below is the truth about freshness.</div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -135,6 +140,19 @@ function render(d) {
     }).join('');
   }
 
+  const R = L.routes || {};
+  if (R.best && R[R.best]) {
+    const r = R[R.best];
+    $('routecard').style.display = 'block';
+    $('routestrip').innerHTML = `<b style="color:#ffd75e">${R.best.replace('_','-')}</b> route — <b>${r.progress_pct}%</b> down the route (${r.hits}/${r.total} buoys)<br>` +
+      r.buoys.map(b => {
+        const state = b.hit ? '<span style="color:#3ddc84">● HIT</span>' : (b.at_s && L.elapsed < b.at_s ? '<span style="color:#8fa1bd">○ waiting</span>' : '<span style="color:#5a6a8a">○ —</span>');
+        return `${state} ${b.name}`;
+      }).join(' &nbsp;→&nbsp; ');
+  } else {
+    $('routecard').style.display = 'none';
+  }
+
   const ft = $('famtable');
   const rows = ['ONE_TURNER','FLIP','CHOP','CLEAN','MIXED'].map(name => {
     const s = (d.families||{})[name] || {n:0};
@@ -149,6 +167,7 @@ function render(d) {
     return `<div class="card"><div><span class="badge ${s.family}">${(s.family||'').replace('_','-')}</span>${el}<b>${et(s.wiso)}</b> · ${res}</div>` +
       `<canvas class="mini" id="mini${i}" width="330" height="54"></canvas>` +
       `<div class="sub">break ${s.break_s ?? '—'}s · range ${s.range ?? '—'} · crosses ${s.crossings ?? '—'} · ${s.path_quality} path · ${s.source}${blob}</div>` +
+      (s.marker ? `<div class="sub" style="color:#57b6ff">marker ${s.marker}</div>` : '') +
       (s.why||[]).map(w => `<div class="why">why: ${w}</div>`).join('') + `</div>`;
   }).join('');
   (d.recent||[]).forEach((s,i) => { const cv = $('mini'+i); if (cv) drawChart(cv, s.polls||[], false); });
