@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-18T23:58:35Z",
+ "built_at": "2026-11-19T00:16:14Z",
  "conventions": [
   "Every step under a call comes from the sealed ledger \u2014 nothing here is reconstructed from memory.",
   "EARLY and RIPTIDE WHY / EXIT lines are the engines' own sealed words, quoted.",
@@ -155,10 +155,46 @@
     "lent_out": 0,
     "defaults_suffered": 0,
     "defaults_caused": 0,
-    "calls_total": 784,
+    "calls_total": 785,
     "calls_listed": 150
    },
    "calls": [
+    {
+     "engine": "PLAIN",
+     "window": "2026-11-19T00:10:00Z",
+     "side": "down",
+     "chance": 0.673,
+     "result": null,
+     "correct": null,
+     "brier": null,
+     "seq": [
+      20640,
+      null
+     ],
+     "steps": [
+      {
+       "kind": "STATE",
+       "at": "2026-11-19T00:10:00Z",
+       "text": "Window opened \u2014 index open 62,674.26."
+      },
+      {
+       "kind": "CHECK",
+       "at": "+142s",
+       "text": "Index verified from coinbase + kraken (stand-in median); live index 62,637.76 at the call; remaining sigma 0.0013."
+      },
+      {
+       "kind": "WHY",
+       "at": "+142s",
+       "text": "BTC fell $36 from the open with 157s left \u2014 the model put DOWN at 67% (call floor 60%). Called 142s in. [read off the sealed call fields]"
+      },
+      {
+       "kind": "EXIT",
+       "at": "\u2014",
+       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
+      }
+     ],
+     "priced": null
+    },
     {
      "engine": "PLAIN",
      "window": "2026-11-18T23:45:00Z",
@@ -6621,47 +6657,6 @@
        "kind": "SETTLE",
        "at": "2026-11-17T12:50:00Z",
        "text": "Settled UP at 64,924.09 \u2014 call RIGHT \u2713 \u00b7 Brier 0.0178."
-      }
-     ],
-     "priced": null
-    },
-    {
-     "engine": "PLAIN",
-     "window": "2026-11-17T12:40:00Z",
-     "side": "up",
-     "chance": 0.64,
-     "result": "up",
-     "correct": true,
-     "brier": 0.1296,
-     "seq": [
-      13780,
-      13785
-     ],
-     "steps": [
-      {
-       "kind": "STATE",
-       "at": "2026-11-17T12:40:00Z",
-       "text": "Window opened \u2014 index open 64,877.28."
-      },
-      {
-       "kind": "CHECK",
-       "at": "+139s",
-       "text": "Index verified from kraken (stand-in median); live index 64,897.20 at the call; remaining sigma 0.0009."
-      },
-      {
-       "kind": "WHY",
-       "at": "+139s",
-       "text": "BTC rose $20 from the open with 160s left \u2014 the model put UP at 64% (call floor 60%). Called 139s in. [read off the sealed call fields]"
-      },
-      {
-       "kind": "EXIT",
-       "at": "\u2014",
-       "text": "No exit decision \u2014 PLAIN rides to settlement by rule. (The real-run overlay would sell at a 95\u00a2 bid; the sim lane holds.)"
-      },
-      {
-       "kind": "SETTLE",
-       "at": "2026-11-17T12:40:00Z",
-       "text": "Settled UP at 64,898.35 \u2014 call RIGHT \u2713 \u00b7 Brier 0.1296."
       }
      ],
      "priced": null
