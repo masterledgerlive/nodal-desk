@@ -45,6 +45,34 @@
 <div class="sub">Every 5-minute BTC window, recorded as it happens — chart shape, price path, order flow, where the decision point broke, and a graded WHY. Windows loop into families; a live window that matches a family pulls that family's whole counted history. <b style="color:#ffd75e">Flags inform — they never call the window for you.</b></div>
 <div class="sub" id="clockline">—</div>
 
+<div style="margin:12px 0">
+  <button id="tabAnalytics" onclick="setMode('analytics')" style="background:#ffd75e;color:#0b0e14;border:none;border-radius:6px;padding:7px 14px;font-family:inherit;font-weight:bold;cursor:pointer">📊 ANALYTICS</button>
+  <button id="tabFlow" onclick="setMode('flow')" style="background:#1b2338;color:#e8ecf4;border:1px solid #2a3a55;border-radius:6px;padding:7px 14px;font-family:inherit;cursor:pointer">⚡ FLOW FIELD</button>
+  <span class="sub">— the same data, two views. Flow field reads at a glance: <span style="color:#57b6ff">blue = flowing in</span>, <span style="color:#ff6b6b">red = flowing out</span>, fat wire = heavy transmission, bubbles = individual movements.</span>
+</div>
+
+<div class="card" id="flowpanel" style="display:none">
+  <div class="fname">⚡ THE FIELD — BTC AND ITS ROUTES</div>
+  <div class="sub" id="flowmeta" style="margin:4px 0 8px"></div>
+  <svg id="fieldsvg" width="100%" height="440" viewBox="0 0 960 440" preserveAspectRatio="xMidYMid meet"></svg>
+  <div style="margin-top:10px">
+    <button onclick="grabView()" style="background:#57b6ff;color:#0b0e14;border:none;border-radius:6px;padding:7px 14px;font-family:inherit;font-weight:bold;cursor:pointer">📸 GRAB THIS VIEW</button>
+    <span class="sub">one action — the view becomes a portable grab (marker GRAB1), and a buoy can be set from it.</span>
+  </div>
+  <div id="grabout" style="margin-top:8px"></div>
+  <div style="margin-top:14px; border-top:1px solid #232a3d; padding-top:10px">
+    <div class="fname">🛟 YOUR BUOYS <span class="sub">(viewer buoys — your own markers on the route; they live in this browser, no account, no money)</span></div>
+    <div style="font-size:13px; margin-top:8px">
+      target <select id="buoyTarget" onchange="buoyTargetChanged()" style="background:#0b0e14;color:#e8ecf4;border:1px solid #2a3a55;border-radius:4px;padding:4px"></select>
+      metric <select id="buoyMetric" style="background:#0b0e14;color:#e8ecf4;border:1px solid #2a3a55;border-radius:4px;padding:4px"></select>
+      ≥ <input id="buoyValue" type="number" step="any" style="width:80px;background:#0b0e14;color:#e8ecf4;border:1px solid #2a3a55;border-radius:4px;padding:4px">
+      note <input id="buoyNote" type="text" placeholder="why this buoy" style="width:180px;background:#0b0e14;color:#e8ecf4;border:1px solid #2a3a55;border-radius:4px;padding:4px">
+      <button onclick="addBuoy()" style="background:#ffd75e;color:#0b0e14;border:none;border-radius:6px;padding:6px 12px;font-family:inherit;font-weight:bold;cursor:pointer">SET BUOY</button>
+    </div>
+    <div id="buoylist" style="margin-top:8px"></div>
+  </div>
+</div>
+
 <h2>🔴 LIVE WINDOW — FLAGS FIRST</h2>
 <div class="card">
   <div id="livestats">waiting for the feed…</div>
@@ -202,10 +230,119 @@ function tick() {
 async function load() {
   try {
     const r = await fetch('snapshotdata.json?t=' + Date.now(), {cache:'no-store'});
-    render(await r.json());
+    const d = await r.json();
+    window._feed = d;
+    render(d);
+    if (viewMode === 'flow') buildField(d);
+    fillBuoyTargets(d); evalBuoys(d);
   } catch(e) { $('livestats').textContent = 'feed not reachable yet — the library is still recording.'; }
   tick();
 }
+
+/* ---------- FLOW FIELD + GRAB + VIEWER BUOYS (shared visual language) ---------- */
+let viewMode = 'analytics';
+function setMode(m) {
+  viewMode = m;
+  $('flowpanel').style.display = m === 'flow' ? 'block' : 'none';
+  $('tabFlow').style.background = m === 'flow' ? '#ffd75e' : '#1b2338';
+  $('tabFlow').style.color = m === 'flow' ? '#0b0e14' : '#e8ecf4';
+  $('tabAnalytics').style.background = m === 'analytics' ? '#ffd75e' : '#1b2338';
+  $('tabAnalytics').style.color = m === 'analytics' ? '#0b0e14' : '#e8ecf4';
+  if (m === 'flow' && window._feed) buildField(window._feed);
+}
+function fnv(s) { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); }
+const ASSET_POS = {gold: [160, 78], eth: [160, 362], spx: [800, 78], eurusd: [800, 362], dxy: [480, 36]};
+function buildField(d) {
+  const pairs = (d.leadlag && d.leadlag.pairs) || [];
+  const L = d.live || {};
+  $('flowmeta').textContent = `live window ${L.wiso || '—'} · ${(L.flags || []).map(f => f.flag).join(', ') || 'no flags'} · routes best: ${(L.routes && L.routes.best) || '—'} · wires show each pair's measured rate (correlation + lag); fatness = counted events. Direction is the pair's graded tendency: follow-pairs flow IN to BTC, against-pairs flow OUT.`;
+  let s = '';
+  const cx = 480, cy = 220;
+  pairs.forEach((p, i) => {
+    const pos = ASSET_POS[p.leader]; if (!pos) return;
+    const [ax, ay] = pos;
+    const corr = p.corr || 0;
+    const inward = corr >= 0;
+    const x1 = inward ? ax : cx, y1 = inward ? ay : cy, x2 = inward ? cx : ax, y2 = inward ? cy : ay;
+    const mx = (x1 + x2) / 2, my = Math.min(y1, y2) - 46;
+    const wdt = (1.5 + Math.min(6.5, (p.events || 0) / 22)).toFixed(1);
+    const color = inward ? '#57b6ff' : '#ff6b6b';
+    const op = (0.35 + Math.min(0.6, Math.abs(corr))).toFixed(2);
+    const pid = 'fp' + i;
+    s += `<path id="${pid}" d="M ${x1} ${y1} Q ${mx} ${my}, ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="${wdt}" stroke-opacity="${op}"/>`;
+    s += `<text x="${mx}" y="${my - 8}" text-anchor="middle" font-size="11.5" fill="${color}">rate ${corr >= 0 ? '+' : ''}${corr ?? '—'} · lag ${p.lag_min ?? '—'}m · ${p.events ?? 0} events · ${p.grade || ''}</text>`;
+    const nb = Math.max(1, Math.min(8, Math.round((p.events || 0) / 22)));
+    const dur = Math.max(2.5, 9 - Math.abs(corr) * 7).toFixed(1);
+    for (let b = 0; b < nb; b++) {
+      s += `<circle r="3.2" fill="#ffffff" fill-opacity="0.9"><animateMotion dur="${dur}s" begin="${(-b * dur / nb).toFixed(1)}s" repeatCount="indefinite"><mpath href="#${pid}"/></animateMotion></circle>`;
+    }
+    s += `<circle cx="${ax}" cy="${ay}" r="17" fill="#1b2338" stroke="${color}"/><text x="${ax}" y="${ay + 4}" text-anchor="middle" font-size="11">${p.leader.toUpperCase()}</text>`;
+  });
+  s += `<circle cx="${cx}" cy="${cy}" r="27" fill="#1b2338" stroke="#ffd75e" stroke-width="2"/><text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="14" fill="#ffd75e">BTC</text>`;
+  $('fieldsvg').innerHTML = s;
+}
+function grabView() {
+  const d = window._feed; if (!d) return;
+  const g = {grabbed_at: new Date().toISOString(), page: 'snapshots', mode: viewMode,
+    live: {window: d.live.wiso, flags: (d.live.flags || []).map(f => f.flag), routes_best: (d.live.routes || {}).best || null},
+    pairs: ((d.leadlag || {}).pairs || []).map(p => ({leader: p.leader, grade: p.grade, lag_min: p.lag_min, corr: p.corr, events: p.events, hit_rate: p.hit_rate}))};
+  const raw = JSON.stringify(g);
+  g.marker = `GRAB1|pg=snap|t=${Math.floor(Date.now() / 1000)}|n=${g.pairs.length}|ck=${fnv(raw)}`;
+  const blob = new Blob([JSON.stringify(g, null, 1)], {type: 'application/json'});
+  $('grabout').innerHTML = `<div class="card" style="border-color:#57b6ff"><div class="fname" style="color:#57b6ff">📸 GRABBED</div><div class="sub" style="color:#57b6ff; margin:4px 0">${g.marker}</div><div style="font-size:13px">live window ${g.live.window} · flags ${g.live.flags.join(', ') || 'none'} · ${g.pairs.length} leader pairs with their grades, lags and counted events.</div><a href="${URL.createObjectURL(blob)}" download="nodal-grab.json" style="font-size:13px">⬇ download the grab (JSON)</a> <span class="sub">— then set a buoy on what you see, below.</span></div>`;
+}
+const BUOY_KEY = 'nodal_viewer_buoys_v1';
+function loadBuoys() { try { return JSON.parse(localStorage.getItem(BUOY_KEY) || '[]'); } catch (e) { return []; } }
+function saveBuoys(b) { localStorage.setItem(BUOY_KEY, JSON.stringify(b)); }
+function fillBuoyTargets(d) {
+  const sel = $('buoyTarget'); if (!sel || sel.options.length) return;
+  const pairs = ((d.leadlag || {}).pairs || []).map(p => `<option value="pair:${p.leader}">leader pair — ${p.leader}</option>`).join('');
+  const routes = ['ONE_TURNER', 'FLIP', 'CHOP', 'CLEAN'].map(f => `<option value="route:${f}">family route — ${f.replace('_', '-')}</option>`).join('');
+  sel.innerHTML = pairs + routes;
+  buoyTargetChanged();
+}
+function buoyTargetChanged() {
+  const t = $('buoyTarget').value || '';
+  $('buoyMetric').innerHTML = t.startsWith('pair:')
+    ? '<option value="hit_rate">hit rate (0–1)</option><option value="events">counted events</option><option value="corr_abs">|correlation|</option>'
+    : '<option value="progress_pct">route progress %</option>';
+}
+function addBuoy() {
+  const [type, id] = ($('buoyTarget').value || '').split(':');
+  const b = {buoy_id: 'vb-' + Date.now().toString(36), owner: 'viewer', created_at: new Date().toISOString(),
+    scope: 'btc-snapshot', target: {type: type === 'pair' ? 'pair' : 'family-route', id},
+    condition: {metric: $('buoyMetric').value, op: '>=', value: parseFloat($('buoyValue').value)},
+    note: $('buoyNote').value || '', armed: true, last_hit_at: null};
+  if (isNaN(b.condition.value)) { alert('give the buoy a number to watch for'); return; }
+  const all = loadBuoys(); all.push(b); saveBuoys(all); evalBuoys(window._feed);
+}
+function buoyCurrent(b, d) {
+  if (!d) return null;
+  if (b.target.type === 'pair') {
+    const p = ((d.leadlag || {}).pairs || []).find(x => x.leader === b.target.id); if (!p) return null;
+    if (b.condition.metric === 'hit_rate') return p.hit_rate;
+    if (b.condition.metric === 'events') return p.events;
+    if (b.condition.metric === 'corr_abs') return Math.abs(p.corr || 0);
+  }
+  if (b.target.type === 'family-route') {
+    const r = (d.live.routes || {})[b.target.id]; return r ? r.progress_pct : null;
+  }
+  return null;
+}
+function evalBuoys(d) {
+  const all = loadBuoys();
+  const mine = all.filter(b => b.scope === 'btc-snapshot');
+  let changed = false;
+  $('buoylist').innerHTML = mine.length ? mine.map(b => {
+    const cur = buoyCurrent(b, d);
+    const hit = cur !== null && cur !== undefined && cur >= b.condition.value;
+    if (hit && !b.last_hit_at) { b.last_hit_at = new Date().toISOString(); changed = true; }
+    return `<div class="card" style="margin:6px 0; ${hit ? 'border-color:#ffd75e' : ''}"><b style="color:${hit ? '#ffd75e' : '#57b6ff'}">🛟 ${hit ? 'BUOY HIT' : 'buoy set'}</b> <span style="font-size:13px">${b.target.type} ${b.target.id} · ${b.condition.metric} ≥ ${b.condition.value} · now: ${cur ?? '—'}${b.note ? ' · ' + b.note.replace(/</g, '&lt;') : ''}${b.last_hit_at ? ' · first hit ' + new Date(b.last_hit_at).toLocaleString('en-US', {timeZone: 'America/New_York'}) + ' ET' : ''}</span> <a href="#" onclick="delBuoy('${b.buoy_id}'); return false;" style="font-size:12px">remove</a></div>`;
+  }).join('') : '<div class="sub">no buoys yet — set one on a leader pair or a family route.</div>';
+  if (changed) saveBuoys(all);
+}
+function delBuoy(id) { saveBuoys(loadBuoys().filter(b => b.buoy_id !== id)); evalBuoys(window._feed); }
+
 load(); setInterval(load, 15000); setInterval(tick, 1000);
 </script>
 </body>

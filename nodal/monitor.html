@@ -26,6 +26,33 @@
 <div class="sub">The master ledger of ledgers — an eyeball on every ledger we can honestly read. Public records only. Masked = ❓ question mark, always; a line earns <b>100% FACTS</b> only when its record closes. Wires start thin and weak; every counted repetition makes them bolder — the picture IS the confidence.</div>
 <div class="sub" id="fresh">loading…</div>
 
+<div style="margin:12px 0">
+  <button id="tabAnalytics" onclick="setMode('analytics')" style="background:#ffd75e;color:#0b0e14;border:none;border-radius:6px;padding:7px 14px;font-family:inherit;font-weight:bold;cursor:pointer">📊 ANALYTICS</button>
+  <button id="tabFlow" onclick="setMode('flow')" style="background:#1b2338;color:#e8ecf4;border:1px solid #2a3a55;border-radius:6px;padding:7px 14px;font-family:inherit;cursor:pointer">⚡ FLOW FIELD</button>
+  <span class="sub">— the same wires, two views. Flow field: <span style="color:#57b6ff">blue = flowing in</span>, <span style="color:#ff6b6b">red = flowing out</span>, fatness = counted evidence, bubbles = individual sightings.</span>
+</div>
+
+<div class="card" id="flowpanel" style="display:none">
+  <div class="fname" style="color:#ffd75e">⚡ THE FIELD — THE GATES, LIVE</div>
+  <div class="sub" id="flowmeta" style="margin:4px 0 8px"></div>
+  <svg id="fieldsvg" width="100%" height="440" viewBox="0 0 960 440" preserveAspectRatio="xMidYMid meet"></svg>
+  <div style="margin-top:10px">
+    <button onclick="grabView()" style="background:#57b6ff;color:#0b0e14;border:none;border-radius:6px;padding:7px 14px;font-family:inherit;font-weight:bold;cursor:pointer">📸 GRAB THIS VIEW</button>
+    <span class="sub">one action — the view becomes a portable grab (marker GRAB1), and a buoy can be set from it.</span>
+  </div>
+  <div id="grabout" style="margin-top:8px"></div>
+  <div style="margin-top:14px; border-top:1px solid #232a3d; padding-top:10px">
+    <div class="fname" style="color:#ffd75e">🛟 YOUR BUOYS <span class="sub">(viewer buoys — your own markers on a wire; they live in this browser, no account, no money)</span></div>
+    <div style="font-size:13px; margin-top:8px">
+      wire <select id="buoyTarget" style="background:#0b0e14;color:#e8ecf4;border:1px solid #2a3a55;border-radius:4px;padding:4px"></select>
+      evidence ≥ <input id="buoyValue" type="number" step="any" style="width:80px;background:#0b0e14;color:#e8ecf4;border:1px solid #2a3a55;border-radius:4px;padding:4px">
+      note <input id="buoyNote" type="text" placeholder="why this buoy" style="width:180px;background:#0b0e14;color:#e8ecf4;border:1px solid #2a3a55;border-radius:4px;padding:4px">
+      <button onclick="addBuoy()" style="background:#ffd75e;color:#0b0e14;border:none;border-radius:6px;padding:6px 12px;font-family:inherit;font-weight:bold;cursor:pointer">SET BUOY</button>
+    </div>
+    <div id="buoylist" style="margin-top:8px"></div>
+  </div>
+</div>
+
 <h2>🔌 THE WIRES — PATHWAYS, WEIGHTED BY EVIDENCE</h2>
 <div class="card">
   <svg id="wires" width="100%" height="430" viewBox="0 0 960 430" preserveAspectRatio="xMidYMid meet"></svg>
@@ -116,6 +143,9 @@ async function tick() {
   $('clock').textContent = 'your clock: ' + new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}) + ' ET';
   try {
     const d = await (await fetch('monitordata.json?t=' + Date.now(), {cache: 'no-store'})).json();
+    window._feed = d;
+    if (viewMode === 'flow') buildField(d);
+    fillBuoyTargets(d); evalBuoys(d);
     const age = Math.round((Date.now() - new Date(d.built_at).getTime()) / 60000);
     const f = $('fresh');
     f.textContent = `feed built ${et(d.built_at)} · ${age} min old`;
@@ -151,6 +181,91 @@ async function tick() {
     $('fresh').className = 'sub stale'; $('fresh').id = 'fresh';
   }
 }
+/* ---------- FLOW FIELD + GRAB + VIEWER BUOYS (shared visual language) ---------- */
+let viewMode = 'analytics';
+function setMode(m) {
+  viewMode = m;
+  $('flowpanel').style.display = m === 'flow' ? 'block' : 'none';
+  $('tabFlow').style.background = m === 'flow' ? '#ffd75e' : '#1b2338';
+  $('tabFlow').style.color = m === 'flow' ? '#0b0e14' : '#e8ecf4';
+  $('tabAnalytics').style.background = m === 'analytics' ? '#ffd75e' : '#1b2338';
+  $('tabAnalytics').style.color = m === 'analytics' ? '#0b0e14' : '#e8ecf4';
+  if (m === 'flow' && window._feed) buildField(window._feed);
+}
+function fnv(s) { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, '0'); }
+function buildField(d) {
+  const wires = d.wires || [];
+  $('flowmeta').textContent = 'gateways are the nodal points; every wire is a counted pathway. Out-flows (to the fiat off-ramp) run red, in-flows blue; a wire\'s fatness is its counted evidence, and each bubble is one counted sighting riding it.';
+  const froms = [...new Set(wires.map(w => w.from))];
+  const tos = [...new Set(wires.map(w => w.to))];
+  const H = 440, fx = 250, tx = 710;
+  const fy = i => 40 + i * ((H - 80) / Math.max(1, froms.length - 1 || 1));
+  const ty = i => 40 + i * ((H - 80) / Math.max(1, tos.length - 1 || 1));
+  let s = '';
+  wires.forEach((w, i) => {
+    const y1 = fy(froms.indexOf(w.from)), y2 = ty(tos.indexOf(w.to));
+    const out = /fiat/i.test(w.to);
+    const x1 = out ? fx : tx, yy1 = out ? y1 : y2, x2 = out ? tx : fx, yy2 = out ? y2 : y1;
+    const mx = 480, my = (yy1 + yy2) / 2 + (i % 2 ? 26 : -26);
+    const ev = w.evidence_n || 0;
+    const wdt = Math.min(8, 1 + Math.log2(ev + 1) * 1.15).toFixed(1);
+    const color = (w.grade || '').startsWith('FACT') ? '#ffd75e' : (out ? '#ff6b6b' : '#57b6ff');
+    const op = Math.min(0.95, 0.3 + Math.log10(ev + 1) * 0.3).toFixed(2);
+    const dash = (w.grade || '').includes('QUESTION') ? ' stroke-dasharray="4 5"' : '';
+    const pid = 'fp' + i;
+    s += `<path id="${pid}" d="M ${x1} ${yy1} Q ${mx} ${my}, ${x2} ${yy2}" fill="none" stroke="${color}" stroke-width="${wdt}" stroke-opacity="${op}"${dash}><title>${esc(w.from)} → ${esc(w.to)} · evidence ${ev} · ${esc(w.grade)}</title></path>`;
+    const nb = Math.max(1, Math.min(10, Math.round(Math.log2(ev + 1) * 2)));
+    const dur = (11 - Math.min(8, Math.log2(ev + 1))).toFixed(1);
+    for (let b = 0; b < nb; b++) {
+      s += `<circle r="3.2" fill="#ffffff" fill-opacity="0.9"><animateMotion dur="${dur}s" begin="${(-b * dur / nb).toFixed(1)}s" repeatCount="indefinite"><mpath href="#${pid}"/></animateMotion></circle>`;
+    }
+    s += `<text x="${mx}" y="${my - 6}" text-anchor="middle" font-size="11" fill="${color}">evidence ${ev} · ${esc(w.grade)}</text>`;
+  });
+  froms.forEach((n, i) => { s += `<circle cx="${fx}" cy="${fy(i)}" r="8" fill="#1b2338" stroke="#57b6ff"/><text x="${fx - 14}" y="${fy(i) + 4}" text-anchor="end" font-size="11.5">${esc(n.length > 30 ? n.slice(0, 29) + '…' : n)}</text>`; });
+  tos.forEach((n, i) => { s += `<circle cx="${tx}" cy="${ty(i)}" r="9" fill="#1b2338" stroke="#ffd75e"/><text x="${tx + 15}" y="${ty(i) + 4}" font-size="11.5">${esc(n)}</text>`; });
+  $('fieldsvg').innerHTML = s;
+}
+function grabView() {
+  const d = window._feed; if (!d) return;
+  const g = {grabbed_at: new Date().toISOString(), page: 'monitor', mode: viewMode,
+    wires: (d.wires || []).map(w => ({from: w.from, to: w.to, evidence_n: w.evidence_n, grade: w.grade})),
+    winners_top3: (d.winners_all || []).slice(0, 3).map(r => ({name: r.name, pnl: r.pnl}))};
+  const raw = JSON.stringify(g);
+  g.marker = `GRAB1|pg=hall|t=${Math.floor(Date.now() / 1000)}|n=${g.wires.length}|ck=${fnv(raw)}`;
+  const blob = new Blob([JSON.stringify(g, null, 1)], {type: 'application/json'});
+  $('grabout').innerHTML = `<div class="card" style="border-color:#57b6ff"><div class="fname" style="color:#57b6ff">📸 GRABBED</div><div class="sub" style="color:#57b6ff; margin:4px 0">${g.marker}</div><div style="font-size:13px">${g.wires.length} wires with their evidence counts and grades, top-3 winners with recorded PnL.</div><a href="${URL.createObjectURL(blob)}" download="nodal-grab.json" style="font-size:13px">⬇ download the grab (JSON)</a> <span class="sub">— then set a buoy on a wire, below.</span></div>`;
+}
+const BUOY_KEY = 'nodal_viewer_buoys_v1';
+function loadBuoys() { try { return JSON.parse(localStorage.getItem(BUOY_KEY) || '[]'); } catch (e) { return []; } }
+function saveBuoys(b) { localStorage.setItem(BUOY_KEY, JSON.stringify(b)); }
+function fillBuoyTargets(d) {
+  const sel = $('buoyTarget'); if (!sel || sel.options.length) return;
+  sel.innerHTML = (d.wires || []).map(w => `<option value="${esc(w.from)}">${esc(w.from)} → ${esc(w.to)}</option>`).join('');
+}
+function addBuoy() {
+  const b = {buoy_id: 'vb-' + Date.now().toString(36), owner: 'viewer', created_at: new Date().toISOString(),
+    scope: 'monitor-hall', target: {type: 'wire', id: $('buoyTarget').value},
+    condition: {metric: 'evidence_n', op: '>=', value: parseFloat($('buoyValue').value)},
+    note: $('buoyNote').value || '', armed: true, last_hit_at: null};
+  if (isNaN(b.condition.value)) { alert('give the buoy a number to watch for'); return; }
+  const all = loadBuoys(); all.push(b); saveBuoys(all); evalBuoys(window._feed);
+}
+function evalBuoys(d) {
+  if (!d) return;
+  const all = loadBuoys();
+  const mine = all.filter(b => b.scope === 'monitor-hall');
+  let changed = false;
+  $('buoylist').innerHTML = mine.length ? mine.map(b => {
+    const w = (d.wires || []).find(x => x.from === b.target.id);
+    const cur = w ? w.evidence_n : null;
+    const hit = cur !== null && cur >= b.condition.value;
+    if (hit && !b.last_hit_at) { b.last_hit_at = new Date().toISOString(); changed = true; }
+    return `<div class="card" style="margin:6px 0; ${hit ? 'border-color:#ffd75e' : ''}"><b style="color:${hit ? '#ffd75e' : '#57b6ff'}">🛟 ${hit ? 'BUOY HIT' : 'buoy set'}</b> <span style="font-size:13px">wire ${esc(b.target.id)} · evidence ≥ ${b.condition.value} · now: ${cur ?? '—'}${b.note ? ' · ' + esc(b.note) : ''}${b.last_hit_at ? ' · first hit ' + new Date(b.last_hit_at).toLocaleString('en-US', {timeZone: 'America/New_York'}) + ' ET' : ''}</span> <a href="#" onclick="delBuoy('${b.buoy_id}'); return false;" style="font-size:12px">remove</a></div>`;
+  }).join('') : '<div class="sub">no buoys yet — set one on a wire and watch its evidence grow into it.</div>';
+  if (changed) saveBuoys(all);
+}
+function delBuoy(id) { saveBuoys(loadBuoys().filter(b => b.buoy_id !== id)); evalBuoys(window._feed); }
+
 tick(); setInterval(tick, 15000);
 </script>
 </body>
