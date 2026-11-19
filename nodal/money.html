@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MONEY BOARD — Room Regulars' Real-Money Books · NODAL DESK</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#131826; --panel2:#0f1320; --line:#232a3d;
+    --gold:#ffd75e; --green:#3ddc84; --red:#ff6b6b; --blue:#57b6ff;
+    --txt:#e8ecf4; --mut:#8b94a7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    padding:18px 14px 40px}
+  .wrap{max-width:1060px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 2px;letter-spacing:.5px}
+  h1 .gold{color:var(--gold)}
+  .sub{color:var(--mut);font-size:12px;margin-bottom:12px}
+  .fresh{font-size:12px;color:var(--mut);margin-bottom:14px}
+  .fresh b{color:var(--txt)}
+  .stale{display:none;background:#4a1420;border:1px solid var(--red);
+    color:#ffb3b3;padding:6px 10px;border-radius:6px;font-size:12px;
+    margin-bottom:12px}
+  .note{background:var(--panel2);border:1px solid var(--line);
+    border-left:3px solid var(--gold);border-radius:8px;
+    padding:12px 14px;font-size:13px;line-height:1.55;margin-bottom:14px}
+  .note b{color:var(--gold)}
+  .spot{display:grid;grid-template-columns:1fr 1fr;gap:12px;
+    margin-bottom:14px}
+  @media(max-width:760px){.spot{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:14px}
+  .card h2{font-size:15px;margin:0 0 4px}
+  .card .tag{font-size:11px;color:var(--mut);margin-bottom:10px}
+  .kv{display:flex;justify-content:space-between;gap:10px;
+    font-size:12.5px;padding:3px 0;border-bottom:1px dashed #1d2334}
+  .kv:last-child{border-bottom:none}
+  .kv .k{color:var(--mut)}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+  .flag{margin-top:10px;font-size:12px;line-height:1.5;
+    background:#2a2110;border:1px solid #554311;border-radius:6px;
+    padding:8px 10px;color:#ffe1a1}
+  .priv{margin-top:10px;font-size:12px;line-height:1.5;
+    background:#101c2c;border:1px solid #1f3a52;border-radius:6px;
+    padding:8px 10px;color:#a9d3f5}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;overflow:hidden}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #1d2334;
+    vertical-align:top}
+  th{color:var(--mut);font-weight:600;font-size:11px;
+    text-transform:uppercase;letter-spacing:.6px}
+  tr:last-child td{border-bottom:none}
+  .nm{color:var(--gold);font-weight:700}
+  .badge{color:var(--mut);font-size:11.5px;line-height:1.45}
+  .verd{font-size:11.5px;line-height:1.45}
+  .foot{color:var(--mut);font-size:11.5px;line-height:1.6;margin-top:16px}
+  a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>💰 MONEY BOARD — <span class="gold">the room's real-money books</span></h1>
+  <div class="sub">The regulars from the Polymarket 5-min BTC chat, graded on
+    PUBLIC data only. This board grades books, not chat calls — it never
+    blends with the Callers' Contest or any lane record.</div>
+  <div class="fresh" id="fresh">loading…</div>
+  <div class="stale" id="stale">⚠ STALE — this feed has not refreshed in
+    over 3 minutes. Treat every number as as-of the built time above.</div>
+
+  <div class="note" id="method"></div>
+  <div class="spot" id="spot"></div>
+  <div id="tbl"></div>
+
+  <div class="foot">
+    Method: usernames resolved to public profiles (Polymarket US
+    polymarket.us/@name · international polymarket.com/@name → proxy
+    wallet), then the free Data API v2 — leaderboard PnL is the
+    ground-truth figure; positions and trades give the per-market
+    record (paged, 500-row cap per book, caps marked per player).
+    Polymarket US keeps each user's book behind their own privacy
+    setting and account API keys — the desk pulls nothing that is not
+    public. Chat badges are David's screenshots from the room tonight
+    (Nov 18, ~9:33–9:56 PM ET): the app's own display of each
+    chatter's live position in that market, and for US users the only
+    public money signal there is.
+  </div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let builtMs = 0;
+function et(ts){
+  return new Date(ts).toLocaleString('en-US',
+    {timeZone:'America/New_York',hour12:true,
+     month:'short',day:'numeric',hour:'numeric',minute:'2-digit',
+     second:'2-digit'});
+}
+function money(v){
+  if(v === null || v === undefined) return '—';
+  const s = (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString('en-US',
+    {minimumFractionDigits:2, maximumFractionDigits:2});
+  return s;
+}
+function cls(v){ return v > 0 ? 'pos' : (v < 0 ? 'neg' : ''); }
+function kv(k, v){ return '<div class="kv"><span class="k">' + k +
+  '</span><span>' + v + '</span></div>'; }
+
+function whaleCard(p){
+  const g = p.com_grade || {}, lb = g.lb_all || {},
+        lm = g.lb_month || {}, b = g.btc5 || {}, bk = g.book || {};
+  let h = '<div class="card"><h2>🐋 ' + p.name + '</h2>' +
+    '<div class="tag">' + p.badge_note + '</div>';
+  h += kv('polymarket.com wallet', (p.com.wallet || '—').slice(0, 14) + '…');
+  if(p.com.pseudonym) h += kv('pseudonym', p.com.pseudonym);
+  if(p.com.created) h += kv('account created', p.com.created.slice(0, 10));
+  h += kv('ALL-TIME PnL (leaderboard)', '<span class="' + cls(lb.pnl) +
+    '">' + money(lb.pnl) + '</span>');
+  h += kv('ALL-TIME volume', money(lb.volume));
+  h += kv('last-30d PnL', '<span class="' + cls(lm.pnl) + '">' +
+    money(lm.pnl) + '</span>');
+  h += kv('5-min BTC record', b.settled_n ?
+    (b.w + 'W–' + b.l + 'L · <span class="' + cls(b.pnl) + '">' +
+     money(b.pnl) + '</span> · median stake ' + money(b.median_stake)) :
+    'no settled 5-min positions');
+  h += kv('whole book', bk.settled_n + ' settled · <span class="' +
+    cls(bk.settled_pnl) + '">' + money(bk.settled_pnl) + '</span> · ' +
+    bk.open_n + ' open (' + money(bk.open_value) + ')');
+  h += kv('trades pulled', g.trades_n + (g.trades_capped ? ' (capped)' : ''));
+  h += kv('last active', g.last_active ?
+    et(g.last_active * 1000) + ' ET' : '—');
+  h += '<div class="flag">⚠ BADGE ≠ BOOK: this wallet did nothing ' +
+    'tonight and holds $116 of lifetime volume — it cannot be the ' +
+    'wallet behind the $3.18k DOWN badge in the room. The name ' +
+    'resolves on the international site to a dust namesake; the ' +
+    'chat whale\u2019s own book is not publicly reachable (no US ' +
+    'profile under this name, and US books are private by ' +
+    'default). Graded as found — not smoothed over.</div>';
+  if(p.specimen)
+    h += '<div class="flag">🎯 ' + p.specimen + '</div>';
+  if(p.pattern)
+    h += kv('pattern', '<b>' + p.pattern.label + '</b> — ' +
+      p.pattern.basis);
+  return h + '</div>';
+}
+
+function blaineCard(p){
+  const u = p.us || {};
+  let h = '<div class="card"><h2>📣 ' + p.name + '</h2>' +
+    '<div class="tag">' + p.badge_note + '</div>';
+  h += kv('platform', 'Polymarket US profile');
+  if(u.joined) h += kv('joined', u.joined);
+  if(u.followers !== undefined) h += kv('followers',
+    u.followers.toLocaleString('en-US'));
+  if(u.following !== undefined) h += kv('following', u.following);
+  if(u.bio) h += kv('bio', u.bio.replace(/\n/g, ' · '));
+  h += '<div class="priv">🔒 BOOK PRIVATE — @' + p.name + ' keeps ' +
+    'their positions and stats hidden on Polymarket US, and the US ' +
+    'user API needs the account\u2019s own API keys. No public ' +
+    'real-money record exists to grade. The room\u2019s respect is ' +
+    'the only public signal: 1,000+ followers and a room that asks ' +
+    'him for calls.</div>';
+  return h + '</div>';
+}
+
+function row(p){
+  const u = p.us || {}, g = p.com_grade;
+  let plat = '—', facts = '', book = '';
+  if(u.found){
+    plat = 'Polymarket US';
+    facts = (u.joined ? 'joined ' + u.joined : '') +
+      (u.followers !== undefined ?
+        ' · ' + u.followers.toLocaleString('en-US') + ' followers' : '');
+    if(u.stats_pnl_text)
+      book = 'profile PnL <span class="' + cls(u.stats_pnl) + '">' +
+        u.stats_pnl_text + '</span>' +
+        (u.open_positions_n !== undefined ?
+          ' · ' + u.open_positions_n + ' open positions' : '') +
+        (u.stats_volume_text ? ' · vol ' + u.stats_volume_text : '');
+  }
+  if(p.com && p.com.found){
+    plat = (u.found ? 'US + .com' : 'polymarket.com');
+    if(g){
+      const lb = g.lb_all || {}, b = g.btc5 || {};
+      book = 'PnL <span class="' + cls(lb.pnl) + '">' + money(lb.pnl) +
+        '</span> · vol ' + money(lb.volume) + ' · 5m ' + b.w + 'W–' +
+        b.l + 'L';
+    }
+  }
+  if(!u.found && !(p.com && p.com.found)) plat = 'not found';
+  const surf = (p.surfaces || ['room']).join(' · ');
+  const pat = p.pattern || {};
+  let contest = '';
+  if(p.contest)
+    contest = '<div class="badge">contest: ' + p.contest.graded +
+      ' graded · ' + p.contest.w + 'W–' + p.contest.l + 'L · avg ' +
+      p.contest.avg_in + 's in</div>';
+  return '<tr><td class="nm">' + p.name +
+    '<div class="badge">' + surf + '</div></td><td>' + plat +
+    (facts ? '<div class="badge">' + facts + '</div>' : '') +
+    contest +
+    '</td><td class="badge">' + p.badge_note + '</td>' +
+    '<td class="verd">' + p.verdict + (book ?
+      '<div class="badge">' + book + '</div>' : '') + '</td>' +
+    '<td class="verd"><b>' + (pat.label || 'UNGRADED') + '</b>' +
+    (pat.basis ? '<div class="badge">' + pat.basis + '</div>' : '') +
+    '</td></tr>';
+}
+
+async function load(){
+  try{
+    const r = await fetch('moneydata.json?t=' + Date.now(),
+      {cache:'no-store'});
+    const d = await r.json();
+    builtMs = Date.parse(d.built_at);
+    $('fresh').innerHTML = 'Feed built <b>' + et(builtMs) +
+      ' ET</b> · source: ' + d.source;
+    $('method').innerHTML =
+      '<b>What the public data actually says:</b> the room lives on ' +
+      'the Polymarket US app, where most regulars keep their book ' +
+      'private — for them the honest grade is <b>BOOK PRIVATE</b>, ' +
+      'with the profile facts and David\u2019s badge screenshots as ' +
+      'the only public record. A few share a public profile PnL ' +
+      'stat; it is printed exactly as published. One name resolves ' +
+      'to a full public book on the international site, graded in ' +
+      'full below — it just isn\u2019t the book the badge belonged ' +
+      'to.';
+    const byName = {};
+    d.players.forEach(p => byName[p.name] = p);
+    let spot = '';
+    if(byName['8888888888888888']) spot += whaleCard(byName['8888888888888888']);
+    if(byName['blaine_bets']) spot += blaineCard(byName['blaine_bets']);
+    $('spot').innerHTML = spot;
+    let t = '<table><tr><th>Regular</th><th>Platform / facts</th>' +
+      '<th>Room badge (tonight)</th><th>Verdict / book</th>' +
+      '<th>Pattern (basis)</th></tr>';
+    d.players.forEach(p => t += row(p));
+    $('tbl').innerHTML = t + '</table>';
+  }catch(e){
+    $('fresh').textContent = 'feed unavailable — ' + e;
+  }
+}
+function tick(){
+  if(builtMs && Date.now() - builtMs > 180000)
+    $('stale').style.display = 'block';
+  else $('stale').style.display = 'none';
+}
+load(); setInterval(load, 15000); setInterval(tick, 1000); tick();
+</script>
+</body>
+</html>
