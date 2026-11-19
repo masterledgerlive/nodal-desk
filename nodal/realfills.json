@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-19T00:39:40Z",
+ "built_at": "2026-11-19T01:06:57Z",
  "mandate_seq": 12277,
  "note": "REAL records only \u2014 sealed REAL_FILL / REAL_EXIT_FILL / REAL_SETTLE from the ledger, plus the executor log lines (labeled, unsealed until the desk seals them). Never blended with SIM.",
  "fills": [
@@ -210,6 +210,27 @@
    "window": "2026-11-18T14:25:00Z",
    "seq": 19624,
    "sealed_at": "2026-11-18T14:45:40+0000"
+  },
+  {
+   "action": "BUY (instant fill)",
+   "bank_at_fill": 0.9001,
+   "cost": 0.0999,
+   "fill_ts": "2026-11-19T00:49:02.457328+00:00",
+   "lane": "ASHEN",
+   "mandate": "ASHEN_FOLLOW_MANDATE seq 14224",
+   "market": "cpc-btc-updown-5m-2026-11-19-0045z",
+   "order": "DT8EWSMG54F1",
+   "outcome": "FILLED - instant fill 3.33 sh @ 3c",
+   "price": 0.03,
+   "shares": 3.33,
+   "side": "UP",
+   "signal_seq": 20726,
+   "stake": 0.1,
+   "target_px": 0.89,
+   "verified_against": "real_fills.log verbatim + real_executor.log ASHEN PACKET 00:49:01Z (UP, TP 89c, conf 96%, ask 3c, stake $0.10, bank $1.00, signal_seq 20726) + INSTANT FILL + FILLLOG 00:49:02Z (3.33 sh @ 3.00c, order DT8EWSMG54F1); signal seq 20726 CALLER_CALL counted, Ashen Bot#6973 UP 96% TP 89c; state race_banks ASHEN 0.9001, position 3.33 sh @ 3c cost $0.0999 exit 89c. Dupe-guard: order DT8EWSMG54F1 has no prior ledger mention. ASHEN first REAL fill ever.",
+   "window": "2026-11-19T00:45:00Z",
+   "seq": 20737,
+   "sealed_at": "2026-11-19T00:56:05+0000"
   }
  ],
  "exits": [
@@ -375,11 +396,30 @@
    "window": "2026-11-18T14:25:00Z",
    "seq": 19625,
    "sealed_at": "2026-11-18T14:45:40+0000"
+  },
+  {
+   "action": "SETTLE (venue settlement)",
+   "bank_after": 0.9001,
+   "bank_before": 0.9001,
+   "cost": 0.0999,
+   "fill_order": "DT8EWSMG54F1",
+   "fill_seq": 20737,
+   "lane": "ASHEN",
+   "mandate": "ASHEN_FOLLOW_MANDATE seq 14224",
+   "market": "cpc-btc-updown-5m-2026-11-19-0045z",
+   "outcome": "SETTLED LOSS - UP lost, payout $0.00",
+   "payout": 0.0,
+   "pnl": -0.0999,
+   "settle_ts": "2026-11-19T00:50:47.786776+00:00",
+   "side": "UP",
+   "signal_seq": 20726,
+   "verified_against": "real_fills.log verbatim (REAL SETTLE, payout $0.00, pnl $-0.10, race bank $0.90 - rounded prints; exact cost $0.0999, bank $0.9001) + real_executor.log RESTING SELL 00:49:07Z (3.33 sh @ 89c, order DT8EWWB014EX) + expired unfilled 00:50:16Z + FILLLOG REAL SETTLE 00:50:47Z; state position closed_reason venue settlement, race_banks ASHEN 0.9001 (restart line 00:54:31Z confirms). Dupe-guard: no prior settle for order DT8EWSMG54F1. ASHEN record now 0W/1L, pnl -$0.0999, bank $0.9001.",
+   "window": "2026-11-19T00:45:00Z",
+   "seq": 20738,
+   "sealed_at": "2026-11-19T00:56:05+0000"
   }
  ],
  "executor_log": [
-  "REAL EXIT FILL \u00b7 RIPTIDE \u00b7 2026-11-17T04:15:00Z \u00b7 sold 20.00c \u00b7 proceeds $0.03 \u00b7 reason RIPTIDE sealed SELL (take profit \u2014 mid 0.945 >= entry 0.660 + 5c) \u00b7 venue order DS28X40G14EX \u00b7 2026-11-17T04:19:33.822312+00:00",
-  "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T05:00:00Z \u00b7 DOWN \u00b7 order DS2WM72013YY rested at 52.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T05:04:31.253706+00:00",
   "REAL FILL \u00b7 RIPTIDE \u00b7 2026-11-17T05:15:00Z \u00b7 DOWN \u00b7 filled 68.00c \u00b7 stake $0.10 \u00b7 venue order DS33YZ4G13Z6 \u00b7 2026-11-17T05:18:42.413746+00:00",
   "REAL SETTLE \u00b7 RIPTIDE \u00b7 2026-11-17T05:15:00Z \u00b7 DOWN \u00b7 payout $0.00 \u00b7 pnl $-0.10 \u00b7 race bank $1.32 \u00b7 2026-11-17T05:20:51.818165+00:00",
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-17T06:15:00Z \u00b7 DOWN \u00b7 order DS3Z00YG13ZD rested at 39.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-17T06:19:36.876453+00:00",
@@ -417,12 +457,14 @@
   "REAL NOFILL \u00b7 PLAIN \u00b7 2026-11-18T13:25:00Z \u00b7 UP \u00b7 order DSYQEWWG14F1 rested at 52.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T13:29:37.264950+00:00",
   "REAL NOFILL \u00b7 ASHEN \u00b7 2026-11-18T14:10:00Z \u00b7 DOWN \u00b7 order DSZBZ8W0144P rested at 83.00c, never filled, cancelled at the 30s cutoff \u00b7 2026-11-18T14:14:33.561068+00:00",
   "REAL FILL \u00b7 PLAIN \u00b7 2026-11-18T14:25:00Z \u00b7 DOWN \u00b7 filled 92.00c \u00b7 stake $0.17 \u00b7 venue order DSZK354013ZD \u00b7 2026-11-18T14:29:03.795000+00:00",
-  "REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-18T14:25:00Z \u00b7 DOWN \u00b7 payout $0.00 \u00b7 pnl $-0.17 \u00b7 race bank $1.42 \u00b7 2026-11-18T14:30:48.288613+00:00"
+  "REAL SETTLE \u00b7 PLAIN \u00b7 2026-11-18T14:25:00Z \u00b7 DOWN \u00b7 payout $0.00 \u00b7 pnl $-0.17 \u00b7 race bank $1.42 \u00b7 2026-11-18T14:30:48.288613+00:00",
+  "REAL FILL \u00b7 ASHEN \u00b7 2026-11-19T00:45:00Z \u00b7 UP \u00b7 filled 3.00c \u00b7 stake $0.10 \u00b7 venue order DT8EWSMG54F1 \u00b7 2026-11-19T00:49:02.457328+00:00",
+  "REAL SETTLE \u00b7 ASHEN \u00b7 2026-11-19T00:45:00Z \u00b7 UP \u00b7 payout $0.00 \u00b7 pnl $-0.10 \u00b7 race bank $0.90 \u00b7 2026-11-19T00:50:47.786776+00:00"
  ],
  "banks": {
   "PLAIN": 1.4161,
   "RIPTIDE": 1.318,
-  "ASHEN": 1.0,
+  "ASHEN": 0.9001,
   "PIZZA": 1.0,
   "TERRY": 0.9274,
   "EARLY": 1.0,
@@ -990,16 +1032,111 @@
  "ashen": {
   "note": "ASHEN FOLLOW \u2014 real-money follow lane (mandate seq 14224, spec seq 14225). Follows his sealed contest calls only; SIT-OUTs never fire. His contest record stays on the Callers' board (SIMULATION) \u2014 never blended.",
   "bank_start": 1.0,
-  "bank": 1.0,
-  "fills": [],
+  "bank": 0.9001,
+  "fills": [
+   {
+    "action": "BUY (instant fill)",
+    "bank_at_fill": 0.9001,
+    "cost": 0.0999,
+    "fill_ts": "2026-11-19T00:49:02.457328+00:00",
+    "lane": "ASHEN",
+    "mandate": "ASHEN_FOLLOW_MANDATE seq 14224",
+    "market": "cpc-btc-updown-5m-2026-11-19-0045z",
+    "order": "DT8EWSMG54F1",
+    "outcome": "FILLED - instant fill 3.33 sh @ 3c",
+    "price": 0.03,
+    "shares": 3.33,
+    "side": "UP",
+    "signal_seq": 20726,
+    "stake": 0.1,
+    "target_px": 0.89,
+    "verified_against": "real_fills.log verbatim + real_executor.log ASHEN PACKET 00:49:01Z (UP, TP 89c, conf 96%, ask 3c, stake $0.10, bank $1.00, signal_seq 20726) + INSTANT FILL + FILLLOG 00:49:02Z (3.33 sh @ 3.00c, order DT8EWSMG54F1); signal seq 20726 CALLER_CALL counted, Ashen Bot#6973 UP 96% TP 89c; state race_banks ASHEN 0.9001, position 3.33 sh @ 3c cost $0.0999 exit 89c. Dupe-guard: order DT8EWSMG54F1 has no prior ledger mention. ASHEN first REAL fill ever.",
+    "window": "2026-11-19T00:45:00Z",
+    "seq": 20737,
+    "sealed_at": "2026-11-19T00:56:05+0000"
+   }
+  ],
   "exits": [],
-  "settles": [],
-  "nofills": [],
+  "settles": [
+   {
+    "action": "SETTLE (venue settlement)",
+    "bank_after": 0.9001,
+    "bank_before": 0.9001,
+    "cost": 0.0999,
+    "fill_order": "DT8EWSMG54F1",
+    "fill_seq": 20737,
+    "lane": "ASHEN",
+    "mandate": "ASHEN_FOLLOW_MANDATE seq 14224",
+    "market": "cpc-btc-updown-5m-2026-11-19-0045z",
+    "outcome": "SETTLED LOSS - UP lost, payout $0.00",
+    "payout": 0.0,
+    "pnl": -0.0999,
+    "settle_ts": "2026-11-19T00:50:47.786776+00:00",
+    "side": "UP",
+    "signal_seq": 20726,
+    "verified_against": "real_fills.log verbatim (REAL SETTLE, payout $0.00, pnl $-0.10, race bank $0.90 - rounded prints; exact cost $0.0999, bank $0.9001) + real_executor.log RESTING SELL 00:49:07Z (3.33 sh @ 89c, order DT8EWWB014EX) + expired unfilled 00:50:16Z + FILLLOG REAL SETTLE 00:50:47Z; state position closed_reason venue settlement, race_banks ASHEN 0.9001 (restart line 00:54:31Z confirms). Dupe-guard: no prior settle for order DT8EWSMG54F1. ASHEN record now 0W/1L, pnl -$0.0999, bank $0.9001.",
+    "window": "2026-11-19T00:45:00Z",
+    "seq": 20738,
+    "sealed_at": "2026-11-19T00:56:05+0000"
+   }
+  ],
+  "nofills": [
+   {
+    "bank_after": 1.0,
+    "cancelled_at": "2026-11-18T06:34:34.977961+00:00",
+    "direction": "DOWN",
+    "flag": "FIRST MARKET TRIP for the ASHEN lane - armed 2026-11-17, all lawful skips until now; its first resting order ever placed. No fill, no money moved, bank unchanged.",
+    "gates": "Counted SEAL card (not a sit-out); ask 57c under the 88c ICE line; resting buy placed 172s into the window, inside the 240s bound.",
+    "lane": "ASHEN",
+    "money_moved": false,
+    "order": "DSRS2BF053YB",
+    "outcome": "never filled, cancelled at the 30s cutoff",
+    "placed_at": "2026-11-18T06:32:52.148147+00:00",
+    "rested_at": 0.57,
+    "shares": 0.18,
+    "signal": {
+     "caller": "Ashen Bot#6973",
+     "confidence": 96,
+     "counted": true,
+     "kind": "CALLER_CALL",
+     "raw": "SEAL round 1:30-1:35 AM ET, Strong seal DOWN, 96%, take profit at 95c",
+     "seconds_in": 0,
+     "seq": 18577,
+     "source": "ashen",
+     "target_c": 95
+    },
+    "stake": 0.1,
+    "verified_against": "real_fills.log line 48 + real_executor.log lines 828/832; dupe-guard clean (order DSRS2BF053YB has no prior ledger mention)",
+    "window": "2026-11-18T06:30:00Z",
+    "seq": 18599,
+    "sealed_at": "2026-11-18T06:45:42+0000"
+   },
+   {
+    "action": "BUY (resting, never filled)",
+    "bank_at_fill": 1.0,
+    "cancelled_at": "2026-11-18T14:14:33.561068+00:00",
+    "lane": "ASHEN",
+    "mandate": "ASHEN_FOLLOW seq 14224 (ASHEN FOLLOW spec 14225)",
+    "market": "cpc-btc-updown-5m-2026-11-18-1410z",
+    "order": "DSZBZ8W0144P",
+    "outcome": "NOFILL - resting buy cancelled at the 30s cutoff, 0.00 filled",
+    "price": 0.83,
+    "qty_filled": 0.0,
+    "reason": "Rested at 83c, never filled, cancelled at the 30s cutoff (executor v2 resting-order rule). No money moved. ASHEN second market trip, still no fills.",
+    "shares": 0.12,
+    "side": "DOWN",
+    "stake": 0.1,
+    "verified_against": "real_fills.log line 57 verbatim + real_executor.log lines 1241/1246 (RESTING BUY 14:13:35Z 0.12 sh @ 83c - waiting for the bounce; FILLLOG 14:14:33Z). Dupe-guard: order DSZBZ8W0144P has no prior ledger mention.",
+    "window": "2026-11-18T14:10:00Z",
+    "seq": 19539,
+    "sealed_at": "2026-11-18T14:16:54+0000"
+   }
+  ],
   "record": {
    "w": 0,
-   "l": 0,
-   "pnl": 0,
-   "streak": "\u2014"
+   "l": 1,
+   "pnl": -0.0999,
+   "streak": "L1"
   }
  },
  "pizza": {
@@ -1177,19 +1314,6 @@
     "rank": 3
    },
    {
-    "player": "ASHEN FOLLOW",
-    "key": "ASHEN",
-    "lane": "BTC 5-min \u00b7 caller follow",
-    "tag": null,
-    "put_in": 1.0,
-    "has_now": 1.0,
-    "earned": 0.0,
-    "w": 0,
-    "l": 0,
-    "streak": "\u2014",
-    "rank": 4
-   },
-   {
     "player": "PIZZACALLS FOLLOW",
     "key": "PIZZA",
     "lane": "BTC 5-min \u00b7 caller follow",
@@ -1200,7 +1324,7 @@
     "w": 0,
     "l": 0,
     "streak": "\u2014",
-    "rank": 5
+    "rank": 4
    },
    {
     "player": "TERRY FOLLOW",
@@ -1213,7 +1337,7 @@
     "w": 1,
     "l": 1,
     "streak": "L1",
-    "rank": 6
+    "rank": 5
    },
    {
     "player": "PLAIN",
@@ -1226,6 +1350,19 @@
     "w": 1,
     "l": 3,
     "streak": "L4",
+    "rank": 6
+   },
+   {
+    "player": "ASHEN FOLLOW",
+    "key": "ASHEN",
+    "lane": "BTC 5-min \u00b7 caller follow",
+    "tag": null,
+    "put_in": 1.0,
+    "has_now": 0.9001,
+    "earned": -0.0999,
+    "w": 0,
+    "l": 1,
+    "streak": "L1",
     "rank": 7
    },
    {
@@ -1270,8 +1407,8 @@
   ],
   "totals": {
    "put_in": 21.0803,
-   "has_now": 17.9429,
-   "earned": -3.1374
+   "has_now": 17.843,
+   "earned": -3.2373
   }
  },
  "tennis": {
