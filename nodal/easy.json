@@ -1,11 +1,11 @@
 {
- "built_at": 1795188997,
+ "built_at": 1795189027,
  "window": "2026-11-20T15:35:00Z",
- "window_ends_in_s": 203,
+ "window_ends_in_s": 173,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-20T15:36:59Z",
-  "chain": 25782,
+  "updated": "2026-11-20T15:37:34Z",
+  "chain": 25787,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -14,13 +14,13 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "CLIMBING",
-  "plain": "going up and staying up",
-  "drift": 46.7,
+  "state": "FALLING",
+  "plain": "going down and staying down",
+  "drift": -94.3,
   "range": 174.0,
-  "flips": 1,
+  "flips": 2,
   "open": 60239.8,
-  "last": 60286.5
+  "last": 60145.52
  },
  "chart": {
   "points": [
@@ -179,6 +179,10 @@
    [
     1795188997,
     60286.5
+   ],
+   [
+    1795189027,
+    60145.52
    ]
   ],
   "bounds": [
@@ -204,13 +208,18 @@
    "savings": 0.0,
    "graded": 855,
    "wins": 690,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "down",
+   "chance": 0.7287,
+   "ask": 0.53,
+   "follow": "FIRE",
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": null
+   "payout": {
+    "stake": 0.5,
+    "win": 0.43,
+    "lose": -0.52,
+    "shares": 0.943
+   }
   },
   {
    "name": "EARLY",
@@ -240,8 +249,8 @@
     "shares": 0.704
    },
    "value_hit": false,
-   "flipped": false,
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
+   "flipped": true,
+   "flip_state": "FLIPPED \u2014 EARLY switched sides this window"
   },
   {
    "name": "RIPTIDE",
@@ -269,15 +278,19 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "The price jumped $47 in the last two minutes \u2014 a real push, not a drift.",
+   "text": "The models disagree this window \u2014 PLAIN says DOWN, EARLY says UP.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price dropped $94 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
   },
   {
-   "text": "EARLY's read is getting stronger as the window goes on.",
+   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
    "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+47 dollars this window). EARLY says BUY UP. 3 minutes 23 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-94 dollars this window). PLAIN says BUY DOWN; EARLY says BUY UP. 2 minutes 53 seconds left in the window.",
  "history": [
   {
    "window": "2026-11-20T15:00:00Z",
