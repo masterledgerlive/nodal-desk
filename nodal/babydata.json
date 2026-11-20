@@ -1,0 +1,357 @@
+{
+ "built_at": "2026-11-20T08:07:49Z",
+ "head_seq": 23950,
+ "law": "Babies are snapshot-born successor engines (BTC 5-min, SIM/SHADOW only \u2014 no real money; the unanimous-vote law seq 22761 is untouched). Graded per $1 at fire-time mid, house fee law. A voter seat is earned by the record, never granted.",
+ "not_born": [
+  {
+   "design": "CONSENSUS FADE (everyone-loses child)",
+   "why_not_born": "cannot be backtested from snapshot records \u2014 engine/caller calls are stored untimed, so any backtest would grade it on information it could not have had at fire time"
+  }
+ ],
+ "babies": [
+  {
+   "id": "OTTO",
+   "label": "SNAPSHOT BABY \u2014 ONE-TURNER",
+   "family": "ONE_TURNER",
+   "in_words": "When one move of >= 0.30 mid points lands out of a quiet window (pre-move range <= 0.30) with no cross-back yet, call the direction of the move \u2014 at the step, not after it.",
+   "parentage": [
+    "ONE_TURNER family (snapshot_lib.classify): quiet window, one move >= 0.30, no cross-back",
+    "Discovery finding 2026-11-19: 16 one-turners, median pre-move range 0.12, median step 0.45 at median 227s, no cross-back; PLAIN and EARLY both hit 1.0 on the family in the backfill census",
+    "Buoy route ONE_TURNER: quiet -> still quiet -> THE STEP -> no cross-back; the fire point is the step itself"
+   ],
+   "rule": {
+    "min_step": 0.3,
+    "max_pre_move_range": 0.3,
+    "require_no_crossback": true,
+    "fire_within_s_of_step": 20
+   },
+   "rule_hash": "bba07dc8c8504eb919b517def65eed6a1467786afbf77cacaf139e9de80fe44f",
+   "birth_seq": 23946,
+   "backtest": {
+    "windows": 179,
+    "fires": 63,
+    "wins": 44,
+    "losses": 19,
+    "hit_pct": 69.8,
+    "priced_pnl": -5.844,
+    "avg_price": 0.721,
+    "best_streak": 11,
+    "full_path_only": {
+     "n": 32,
+     "w": 25,
+     "hit_pct": 78.1
+    },
+    "majority_on_fired": 49.2,
+    "comparators": {
+     "plain": {
+      "n": 2,
+      "w": 2,
+      "hit_pct": 100.0,
+      "path_priced_pnl": 1.8916,
+      "best_streak": 2
+     },
+     "early": {
+      "n": 9,
+      "w": 7,
+      "hit_pct": 77.8,
+      "path_priced_pnl": 0.5593,
+      "best_streak": 4
+     },
+     "riptide": {
+      "n": 31,
+      "w": 22,
+      "hit_pct": 71.0,
+      "path_priced_pnl": 3.6786,
+      "best_streak": 8
+     },
+     "final": {
+      "n": 2,
+      "w": 2,
+      "hit_pct": 100.0,
+      "path_priced_pnl": 1.8916,
+      "best_streak": 2
+     },
+     "crowd": {
+      "n": 58,
+      "w": 52,
+      "hit_pct": 89.7,
+      "path_priced_pnl": 21.0437,
+      "best_streak": 16
+     }
+    },
+    "seat_bar_legs": {
+     "fires>=15": true,
+     "beats_crowd": false,
+     "beats_majority": true,
+     "pnl>0": false
+    },
+    "seat": false
+   },
+   "live_trial": {
+    "span": 100,
+    "calls": 0,
+    "graded": 0,
+    "w": 0,
+    "l": 0,
+    "hit_pct": null,
+    "pnl": 0.0,
+    "best_streak": 0,
+    "recent": []
+   },
+   "status": "CHALLENGER \u2014 live shadow trial running; NOT a seated voter (backtest bar not met)",
+   "voter": false
+  },
+  {
+   "id": "RIDGE",
+   "label": "SNAPSHOT BABY \u2014 CLEAN",
+   "family": "CLEAN",
+   "in_words": "From 120s in: if one side has held the window (<= 1 crossing, >= 75% of polls on its side) and leads by >= 0.15, call the leader and ride it.",
+   "parentage": [
+    "CLEAN family (snapshot_lib.classify): <= 1 crossing, one side dominant >= 80% of the window, and it won",
+    "Backfill census 2026-11-19: CLEAN n=35, PLAIN hit 1.0, crowd hit 0.97 \u2014 the clean leader almost never loses",
+    "Buoy route CLEAN: side set @120s (|mid-0.5| >= 0.15, <= 1 cross) -> no cross @240s -> holds @280s"
+   ],
+   "rule": {
+    "min_elapsed": 120,
+    "max_crossings": 1,
+    "min_dominant_frac": 0.75,
+    "min_leader_dist": 0.15
+   },
+   "rule_hash": "6c1e20c0e87fe9cf5f41c018043f6ee0fd1d4367fe79d8242c02de18d51318e9",
+   "birth_seq": 23947,
+   "backtest": {
+    "windows": 179,
+    "fires": 78,
+    "wins": 66,
+    "losses": 12,
+    "hit_pct": 84.6,
+    "priced_pnl": -1.4107,
+    "avg_price": 0.8489,
+    "best_streak": 18,
+    "full_path_only": {
+     "n": 39,
+     "w": 33,
+     "hit_pct": 84.6
+    },
+    "majority_on_fired": 62.8,
+    "comparators": {
+     "plain": {
+      "n": 2,
+      "w": 2,
+      "hit_pct": 100.0,
+      "path_priced_pnl": 0.0686,
+      "best_streak": 2
+     },
+     "early": {
+      "n": 10,
+      "w": 8,
+      "hit_pct": 80.0,
+      "path_priced_pnl": 1.2595,
+      "best_streak": 8
+     },
+     "riptide": {
+      "n": 39,
+      "w": 28,
+      "hit_pct": 71.8,
+      "path_priced_pnl": 1.4931,
+      "best_streak": 11
+     },
+     "final": {
+      "n": 5,
+      "w": 5,
+      "hit_pct": 100.0,
+      "path_priced_pnl": 0.6326,
+      "best_streak": 5
+     },
+     "crowd": {
+      "n": 70,
+      "w": 64,
+      "hit_pct": 91.4,
+      "path_priced_pnl": 17.0926,
+      "best_streak": 20
+     }
+    },
+    "seat_bar_legs": {
+     "fires>=15": true,
+     "beats_crowd": false,
+     "beats_majority": true,
+     "pnl>0": false
+    },
+    "seat": false
+   },
+   "live_trial": {
+    "span": 100,
+    "calls": 0,
+    "graded": 0,
+    "w": 0,
+    "l": 0,
+    "hit_pct": null,
+    "pnl": 0.0,
+    "best_streak": 0,
+    "recent": []
+   },
+   "status": "CHALLENGER \u2014 live shadow trial running; NOT a seated voter (backtest bar not met)",
+   "voter": false
+  },
+  {
+   "id": "FABLE",
+   "label": "SNAPSHOT BABY \u2014 FLIP",
+   "family": "FLIP",
+   "in_words": "A side led >= 0.60 before 240s; after 240s the price crosses AGAINST that leader and stays across \u2014 call the breaking side (fade the broken leader) at the crack.",
+   "parentage": [
+    "FLIP family (snapshot_lib.classify): a side led >= 0.60 before 240s and LOST",
+    "Discovery finding 2026-11-19: 8 flips, median leader mid 0.818 before 240s, median final break 251.5s; EARLY hit 0.0 on the family \u2014 following the strong early leader was the losing play",
+    "Everyone-loses lessons (snapshot overlay): when the obvious side breaks late, the break is the signal",
+    "Buoy route FLIP: leader @150s -> leader holds @240s -> first crack -> THE BREAK"
+   ],
+   "rule": {
+    "min_leader_mid": 0.6,
+    "crack_after_s": 240
+   },
+   "rule_hash": "f331abecf44af6fab8789c573b4f6ad9d9e8ba465d1aa1d3b410f36031131695",
+   "birth_seq": 23948,
+   "backtest": {
+    "windows": 179,
+    "fires": 34,
+    "wins": 12,
+    "losses": 22,
+    "hit_pct": 35.3,
+    "priced_pnl": -16.4467,
+    "avg_price": 0.5815,
+    "best_streak": 3,
+    "full_path_only": {
+     "n": 18,
+     "w": 7,
+     "hit_pct": 38.9
+    },
+    "majority_on_fired": 70.6,
+    "comparators": {
+     "early": {
+      "n": 4,
+      "w": 3,
+      "hit_pct": 75.0,
+      "path_priced_pnl": 2.0297,
+      "best_streak": 2
+     },
+     "riptide": {
+      "n": 16,
+      "w": 14,
+      "hit_pct": 87.5,
+      "path_priced_pnl": 11.0903,
+      "best_streak": 6
+     },
+     "final": {
+      "n": 1,
+      "w": 1,
+      "hit_pct": 100.0,
+      "path_priced_pnl": 1.1134,
+      "best_streak": 1
+     },
+     "crowd": {
+      "n": 32,
+      "w": 25,
+      "hit_pct": 78.1,
+      "path_priced_pnl": 16.9281,
+      "best_streak": 7
+     }
+    },
+    "seat_bar_legs": {
+     "fires>=15": true,
+     "beats_crowd": false,
+     "beats_majority": false,
+     "pnl>0": false
+    },
+    "seat": false
+   },
+   "live_trial": {
+    "span": 100,
+    "calls": 0,
+    "graded": 0,
+    "w": 0,
+    "l": 0,
+    "hit_pct": null,
+    "pnl": 0.0,
+    "best_streak": 0,
+    "recent": []
+   },
+   "status": "CHALLENGER \u2014 live shadow trial running; NOT a seated voter (backtest bar not met)",
+   "voter": false
+  },
+  {
+   "id": "CHOPPER",
+   "label": "SNAPSHOT BABY \u2014 CHOP",
+   "family": "CHOP",
+   "in_words": "Once the window has crossed 50c >= 4 times and 150s have passed, call the side the price currently sits on (the side of the last cross).",
+   "parentage": [
+    "CHOP family (snapshot_lib.classify): >= 4 crossings of 50c \u2014 the book never agreed on a direction",
+    "Backfill census 2026-11-19: CHOP n=7, crowd hit 1.0 (small family, printed honestly); PLAIN made no counted calls in chop at all",
+    "WHY label two_way_chop: in a storm the last cross is the only fresh information there is"
+   ],
+   "rule": {
+    "min_crossings": 4,
+    "min_elapsed": 150
+   },
+   "rule_hash": "7696b9fad110a8810143d69dd012afc0148217139a8203aeebbb719aed5f2c81",
+   "birth_seq": 23949,
+   "backtest": {
+    "windows": 179,
+    "fires": 30,
+    "wins": 12,
+    "losses": 18,
+    "hit_pct": 40.0,
+    "priced_pnl": -12.7591,
+    "avg_price": 0.6137,
+    "best_streak": 6,
+    "full_path_only": {
+     "n": 21,
+     "w": 9,
+     "hit_pct": 42.9
+    },
+    "majority_on_fired": 53.3,
+    "comparators": {
+     "early": {
+      "n": 3,
+      "w": 3,
+      "hit_pct": 100.0,
+      "path_priced_pnl": 1.6284,
+      "best_streak": 3
+     },
+     "riptide": {
+      "n": 9,
+      "w": 7,
+      "hit_pct": 77.8,
+      "path_priced_pnl": 6.8474,
+      "best_streak": 4
+     },
+     "crowd": {
+      "n": 28,
+      "w": 24,
+      "hit_pct": 85.7,
+      "path_priced_pnl": 13.0546,
+      "best_streak": 16
+     }
+    },
+    "seat_bar_legs": {
+     "fires>=15": true,
+     "beats_crowd": false,
+     "beats_majority": false,
+     "pnl>0": false
+    },
+    "seat": false
+   },
+   "live_trial": {
+    "span": 100,
+    "calls": 0,
+    "graded": 0,
+    "w": 0,
+    "l": 0,
+    "hit_pct": null,
+    "pnl": 0.0,
+    "best_streak": 0,
+    "recent": []
+   },
+   "status": "CHALLENGER \u2014 live shadow trial running; NOT a seated voter (backtest bar not met)",
+   "voter": false
+  }
+ ]
+}

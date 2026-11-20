@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SNAPSHOT BABIES — Born From The Library · NODAL DESK</title>
+<style>
+  body{background:#0b0e14;color:#e8ecf5;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:0;padding:18px}
+  h1{color:#ffd75e;font-size:20px;letter-spacing:1.5px;margin:0 0 4px}
+  .sub{color:#9aa7c2;font-size:12.5px;line-height:1.6;max-width:900px}
+  .fresh{color:#3ddc84;font-size:12px;margin:8px 0}
+  .stale{display:none;background:#3a1420;border:1px solid #ff6b6b;color:#ff6b6b;border-radius:8px;padding:8px 12px;font-size:12.5px;margin:8px 0}
+  .card{background:#131826;border:1px solid #2a3350;border-radius:12px;padding:16px 18px;margin:14px 0;max-width:900px}
+  .card h2{margin:0 0 2px;font-size:16px;color:#57b6ff;letter-spacing:1px}
+  .fam{color:#ffd75e;font-size:12px;letter-spacing:1px}
+  .words{font-size:13.5px;line-height:1.65;margin:8px 0}
+  .rule{background:#0b0e14;border:1px solid #2a3350;border-radius:8px;padding:8px 12px;font-size:12.5px;line-height:1.7;color:#c9d4ee;white-space:pre-wrap;word-break:break-word}
+  .par{font-size:12px;color:#9aa7c2;line-height:1.6;margin:6px 0 0 16px;padding:0}
+  .grid{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+  .stat{background:#0b0e14;border:1px solid #2a3350;border-radius:8px;padding:8px 12px;min-width:110px}
+  .stat b{display:block;font-size:16px}
+  .stat span{font-size:11px;color:#9aa7c2;letter-spacing:.5px}
+  .pos{color:#3ddc84}.neg{color:#ff6b6b}.dim{color:#9aa7c2}
+  table{border-collapse:collapse;font-size:12.5px;margin:6px 0}
+  td,th{border:1px solid #2a3350;padding:5px 9px;text-align:left}
+  th{color:#ffd75e;font-weight:700}
+  .leg{font-size:12.5px;line-height:1.7}
+  .status{font-size:13px;font-weight:800;margin-top:10px}
+  .recent{font-size:12px;color:#c9d4ee;line-height:1.8}
+  .foot{color:#9aa7c2;font-size:12px;line-height:1.7;max-width:900px;margin-top:18px}
+  a{color:#57b6ff}
+</style>
+</head>
+<body>
+<h1>👶 SNAPSHOT BABIES — BORN FROM THE LIBRARY</h1>
+<div class="sub">Successor engines bred from the BTC Snapshot Library's counted families — each one a defined rule set over family base rates, graded exactly like everyone else: per $1 at the fire-time price, sealed on the chain. <b>BTC 5-min · SIM/SHADOW ONLY — no real money.</b> The unanimous-vote law is untouched; a baby becomes a seated shadow voter only when its record beats the bar. Babies are labeled by parentage until David approves final names.</div>
+<div class="fresh" id="fresh">loading…</div>
+<div class="stale" id="stale">⚠ FEED STALE — showing the last build.</div>
+<div id="law" class="sub"></div>
+<div id="babies"></div>
+<div id="notborn"></div>
+<div class="foot">The seat bar (printed, applied plainly): fires ≥ 15 · hit% beats the crowd's on the same windows · hit% beats the majority-class base rate · priced P&amp;L &gt; $0. Fail any leg — no seat. The replay trial runs on the captured snapshot set; the live shadow trial runs 100 graded windows per baby (Successor Protocol §3). Comparator priced lines in the backtest are path-priced at the baby's fire moment and labeled as such — not the comparators' official ledger lines. <a href="ready.html">The proven-means-profitable board →</a> · <a href="snapshots.html">The Snapshot Library →</a></div>
+<script>
+const $=id=>document.getElementById(id);
+const fmt$=v=>(v===null||v===undefined)?'—':((v>=0?'+$':'−$')+Math.abs(v).toFixed(4));
+const fmtC=v=>(v===null||v===undefined)?'—':Math.round(v*100)+'¢';
+function et(s){if(!s)return'—';const d=new Date(s.replace(' ','T'));return d.toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit',hour12:true})+' ET';}
+async function tick(){
+  try{
+    const r=await fetch('babydata.json?t='+Date.now(),{cache:'no-store'});
+    const d=await r.json();
+    const built=new Date(d.built_at);
+    $('fresh').textContent='Feed built '+built.toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true})+' ET · ledger head seq '+d.head_seq+' · this page checks every 15s · all times ET';
+    $('stale').style.display=(Date.now()-built.getTime()>180000)?'block':'none';
+    $('law').textContent=d.law||'';
+    const wrap=$('babies'); wrap.innerHTML='';
+    for(const b of d.babies){
+      const bt=b.backtest, lt=b.live_trial;
+      const card=document.createElement('div'); card.className='card';
+      let h='<h2>'+b.label+'</h2><div class="fam">FAMILY: '+b.family+' · RULE HASH '+String(b.rule_hash).slice(0,12)+'…'+(b.birth_seq?' · BORN AT SEAL '+b.birth_seq:'')+'</div>';
+      h+='<div class="words">'+b.in_words+'</div>';
+      h+='<div class="rule">'+Object.entries(b.rule).map(([k,v])=>k+' = '+v).join('\n')+'</div>';
+      h+='<div class="dim" style="font-size:12px;margin-top:8px">PARENTAGE — every rule traces to a counted lesson:</div><ul class="par">'+b.parentage.map(p=>'<li>'+p+'</li>').join('')+'</ul>';
+      h+='<div style="margin-top:12px"><b>REPLAY TRIAL</b> <span class="dim">(backtest on '+bt.windows+' captured windows)</span></div><div class="grid">';
+      h+='<div class="stat"><b>'+bt.fires+'</b><span>FIRES</span></div>';
+      h+='<div class="stat"><b>'+bt.wins+'W–'+bt.losses+'L</b><span>RECORD</span></div>';
+      h+='<div class="stat"><b>'+(bt.hit_pct===null?'—':bt.hit_pct+'%')+'</b><span>HIT RATE</span></div>';
+      h+='<div class="stat"><b class="'+(bt.priced_pnl>0?'pos':'neg')+'">'+fmt$(bt.priced_pnl)+'</b><span>PRICED P&amp;L / $1</span></div>';
+      h+='<div class="stat"><b>'+fmtC(bt.avg_price)+'</b><span>AVG FIRE PRICE</span></div>';
+      h+='<div class="stat"><b>'+bt.best_streak+'</b><span>BEST STREAK</span></div></div>';
+      if(bt.full_path_only&&bt.full_path_only.n) h+='<div class="dim" style="font-size:12px">Full-path windows only: '+bt.full_path_only.n+' fires · '+(bt.full_path_only.hit_pct===null?'—':bt.full_path_only.hit_pct+'%')+' hits · majority side on fired windows: '+bt.majority_on_fired+'%</div>';
+      const comps=Object.entries(bt.comparators||{});
+      if(comps.length){
+        h+='<table><tr><th>ON THE SAME WINDOWS</th><th>n</th><th>HIT</th><th>PATH-PRICED / $1</th><th>STREAK</th></tr>';
+        for(const [nm,c] of comps) h+='<tr><td>'+nm.toUpperCase()+'</td><td>'+c.n+'</td><td>'+c.hit_pct+'%</td><td class="'+(c.path_priced_pnl>0?'pos':'neg')+'">'+fmt$(c.path_priced_pnl)+'</td><td>'+c.best_streak+'</td></tr>';
+        h+='</table>';
+      }
+      if(bt.seat_bar_legs){
+        const L=bt.seat_bar_legs;
+        h+='<div class="leg">SEAT BAR — fires ≥ 15: '+(L['fires>=15']?'✅':'❌')+' · beats crowd: '+(L['beats_crowd']?'✅':'❌')+' · beats majority: '+(L['beats_majority']?'✅':'❌')+' · priced P&amp;L &gt; $0: '+(L['pnl>0']?'✅':'❌')+'</div>';
+      }
+      h+='<div style="margin-top:12px"><b>LIVE SHADOW TRIAL</b> <span class="dim">(span '+lt.span+' graded windows)</span></div><div class="grid">';
+      h+='<div class="stat"><b>'+lt.graded+' / '+lt.span+'</b><span>GRADED</span></div>';
+      h+='<div class="stat"><b>'+lt.w+'W–'+lt.l+'L</b><span>RECORD</span></div>';
+      h+='<div class="stat"><b>'+(lt.hit_pct===null?'—':lt.hit_pct+'%')+'</b><span>HIT RATE</span></div>';
+      h+='<div class="stat"><b class="'+(lt.pnl>0?'pos':(lt.pnl<0?'neg':''))+'">'+fmt$(lt.pnl)+'</b><span>PRICED P&amp;L / $1</span></div></div>';
+      if(lt.recent&&lt.recent.length){
+        h+='<div class="recent">'+lt.recent.map(g=>et(g.wiso)+' · '+String(g.side).toUpperCase()+' @ '+fmtC(g.price)+' → '+String(g.result).toUpperCase()+' '+(g.hit?'✅':'❌')+' '+fmt$(g.pnl)).join('<br>')+'</div>';
+      }
+      h+='<div class="status" style="color:'+(b.voter?'#3ddc84':'#ffd75e')+'">'+b.status+'</div>';
+      card.innerHTML=h; wrap.appendChild(card);
+    }
+    if(d.not_born&&d.not_born.length){
+      $('notborn').innerHTML='<div class="card"><h2>DESIGNED, NOT BORN</h2>'+d.not_born.map(x=>'<div class="words"><b>'+x.design+'</b> — '+x.why_not_born+'</div>').join('')+'</div>';
+    }
+  }catch(e){ $('fresh').textContent='feed error: '+e.message; }
+}
+tick(); setInterval(tick,15000);
+</script>
+</body>
+</html>

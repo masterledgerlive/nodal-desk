@@ -1,27 +1,27 @@
 {
- "built_at": "2026-11-19T19:08:38Z",
+ "built_at": "2026-11-20T04:43:37Z",
  "families": {
   "ONE_TURNER": {
-   "n": 16,
-   "up_rate": 0.5,
+   "n": 17,
+   "up_rate": 0.471,
    "plain_hit": 1.0,
    "early_hit": 1.0,
-   "crowd_hit": 0.8,
+   "crowd_hit": 0.812,
    "everyone_loses_rate": 0.0,
-   "median_break_s": 223.0
+   "median_break_s": 219
   },
   "FLIP": {
-   "n": 8,
-   "up_rate": 0.625,
+   "n": 16,
+   "up_rate": 0.375,
    "plain_hit": null,
    "early_hit": 0.0,
-   "crowd_hit": 0.375,
+   "crowd_hit": 0.5,
    "everyone_loses_rate": 0.0,
-   "median_break_s": 251.5
+   "median_break_s": 258
   },
   "CHOP": {
-   "n": 7,
-   "up_rate": 0.429,
+   "n": 9,
+   "up_rate": 0.444,
    "plain_hit": null,
    "early_hit": 1.0,
    "crowd_hit": 1.0,
@@ -29,37 +29,37 @@
    "median_break_s": 252
   },
   "CLEAN": {
-   "n": 35,
-   "up_rate": 0.514,
+   "n": 48,
+   "up_rate": 0.521,
    "plain_hit": 1.0,
    "early_hit": 0.824,
-   "crowd_hit": 0.97,
+   "crowd_hit": 0.978,
    "everyone_loses_rate": 0.0,
-   "median_break_s": 224.0
+   "median_break_s": 254
   },
   "MIXED": {
-   "n": 33,
-   "up_rate": 0.303,
+   "n": 50,
+   "up_rate": 0.28,
    "plain_hit": 0.714,
    "early_hit": 0.727,
-   "crowd_hit": 0.938,
-   "everyone_loses_rate": 0.061,
-   "median_break_s": 235
+   "crowd_hit": 0.955,
+   "everyone_loses_rate": 0.04,
+   "median_break_s": 225.0
   }
  },
  "findings": [
   {
    "title": "Coverage \u2014 read this first",
-   "text": "The path library holds 104 windows with recorded price paths (104 partial \u2014 RIPTIDE-seeded windows polled late, 2026-11-17\u219219; the rest full from the pathwatch start). Families below are counted from those paths only. The ledger scan covers every graded window the desk has sealed, path or no path. Selection warning: every partial-path window is one RIPTIDE seeded on \u2014 a parent had already called it \u2014 so family hit rates are conditional on that and read higher than an all-windows rate would. Full-coverage windows carry no such filter.",
+   "text": "The path library holds 145 windows with recorded price paths (106 partial \u2014 RIPTIDE-seeded windows polled late, 2026-11-17\u219219; the rest full from the pathwatch start). Families below are counted from those paths only. The ledger scan covers every graded window the desk has sealed, path or no path. Selection warning: every partial-path window is one RIPTIDE seeded on \u2014 a parent had already called it \u2014 so family hit rates are conditional on that and read higher than an all-windows rate would. Full-coverage windows carry no such filter.",
    "numbers": {
-    "snapshots": 104,
-    "partial": 104,
+    "snapshots": 145,
+    "partial": 106,
     "census": {
-     "ONE_TURNER": 16,
-     "CLEAN": 35,
-     "FLIP": 8,
-     "CHOP": 7,
-     "MIXED": 33,
+     "ONE_TURNER": 17,
+     "CLEAN": 48,
+     "FLIP": 16,
+     "CHOP": 9,
+     "MIXED": 50,
      "null": 5
     }
    }
@@ -78,30 +78,30 @@
   },
   {
    "title": "Flip anatomy",
-   "text": "8 windows flipped: a side led at a median 0.818 mid before the 240s mark and still lost. The final break (last 50c cross) came at a median 251.5s. 2 of 8 carried a late-fire label (winner's mid +0.20 or more in the final minute); 1 carried a BTC-lurch label (spot moved 0.15%+ inside the window).",
+   "text": "16 windows flipped: a side led at a median 0.86 mid before the 240s mark and still lost. The final break (last 50c cross) came at a median 258s. 5 of 16 carried a late-fire label (winner's mid +0.20 or more in the final minute); 3 carried a BTC-lurch label (spot moved 0.15%+ inside the window).",
    "numbers": {
-    "n": 8,
-    "late_fire": 2,
-    "btc_lurch": 1
+    "n": 16,
+    "late_fire": 5,
+    "btc_lurch": 3
    }
   },
   {
    "title": "One-turners",
-   "text": "16 one-turners: quiet first (median pre-move range 0.12), then one move of a median 0.45 mid points at a median 227.0s in, and no cross-back after. The seconds before the step are where the WHY hunt concentrates.",
+   "text": "17 one-turners: quiet first (median pre-move range 0.12), then one move of a median 0.45 mid points at a median 227s in, and no cross-back after. The seconds before the step are where the WHY hunt concentrates.",
    "numbers": {
-    "n": 16
+    "n": 17
    }
   },
   {
    "title": "Chop vs clean \u2014 is confusion itself the tell?",
-   "text": "CHOP windows: 7 (median 4 crosses of 50c). In chop, PLAIN hit no counted calls (n=0) and the crowd 100.0% (n=7). In CLEAN windows (35), PLAIN hit 100.0% (n=5) and the crowd 97.0% (n=33). If chop accuracy sits near coin-flip while clean accuracy holds, the confusion is the signal \u2014 the numbers above are the verdict, whichever way they land.",
+   "text": "CHOP windows: 9 (median 5 crosses of 50c). In chop, PLAIN hit no counted calls (n=0) and the crowd 100.0% (n=9). In CLEAN windows (48), PLAIN hit 100.0% (n=5) and the crowd 97.8% (n=45). If chop accuracy sits near coin-flip while clean accuracy holds, the confusion is the signal \u2014 the numbers above are the verdict, whichever way they land.",
    "numbers": {
-    "chop_n": 7,
-    "clean_n": 35,
+    "chop_n": 9,
+    "clean_n": 48,
     "chop_plain_hit": "no counted calls",
     "clean_plain_hit": "100.0%",
     "chop_crowd_hit": "100.0%",
-    "clean_crowd_hit": "97.0%"
+    "clean_crowd_hit": "97.8%"
    }
   },
   {
@@ -114,10 +114,10 @@
   },
   {
    "title": "When windows actually break",
-   "text": "Of 40 path windows with a final 50c cross, the decision point (last cross) sat at a median 237.0s, and 19 (47.5%) broke in the final minute. Anything decided before that is path, not decision.",
+   "text": "Of 72 path windows with a final 50c cross, the decision point (last cross) sat at a median 233.0s, and 34 (47.2%) broke in the final minute. Anything decided before that is path, not decision.",
    "numbers": {
-    "n": 40,
-    "late_breaks": 19
+    "n": 72,
+    "late_breaks": 34
    }
   }
  ]
