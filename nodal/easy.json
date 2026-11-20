@@ -1,11 +1,11 @@
 {
- "built_at": 1795176726,
- "window": "2026-11-20T12:10:00Z",
- "window_ends_in_s": 174,
+ "built_at": 1795177046,
+ "window": "2026-11-20T12:15:00Z",
+ "window_ends_in_s": 154,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-20T12:12:32Z",
-  "chain": 24980,
+  "updated": "2026-11-20T12:17:26Z",
+  "chain": 24999,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -14,20 +14,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FLAT",
-  "plain": "going up and down in place \u2014 resting",
-  "drift": -1.4,
-  "range": 36.8,
+  "state": "CLIMBING",
+  "plain": "going up and staying up",
+  "drift": 35.7,
+  "range": 59.1,
   "flips": 1,
-  "open": 61363.1,
-  "last": 61361.7
+  "open": 61328.9,
+  "last": 61364.61
  },
  "chart": {
   "points": [
-   [
-    1795175348,
-    61691.729999999996
-   ],
    [
     1795175406,
     61692.31
@@ -127,65 +123,102 @@
    [
     1795176726,
     61361.7
+   ],
+   [
+    1795176756,
+    61352.2
+   ],
+   [
+    1795176786,
+    61305.5
+   ],
+   [
+    1795176896,
+    61354.4
+   ],
+   [
+    1795176926,
+    61328.9
+   ],
+   [
+    1795176956,
+    61328.7
+   ],
+   [
+    1795176986,
+    61367.035
+   ],
+   [
+    1795177016,
+    61387.8
+   ],
+   [
+    1795177046,
+    61364.61
    ]
   ],
   "bounds": [
-   1795175100,
    1795175400,
    1795175700,
    1795176000,
    1795176300,
    1795176600,
-   1795176900
+   1795176900,
+   1795177200
   ],
-  "open": 61363.1,
-  "wstart": 1795175100,
-  "wend": 1795176900
+  "open": 61328.9,
+  "wstart": 1795175400,
+  "wend": 1795177200
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 5,
+   "streak": 6,
    "best": 22,
    "bank": 268197.9,
    "savings": 0.0,
-   "graded": 826,
-   "wins": 669,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "graded": 827,
+   "wins": 670,
+   "call": "up",
+   "chance": 0.8089,
+   "ask": 0.56,
+   "follow": "FIRE",
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": null
+   "payout": {
+    "stake": 0.5,
+    "win": 0.38,
+    "lose": -0.52,
+    "shares": 0.893
+   }
   },
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 1,
+   "streak": 2,
    "best": 35,
    "bank": 59440.03,
    "savings": 99314.6,
-   "graded": 648,
-   "wins": 527,
+   "graded": 649,
+   "wins": 528,
    "call": "up",
-   "chance": 0.6574,
-   "ask": 0.5,
+   "chance": 0.7753,
+   "ask": 0.71,
    "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
    "payout": {
     "stake": 0.5,
-    "win": 0.48,
-    "lose": -0.52,
-    "shares": 1.0
+    "win": 0.19,
+    "lose": -0.51,
+    "shares": 0.704
    },
    "payout_value": {
     "stake": 0.5,
-    "win": 0.36,
-    "lose": -0.52,
-    "shares": 1.0
+    "win": 0.1,
+    "lose": -0.51,
+    "shares": 0.704
    },
    "value_hit": false,
    "flipped": false,
@@ -217,7 +250,11 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "The price barely moved in the last two minutes \u2014 the wave is resting.",
+   "text": "All the models that have called are pointing the same way: UP.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price jumped $36 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
   },
   {
@@ -225,14 +262,8 @@
    "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (-1 dollars this window). EARLY says BUY UP. 2 minutes 54 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+36 dollars this window). PLAIN says BUY UP; EARLY says BUY UP. 2 minutes 34 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-20T11:40:00Z",
-   "result": "down",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-20T11:50:00Z",
    "result": "up",
@@ -247,6 +278,12 @@
   },
   {
    "window": "2026-11-20T12:00:00Z",
+   "result": "down",
+   "plain": true,
+   "early": true
+  },
+  {
+   "window": "2026-11-20T12:05:00Z",
    "result": "down",
    "plain": true,
    "early": true
