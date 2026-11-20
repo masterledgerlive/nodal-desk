@@ -1,11 +1,11 @@
 {
- "built_at": 1795164126,
+ "built_at": 1795164166,
  "window": "2026-11-20T08:40:00Z",
- "window_ends_in_s": 174,
+ "window_ends_in_s": 134,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-20T08:42:06Z",
-  "chain": 24054,
+  "updated": "2026-11-20T08:42:46Z",
+  "chain": 24065,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -16,11 +16,11 @@
  "wave": {
   "state": "FALLING",
   "plain": "going down and staying down",
-  "drift": -65.6,
+  "drift": -22.8,
   "range": 65.6,
-  "flips": 0,
+  "flips": 1,
   "open": 61913.1,
-  "last": 61847.520000000004
+  "last": 61890.265
  },
  "chart": {
   "points": [
@@ -151,6 +151,10 @@
    [
     1795164126,
     61847.520000000004
+   ],
+   [
+    1795164166,
+    61890.265
    ]
   ],
   "bounds": [
@@ -170,11 +174,11 @@
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 2,
+   "streak": 0,
    "best": 22,
    "bank": 232113.97,
    "savings": 0.0,
-   "graded": 794,
+   "graded": 795,
    "wins": 644,
    "call": "down",
    "chance": 0.8215,
@@ -224,7 +228,7 @@
    "savings": 2004.31,
    "graded": 289,
    "wins": 148,
-   "call": null,
+   "call": "down",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -232,35 +236,29 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": false
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.98 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
   },
   {
    "text": "All the models that have called are pointing the same way: DOWN.",
    "src": "the sealed calls"
   },
   {
-   "text": "The price dropped $66 in the last two minutes \u2014 a real push, not a drift.",
-   "src": "price trail (last 2 minutes)"
-  },
-  {
    "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
    "src": "EARLY's in-window samples"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-66 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN. 2 minutes 54 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-23 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN; RIPTIDE says BUY DOWN. 2 minutes 14 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-19T10:25:00Z",
-   "result": "down",
-   "plain": true,
-   "early": null
-  },
   {
    "window": "2026-11-20T08:15:00Z",
    "result": "down",
@@ -278,6 +276,12 @@
    "result": "up",
    "plain": true,
    "early": true
+  },
+  {
+   "window": "2026-11-20T08:30:00Z",
+   "result": "up",
+   "plain": false,
+   "early": null
   }
  ],
  "ruler": "How the wave word is picked (the desk's ruler, from this window's own price trail): FLAT = moved less than $40 total and ended within $15 of where it started. ROLLERCOASTER = changed direction 3+ times without getting anywhere. CLIMBING / FALLING = ended $15+ above / below the start without whipping back. Book tells come from the order-book ladder RIPTIDE polls \u2014 the desk has no trade-size tape, so this board never claims 'whales'; it says what the book shows."
