@@ -1,13 +1,12 @@
 {
- "built_at": 1795190251,
- "window": "2026-11-20T15:55:00Z",
- "window_ends_in_s": 149,
+ "built_at": 1795190540,
+ "window": "2026-11-20T16:00:00Z",
+ "window_ends_in_s": 160,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-20T15:57:31Z",
-  "chain": 25862,
+  "updated": "2026-11-20T16:02:20Z",
+  "chain": 25886,
   "stall_components": [
-   "btc5_early",
    "deploy_cycle",
    "gamelog_refresh_cue",
    "trail_blob"
@@ -17,34 +16,14 @@
  "wave": {
   "state": "FALLING",
   "plain": "going down and staying down",
-  "drift": -48.1,
-  "range": 172.2,
-  "flips": 1,
-  "open": 59508.3,
-  "last": 59460.17
+  "drift": -126.6,
+  "range": 174.4,
+  "flips": 2,
+  "open": 59329.7,
+  "last": 59203.07
  },
  "chart": {
   "points": [
-   [
-    1795188618,
-    60321.9
-   ],
-   [
-    1795188648,
-    60352.42
-   ],
-   [
-    1795188678,
-    60179.365000000005
-   ],
-   [
-    1795188709,
-    60214.36
-   ],
-   [
-    1795188739,
-    60216.325
-   ],
    [
     1795188907,
     60239.8
@@ -140,33 +119,69 @@
    [
     1795190251,
     59460.17
+   ],
+   [
+    1795190286,
+    59364.895000000004
+   ],
+   [
+    1795190326,
+    59361.8
+   ],
+   [
+    1795190356,
+    59385.3
+   ],
+   [
+    1795190386,
+    59374.975
+   ],
+   [
+    1795190416,
+    59329.7
+   ],
+   [
+    1795190446,
+    59287.6
+   ],
+   [
+    1795190476,
+    59155.29
+   ],
+   [
+    1795190506,
+    59227.525
+   ],
+   [
+    1795190540,
+    59203.07
    ]
   ],
   "bounds": [
-   1795188600,
    1795188900,
    1795189200,
    1795189500,
    1795189800,
    1795190100,
-   1795190400
+   1795190400,
+   1795190700
   ],
-  "open": 59508.3,
-  "wstart": 1795188600,
-  "wend": 1795190400
+  "open": 59329.7,
+  "wstart": 1795188900,
+  "wend": 1795190700
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 8,
+   "streak": 9,
    "best": 22,
    "bank": 332510.02,
    "savings": 0.0,
-   "graded": 859,
-   "wins": 694,
-   "call": null,
-   "chance": null,
+   "graded": 860,
+   "wins": 695,
+   "call": "down",
+   "chance": 0.8003,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -176,23 +191,33 @@
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 12,
+   "streak": 13,
    "best": 35,
    "bank": 61374.21,
    "savings": 123645.42,
-   "graded": 682,
-   "wins": 554,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "graded": 683,
+   "wins": 555,
+   "call": "down",
+   "chance": 0.7061,
+   "ask": 0.84,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.09,
+    "lose": -0.51,
+    "shares": 0.595
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.01,
+    "lose": -0.51,
+    "shares": 0.595
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -220,7 +245,11 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "The price dropped $172 in the last two minutes \u2014 a real push, not a drift.",
+   "text": "All the models that have called are pointing the same way: DOWN.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price dropped $85 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
   },
   {
@@ -228,14 +257,8 @@
    "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-48 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 2 minutes 29 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-127 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN. 2 minutes 40 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-20T15:30:00Z",
-   "result": "down",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-20T15:35:00Z",
    "result": "down",
@@ -250,6 +273,12 @@
   },
   {
    "window": "2026-11-20T15:45:00Z",
+   "result": "down",
+   "plain": true,
+   "early": true
+  },
+  {
+   "window": "2026-11-20T15:50:00Z",
    "result": "down",
    "plain": true,
    "early": true
