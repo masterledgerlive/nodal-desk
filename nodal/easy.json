@@ -1,12 +1,13 @@
 {
- "built_at": 1795253259,
- "window": "2026-11-21T09:25:00Z",
- "window_ends_in_s": 141,
+ "built_at": 1795253518,
+ "window": "2026-11-21T09:30:00Z",
+ "window_ends_in_s": 182,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-21T09:28:17Z",
-  "chain": 29082,
+  "updated": "2026-11-21T09:31:57Z",
+  "chain": 29121,
   "stall_components": [
+   "btc5_flow",
    "deploy_cycle",
    "gamelog_refresh_cue",
    "trail_blob"
@@ -14,56 +15,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "ROLLERCOASTER",
-  "plain": "whipping up and down \u2014 nobody is winning the tug of war",
-  "drift": 12.9,
-  "range": 40.4,
-  "flips": 3,
-  "open": 57868.0,
-  "last": 57880.9
+  "state": "FALLING",
+  "plain": "going down and staying down",
+  "drift": -21.8,
+  "range": 29.5,
+  "flips": 1,
+  "open": 57887.7,
+  "last": 57865.9
  },
  "chart": {
   "points": [
-   [
-    1795251604,
-    57721.15
-   ],
-   [
-    1795251634,
-    57709.634999999995
-   ],
-   [
-    1795251665,
-    57693.455
-   ],
-   [
-    1795251695,
-    57676.845
-   ],
-   [
-    1795251725,
-    57696.4
-   ],
-   [
-    1795251755,
-    57747.6
-   ],
-   [
-    1795251786,
-    57740.34
-   ],
-   [
-    1795251816,
-    57782.149999999994
-   ],
-   [
-    1795251846,
-    57786.4
-   ],
-   [
-    1795251876,
-    57775.8
-   ],
    [
     1795251936,
     57789.425
@@ -175,33 +136,45 @@
    [
     1795253259,
     57880.9
+   ],
+   [
+    1795253445,
+    57887.7
+   ],
+   [
+    1795253475,
+    57858.24
+   ],
+   [
+    1795253518,
+    57865.9
    ]
   ],
   "bounds": [
-   1795251600,
    1795251900,
    1795252200,
    1795252500,
    1795252800,
    1795253100,
-   1795253400
+   1795253400,
+   1795253700
   ],
-  "open": 57868.0,
-  "wstart": 1795251600,
-  "wend": 1795253400
+  "open": 57887.7,
+  "wstart": 1795251900,
+  "wend": 1795253700
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 0,
+   "streak": 1,
    "best": 22,
    "bank": 1182748.62,
    "savings": 0.0,
-   "graded": 962,
-   "wins": 781,
-   "call": "up",
-   "chance": 0.6483,
+   "graded": 963,
+   "wins": 782,
+   "call": null,
+   "chance": null,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -211,34 +184,44 @@
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 0,
+   "streak": 1,
    "best": 35,
    "bank": 306283.66,
    "savings": 260495.23,
-   "graded": 793,
-   "wins": 643,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "graded": 794,
+   "wins": 644,
+   "call": "down",
+   "chance": 0.7634,
+   "ask": 0.85,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.08,
+    "lose": -0.51,
+    "shares": 0.588
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.01,
+    "lose": -0.51,
+    "shares": 0.588
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
    "mode": "TEST",
-   "streak": 5,
+   "streak": 0,
    "best": 10,
    "bank": 5.0,
    "savings": 3812.25,
-   "graded": 323,
+   "graded": 324,
    "wins": 165,
-   "call": "up",
+   "call": null,
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -246,35 +229,21 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": true
+   "seeded": false
   }
  ],
  "tells": [
   {
-   "text": "The order book is fairly even \u2014 ladder imbalance 0.26 out of 1.00. Nobody is leaning on it.",
-   "src": "order book (RIPTIDE poll, this window)"
+   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
+   "src": "order book (no poll yet)"
   },
   {
-   "text": "All the models that have called are pointing the same way: UP.",
-   "src": "the sealed calls"
-  },
-  {
-   "text": "The price barely moved in the last two minutes \u2014 the wave is resting.",
-   "src": "price trail (last 2 minutes)"
-  },
-  {
-   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
-   "src": "RIPTIDE sealed seed"
+   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is ROLLERCOASTER \u2014 whipping up and down \u2014 nobody is winning the tug of war (+13 dollars this window). PLAIN says BUY UP; RIPTIDE says BUY UP. 2 minutes 21 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-22 dollars this window). EARLY says BUY DOWN. 3 minutes 02 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-21T08:55:00Z",
-   "result": "down",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-21T09:05:00Z",
    "result": "up",
@@ -292,6 +261,12 @@
    "result": "down",
    "plain": false,
    "early": false
+  },
+  {
+   "window": "2026-11-21T09:20:00Z",
+   "result": "up",
+   "plain": true,
+   "early": true
   }
  ],
  "ruler": "How the wave word is picked (the desk's ruler, from this window's own price trail): FLAT = moved less than $40 total and ended within $15 of where it started. ROLLERCOASTER = changed direction 3+ times without getting anywhere. CLIMBING / FALLING = ended $15+ above / below the start without whipping back. Book tells come from the order-book ladder RIPTIDE polls \u2014 the desk has no trade-size tape, so this board never claims 'whales'; it says what the book shows."
