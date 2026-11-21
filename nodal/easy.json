@@ -1,11 +1,11 @@
 {
- "built_at": 1795241522,
- "window": "2026-11-21T06:10:00Z",
- "window_ends_in_s": 178,
+ "built_at": 1795241803,
+ "window": "2026-11-21T06:15:00Z",
+ "window_ends_in_s": 197,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-21T06:11:59Z",
-  "chain": 28309,
+  "updated": "2026-11-21T06:17:05Z",
+  "chain": 28348,
   "stall_components": [
    "btc_arena",
    "deploy_cycle",
@@ -15,48 +15,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "CLIMBING",
-  "plain": "going up and staying up",
-  "drift": 35.2,
-  "range": 63.6,
+  "state": "FALLING",
+  "plain": "going down and staying down",
+  "drift": -253.1,
+  "range": 290.0,
   "flips": 1,
-  "open": 55699.8,
-  "last": 55734.97
+  "open": 55617.8,
+  "last": 55364.7
  },
  "chart": {
   "points": [
-   [
-    1795239901,
-    55762.085
-   ],
-   [
-    1795239931,
-    55734.7
-   ],
-   [
-    1795239961,
-    55754.0
-   ],
-   [
-    1795239991,
-    55747.759999999995
-   ],
-   [
-    1795240021,
-    55784.045
-   ],
-   [
-    1795240051,
-    55815.2
-   ],
-   [
-    1795240141,
-    55863.255000000005
-   ],
-   [
-    1795240171,
-    55820.2
-   ],
    [
     1795240201,
     55851.8
@@ -172,20 +140,36 @@
    [
     1795241522,
     55734.97
+   ],
+   [
+    1795241552,
+    55682.4
+   ],
+   [
+    1795241713,
+    55617.8
+   ],
+   [
+    1795241773,
+    55327.84
+   ],
+   [
+    1795241803,
+    55364.7
    ]
   ],
   "bounds": [
-   1795239900,
    1795240200,
    1795240500,
    1795240800,
    1795241100,
    1795241400,
-   1795241700
+   1795241700,
+   1795242000
   ],
-  "open": 55699.8,
-  "wstart": 1795239900,
-  "wend": 1795241700
+  "open": 55617.8,
+  "wstart": 1795240200,
+  "wend": 1795242000
  },
  "models": [
   {
@@ -197,8 +181,8 @@
    "savings": 0.0,
    "graded": 935,
    "wins": 757,
-   "call": "up",
-   "chance": 0.6286,
+   "call": null,
+   "chance": null,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -212,29 +196,39 @@
    "best": 35,
    "bank": 136052.02,
    "savings": 151139.9,
-   "graded": 762,
+   "graded": 763,
    "wins": 617,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "down",
+   "chance": 0.9349,
+   "ask": 0.5,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
-   "value_hit": false,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.48,
+    "lose": -0.52,
+    "shares": 1.0
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.36,
+    "lose": -0.52,
+    "shares": 1.0
+   },
+   "value_hit": true,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "VALUE TAKEN \u2014 banked at the 88% line; a flip can still come"
   },
   {
    "name": "RIPTIDE",
    "mode": "TEST",
-   "streak": 0,
+   "streak": 1,
    "best": 10,
    "bank": 5.0,
    "savings": 2795.53,
-   "graded": 302,
-   "wins": 155,
+   "graded": 303,
+   "wins": 156,
    "call": null,
    "chance": null,
    "ask": null,
@@ -252,18 +246,16 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "The price jumped $35 in the last two minutes \u2014 a real push, not a drift.",
+   "text": "The price dropped $253 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+35 dollars this window). PLAIN says BUY UP. 2 minutes 58 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-253 dollars this window). EARLY says BUY DOWN. 3 minutes 17 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-21T05:35:00Z",
-   "result": "up",
-   "plain": false,
-   "early": false
-  },
   {
    "window": "2026-11-21T05:40:00Z",
    "result": "down",
@@ -280,6 +272,12 @@
    "window": "2026-11-21T05:55:00Z",
    "result": "down",
    "plain": true,
+   "early": false
+  },
+  {
+   "window": "2026-11-21T06:05:00Z",
+   "result": "up",
+   "plain": null,
    "early": false
   }
  ],
