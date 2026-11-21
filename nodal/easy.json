@@ -1,11 +1,11 @@
 {
- "built_at": 1795255118,
- "window": "2026-11-21T09:55:00Z",
- "window_ends_in_s": 82,
+ "built_at": 1795255300,
+ "window": "2026-11-21T10:00:00Z",
+ "window_ends_in_s": 200,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-21T09:58:04Z",
-  "chain": 29201,
+  "updated": "2026-11-21T10:02:11Z",
+  "chain": 29236,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -14,32 +14,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "CLIMBING",
-  "plain": "going up and staying up",
-  "drift": 70.0,
-  "range": 76.3,
-  "flips": 3,
-  "open": 57890.565,
-  "last": 57960.615
+  "state": "FLAT",
+  "plain": "going up and down in place \u2014 resting",
+  "drift": 9.6,
+  "range": 17.6,
+  "flips": 1,
+  "open": 57887.475000000006,
+  "last": 57897.1
  },
  "chart": {
   "points": [
-   [
-    1795253445,
-    57887.7
-   ],
-   [
-    1795253475,
-    57858.24
-   ],
-   [
-    1795253518,
-    57865.9
-   ],
-   [
-    1795253550,
-    57868.479999999996
-   ],
    [
     1795253718,
     57894.0
@@ -155,30 +139,54 @@
    [
     1795255118,
     57960.615
+   ],
+   [
+    1795255148,
+    57919.0
+   ],
+   [
+    1795255179,
+    57921.59
+   ],
+   [
+    1795255209,
+    57887.475000000006
+   ],
+   [
+    1795255240,
+    57879.475
+   ],
+   [
+    1795255270,
+    57891.9
+   ],
+   [
+    1795255300,
+    57897.1
    ]
   ],
   "bounds": [
-   1795253400,
    1795253700,
    1795254000,
    1795254300,
    1795254600,
    1795254900,
-   1795255200
+   1795255200,
+   1795255500
   ],
-  "open": 57890.565,
-  "wstart": 1795253400,
-  "wend": 1795255200
+  "open": 57887.475000000006,
+  "wstart": 1795253700,
+  "wend": 1795255500
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 4,
+   "streak": 0,
    "best": 22,
    "bank": 1292357.34,
    "savings": 0.0,
-   "graded": 966,
+   "graded": 967,
    "wins": 785,
    "call": null,
    "chance": null,
@@ -195,19 +203,29 @@
    "best": 35,
    "bank": 289528.42,
    "savings": 260495.23,
-   "graded": 797,
+   "graded": 798,
    "wins": 646,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "up",
+   "chance": 0.6983,
+   "ask": 0.5,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.48,
+    "lose": -0.52,
+    "shares": 1.0
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.36,
+    "lose": -0.52,
+    "shares": 1.0
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -235,22 +253,12 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "The price jumped $51 in the last two minutes \u2014 a real push, not a drift.",
-   "src": "price trail (last 2 minutes)"
-  },
-  {
    "text": "EARLY's read is getting stronger as the window goes on.",
    "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+70 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 1 minutes 22 seconds left in the window.",
+ "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (+10 dollars this window). EARLY says BUY UP. 3 minutes 20 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-21T09:30:00Z",
-   "result": "down",
-   "plain": null,
-   "early": true
-  },
   {
    "window": "2026-11-21T09:35:00Z",
    "result": "down",
@@ -267,6 +275,12 @@
    "window": "2026-11-21T09:45:00Z",
    "result": "down",
    "plain": null,
+   "early": false
+  },
+  {
+   "window": "2026-11-21T09:50:00Z",
+   "result": "up",
+   "plain": false,
    "early": false
   }
  ],
