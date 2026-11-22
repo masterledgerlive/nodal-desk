@@ -1,45 +1,31 @@
 {
- "built_at": 1795391239,
- "window": "2026-11-22T23:45:00Z",
- "window_ends_in_s": 161,
+ "built_at": 1795391428,
+ "window": "2026-11-22T23:50:00Z",
+ "window_ends_in_s": 272,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-22T23:47:18Z",
-  "chain": 36787,
+  "updated": "2026-11-22T23:50:28Z",
+  "chain": 36790,
   "stall_components": [
+   "btc5",
    "deploy_cycle",
    "gamelog_refresh_cue",
-   "trail_blob"
+   "trail_blob",
+   "fast_tick"
   ],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FALLING",
-  "plain": "going down and staying down",
-  "drift": -82.1,
-  "range": 82.1,
+  "state": "FLAT",
+  "plain": "going up and down in place \u2014 resting",
+  "drift": 0.0,
+  "range": 0.0,
   "flips": 0,
-  "open": 61219.57,
-  "last": 61137.44
+  "open": 61189.85,
+  "last": 61189.85
  },
  "chart": {
   "points": [
-   [
-    1795389627,
-    61042.2
-   ],
-   [
-    1795389677,
-    60997.5
-   ],
-   [
-    1795389708,
-    60999.965
-   ],
-   [
-    1795389739,
-    60946.535
-   ],
    [
     1795389902,
     60942.58
@@ -155,20 +141,24 @@
    [
     1795391239,
     61137.44
+   ],
+   [
+    1795391428,
+    61189.85
    ]
   ],
   "bounds": [
-   1795389600,
    1795389900,
    1795390200,
    1795390500,
    1795390800,
    1795391100,
-   1795391400
+   1795391400,
+   1795391700
   ],
-  "open": 61219.57,
-  "wstart": 1795389600,
-  "wend": 1795391400
+  "open": 61189.85,
+  "wstart": 1795389900,
+  "wend": 1795391700
  },
  "models": [
   {
@@ -180,8 +170,8 @@
    "savings": 0.0,
    "graded": 1239,
    "wins": 1007,
-   "call": "down",
-   "chance": 0.8162,
+   "call": null,
+   "chance": null,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -191,33 +181,23 @@
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 9,
+   "streak": 10,
    "best": 35,
    "bank": 2185394.03,
    "savings": 1339251.91,
-   "graded": 1070,
-   "wins": 847,
-   "call": "down",
-   "chance": 0.6341,
-   "ask": 0.29000000000000004,
-   "follow": "FIRE",
+   "graded": 1071,
+   "wins": 848,
+   "call": null,
+   "chance": null,
+   "ask": null,
+   "follow": null,
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": {
-    "stake": 0.5,
-    "win": 1.2,
-    "lose": -0.52,
-    "shares": 1.724
-   },
-   "payout_value": {
-    "stake": 0.5,
-    "win": 0.98,
-    "lose": -0.52,
-    "shares": 1.724
-   },
+   "payout": null,
+   "payout_value": null,
    "value_hit": false,
    "flipped": false,
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
+   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
   },
   {
    "name": "RIPTIDE",
@@ -226,7 +206,7 @@
    "best": 10,
    "bank": 5.0,
    "savings": 69989.91,
-   "graded": 511,
+   "graded": 512,
    "wins": 246,
    "call": null,
    "chance": null,
@@ -243,28 +223,10 @@
   {
    "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
    "src": "order book (no poll yet)"
-  },
-  {
-   "text": "All the models that have called are pointing the same way: DOWN.",
-   "src": "the sealed calls"
-  },
-  {
-   "text": "The price dropped $47 in the last two minutes \u2014 a real push, not a drift.",
-   "src": "price trail (last 2 minutes)"
-  },
-  {
-   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
-   "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-82 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN. 2 minutes 41 seconds left in the window.",
+ "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (+0 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 4 minutes 32 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-22T23:15:00Z",
-   "result": "up",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-22T23:20:00Z",
    "result": "down",
@@ -281,6 +243,12 @@
    "window": "2026-11-22T23:35:00Z",
    "result": "up",
    "plain": true,
+   "early": true
+  },
+  {
+   "window": "2026-11-22T23:40:00Z",
+   "result": "down",
+   "plain": null,
    "early": true
   }
  ],
