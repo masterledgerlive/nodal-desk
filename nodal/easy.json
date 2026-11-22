@@ -4,8 +4,8 @@
  "window_ends_in_s": 194,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-22T12:01:46Z",
-  "chain": 34936,
+  "updated": "2026-11-22T12:02:32Z",
+  "chain": 34941,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -144,8 +144,8 @@
    "savings": 0.0,
    "graded": 1173,
    "wins": 948,
-   "call": null,
-   "chance": null,
+   "call": "up",
+   "chance": 0.8209,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -161,17 +161,27 @@
    "savings": 987584.4,
    "graded": 1018,
    "wins": 807,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "up",
+   "chance": 0.7128,
+   "ask": 0.48,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.52,
+    "lose": -0.52,
+    "shares": 1.042
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.39,
+    "lose": -0.52,
+    "shares": 1.042
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -199,18 +209,20 @@
    "src": "order book (no poll yet)"
   },
   {
+   "text": "All the models that have called are pointing the same way: UP.",
+   "src": "the sealed calls"
+  },
+  {
    "text": "The price jumped $29 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is getting stronger as the window goes on.",
+   "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+29 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 3 minutes 14 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+29 dollars this window). PLAIN says BUY UP; EARLY says BUY UP. 3 minutes 14 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-22T11:35:00Z",
-   "result": "up",
-   "plain": false,
-   "early": false
-  },
   {
    "window": "2026-11-22T11:40:00Z",
    "result": "down",
@@ -228,6 +240,12 @@
    "result": "up",
    "plain": true,
    "early": true
+  },
+  {
+   "window": "2026-11-22T11:55:00Z",
+   "result": "up",
+   "plain": true,
+   "early": null
   }
  ],
  "ruler": "How the wave word is picked (the desk's ruler, from this window's own price trail): FLAT = moved less than $40 total and ended within $15 of where it started. ROLLERCOASTER = changed direction 3+ times without getting anywhere. CLIMBING / FALLING = ended $15+ above / below the start without whipping back. Book tells come from the order-book ladder RIPTIDE polls \u2014 the desk has no trade-size tape, so this board never claims 'whales'; it says what the book shows."
