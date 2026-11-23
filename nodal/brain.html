@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE BRAIN — Memory Vault, Procedure &amp; Live Activity · NODAL DESK</title>
+<style>
+  body{background:#0b0e14;color:#e8ecf5;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:0;padding:18px}
+  h1{color:#ffd75e;font-size:21px;letter-spacing:1.5px;margin:0 0 4px}
+  h2{color:#57b6ff;font-size:16px;letter-spacing:1px;margin:22px 0 6px}
+  .sub{color:#9aa7c2;font-size:12.5px;line-height:1.6;max-width:920px}
+  .fresh{color:#3ddc84;font-size:12px;margin:8px 0}
+  .qual{background:#241a08;border:1px solid #ffd75e;color:#ffd75e;border-radius:8px;padding:8px 12px;font-size:12.5px;margin:10px 0;max-width:920px;line-height:1.6}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;max-width:920px}
+  .tile{background:#131826;border:1px solid #2a3350;border-radius:12px;padding:12px 14px}
+  .tile .nm{font-size:13px;font-weight:800;letter-spacing:.5px}
+  .tile .pc{font-size:24px;font-weight:800;margin:4px 0}
+  .bar{height:10px;background:#0b0e14;border:1px solid #2a3350;border-radius:6px;overflow:hidden;margin:6px 0}
+  .fill{height:100%;background:#3ddc84}
+  .fill.partial{background:#ffd75e}
+  .fill.risk{background:#ff6b6b}
+  .card{background:#131826;border:1px solid #2a3350;border-radius:12px;padding:14px 16px;margin:12px 0;max-width:920px}
+  .bname{font-size:15px;font-weight:800;letter-spacing:1px;color:#e8ecf5}
+  .meta{font-size:12px;color:#9aa7c2;line-height:1.7}
+  .ok{color:#3ddc84;font-weight:800}
+  .warn{color:#ffd75e;font-weight:800}
+  .bad{color:#ff6b6b;font-weight:800}
+  .stage{display:inline-block;border:1px solid #57b6ff;color:#57b6ff;border-radius:20px;padding:1px 9px;font-size:11px;margin:2px 2px 2px 0;white-space:nowrap}
+  .who{color:#ffd75e;font-size:11.5px}
+  .when{color:#9aa7c2;font-size:11.5px;white-space:nowrap}
+  .item{font-size:13px;line-height:1.6;margin:7px 0;max-width:920px}
+  .pipe{font-size:11.5px;color:#9aa7c2;line-height:1.8}
+</style>
+</head>
+<body>
+<h1>🧠 THE BRAIN — THE WHOLE HOUSE, LIVE</h1>
+<div class="sub">Every brain and program, how much of it is proven safe in the chain, whether it can be resurrected from chain copies alone, the procedure every suggestion travels — and the live activity stream of the house at work. This is the same view the team works from. All times ET. Every number comes from the desk's real records at build time; anything not proven prints as UNVERIFIED, never as a guess. This page re-reads its data every minute.</div>
+<div class="qual">TESTNET (G6): anchoring today is Sui/Walrus TESTNET anchoring. “Permanent” mainnet anchoring is a separate, later step that waits on David's word.</div>
+<div class="fresh" id="built">loading…</div>
+
+<h2>🗄️ THE VAULT AT A GLANCE</h2>
+<div id="house"></div>
+<div class="grid" id="grid"></div>
+
+<h2>⚙️ THE PROCEDURE — SUGGESTIONS IN FLIGHT</h2>
+<div class="pipe">suggested → in the Gauntlet → challenged / voted → package rolling out → complete → ready for radio → sent → done</div>
+<div class="sub" id="proc-verified"></div>
+<div id="procedure"></div>
+
+<h2>📡 LIVE ACTIVITY</h2>
+<div class="sub" id="act-verified"></div>
+<div id="activity"></div>
+
+<h2>🔍 VAULT DETAIL</h2>
+<div id="brains"></div>
+
+<h2>♻️ RESURRECTION &amp; REPAIR</h2>
+<div class="sub">A restore drill rebuilds a brain from chain copies alone and byte-checks every file. A failed or overdue drill suspends that brain's 100%-safe tick until it passes again. When a piece is found missing or corrupt, the repair — pulled from surviving pieces, restored, reblobbed, re-anchored — shows here.</div>
+<div id="drills"></div>
+
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function mb(b){return b>=1048576?(b/1048576).toFixed(1)+' MB':b>=1024?(b/1024).toFixed(1)+' KB':b+' B'}
+function stateHTML(b){
+  if(b.pct_guardian>=99.99)return '<span class="ok">✅ 100% SAFE — Guardian-anchored, read-back proven</span>';
+  if(b.pct_blobbed>0)return '<span class="warn">'+b.pct_blobbed+'% in blobs — AT RISK: only in blobs, not yet anchored</span>';
+  return '<span class="bad">NOT YET PROTECTED — 0% proven</span>';
+}
+function render(d){
+  document.getElementById('built').textContent='Last built '+d.built_et+' ET · registry verified '+d.registry_verified_et+' ET';
+  document.getElementById('proc-verified').textContent='Procedure verified '+d.procedure_verified_et+' ET · '+d.procedure.length+' items in flight';
+  document.getElementById('act-verified').textContent='Activity verified '+d.activity_verified_et+' ET · '+d.activity.length+' recent events from the house records';
+  const h=d.house;
+  document.getElementById('house').innerHTML='<div class="card"><span class="bname">THE WHOLE HOUSE</span>'+
+    '<div class="bar"><div class="fill '+(h.pct>=99.99?'':h.pct>0?'partial':'risk')+'" style="width:'+h.pct+'%"></div></div>'+
+    '<div class="meta">'+h.pct+'% of the memory tier proven in chain copies · '+mb(h.proven_bytes)+' of '+mb(h.tier_bytes)+
+    '<br>Resample audit: '+esc(h.resample_text)+'<br>Keeper: '+esc(h.keeper_text)+'</div></div>';
+  document.getElementById('grid').innerHTML=d.brains.map(b=>
+    '<div class="tile"><div class="nm">'+esc(b.label)+'</div><div class="pc">'+b.pct_blobbed+'%</div>'+
+    '<div class="bar"><div class="fill '+(b.pct_guardian>=99.99?'':b.pct_blobbed>0?'partial':'risk')+'" style="width:'+b.pct_blobbed+'%"></div></div>'+
+    '<div class="meta">anchored: '+b.pct_guardian+'% · drill: '+esc(b.drill_short)+'</div></div>').join('');
+  document.getElementById('procedure').innerHTML=d.procedure.map(p=>
+    '<div class="item"><span class="stage">'+esc(p.stage)+'</span> '+esc(p.title)+' <span class="who">— '+esc(p.who)+'</span></div>').join('');
+  document.getElementById('activity').innerHTML=d.activity.map(a=>
+    '<div class="item"><span class="when">'+esc(a.when_et)+' ET</span> · <span class="stage">'+esc(a.stage)+'</span> '+esc(a.text)+' <span class="who">— '+esc(a.who)+'</span></div>').join('');
+  document.getElementById('brains').innerHTML=d.brains.map(b=>
+    '<div class="card"><span class="bname">'+esc(b.label)+'</span> · '+stateHTML(b)+
+    '<div class="bar"><div class="fill '+(b.pct_guardian>=99.99?'':b.pct_blobbed>0?'partial':'risk')+'" style="width:'+b.pct_blobbed+'%"></div></div>'+
+    '<div class="meta">in blobs (proven): '+b.pct_blobbed+'% · reblobbed/renewed: '+b.pct_reblobbed+'% of blobbed · Guardian-anchored: '+b.pct_guardian+'%'+
+    '<br>'+mb(b.tier_bytes)+' across '+b.file_count+' files · manifest v'+b.manifest_version+' ('+esc(b.version_age)+')'+(b.upgrade_available?' · <span class="warn">newer version exists than the anchored one</span>':'')+
+    '<br>restore drill: '+esc(b.drill)+
+    (b.blob_ids&&b.blob_ids.length?'<br>blobs: '+b.blob_ids.map(esc).join(' · '):'')+
+    '</div></div>').join('');
+  document.getElementById('drills').innerHTML=d.drills.map(x=>
+    '<div class="item"><span class="when">'+esc(x.when_et)+' ET</span> — '+esc(x.text)+'</div>').join('')||'<div class="item">No drill or repair events recorded yet.</div>';
+}
+function load(){fetch('braindata.json?ts='+Date.now()).then(r=>r.json()).then(render).catch(e=>{document.getElementById('built').textContent='data failed to load: '+e})}
+load(); setInterval(load, 60000);
+</script>
+</body>
+</html>
