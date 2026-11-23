@@ -1,13 +1,12 @@
 {
- "built_at": 1795463442,
- "window": "2026-11-23T19:50:00Z",
- "window_ends_in_s": 258,
+ "built_at": 1795463889,
+ "window": "2026-11-23T19:55:00Z",
+ "window_ends_in_s": 111,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-23T19:50:41Z",
-  "chain": 40456,
+  "updated": "2026-11-23T19:58:08Z",
+  "chain": 40468,
   "stall_components": [
-   "btc5_flow",
    "deploy_cycle",
    "gamelog_refresh_cue",
    "trail_blob"
@@ -15,28 +14,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FLAT",
-  "plain": "going up and down in place \u2014 resting",
-  "drift": 0.0,
-  "range": 0.0,
+  "state": "FALLING",
+  "plain": "going down and staying down",
+  "drift": -42.2,
+  "range": 42.2,
   "flips": 0,
-  "open": 61051.600000000006,
-  "last": 61051.600000000006
+  "open": 61218.47,
+  "last": 61176.305
  },
  "chart": {
   "points": [
-   [
-    1795461920,
-    61457.265
-   ],
-   [
-    1795461961,
-    61482.36
-   ],
-   [
-    1795462064,
-    61418.36
-   ],
    [
     1795462210,
     61364.56
@@ -100,20 +87,36 @@
    [
     1795463442,
     61051.600000000006
+   ],
+   [
+    1795463552,
+    61161.67
+   ],
+   [
+    1795463742,
+    61218.47
+   ],
+   [
+    1795463782,
+    61218.2
+   ],
+   [
+    1795463889,
+    61176.305
    ]
   ],
   "bounds": [
-   1795461900,
    1795462200,
    1795462500,
    1795462800,
    1795463100,
    1795463400,
-   1795463700
+   1795463700,
+   1795464000
   ],
-  "open": 61051.600000000006,
-  "wstart": 1795461900,
-  "wend": 1795463700
+  "open": 61218.47,
+  "wstart": 1795462200,
+  "wend": 1795464000
  },
  "models": [
   {
@@ -125,8 +128,8 @@
    "savings": 0.0,
    "graded": 1403,
    "wins": 1136,
-   "call": null,
-   "chance": null,
+   "call": "down",
+   "chance": 0.6687,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -138,21 +141,31 @@
    "mode": "REAL",
    "streak": 0,
    "best": 35,
-   "bank": 7873336.68,
-   "savings": 19271811.92,
+   "bank": 7845976.84,
+   "savings": 19858628.66,
    "graded": 1225,
    "wins": 968,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "down",
+   "chance": 0.6716,
+   "ask": 0.56,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.38,
+    "lose": -0.52,
+    "shares": 0.893
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.26,
+    "lose": -0.52,
+    "shares": 0.893
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -180,11 +193,19 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "The price barely moved in the last two minutes \u2014 the wave is resting.",
+   "text": "All the models that have called are pointing the same way: DOWN.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price dropped $42 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (+0 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 4 minutes 18 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-42 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN. 1 minutes 51 seconds left in the window.",
  "history": [
   {
    "window": "2026-11-23T19:20:00Z",
