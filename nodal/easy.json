@@ -1,60 +1,29 @@
 {
- "built_at": 1795408615,
- "window": "2026-11-23T04:35:00Z",
- "window_ends_in_s": 185,
+ "built_at": 1795408860,
+ "window": "2026-11-23T04:40:00Z",
+ "window_ends_in_s": 240,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-23T04:37:42Z",
-  "chain": 37704,
+  "updated": "2026-11-23T04:40:59Z",
+  "chain": 37707,
   "stall_components": [
-   "btc5",
-   "btc5_flow",
    "deploy_cycle",
    "gamelog_refresh_cue",
-   "trail_blob",
-   "fast_tick"
+   "trail_blob"
   ],
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FALLING",
-  "plain": "going down and staying down",
-  "drift": -44.6,
-  "range": 44.6,
+  "state": "FLAT",
+  "plain": "going up and down in place \u2014 resting",
+  "drift": 8.4,
+  "range": 8.4,
   "flips": 0,
-  "open": 61075.455,
-  "last": 61030.9
+  "open": 61035.2,
+  "last": 61043.604999999996
  },
  "chart": {
   "points": [
-   [
-    1795407038,
-    61164.535
-   ],
-   [
-    1795407091,
-    61184.11
-   ],
-   [
-    1795407138,
-    61194.88
-   ],
-   [
-    1795407168,
-    61213.759999999995
-   ],
-   [
-    1795407198,
-    61263.53
-   ],
-   [
-    1795407234,
-    61297.075
-   ],
-   [
-    1795407264,
-    61300.7
-   ],
    [
     1795407325,
     61278.985
@@ -142,20 +111,28 @@
    [
     1795408615,
     61030.9
+   ],
+   [
+    1795408830,
+    61035.2
+   ],
+   [
+    1795408860,
+    61043.604999999996
    ]
   ],
   "bounds": [
-   1795407000,
    1795407300,
    1795407600,
    1795407900,
    1795408200,
    1795408500,
-   1795408800
+   1795408800,
+   1795409100
   ],
-  "open": 61075.455,
-  "wstart": 1795407000,
-  "wend": 1795408800
+  "open": 61035.2,
+  "wstart": 1795407300,
+  "wend": 1795409100
  },
  "models": [
   {
@@ -167,18 +144,13 @@
    "savings": 0.0,
    "graded": 1281,
    "wins": 1042,
-   "call": "down",
-   "chance": 0.7066,
-   "ask": 0.57,
-   "follow": "FIRE",
+   "call": null,
+   "chance": null,
+   "ask": null,
+   "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": {
-    "stake": 0.5,
-    "win": 0.36,
-    "lose": -0.51,
-    "shares": 0.877
-   }
+   "payout": null
   },
   {
    "name": "EARLY",
@@ -207,7 +179,7 @@
    "streak": 1,
    "best": 10,
    "bank": 5.0,
-   "savings": 80397.94,
+   "savings": 83795.79,
    "graded": 523,
    "wins": 250,
    "call": null,
@@ -225,24 +197,10 @@
   {
    "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
    "src": "order book (no poll yet)"
-  },
-  {
-   "text": "The price dropped $45 in the last two minutes \u2014 a real push, not a drift.",
-   "src": "price trail (last 2 minutes)"
-  },
-  {
-   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
-   "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-45 dollars this window). PLAIN says BUY DOWN. 3 minutes 05 seconds left in the window.",
+ "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (+8 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 4 minutes 00 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-23T04:00:00Z",
-   "result": "down",
-   "plain": null,
-   "early": true
-  },
   {
    "window": "2026-11-23T04:05:00Z",
    "result": "down",
@@ -260,6 +218,12 @@
    "result": "down",
    "plain": true,
    "early": true
+  },
+  {
+   "window": "2026-11-23T04:30:00Z",
+   "result": "down",
+   "plain": true,
+   "early": null
   }
  ],
  "ruler": "How the wave word is picked (the desk's ruler, from this window's own price trail): FLAT = moved less than $40 total and ended within $15 of where it started. ROLLERCOASTER = changed direction 3+ times without getting anywhere. CLIMBING / FALLING = ended $15+ above / below the start without whipping back. Book tells come from the order-book ladder RIPTIDE polls \u2014 the desk has no trade-size tape, so this board never claims 'whales'; it says what the book shows."
