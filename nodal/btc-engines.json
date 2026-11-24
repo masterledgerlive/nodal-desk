@@ -1,0 +1,439 @@
+{
+ "about": "Machine-readable twin of the BTC — EVERYTHING hub (btc.html), NODAL desk. Same numbers, same sources. All times ET. SIM and REAL records are always labelled and never blended.",
+ "generated_at_utc": "2026-11-24T15:44:12Z",
+ "generated_at_et": "Nov 24, 10:44 AM ET",
+ "page": "https://masterledgerlive.github.io/nodal-desk/nodal/btc.html",
+ "cheat_sheet": "https://masterledgerlive.github.io/nodal-desk/nodal/cheatsheet.html",
+ "how_the_vote_works": [
+  "Every seated engine reads each 5-minute BTC window and calls UP, DOWN, or PASS, sealed before the window ends.",
+  "Real-money lanes fire only on a UNANIMOUS vote — one dissent and the window is a no-fire.",
+  "Penny law (HOUSE lane): strike only a side crashed to 5¢ or less, $0.25 flat, 30¢ recovery exit, remainder rides.",
+  "Grading: every call is graded TRUE or NOT against the venue settlement (Polymarket US). Timestamps are law — a call counts from when it was posted; a call posted after its window settles does not count.",
+  "Follow lanes (ASHEN / PIZZA / TERRY) mirror an outside caller's sealed calls at a $1.00 bank; PROS mirrors two public wallets tracked by address only."
+ ],
+ "engines": [
+  {
+   "id": "PLAIN",
+   "name": "PLAIN",
+   "kind": "race_lane",
+   "blurb": "The desk's careful caller — one sealed call per 5-minute window, behind a confidence floor. The original engine; every other lane is measured against it.",
+   "record": {
+    "wins": 24,
+    "losses": 6,
+    "graded": 30,
+    "win_rate_pct": 80.0,
+    "streak": "W3",
+    "kind": "Callers' Contest graded record (counted votes)"
+   },
+   "bank_usd": 1.4161,
+   "bank_note": "real-executor race bank",
+   "last_graded_et": "Nov 24, 10:15 AM ET",
+   "data_as_of_et": "Nov 23, 11:37 PM ET",
+   "sources": [
+    "site/callersdata.json",
+    "site/btcportal.json (last_graded)",
+    "real_executor_state.json (race_banks)"
+   ]
+  },
+  {
+   "id": "EARLY",
+   "name": "THE EARLY CALLER (EARLY)",
+   "kind": "race_lane",
+   "blurb": "Calls about 30 seconds sooner than PLAIN on the same window; can bank value when its side runs to 88% and flip its answer if the move turns.",
+   "record": {
+    "wins": 20,
+    "losses": 5,
+    "graded": 25,
+    "win_rate_pct": 80.0,
+    "streak": "W2",
+    "kind": "Callers' Contest graded record (counted votes)"
+   },
+   "bank_usd": 1.0,
+   "bank_note": "real-executor race bank",
+   "last_graded_et": "Nov 24, 10:25 AM ET",
+   "data_as_of_et": "Nov 23, 11:37 PM ET",
+   "sources": [
+    "site/callersdata.json",
+    "site/btcportal.json (last_graded)",
+    "real_executor_state.json (race_banks)"
+   ]
+  },
+  {
+   "id": "RIPTIDE",
+   "name": "RIPTIDE",
+   "kind": "race_lane",
+   "blurb": "The aggressive third model, born from PLAIN + EARLY — rides wrong-way dips. SIM money line only: no real money behind this record.",
+   "record": {
+    "wins": 354,
+    "losses": 437,
+    "graded": 791,
+    "win_rate_pct": 44.8,
+    "streak": null,
+    "pnl_usd": 58142.5,
+    "kind": "SIM money line — sealed plays graded at entry/exit averages, fees in"
+   },
+   "bank_usd": 1.318,
+   "bank_note": "real-executor race bank",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 24, 10:40 AM ET",
+   "sources": [
+    "site/btcportal.json (riptide_money)",
+    "real_executor_state.json (race_banks)"
+   ],
+   "note": "No Callers' Contest row for RIPTIDE yet (0 graded there) — its published record is the SIM money line."
+  },
+  {
+   "id": "FINAL",
+   "name": "THE FINAL CALL (FINAL)",
+   "kind": "race_lane",
+   "blurb": "Fires only when PLAIN and EARLY agree on the final side, both reads at 85% or better, and the ask sits under the value line. Graded on money, not direction — a directional win that loses money is a money loss.",
+   "record": {
+    "wins": 61,
+    "losses": 2,
+    "graded": 63,
+    "win_rate_pct": 96.8,
+    "streak": null,
+    "pnl_usd": 25.92,
+    "kind": "Money-graded record (venue settlement, fees in)"
+   },
+   "bank_usd": 1.0,
+   "bank_note": "real-executor race bank",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 24, 10:44 AM ET",
+   "sources": [
+    "site/btcportal.json (final)",
+    "site/finaldata.json",
+    "real_executor_state.json (race_banks)"
+   ]
+  },
+  {
+   "id": "HOUSE",
+   "name": "HOUSE (penny-strike lane)",
+   "kind": "race_lane",
+   "blurb": "The house's own lane. Fires only on a unanimous vote, and only strikes a side that has crashed to 5¢ or less — $0.25 flat, a 30¢ recovery exit, the remainder rides.",
+   "record": null,
+   "bank_usd": -29.7182,
+   "bank_note": "executor's book (the executor's own ledger figure)",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 24, 10:40 AM ET",
+   "sources": [
+    "real_executor_state.json (race_banks)"
+   ],
+   "note": "Penny-strike fills are sealed one by one in the ledger; the desk feeds publish no summary W–L row for HOUSE yet, so none is shown."
+  },
+  {
+   "id": "PROS",
+   "name": "PROS (follow-the-pros lane)",
+   "kind": "race_lane",
+   "blurb": "Follows two public Polymarket wallets, tracked by public address only — the same public-link tracking anyone can join with (see BRING YOUR OWN, below). Opposite entries inside one window = the lane stands down.",
+   "record": null,
+   "bank_usd": 1.0,
+   "bank_note": "real-executor race bank",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 24, 10:40 AM ET",
+   "sources": [
+    "real_executor_state.json (race_banks)",
+    "pros_watcher_state.json"
+   ],
+   "note": "Watcher is live and armed; the desk feeds publish no graded summary row for PROS yet, so none is shown."
+  },
+  {
+   "id": "OTTO",
+   "name": "OTTO — SNAPSHOT BABY — ONE-TURNER",
+   "kind": "baby_engine",
+   "blurb": "The 'one-turner' — one big move out of a quiet window, no cross-back.",
+   "record": {
+    "wins": 72,
+    "losses": 28,
+    "graded": 100,
+    "win_rate_pct": 72.0,
+    "streak": null,
+    "pnl_usd": -1.6152,
+    "kind": "Live shadow trial (SIM — no real money)"
+   },
+   "bank_usd": null,
+   "bank_note": "shadow trial — no bank",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 21, 10:23 PM ET",
+   "sources": [
+    "site/babydata.json (live_trial)"
+   ],
+   "note": "CHALLENGER — live shadow trial running; NOT a seated voter (backtest bar not met)"
+  },
+  {
+   "id": "RIDGE",
+   "name": "RIDGE — SNAPSHOT BABY — CLEAN",
+   "kind": "baby_engine",
+   "blurb": "The 'clean window' reader — one side dominant, almost no crossings of the line.",
+   "record": {
+    "wins": 88,
+    "losses": 13,
+    "graded": 101,
+    "win_rate_pct": 87.1,
+    "streak": null,
+    "pnl_usd": 14.6647,
+    "kind": "Live shadow trial (SIM — no real money)"
+   },
+   "bank_usd": null,
+   "bank_note": "shadow trial — no bank",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 21, 10:23 PM ET",
+   "sources": [
+    "site/babydata.json (live_trial)"
+   ],
+   "note": "CHALLENGER — live shadow trial running; NOT a seated voter (backtest bar not met)"
+  },
+  {
+   "id": "FABLE",
+   "name": "FABLE — SNAPSHOT BABY — FLIP",
+   "kind": "baby_engine",
+   "blurb": "The 'flip' reader — fades a side that led big early and cracked late.",
+   "record": {
+    "wins": 32,
+    "losses": 68,
+    "graded": 100,
+    "win_rate_pct": 32.0,
+    "streak": null,
+    "pnl_usd": -47.8611,
+    "kind": "Live shadow trial (SIM — no real money)"
+   },
+   "bank_usd": null,
+   "bank_note": "shadow trial — no bank",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 21, 10:23 PM ET",
+   "sources": [
+    "site/babydata.json (live_trial)"
+   ],
+   "note": "CHALLENGER — live shadow trial running; NOT a seated voter (backtest bar not met)"
+  },
+  {
+   "id": "CHOPPER",
+   "name": "CHOPPER — SNAPSHOT BABY — CHOP",
+   "kind": "baby_engine",
+   "blurb": "The 'chop' reader — built for windows that cross the line again and again.",
+   "record": {
+    "wins": 44,
+    "losses": 56,
+    "graded": 100,
+    "win_rate_pct": 44.0,
+    "streak": null,
+    "pnl_usd": -38.1765,
+    "kind": "Live shadow trial (SIM — no real money)"
+   },
+   "bank_usd": null,
+   "bank_note": "shadow trial — no bank",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 21, 10:23 PM ET",
+   "sources": [
+    "site/babydata.json (live_trial)"
+   ],
+   "note": "CHALLENGER — live shadow trial running; NOT a seated voter (backtest bar not met)"
+  },
+  {
+   "id": "ASHEN",
+   "name": "ASHEN (Ashen Bot)",
+   "kind": "caller_lane",
+   "blurb": "A Discord caller's sealed 5-minute calls, captured and graded by the desk; the follow lane mirrors them with a $1.00 bank.",
+   "record": {
+    "wins": 472,
+    "losses": 189,
+    "graded": 661,
+    "win_rate_pct": 71.4,
+    "streak": "W2",
+    "kind": "Callers' Contest graded record (counted votes)"
+   },
+   "bank_usd": 0.9001,
+   "bank_note": "follow-lane bank (real-executor race banks)",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 23, 11:37 PM ET",
+   "sources": [
+    "site/callersdata.json",
+    "real_executor_state.json (race_banks)"
+   ]
+  },
+  {
+   "id": "PIZZA",
+   "name": "PIZZA (PizzaCalls)",
+   "kind": "caller_lane",
+   "blurb": "PizzaCalls — guest caller graded in the Callers' Contest; the follow lane mirrors at $1.00.",
+   "record": {
+    "wins": 25,
+    "losses": 18,
+    "graded": 43,
+    "win_rate_pct": 58.1,
+    "streak": "W1",
+    "kind": "Callers' Contest graded record (counted votes)"
+   },
+   "bank_usd": 1.0,
+   "bank_note": "follow-lane bank (real-executor race banks)",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 23, 11:37 PM ET",
+   "sources": [
+    "site/callersdata.json",
+    "real_executor_state.json (race_banks)"
+   ]
+  },
+  {
+   "id": "TERRY",
+   "name": "TERRY (TerryCalls)",
+   "kind": "caller_lane",
+   "blurb": "TerryCalls — the external pro desk and the contest's #1 seat. The follow lane fires only on his LOCK calls, at $1.00.",
+   "record": {
+    "wins": 1466,
+    "losses": 59,
+    "graded": 1525,
+    "win_rate_pct": 96.1,
+    "streak": "W8",
+    "kind": "Callers' Contest graded record (counted votes)"
+   },
+   "bank_usd": 0.9274,
+   "bank_note": "follow-lane bank (real-executor race banks)",
+   "last_graded_et": null,
+   "data_as_of_et": "Nov 23, 11:37 PM ET",
+   "sources": [
+    "site/callersdata.json",
+    "real_executor_state.json (race_banks)"
+   ]
+  }
+ ],
+ "current_vote_state": {
+  "source": "site/rounddata.json (the whole-game feed)",
+  "built_at_et": "Nov 23, 11:37 PM ET",
+  "engines": [
+   "PLAIN",
+   "EARLY",
+   "RIPTIDE",
+   "FINAL"
+  ],
+  "latest_window": {
+   "window": "2026-11-24T04:35:00Z",
+   "states": {
+    "PLAIN": {
+     "state": "PASS",
+     "why": "model chance 0.5137 < 0.6"
+    },
+    "EARLY": {
+     "state": "PASS",
+     "why": "no early call by 140s (span closed)"
+    },
+    "RIPTIDE": {
+     "state": "WAITING"
+    },
+    "FINAL": {
+     "state": "WAITING"
+    }
+   }
+  },
+  "live_feed": "https://masterledgerlive.github.io/nodal-desk/nodal/rounddata.json"
+ },
+ "standings_snapshot": {
+  "source": "site/callersdata.json",
+  "built_at_et": "Nov 23, 11:37 PM ET",
+  "rows": [
+   {
+    "name": "TerryCalls",
+    "house": false,
+    "wins": 1466,
+    "losses": 59,
+    "graded": 1525,
+    "win_rate_pct": 96.1,
+    "streak": "W8",
+    "race": 1834.8
+   },
+   {
+    "name": "Ashen Bot#6973",
+    "house": false,
+    "wins": 472,
+    "losses": 189,
+    "graded": 661,
+    "win_rate_pct": 71.4,
+    "streak": "W2",
+    "race": 576.85
+   },
+   {
+    "name": "EARLY",
+    "house": true,
+    "wins": 20,
+    "losses": 5,
+    "graded": 25,
+    "win_rate_pct": 80.0,
+    "streak": "W2",
+    "race": 22.25
+   },
+   {
+    "name": "PLAIN",
+    "house": true,
+    "wins": 24,
+    "losses": 6,
+    "graded": 30,
+    "win_rate_pct": 80.0,
+    "streak": "W3",
+    "race": 26.15
+   },
+   {
+    "name": "PizzaCalls",
+    "house": false,
+    "wins": 25,
+    "losses": 18,
+    "graded": 43,
+    "win_rate_pct": 58.1,
+    "streak": "W1",
+    "race": 8.25
+   },
+   {
+    "name": "DallenTrades",
+    "house": false,
+    "wins": 1,
+    "losses": 0,
+    "graded": 1,
+    "win_rate_pct": 100.0,
+    "streak": "W1",
+    "race": 1.75
+   },
+   {
+    "name": "PizzaCalls + DallenTrades",
+    "house": false,
+    "wins": 0,
+    "losses": 0,
+    "graded": 0,
+    "win_rate_pct": null,
+    "streak": "—",
+    "race": 0
+   },
+   {
+    "name": "RIPTIDE",
+    "house": true,
+    "wins": 0,
+    "losses": 0,
+    "graded": 0,
+    "win_rate_pct": null,
+    "streak": "—",
+    "race": 0
+   },
+   {
+    "name": "The Nintendo Kid",
+    "house": false,
+    "wins": 0,
+    "losses": 0,
+    "graded": 0,
+    "win_rate_pct": null,
+    "streak": "—",
+    "race": 0
+   }
+  ],
+  "live_feed": "https://masterledgerlive.github.io/nodal-desk/nodal/callersdata.json"
+ },
+ "join": {
+  "what_we_need": "ONE public link: a Polymarket profile link or public wallet address, OR a Discord link/handle. PUBLIC LINKS ONLY — never private keys, seed phrases, or API secrets.",
+  "where": "Koda Kai Network Discord, #callers-contest room",
+  "discord_invite": "https://discord.gg/TKUZn2VwN",
+  "registration_fields": [
+   "name (display name)",
+   "source type (polymarket_profile | wallet | discord)",
+   "link",
+   "engine name (if you run one)",
+   "joined timestamp"
+  ],
+  "law": "Your call counts from the timestamp you said it. We check it against how the window actually settled. True or not — that's your record."
+ }
+}
