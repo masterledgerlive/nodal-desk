@@ -1,13 +1,12 @@
 {
- "built_at": 1795645320,
- "window": "2026-11-25T22:20:00Z",
- "window_ends_in_s": 180,
+ "built_at": 1795645646,
+ "window": "2026-11-25T22:25:00Z",
+ "window_ends_in_s": 154,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-25T22:22:59Z",
-  "chain": 48635,
+  "updated": "2026-11-25T22:27:26Z",
+  "chain": 48644,
   "stall_components": [
-   "btc5",
    "deploy_cycle",
    "gamelog_refresh_cue",
    "trail_blob"
@@ -15,28 +14,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FALLING",
-  "plain": "going down and staying down",
-  "drift": -28.4,
-  "range": 28.4,
+  "state": "CLIMBING",
+  "plain": "going up and staying up",
+  "drift": 21.7,
+  "range": 21.7,
   "flips": 0,
-  "open": 60036.765,
-  "last": 60008.375
+  "open": 59989.2,
+  "last": 60010.85
  },
  "chart": {
   "points": [
-   [
-    1795643733,
-    60213.58
-   ],
-   [
-    1795643791,
-    60218.5
-   ],
-   [
-    1795643839,
-    60232.5
-   ],
    [
     1795644021,
     60124.935
@@ -96,20 +83,28 @@
    [
     1795645320,
     60008.375
+   ],
+   [
+    1795645592,
+    59989.2
+   ],
+   [
+    1795645646,
+    60010.85
    ]
   ],
   "bounds": [
-   1795643700,
    1795644000,
    1795644300,
    1795644600,
    1795644900,
    1795645200,
-   1795645500
+   1795645500,
+   1795645800
   ],
-  "open": 60036.765,
-  "wstart": 1795643700,
-  "wend": 1795645500
+  "open": 59989.2,
+  "wstart": 1795644000,
+  "wend": 1795645800
  },
  "models": [
   {
@@ -121,39 +116,44 @@
    "savings": 0.0,
    "graded": 1738,
    "wins": 1397,
-   "call": "down",
-   "chance": 0.7041,
-   "ask": 0.57,
-   "follow": "FIRE",
+   "call": "up",
+   "chance": 0.6829,
+   "ask": null,
+   "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": {
-    "stake": 0.5,
-    "win": 0.36,
-    "lose": -0.51,
-    "shares": 0.877
-   }
+   "payout": null
   },
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 2,
+   "streak": 3,
    "best": 35,
-   "bank": 9302470.03,
-   "savings": 49406809.72,
-   "graded": 1485,
-   "wins": 1177,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "bank": 10130648.14,
+   "savings": 50037697.51,
+   "graded": 1486,
+   "wins": 1178,
+   "call": "up",
+   "chance": 0.7538,
+   "ask": 0.51,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.46,
+    "lose": -0.52,
+    "shares": 0.98
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.34,
+    "lose": -0.52,
+    "shares": 0.98
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -181,18 +181,12 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "The price dropped $28 in the last two minutes \u2014 a real push, not a drift.",
-   "src": "price trail (last 2 minutes)"
+   "text": "All the models that have called are pointing the same way: UP.",
+   "src": "the sealed calls"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-28 dollars this window). PLAIN says BUY DOWN. 3 minutes 00 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+22 dollars this window). PLAIN says BUY UP; EARLY says BUY UP. 2 minutes 34 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-25T21:55:00Z",
-   "result": "down",
-   "plain": false,
-   "early": null
-  },
   {
    "window": "2026-11-25T22:00:00Z",
    "result": "down",
@@ -208,6 +202,12 @@
   {
    "window": "2026-11-25T22:10:00Z",
    "result": "down",
+   "plain": null,
+   "early": true
+  },
+  {
+   "window": "2026-11-25T22:15:00Z",
+   "result": "up",
    "plain": null,
    "early": true
   }
