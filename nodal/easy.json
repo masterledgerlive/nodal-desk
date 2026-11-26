@@ -1,11 +1,11 @@
 {
- "built_at": 1795662456,
- "window": "2026-11-26T03:05:00Z",
- "window_ends_in_s": 144,
+ "built_at": 1795662751,
+ "window": "2026-11-26T03:10:00Z",
+ "window_ends_in_s": 149,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-26T03:07:35Z",
-  "chain": 49514,
+  "updated": "2026-11-26T03:12:31Z",
+  "chain": 49519,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -16,30 +16,14 @@
  "wave": {
   "state": "CLIMBING",
   "plain": "going up and staying up",
-  "drift": 18.0,
-  "range": 40.2,
-  "flips": 1,
-  "open": 60597.155,
-  "last": 60615.2
+  "drift": 57.4,
+  "range": 57.4,
+  "flips": 0,
+  "open": 60606.455,
+  "last": 60663.9
  },
  "chart": {
   "points": [
-   [
-    1795660823,
-    60848.6
-   ],
-   [
-    1795660875,
-    60859.88
-   ],
-   [
-    1795660927,
-    60872.565
-   ],
-   [
-    1795660967,
-    60932.915
-   ],
    [
     1795661133,
     60918.850000000006
@@ -123,20 +107,32 @@
    [
     1795662456,
     60615.2
+   ],
+   [
+    1795662623,
+    60606.455
+   ],
+   [
+    1795662692,
+    60612.8
+   ],
+   [
+    1795662751,
+    60663.9
    ]
   ],
   "bounds": [
-   1795660800,
    1795661100,
    1795661400,
    1795661700,
    1795662000,
    1795662300,
-   1795662600
+   1795662600,
+   1795662900
   ],
-  "open": 60597.155,
-  "wstart": 1795660800,
-  "wend": 1795662600
+  "open": 60606.455,
+  "wstart": 1795661100,
+  "wend": 1795662900
  },
  "models": [
   {
@@ -148,8 +144,8 @@
    "savings": 0.0,
    "graded": 1781,
    "wins": 1435,
-   "call": null,
-   "chance": null,
+   "call": "up",
+   "chance": 0.7899,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -159,33 +155,23 @@
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 0,
+   "streak": 1,
    "best": 35,
-   "bank": 16695585.68,
-   "savings": 56334351.26,
-   "graded": 1520,
-   "wins": 1210,
-   "call": "up",
-   "chance": 0.6226,
-   "ask": 0.51,
-   "follow": "FIRE",
+   "bank": 18123634.2,
+   "savings": 78947430.36,
+   "graded": 1521,
+   "wins": 1211,
+   "call": null,
+   "chance": null,
+   "ask": null,
+   "follow": null,
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": {
-    "stake": 0.5,
-    "win": 0.46,
-    "lose": -0.52,
-    "shares": 0.98
-   },
-   "payout_value": {
-    "stake": 0.5,
-    "win": 0.34,
-    "lose": -0.52,
-    "shares": 0.98
-   },
+   "payout": null,
+   "payout_value": null,
    "value_hit": false,
    "flipped": false,
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
+   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
   },
   {
    "name": "RIPTIDE",
@@ -196,7 +182,7 @@
    "savings": 89526.48,
    "graded": 532,
    "wins": 253,
-   "call": null,
+   "call": "up",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -204,23 +190,33 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": false
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.98 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
+  },
+  {
+   "text": "All the models that have called are pointing the same way: UP.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price jumped $51 in the last two minutes \u2014 a real push, not a drift.",
+   "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is getting stronger as the window goes on.",
+   "src": "EARLY's in-window samples"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+18 dollars this window). EARLY says BUY UP. 2 minutes 24 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+57 dollars this window). PLAIN says BUY UP; RIPTIDE says BUY UP. 2 minutes 29 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-26T02:40:00Z",
-   "result": "up",
-   "plain": true,
-   "early": null
-  },
   {
    "window": "2026-11-26T02:45:00Z",
    "result": "up",
@@ -238,6 +234,12 @@
    "result": "down",
    "plain": false,
    "early": false
+  },
+  {
+   "window": "2026-11-26T03:05:00Z",
+   "result": "up",
+   "plain": null,
+   "early": true
   }
  ],
  "ruler": "How the wave word is picked (the desk's ruler, from this window's own price trail): FLAT = moved less than $40 total and ended within $15 of where it started. ROLLERCOASTER = changed direction 3+ times without getting anywhere. CLIMBING / FALLING = ended $15+ above / below the start without whipping back. Book tells come from the order-book ladder RIPTIDE polls \u2014 the desk has no trade-size tape, so this board never claims 'whales'; it says what the book shows."
