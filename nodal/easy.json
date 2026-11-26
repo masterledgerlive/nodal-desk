@@ -1,11 +1,11 @@
 {
- "built_at": 1795680741,
- "window": "2026-11-26T08:10:00Z",
- "window_ends_in_s": 159,
+ "built_at": 1795681024,
+ "window": "2026-11-26T08:15:00Z",
+ "window_ends_in_s": 176,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-26T08:12:21Z",
-  "chain": 50510,
+  "updated": "2026-11-26T08:17:55Z",
+  "chain": 50529,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -14,24 +14,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FALLING",
-  "plain": "going down and staying down",
-  "drift": -20.5,
-  "range": 20.5,
-  "flips": 0,
-  "open": 60588.490000000005,
-  "last": 60568.0
+  "state": "CLIMBING",
+  "plain": "going up and staying up",
+  "drift": 33.4,
+  "range": 43.3,
+  "flips": 1,
+  "open": 60522.975000000006,
+  "last": 60556.4
  },
  "chart": {
   "points": [
-   [
-    1795679149,
-    60541.47
-   ],
-   [
-    1795679225,
-    60540.9
-   ],
    [
     1795679450,
     60513.6
@@ -103,38 +95,63 @@
    [
     1795680741,
     60568.0
+   ],
+   [
+    1795680798,
+    60562.165
+   ],
+   [
+    1795680917,
+    60522.975000000006
+   ],
+   [
+    1795680948,
+    60518.82
+   ],
+   [
+    1795680994,
+    60513.1
+   ],
+   [
+    1795681024,
+    60556.4
    ]
   ],
   "bounds": [
-   1795679100,
    1795679400,
    1795679700,
    1795680000,
    1795680300,
    1795680600,
-   1795680900
+   1795680900,
+   1795681200
   ],
-  "open": 60588.490000000005,
-  "wstart": 1795679100,
-  "wend": 1795680900
+  "open": 60522.975000000006,
+  "wstart": 1795679400,
+  "wend": 1795681200
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 4,
+   "streak": 5,
    "best": 22,
    "bank": 288457933.98,
    "savings": 0.0,
-   "graded": 1824,
-   "wins": 1472,
-   "call": "down",
-   "chance": 0.6745,
-   "ask": null,
-   "follow": null,
+   "graded": 1825,
+   "wins": 1473,
+   "call": "up",
+   "chance": 0.7525,
+   "ask": 0.53,
+   "follow": "FIRE",
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": null
+   "payout": {
+    "stake": 0.5,
+    "win": 0.43,
+    "lose": -0.52,
+    "shares": 0.943
+   }
   },
   {
    "name": "EARLY",
@@ -145,17 +162,27 @@
    "savings": 126131672.99,
    "graded": 1556,
    "wins": 1240,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "up",
+   "chance": 0.6639,
+   "ask": 0.5,
+   "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.48,
+    "lose": -0.52,
+    "shares": 1.0
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": 0.36,
+    "lose": -0.52,
+    "shares": 1.0
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -183,18 +210,20 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "text": "All the models that have called are pointing the same way: UP.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price jumped $33 in the last two minutes \u2014 a real push, not a drift.",
+   "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is getting stronger as the window goes on.",
    "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-20 dollars this window). PLAIN says BUY DOWN. 2 minutes 39 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+33 dollars this window). PLAIN says BUY UP; EARLY says BUY UP. 2 minutes 56 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-26T07:30:00Z",
-   "result": "down",
-   "plain": true,
-   "early": true
-  },
   {
    "window": "2026-11-26T07:45:00Z",
    "result": "down",
@@ -209,6 +238,12 @@
   },
   {
    "window": "2026-11-26T08:00:00Z",
+   "result": "up",
+   "plain": true,
+   "early": null
+  },
+  {
+   "window": "2026-11-26T08:05:00Z",
    "result": "up",
    "plain": true,
    "early": null
