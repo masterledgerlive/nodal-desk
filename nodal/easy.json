@@ -1,11 +1,11 @@
 {
- "built_at": 1795718333,
- "window": "2026-11-26T18:35:00Z",
- "window_ends_in_s": 67,
+ "built_at": 1795718573,
+ "window": "2026-11-26T18:40:00Z",
+ "window_ends_in_s": 127,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-26T18:38:52Z",
-  "chain": 52342,
+  "updated": "2026-11-26T18:42:52Z",
+  "chain": 52356,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -14,28 +14,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FLAT",
-  "plain": "going up and down in place \u2014 resting",
-  "drift": -11.4,
-  "range": 20.5,
+  "state": "CLIMBING",
+  "plain": "going up and staying up",
+  "drift": 48.5,
+  "range": 55.8,
   "flips": 1,
-  "open": 60542.619999999995,
-  "last": 60531.2
+  "open": 60501.98,
+  "last": 60550.5
  },
  "chart": {
   "points": [
-   [
-    1795716639,
-    60506.305
-   ],
-   [
-    1795716711,
-    60449.065
-   ],
-   [
-    1795716772,
-    60452.630000000005
-   ],
    [
     1795716930,
     60418.09
@@ -123,20 +111,36 @@
    [
     1795718333,
     60531.2
+   ],
+   [
+    1795718412,
+    60501.98
+   ],
+   [
+    1795718471,
+    60494.7
+   ],
+   [
+    1795718515,
+    60531.995
+   ],
+   [
+    1795718573,
+    60550.5
    ]
   ],
   "bounds": [
-   1795716600,
    1795716900,
    1795717200,
    1795717500,
    1795717800,
    1795718100,
-   1795718400
+   1795718400,
+   1795718700
   ],
-  "open": 60542.619999999995,
-  "wstart": 1795716600,
-  "wend": 1795718400
+  "open": 60501.98,
+  "wstart": 1795716900,
+  "wend": 1795718700
  },
  "models": [
   {
@@ -148,13 +152,18 @@
    "savings": 0.0,
    "graded": 1906,
    "wins": 1534,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "up",
+   "chance": 0.7558,
+   "ask": 0.5,
+   "follow": "FIRE",
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
    "sell_mark": 0.95,
-   "payout": null
+   "payout": {
+    "stake": 0.5,
+    "win": 0.48,
+    "lose": -0.52,
+    "shares": 1.0
+   }
   },
   {
    "name": "EARLY",
@@ -165,17 +174,27 @@
    "savings": 142481666.44,
    "graded": 1626,
    "wins": 1287,
-   "call": null,
-   "chance": null,
-   "ask": null,
-   "follow": null,
+   "call": "up",
+   "chance": 0.8502,
+   "ask": 0.89,
+   "follow": "ICE \u2014 DO NOT FOLLOW",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
-   "payout": null,
-   "payout_value": null,
+   "payout": {
+    "stake": 0.5,
+    "win": 0.06,
+    "lose": -0.5,
+    "shares": 0.562
+   },
+   "payout_value": {
+    "stake": 0.5,
+    "win": -0.01,
+    "lose": -0.5,
+    "shares": 0.562
+   },
    "value_hit": false,
    "flipped": false,
-   "flip_state": "NO FLIP COMING \u2014 EARLY has not called this window"
+   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
   },
   {
    "name": "RIPTIDE",
@@ -203,11 +222,19 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "text": "All the models that have called are pointing the same way: UP.",
+   "src": "the sealed calls"
+  },
+  {
+   "text": "The price jumped $56 in the last two minutes \u2014 a real push, not a drift.",
+   "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is getting stronger as the window goes on.",
    "src": "EARLY's in-window samples"
   }
  ],
- "happening": "Bitcoin is FLAT \u2014 going up and down in place \u2014 resting (-11 dollars this window). No model has called yet this window; they usually speak 2\u20133 minutes in. 1 minutes 07 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+49 dollars this window). PLAIN says BUY UP; EARLY says BUY UP. 2 minutes 07 seconds left in the window.",
  "history": [
   {
    "window": "2026-11-26T18:10:00Z",
