@@ -4,9 +4,10 @@
  "window_ends_in_s": 109,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-27T16:43:11Z",
-  "chain": 55933,
+  "updated": "2026-11-27T16:44:39Z",
+  "chain": 55937,
   "stall_components": [
+   "btc5",
    "deploy_cycle",
    "gamelog_refresh_cue",
    "trail_blob"
@@ -156,8 +157,8 @@
     "shares": 1.852
    },
    "value_hit": false,
-   "flipped": false,
-   "flip_state": "FLIP ARMED \u2014 one flip can still come before this window ends"
+   "flipped": true,
+   "flip_state": "FLIPPED \u2014 EARLY switched sides this window"
   },
   {
    "name": "RIPTIDE",
@@ -168,7 +169,7 @@
    "savings": 89526.48,
    "graded": 534,
    "wins": 253,
-   "call": null,
+   "call": "down",
    "chance": null,
    "ask": null,
    "sell_text": "It gets out by itself: +5\u00a2 profit, the model dropping under 50%, or the window ending.",
@@ -176,24 +177,32 @@
    "payout": null,
    "in_play": false,
    "plays": 0,
-   "seeded": false
+   "seeded": true
   }
  ],
  "tells": [
   {
-   "text": "No live order-book read this window \u2014 the book feed only runs inside RIPTIDE's windows, and we don't guess.",
-   "src": "order book (no poll yet)"
+   "text": "The order book behind RIPTIDE's side is stacked hard \u2014 ladder imbalance 0.98 out of 1.00. One side is pushing much harder than the other.",
+   "src": "order book (RIPTIDE poll, this window)"
   },
   {
-   "text": "The models disagree this window \u2014 PLAIN says DOWN, EARLY says UP.",
+   "text": "The models disagree this window \u2014 PLAIN says DOWN, EARLY says UP, RIPTIDE says DOWN.",
    "src": "the sealed calls"
   },
   {
    "text": "The price dropped $93 in the last two minutes \u2014 a real push, not a drift.",
    "src": "price trail (last 2 minutes)"
+  },
+  {
+   "text": "EARLY's read is fading as the window goes on \u2014 its first lean is losing steam.",
+   "src": "EARLY's in-window samples"
+  },
+  {
+   "text": "RIPTIDE has its seed and is watching for a dip of 4\u00a2 or more to jump in.",
+   "src": "RIPTIDE sealed seed"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-50 dollars this window). PLAIN says BUY DOWN; EARLY says BUY UP. 1 minutes 49 seconds left in the window.",
+ "happening": "Bitcoin is FALLING \u2014 going down and staying down (-50 dollars this window). PLAIN says BUY DOWN; EARLY says BUY UP; RIPTIDE says BUY DOWN. 1 minutes 49 seconds left in the window.",
  "history": [
   {
    "window": "2026-11-27T16:15:00Z",
