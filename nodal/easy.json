@@ -1,11 +1,11 @@
 {
- "built_at": 1795744344,
- "window": "2026-11-27T01:50:00Z",
- "window_ends_in_s": 156,
+ "built_at": 1795744666,
+ "window": "2026-11-27T01:55:00Z",
+ "window_ends_in_s": 134,
  "daemon": {
   "state": "STALLED",
-  "updated": "2026-11-27T01:52:23Z",
-  "chain": 53677,
+  "updated": "2026-11-27T01:57:46Z",
+  "chain": 53691,
   "stall_components": [
    "deploy_cycle",
    "gamelog_refresh_cue",
@@ -14,32 +14,16 @@
   "note": "The live pipeline runs as one AI-free program (nodal/live_daemon.py). A stall shows here and in nodal/daemon_state.json \u2014 no agent run needed."
  },
  "wave": {
-  "state": "FALLING",
-  "plain": "going down and staying down",
-  "drift": -93.1,
-  "range": 93.1,
+  "state": "CLIMBING",
+  "plain": "going up and staying up",
+  "drift": 36.9,
+  "range": 36.9,
   "flips": 0,
-  "open": 60626.465,
-  "last": 60533.35
+  "open": 60548.425,
+  "last": 60585.335
  },
  "chart": {
   "points": [
-   [
-    1795742736,
-    60671.54
-   ],
-   [
-    1795742779,
-    60660.0
-   ],
-   [
-    1795742824,
-    60711.085
-   ],
-   [
-    1795742872,
-    60707.44
-   ],
    [
     1795743032,
     60684.9
@@ -111,33 +95,45 @@
    [
     1795744344,
     60533.35
+   ],
+   [
+    1795744520,
+    60548.425
+   ],
+   [
+    1795744587,
+    60569.4
+   ],
+   [
+    1795744666,
+    60585.335
    ]
   ],
   "bounds": [
-   1795742700,
    1795743000,
    1795743300,
    1795743600,
    1795743900,
    1795744200,
-   1795744500
+   1795744500,
+   1795744800
   ],
-  "open": 60626.465,
-  "wstart": 1795742700,
-  "wend": 1795744500
+  "open": 60548.425,
+  "wstart": 1795743000,
+  "wend": 1795744800
  },
  "models": [
   {
    "name": "PLAIN",
    "mode": "REAL",
-   "streak": 0,
+   "streak": 1,
    "best": 22,
    "bank": 770585682.94,
    "savings": 0.0,
-   "graded": 1969,
-   "wins": 1578,
-   "call": "down",
-   "chance": 0.9873,
+   "graded": 1970,
+   "wins": 1579,
+   "call": "up",
+   "chance": 0.8289,
    "ask": null,
    "follow": null,
    "sell_text": "Sell when the bid hits 95\u00a2 \u2014 or it rides to the end of the window.",
@@ -147,29 +143,29 @@
   {
    "name": "EARLY",
    "mode": "REAL",
-   "streak": 0,
+   "streak": 1,
    "best": 35,
-   "bank": 43440227.5,
+   "bank": 47465960.68,
    "savings": 159673263.73,
-   "graded": 1680,
-   "wins": 1327,
-   "call": "down",
-   "chance": 0.8258,
-   "ask": 0.53,
+   "graded": 1681,
+   "wins": 1328,
+   "call": "up",
+   "chance": 0.6557,
+   "ask": 0.66,
    "follow": "FIRE",
    "sell_text": "Take the money at the 88\u00a2 value line \u2014 or it flips once if the wave turns.",
    "sell_mark": 0.88,
    "payout": {
     "stake": 0.5,
-    "win": 0.43,
-    "lose": -0.52,
-    "shares": 0.943
+    "win": 0.25,
+    "lose": -0.51,
+    "shares": 0.758
    },
    "payout_value": {
     "stake": 0.5,
-    "win": 0.31,
-    "lose": -0.52,
-    "shares": 0.943
+    "win": 0.15,
+    "lose": -0.51,
+    "shares": 0.758
    },
    "value_hit": false,
    "flipped": false,
@@ -201,22 +197,12 @@
    "src": "order book (no poll yet)"
   },
   {
-   "text": "All the models that have called are pointing the same way: DOWN.",
+   "text": "All the models that have called are pointing the same way: UP.",
    "src": "the sealed calls"
-  },
-  {
-   "text": "The price dropped $93 in the last two minutes \u2014 a real push, not a drift.",
-   "src": "price trail (last 2 minutes)"
   }
  ],
- "happening": "Bitcoin is FALLING \u2014 going down and staying down (-93 dollars this window). PLAIN says BUY DOWN; EARLY says BUY DOWN. 2 minutes 36 seconds left in the window.",
+ "happening": "Bitcoin is CLIMBING \u2014 going up and staying up (+37 dollars this window). PLAIN says BUY UP; EARLY says BUY UP. 2 minutes 14 seconds left in the window.",
  "history": [
-  {
-   "window": "2026-11-27T01:20:00Z",
-   "result": "down",
-   "plain": false,
-   "early": null
-  },
   {
    "window": "2026-11-27T01:25:00Z",
    "result": "up",
@@ -234,6 +220,12 @@
    "result": "down",
    "plain": false,
    "early": false
+  },
+  {
+   "window": "2026-11-27T01:45:00Z",
+   "result": "up",
+   "plain": true,
+   "early": true
   }
  ],
  "ruler": "How the wave word is picked (the desk's ruler, from this window's own price trail): FLAT = moved less than $40 total and ended within $15 of where it started. ROLLERCOASTER = changed direction 3+ times without getting anywhere. CLIMBING / FALLING = ended $15+ above / below the start without whipping back. Book tells come from the order-book ladder RIPTIDE polls \u2014 the desk has no trade-size tape, so this board never claims 'whales'; it says what the book shows."
